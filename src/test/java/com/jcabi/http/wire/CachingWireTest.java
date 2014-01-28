@@ -68,4 +68,24 @@ public final class CachingWireTest {
         MatcherAssert.assertThat(container.queries(), Matchers.equalTo(1));
     }
 
+    /**
+     * CachingWire can ignore PUT requests.
+     * @throws Exception If something goes wrong inside
+     */
+    @Test
+    public void ignoresPutRequest() throws Exception {
+        final MkContainer container = new MkGrizzlyContainer()
+            .next(new MkAnswer.Simple(""))
+            .next(new MkAnswer.Simple(""))
+            .start();
+        final Request req = new JdkRequest(container.home())
+            .through(CachingWire.class).method(Request.PUT);
+        for (int idx = 0; idx < 2; ++idx) {
+            req.fetch().as(RestResponse.class)
+                .assertStatus(HttpURLConnection.HTTP_OK);
+        }
+        container.stop();
+        MatcherAssert.assertThat(container.queries(), Matchers.equalTo(2));
+    }
+
 }
