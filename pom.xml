@@ -36,7 +36,7 @@
         <version>1.0.2</version>
     </parent>
     <artifactId>jcabi-http</artifactId>
-    <version>1.0-SNAPSHOT</version>
+    <version>1.0</version>
     <packaging>jar</packaging>
     <name>jcabi-http</name>
     <description>Fluent HTTP Client</description>
