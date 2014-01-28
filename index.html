@@ -1,0 +1,172 @@
+<!DOCTYPE html>
+<!--
+ * Copyright (c) 2012-2013, JCabi.com
+ * All rights reserved.
+ -->
+<html xmlns="http://www.w3.org/1999/xhtml">
+    <head>
+        <meta charset="UTF-8"/>
+        <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+        <title>jcabi-http - </title>
+        <link media="all" rel="stylesheet" type="text/css" href="./css/jcabi.css"/>
+                            <script>
+                var _gaq = _gaq || [];
+                _gaq.push(['_setAccount', 'UA-1963507-23']);
+                _gaq.push(['_trackPageview']);
+                (function() {
+                    var ga = document.createElement('script'); ga.type = 'text/javascript'; ga.async = true;
+                    ga.src = ('https:' == document.location.protocol ? 'https://ssl' : 'http://www') + '.google-analytics.com/ga.js';
+                    var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga, s);
+                })();
+            </script>
+                                                                                                                
+<link rel="shortcut icon" href="http://img.jcabi.com/favicon.ico"/>
+                                                                                                                
+<link rel="author" href="https://plus.google.com/u/0/114792568016408327418?rel=author"/>
+                                            <link rel="stylesheet" href="./css/highlight.css" />
+        <script src="./js/jquery-1.8.3.min.js"></script>
+        <script src="./js/highlight-7.3.min.js"></script>
+        <script>
+            $(document).ready(
+                function() {
+                    $('div.source pre').each(
+                        function (idx, element) {
+                            hljs.highlightBlock(element);
+                        }
+                    );
+                }
+            );
+        </script>
+    </head>
+    <body>
+                <ul id="menu">
+                                                    <li>
+                    Parent Project
+                                            <ul>
+                                                                            <li>
+                                                                    <a href="../www.jcabi.com/index.html" title="jcabi">jcabi</a>
+                                                                                                                        <ul>
+                                                    </ul>
+                                    </li>
+                                                                </ul>
+                                    </li>
+                            <li>
+                    Overview
+                                            <ul>
+                                                                            <li>
+                                            <strong>                        <a href="index.html" title="Introduction">Introduction</a>
+        </strong>
+                                                                                                                <ul>
+                                                    </ul>
+                                    </li>
+                                                                                        <li>
+                                                                    <a href="apidocs-1.0/index.html" title="API 1.0 (JavaDoc)">API 1.0 (JavaDoc)</a>
+                                                                                                                        <ul>
+                                                    </ul>
+                                    </li>
+                                                                                        <li>
+                                                                    <a href="cobertura/index.html" title="Test coverage">Test coverage</a>
+                                                                                                                        <ul>
+                                                    </ul>
+                                    </li>
+                                                                                        <li>
+                                                                    <a href="https://github.com/jcabi/jcabi-http/releases" title="Release History">Release History</a>
+                                                                                                                        <ul>
+                                                    </ul>
+                                    </li>
+                                                                </ul>
+                                    </li>
+                            <li>
+                    Project Documentation
+                                            <ul>
+                                                                            <li>
+                                                                    <a href="project-info.html" title="Project Information">Project Information</a>
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                    </li>
+                                                                                        <li>
+                                                                    <a href="project-reports.html" title="Project Reports">Project Reports</a>
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                    </li>
+                                                                </ul>
+                                    </li>
+                    </ul>
+        <div id="content">
+                            <a href="https://github.com/jcabi/jcabi-http">
+                    <img style="position: absolute; top: 0; right: 0; border: 0; width: 100px; height: 100px;"
+                        src="https://s3.amazonaws.com/github/ribbons/forkme_right_red_aa0000.png"
+                        alt="Fork me on GitHub" />
+                </a>
+                        <a href="../" title="${decoration.bannerLeft.title}">
+                <img src="http://img.jcabi.com/logo.png"
+                    alt="jcabi"
+                                            width="200"
+                                                                height="48"
+                                    />
+            </a>
+                        <p>
+                
+                28-Jan-2014
+                1.0
+            </p>
+            <article>
+                <h1>Fluent HTTP Client</h1>
+<p>For example:</p>
+
+<div class="source">
+<pre>import com.jcabi.http.Request;
+import com.jcabi.http.request.ApacheRequest;
+public class Main {
+  public static void main(String[] args) {
+    String html = new ApacheRequest(&quot;https://www.google.com&quot;)
+      .uri().path(&quot;/users&quot;).queryParam(&quot;id&quot;, 333).back()
+      .method(Request.GET)
+      .header(HttpHeaders.ACCEPT, MediaType.TEXT_HTML)
+      .fetch()
+      .as(HttpResponse.class)
+      .assertStatus(HttpURLConnection.HTTP_OK)
+      .body();
+  }
+}
+</pre></div>
+<p>Check <a href="./apidocs-1.0/index.html">JavaDoc</a> for more details.</p>
+<p>The only dependency you need is (you can also download <a class="externalLink" href="http://repo1.maven.org/maven2/com/jcabi/jcabi-http/1.0/jcabi-http-1.0.jar">jcabi-http-1.0.jar</a> and add it to the classpath):</p>
+
+<div class="source">
+<pre>&lt;dependency&gt;
+  &lt;groupId&gt;com.jcabi&lt;/groupId&gt;
+  &lt;artifactId&gt;jcabi-http&lt;/artifactId&gt;
+  &lt;version&gt;1.0&lt;/version&gt;
+&lt;/dependency&gt;
+</pre></div>
+<div class="section">
+<h2>Cutting Edge Version<a name="Cutting_Edge_Version"></a></h2>
+<p>If you want to use current version of the product, you can do it with this configuration in your <tt>pom.xml</tt>:</p>
+
+<div class="source">
+<pre>&lt;repositories&gt;
+  &lt;repository&gt;
+    &lt;id&gt;oss.sonatype.org&lt;/id&gt;
+    &lt;url&gt;https://oss.sonatype.org/content/repositories/snapshots/&lt;/url&gt;
+  &lt;/repository&gt;
+&lt;/repositories&gt;
+&lt;dependencies&gt;
+  &lt;dependency&gt;
+    &lt;groupId&gt;com.jcabi&lt;/groupId&gt;
+    &lt;artifactId&gt;jcabi-http&lt;/artifactId&gt;
+    &lt;version&gt;1.0-SNAPSHOT&lt;/version&gt;
+  &lt;/dependency&gt;
+&lt;/dependencies&gt;
+</pre></div></div>
+            </article>
+            <p style="margin-bottom: 3em; margin-top: 2em;">
+                Copyright &#169;
+                                                    2012-2014
+                                jcabi.com, All Rights Reserved.
+                <a href="http://maven.apache.org/privacy-policy.html">Privacy Policy</a>.
+            </p>
+            <a href="http://maven.apache.org" title="site is built by Apache Maven"
+                style='position: absolute; bottom: 1em; right: 1em;'>
+                <img src='images/built-by-maven.png' style='width: 50px; height: 17px;'
+                    alt='site is built by Apache Maven'/>
+            </a>
+        </div>
+    </body>
+</html>

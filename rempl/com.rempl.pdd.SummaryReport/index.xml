@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<?xml-stylesheet type='text/xsl' href='puzzles.xsl'?><puzzles>
+   <puzzle>
+      <ticket>1</ticket>
+      <file>src/test/java/com/jcabi/http/mock/MkContainerTest.java</file>
+      <prefix>     * </prefix>
+      <body>Grizzly container doesn't understand same-name headers, or we don't fetch them correctly from GrizzlyRequest</body>
+      <estimate>0</estimate>
+      <lines>73-74</lines>
+      <owner>someone</owner>
+   </puzzle>
+</puzzles>
