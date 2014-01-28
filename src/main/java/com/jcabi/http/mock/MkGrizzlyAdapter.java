@@ -52,7 +52,7 @@ final class MkGrizzlyAdapter extends GrizzlyAdapter {
     /**
      * Queries received.
      */
-    private final transient Queue<MkQuery> queries =
+    private final transient Queue<MkQuery> queue =
         new ConcurrentLinkedQueue<MkQuery>();
 
     /**
@@ -66,7 +66,7 @@ final class MkGrizzlyAdapter extends GrizzlyAdapter {
     public void service(final GrizzlyRequest request,
         final GrizzlyResponse response) {
         try {
-            this.queries.add(new GrizzlyQuery(request));
+            this.queue.add(new GrizzlyQuery(request));
             final MkAnswer answer = this.answers.remove();
             for (final String name : answer.headers().keySet()) {
                 for (final String value : answer.headers().get(name)) {
@@ -78,7 +78,7 @@ final class MkGrizzlyAdapter extends GrizzlyAdapter {
                 String.format(
                     "%s query #%d, %d answer(s) left",
                     this.getClass().getName(),
-                    this.queries.size(), this.answers.size()
+                    this.queue.size(), this.answers.size()
                 )
             );
             response.setStatus(answer.status());
@@ -104,15 +104,15 @@ final class MkGrizzlyAdapter extends GrizzlyAdapter {
      * @return Request received
      */
     public MkQuery take() {
-        return this.queries.remove();
+        return this.queue.remove();
     }
 
     /**
-     * Total number of available queries.
+     * Total number of available queue.
      * @return Number of them
      */
     public int queries() {
-        return this.queries.size();
+        return this.queue.size();
     }
 
     /**
