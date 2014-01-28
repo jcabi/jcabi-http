@@ -78,6 +78,11 @@ public final class MkGrizzlyContainer implements MkContainer {
     }
 
     @Override
+    public int queries() {
+        return this.adapter.queries();
+    }
+
+    @Override
     public MkContainer start() throws IOException {
         return this.start(MkGrizzlyContainer.reserve());
     }

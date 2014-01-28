@@ -71,10 +71,19 @@ public interface MkContainer {
     MkContainer next(MkAnswer answer);
 
     /**
-     * Get the oldest request received.
+     * Get the oldest request received
+     * ({@link java.util.NoSuchElementException}
+     * if no more elements in the list).
      * @return Request received
      */
     MkQuery take();
+
+    /**
+     * How many queries we have left.
+     * @return Total number of queries you can retrieve with {@link #take()}
+     * @since 1.0
+     */
+    int queries();
 
     /**
      * Start it on the first available TCP port.

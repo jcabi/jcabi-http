@@ -29,67 +29,43 @@
  */
 package com.jcabi.http.wire;
 
-import com.jcabi.aspects.Immutable;
-import com.jcabi.aspects.Timeable;
+import com.jcabi.aspects.Tv;
 import com.jcabi.http.Request;
-import com.jcabi.http.Response;
-import com.jcabi.http.Wire;
-import java.io.IOException;
-import java.util.Collection;
-import java.util.Map;
-import java.util.concurrent.TimeUnit;
-import javax.validation.constraints.NotNull;
-import lombok.EqualsAndHashCode;
-import lombok.ToString;
+import com.jcabi.http.mock.MkAnswer;
+import com.jcabi.http.mock.MkContainer;
+import com.jcabi.http.mock.MkGrizzlyContainer;
+import com.jcabi.http.request.JdkRequest;
+import com.jcabi.http.response.RestResponse;
+import java.net.HttpURLConnection;
+import org.hamcrest.MatcherAssert;
+import org.hamcrest.Matchers;
+import org.junit.Test;
 
 /**
- * Wire that throws an {@link IOException} if a request takes longer
- * than a minute.
- *
- * <p>It's recommended to use this decorator in production, in order
- * to avoid stuck requests:
- *
- * <pre> String html = new JdkRequest("http://goggle.com")
- *   .through(OneMinuteWire.class)
- *   .header(HttpHeaders.ACCEPT, MediaType.TEXT_PLAIN)
- *   .fetch()
- *   .body();</pre>
- *
- * <p>The class is immutable and thread-safe.
- *
+ * Test case for {@link CachingWire}.
  * @author Yegor Bugayenko (yegor@tpc2.com)
  * @version $Id$
- * @since 0.10
+ * @since 1.0
  */
-@Immutable
-@ToString
-@EqualsAndHashCode(of = "origin")
-public final class OneMinuteWire implements Wire {
+public final class CachingWireTest {
 
     /**
-     * Original wire.
+     * CachingWire can cache GET requests.
+     * @throws Exception If something goes wrong inside
      */
-    private final transient Wire origin;
-
-    /**
-     * Public ctor.
-     * @param wire Original wire
-     */
-    public OneMinuteWire(@NotNull(message = "wire can't be NULL")
-        final Wire wire) {
-        this.origin = wire;
+    @Test
+    public void cachesGetRequest() throws Exception {
+        final MkContainer container = new MkGrizzlyContainer().next(
+            new MkAnswer.Simple("")
+        ).start();
+        final Request req = new JdkRequest(container.home())
+            .through(CachingWire.class);
+        for (int idx = 0; idx < Tv.TEN; ++idx) {
+            req.fetch().as(RestResponse.class)
+                .assertStatus(HttpURLConnection.HTTP_OK);
+        }
+        container.stop();
+        MatcherAssert.assertThat(container.queries(), Matchers.equalTo(1));
     }
 
-    /**
-     * {@inheritDoc}
-     * @checkstyle ParameterNumber (13 lines)
-     */
-    @Override
-    @Timeable(limit = 1, unit = TimeUnit.MINUTES)
-    public Response send(final Request req, final String home,
-        final String method,
-        final Collection<Map.Entry<String, String>> headers,
-        final byte[] content) throws IOException {
-        return this.origin.send(req, home, method, headers, content);
-    }
 }

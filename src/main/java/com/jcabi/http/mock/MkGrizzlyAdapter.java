@@ -108,6 +108,14 @@ final class MkGrizzlyAdapter extends GrizzlyAdapter {
     }
 
     /**
+     * Total number of available queries.
+     * @return Number of them
+     */
+    public int queries() {
+        return this.queries.size();
+    }
+
+    /**
      * Notify this response about failure.
      * @param response The response to notify
      * @param failure The failure just happened
