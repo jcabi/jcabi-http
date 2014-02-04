@@ -153,7 +153,7 @@ public final class RequestTest {
                 ),
                 Matchers.hasEntry(
                     Matchers.equalTo(HttpHeaders.USER_AGENT),
-                    Matchers.hasItem(Matchers.containsString("ReXSL"))
+                    Matchers.hasItem(Matchers.containsString("JCabi"))
                 )
             )
         );

@@ -77,9 +77,9 @@ public final class UserAgentWire implements Wire {
      * Default user agent.
      */
     private static final String AGENT = String.format(
-        "ReXSL-%s/%s Java/%s",
-        Manifests.read("ReXSL-Version"),
-        Manifests.read("ReXSL-Build"),
+        "JCabi-%s/%s Java/%s",
+        Manifests.read("JCabi-Version"),
+        Manifests.read("JCabi-Build"),
         System.getProperty("java.version")
     );
 

@@ -76,7 +76,7 @@ public final class CachingWire implements Wire {
      * @param wire Original wire
      */
     public CachingWire(@NotNull(message = "wire can't be NULL")
-    final Wire wire) {
+        final Wire wire) {
         this.origin = wire;
     }
 
