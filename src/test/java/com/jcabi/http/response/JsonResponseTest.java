@@ -62,4 +62,20 @@ public final class JsonResponseTest {
         );
     }
 
+    /**
+     * JsonResponse can read control characters.
+     *
+     * @throws Exception If something goes wrong inside
+     */
+    @Test
+    public void readsControlCharacters() throws Exception {
+        final Response resp = new FakeRequest()
+            .withBody("{\"test\": \"\u001Fblah\u0001cwhoa\u0000!\"}").fetch();
+        final JsonResponse response = new JsonResponse(resp);
+        MatcherAssert.assertThat(
+            response.json().readObject().getString("test"),
+            Matchers.is("\u001Fblah\u0001cwhoa\u0000!")
+        );
+    }
+
 }

@@ -32,6 +32,8 @@ package com.jcabi.http.response;
 import com.jcabi.aspects.Immutable;
 import com.jcabi.http.Response;
 import java.io.StringReader;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 import javax.json.Json;
 import javax.json.JsonReader;
 import javax.validation.constraints.NotNull;
@@ -92,7 +94,30 @@ public final class JsonResponse extends AbstractResponse {
      */
     @NotNull(message = "JSON reader is never NULL")
     public JsonReader json() {
-        return Json.createReader(new StringReader(this.body()));
+        return Json.createReader(
+            new StringReader(this.escapeControl(this.body()))
+        );
+    }
+
+    /**
+     * Escape control characters in JSON parsing.
+     *
+     * @param input The input JSON string
+     * @return Escaped JSON
+     * @see <a href="http://tools.ietf.org/html/rfc4627">RFC 4627</a>
+     */
+    private String escapeControl(final String input) {
+        final Pattern pattern = Pattern.compile("[\u0000-\u001f]");
+        final Matcher matcher = pattern.matcher(input);
+        final StringBuffer escaped = new StringBuffer(input.length());
+        while (matcher.find()) {
+            matcher.appendReplacement(
+                escaped,
+                String.format("\\\\u%04X", (int) matcher.group().charAt(0))
+            );
+        }
+        matcher.appendTail(escaped);
+        return escaped.toString();
     }
 
 }
