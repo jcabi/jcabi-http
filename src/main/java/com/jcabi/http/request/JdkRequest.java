@@ -102,7 +102,7 @@ public final class JdkRequest implements Request {
                 conn.setUseCaches(false);
                 conn.setInstanceFollowRedirects(false);
                 for (final Map.Entry<String, String> header : headers) {
-                    conn.setRequestProperty(header.getKey(), header.getValue());
+                    conn.addRequestProperty(header.getKey(), header.getValue());
                 }
                 if (method.equals(Request.POST) || method.equals(Request.PUT)
                     || method.equals(Request.PATCH)) {
