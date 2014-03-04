@@ -64,6 +64,11 @@ import lombok.EqualsAndHashCode;
 public final class JsonResponse extends AbstractResponse {
 
     /**
+     * Pattern matching control characters U+0000 - U001F for JSON escaping.
+     */
+    private static final Pattern CONTROL = Pattern.compile("[\u0000-\u001f]");
+
+    /**
      * Public ctor.
      * @param resp Response
      */
@@ -107,8 +112,7 @@ public final class JsonResponse extends AbstractResponse {
      * @see <a href="http://tools.ietf.org/html/rfc4627">RFC 4627</a>
      */
     private String escapeControl(final String input) {
-        final Pattern pattern = Pattern.compile("[\u0000-\u001f]");
-        final Matcher matcher = pattern.matcher(input);
+        final Matcher matcher = CONTROL.matcher(input);
         final StringBuffer escaped = new StringBuffer(input.length());
         while (matcher.find()) {
             matcher.appendReplacement(
