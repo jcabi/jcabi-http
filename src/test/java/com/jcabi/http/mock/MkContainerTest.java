@@ -70,11 +70,8 @@ public final class MkContainerTest {
     /**
      * MkContainer can understand duplicate headers.
      * @throws Exception If something goes wrong inside
-     * @todo #1 Grizzly container doesn't understand same-name
-     *  headers, or we don't fetch them correctly from GrizzlyRequest
      */
     @Test
-    @org.junit.Ignore
     public void understandsDuplicateHeaders() throws Exception {
         final MkContainer container = new MkGrizzlyContainer()
             .next(new MkAnswer.Simple(""))
