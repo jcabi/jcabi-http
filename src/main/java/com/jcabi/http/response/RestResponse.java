@@ -116,16 +116,11 @@ public final class RestResponse extends AbstractResponse {
         );
         MatcherAssert.assertThat(
             String.format(
-                "HTTP response status is not equal to %d:\n%s",
+                "HTTP response status is not equal to %d:%n%s",
                 status, this
             ),
             this,
-            new CustomMatcher<Response>(message) {
-                @Override
-                public boolean matches(final Object resp) {
-                    return Response.class.cast(resp).status() == status;
-                }
-            }
+            new RestResponse.StatusMatch(message, status)
         );
         return this;
     }
@@ -142,7 +137,7 @@ public final class RestResponse extends AbstractResponse {
         final Matcher<Integer> matcher) {
         MatcherAssert.assertThat(
             String.format(
-                "HTTP response status is not the one expected:\n%s",
+                "HTTP response status is not the one expected:%n%s",
                 this
             ),
             this.status(), matcher
@@ -162,7 +157,7 @@ public final class RestResponse extends AbstractResponse {
         final Matcher<String> matcher) {
         MatcherAssert.assertThat(
             String.format(
-                "HTTP response body content is not valid:\n%s",
+                "HTTP response body content is not valid:%n%s",
                 this
             ),
             this.body(), matcher
@@ -193,7 +188,7 @@ public final class RestResponse extends AbstractResponse {
         }
         MatcherAssert.assertThat(
             String.format(
-                "HTTP header '%s' is not valid:\n%s",
+                "HTTP header '%s' is not valid:%n%s",
                 name, this
             ),
             values, matcher
@@ -306,6 +301,29 @@ public final class RestResponse extends AbstractResponse {
             cookie.getDomain(),
             cookie.getVersion()
         );
+    }
+
+    /**
+     * Status matcher.
+     */
+    private static final class StatusMatch extends CustomMatcher<Response> {
+        /**
+         * HTTP status to check.
+         */
+        private final transient int status;
+        /**
+         * Ctor.
+         * @param msg Message to show
+         * @param sts HTTP status to check
+         */
+        StatusMatch(final String msg, final int sts) {
+            super(msg);
+            this.status = sts;
+        }
+        @Override
+        public boolean matches(final Object resp) {
+            return Response.class.cast(resp).status() == this.status;
+        }
     }
 
 }

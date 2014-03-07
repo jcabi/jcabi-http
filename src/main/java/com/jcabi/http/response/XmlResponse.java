@@ -141,7 +141,7 @@ public final class XmlResponse extends AbstractResponse {
         @NotNull(message = "xpath can't be NULL") final String xpath) {
         MatcherAssert.assertThat(
             String.format(
-                "XML doesn't contain required XPath '%s':\n%s",
+                "XML doesn't contain required XPath '%s':%n%s",
                 xpath, this.body()
             ),
             this.body(),

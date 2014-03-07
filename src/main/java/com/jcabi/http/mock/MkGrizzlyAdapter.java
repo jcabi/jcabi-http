@@ -33,11 +33,14 @@ import com.jcabi.log.Logger;
 import com.sun.grizzly.tcp.http11.GrizzlyAdapter;
 import com.sun.grizzly.tcp.http11.GrizzlyRequest;
 import com.sun.grizzly.tcp.http11.GrizzlyResponse;
-import java.io.PrintStream;
+import java.io.OutputStreamWriter;
+import java.io.PrintWriter;
+import java.io.UnsupportedEncodingException;
 import java.net.HttpURLConnection;
 import java.util.Queue;
 import java.util.concurrent.ConcurrentLinkedQueue;
 import org.apache.commons.io.Charsets;
+import org.apache.commons.lang3.CharEncoding;
 import org.apache.http.HttpHeaders;
 
 /**
@@ -123,11 +126,21 @@ final class MkGrizzlyAdapter extends GrizzlyAdapter {
     private static void fail(final GrizzlyResponse<?> response,
         final Throwable failure) {
         response.setStatus(HttpURLConnection.HTTP_INTERNAL_ERROR);
-        final PrintStream stream = new PrintStream(response.getStream());
+        final PrintWriter writer;
         try {
-            stream.print(Logger.format("%[exception]s", failure));
+            writer = new PrintWriter(
+                new OutputStreamWriter(
+                    response.getStream(),
+                    CharEncoding.UTF_8
+                )
+            );
+        } catch (UnsupportedEncodingException ex) {
+            throw new IllegalStateException(ex);
+        }
+        try {
+            writer.print(Logger.format("%[exception]s", failure));
         } finally {
-            stream.close();
+            writer.close();
         }
     }
 
