@@ -1,0 +1,40 @@
+# Managing JSON Responses
+
+When your HTTP
+[`Response`](./apidocs-${project.version}/com/rexsl/test/Response.html)
+contains a JSON document, it is convenient to use
+[`JsonResponse`](./apidocs-${project.version}/com/rexsl/test/response/JsonResponse.html)
+decorator to manipulate it, for example:
+
+```java
+String name = new JdkRequest("http://my.example.com")
+  .fetch()
+  .as(JsonResponse.class)
+  .json() // convert HTTP body to javax.json.JsonReader
+  .readJsonObject().getString("name");
+```
+
+Method [`JsonResponse#json()`](./apidocs-${project.version}/com/rexsl/test/response/JsonResponse.html)
+converts HTTP body to an instance of class
+[`JsonReader`](http://docs.oracle.com/javaee/7/api/javax/json/JsonReader.html).
+
+Don't forget to add these two dependencies to your classpath:
+
+```xml
+<dependency>
+  <groupId>javax.json</groupId>
+  <artifactId>javax.json-api</artifactId>
+  <version>1.0</version>
+  <scope>provided</scope>
+</dependency>
+<dependency>
+  <groupId>org.glassfish</groupId>
+  <artifactId>javax.json</artifactId>
+  <version>1.0.3</version>
+  <scope>runtime</scope>
+</dependency>
+```
+
+Read also about
+[`RestResponse`](./apidocs-${project.version}/com/rexsl/test/response/RestResponse.html),
+which helps you to manage default HTTP response concepts.

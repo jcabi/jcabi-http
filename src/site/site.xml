@@ -48,12 +48,22 @@
             <link href="http://img.jcabi.com/favicon.ico" rel="shortcut icon"/>
             <link href="https://plus.google.com/u/0/114792568016408327418?rel=author" rel="author"/>
         </head>
-        <menu ref="parent"/>
         <menu name="Overview">
             <item name="Introduction" href="index.html"/>
             <item name="API ${project.version} (JavaDoc)" href="./apidocs-${project.version}/index.html"/>
             <item name="Test coverage" href="./cobertura/index.html"/>
             <item name="Release History" href="https://github.com/jcabi/jcabi-http/releases"/>
+        </menu>
+        <menu name="Examples">
+            <item name="Make HTTP Request" href="example-request.html"/>
+            <item name="XML Response" href="example-xml-response.html"/>
+            <item name="JSON Response" href="example-json-response.html"/>
+            <item name="XML/XHTML Matchers" href="example-matchers.html"/>
+            <item name="Web Linking Response" href="example-web-linking-response.html"/>
+            <item name="HTTP Request that retries" href="example-retry-request.html"/>
+        </menu>
+        <menu name="Mock Servlet Container">
+            <item name="HTTP client unit testing" href="example-mock-container.html"/>
         </menu>
         <menu ref="reports"/>
     </body>

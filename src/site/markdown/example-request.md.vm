@@ -1,0 +1,98 @@
+# Making HTTP Request
+
+There is one interface
+[`Request`](./apidocs-${project.version}/com/rexsl/test/Request.html)
+that represents an HTTP request. There are a few implementations
+of the interface, and the most popular and easy to use is
+[`JdkRequest`](./apidocs-${project.version}/com/rexsl/test/request/JdkRequest.html).
+It makes a request using native JDK class
+[`java.net.HttpURLConnection`](http://docs.oracle.com/javase/7/docs/api/java/net/HttpURLConnection.html).
+
+First, make an instance of [`JdkRequest`](./apidocs-${project.version}/com/rexsl/test/request/JdkRequest.html),
+providing target URI as the first and the only constructor argument
+(`String`, `URI`, and `URL` types are accepted):
+
+```java
+Request request = new JdkRequest("http://my.example.com");
+```
+
+The object is ready to make an HTTP request using the URI provided,
+`GET` HTTP method, no custom HTTP headers and no request body. To fire
+an HTTP request and obtain a response use method `fetch()`:
+
+```java
+Response response = request.fetch();
+int status = response.status();
+String body = response.body();
+```
+
+[`Request`](./apidocs-${project.version}/com/rexsl/test/Request.html)
+is a trully immutable class, which means that you
+can't change any of its properties. However,
+you can create new requests. For example, you want to make a similar
+request, but with a `POST` HTTP method:
+
+```java
+Request post = request.method(Request.POST);
+post.fetch();
+```
+
+This is a bigger example of
+[`Request`](./apidocs-${project.version}/com/rexsl/test/Request.html)
+usage:
+
+```java
+Response response = new JdkRequest("http://my.example.com")
+  .uri().path("/users").queryParam("id", "456").back()
+  .method(Request.POST)
+  .body()
+  .formParam("salary", "55000")
+  .formParam("department", "IT")
+  .back()
+  .header("Content-Type", "application/json")
+  .header("User-Agent", "My Custom App")
+  .fetch();
+```
+
+This code will make a `POST` HTTP request to
+`http://my.example.com/users?id=456`. Request body
+will be set to `salary=55000&department=IT`. There will be
+two HTTP headers in the request: `Content-Type` and `User-Agent`.
+
+[`Response`](./apidocs-${project.version}/com/rexsl/test/Response.html)
+has a few methods that return its data, including `status()`,
+`reason()`, `headers()`, `body()`, and `binary()`. Besides that,
+there is a method `as(Class)`, which allows you to wrap an existing
+response with a new custom decorator, that implements more methods, suitable
+for a particular use case.
+
+The simpliest decorator is
+[`RestResponse`](./apidocs-${project.version}/com/rexsl/test/response/RestResponse.html).
+It helps you to make assertions on the response and follow redirects,
+for example:
+
+```java
+String page = new JdkRequest("http://my.example.com")
+  .fetch()
+  .as(RestResponse.class)
+  .assertStatus(301) // AssertionError if status is not equal to 301
+  .follow() // new request, pointing to the URL from Location header
+  .fetch()
+  .as(RestResponse.class)
+  .assertStatus(200)
+  .body();
+```
+
+[`RestResponse`](./apidocs-${project.version}/com/rexsl/test/response/RestResponse.html)
+also helps you to retrieve cookies from a response:
+
+```java
+String cookie = new JdkRequest("http://my.example.com")
+  .fetch()
+  .as(RestResponse.class)
+  .cookie("SessionId");
+```
+
+Read also about [`XmlResponse`](./example-xml-response.html) and
+[`JsonResponse`](./example-json-response.html).
+

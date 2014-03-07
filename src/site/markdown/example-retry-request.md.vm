@@ -1,0 +1,17 @@
+# HTTP Request that Retries on Failure
+
+[`RetryWire`](./apidocs-${project.version}/com/rexsl/test/wire/RetryWire.html).
+is a decorator of
+[`Wire`](./apidocs-${project.version}/com/rexsl/test/Wire.html)
+that retries to fetch a response a few times before giving up and
+throwing `IOException`, for example:
+
+```java
+String body = new JdkRequest("http://www.google.com")
+  .through(RetryWire.class);
+  .fetch()
+  .body();
+```
+
+If it recommended to use this decorator in production, to avoid
+accidental exceptions due to unstable connection.
