@@ -26,6 +26,7 @@
                                             <link rel="stylesheet" href="./css/highlight.css" />
         <script src="./js/jquery-1.8.3.min.js"></script>
         <script src="./js/highlight-7.3.min.js"></script>
+        <link href="http://netdna.bootstrapcdn.com/font-awesome/4.0.3/css/font-awesome.css" rel="stylesheet"/>
         <script>
             $(document).ready(
                 function() {
@@ -34,147 +35,225 @@
                             hljs.highlightBlock(element);
                         }
                     );
+                    $(".menu-button").click(
+                        function() {
+                            if ($("#here-goes-menu").attr("class") == "menu-off") {
+                                $("#menu").clone().attr("class", "mobile-menu").appendTo("#here-goes-menu");
+                                $("#here-goes-menu").attr("class", "menu-on");
+                            } else {
+                                $(".mobile-menu").hide();
+                                $("#here-goes-menu").attr("class", "menu-off");
+                            }
+                        }
+                    );
                 }
             );
         </script>
+        <style>
+            @import url("./css/wide.css") (min-width: 1200px) and (max-width:5000px);
+            @import url("./css/900-1199.css") (min-width: 900px) and (max-width:1199px);
+            @import url("./css/600-899.css") (min-width: 600px) and (max-width:899px);
+            @import url("./css/100-599.css") (min-width: 100px) and (max-width:599px);
+        </style>
     </head>
-    <body>
+    <body style="background: url('./images/background.png') fixed;">
+                <div class="page">
+            <div class="menu-section">
                 <ul id="menu">
-                                                    <li>
-                    Parent Project
-                                            <ul>
-                                                                            <li>
-                                                                    <a href="../www.jcabi.com/index.html" title="jcabi">jcabi</a>
-                                                                                                                        <ul>
-                                                    </ul>
-                                    </li>
-                                                                </ul>
-                                    </li>
-                            <li>
-                    Overview
-                                            <ul>
-                                                                            <li>
-                                                                    <a href="index.html" title="Introduction">Introduction</a>
-                                                                                                                        <ul>
-                                                    </ul>
-                                    </li>
-                                                                                        <li>
-                                                                    <a href="apidocs-1.1/index.html" title="API 1.1 (JavaDoc)">API 1.1 (JavaDoc)</a>
-                                                                                                                        <ul>
-                                                    </ul>
-                                    </li>
-                                                                                        <li>
-                                                                    <a href="cobertura/index.html" title="Test coverage">Test coverage</a>
-                                                                                                                        <ul>
-                                                    </ul>
-                                    </li>
-                                                                                        <li>
-                                                                    <a href="https://github.com/jcabi/jcabi-http/releases" title="Release History">Release History</a>
-                                                                                                                        <ul>
-                                                    </ul>
-                                    </li>
-                                                                </ul>
-                                    </li>
-                            <li>
-                    Project Documentation
-                                            <ul>
-                                                                            <li>
-                                                                    <a href="project-info.html" title="Project Information">Project Information</a>
-                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                    </li>
-                                                                                        <li>
-                                                                    <a href="project-reports.html" title="Project Reports">Project Reports</a>
-                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                    <ul>
-                                                                            <li>
-                                                                    <a href="rempl.html" title="REMPL">REMPL</a>
-                                                                                                                        <ul>
-                                                    </ul>
-                                    </li>
-                                                                                        <li>
-                                                                    <a href="xref/index.html" title="Source Xref">Source Xref</a>
-                                                                                                                        <ul>
-                                                    </ul>
-                                    </li>
-                                                                                        <li>
-                                                                    <a href="xref-test/index.html" title="Test Source Xref">Test Source Xref</a>
-                                                                                                                        <ul>
-                                                    </ul>
-                                    </li>
-                                                                                        <li>
-                                            <strong>                        <a href="surefire-report.html" title="Surefire Report">Surefire Report</a>
+                                                                                    <li>
+                            Overview
+                                                            <ul>
+                                                                                                    <li>
+                                                                                    <a href="index.html" title="Introduction">Introduction</a>
+                                                                                                                                                                        <ul>
+                                                                    </ul>
+                                                    </li>
+                                                                                                                        <li>
+                                                                                    <a href="apidocs-1.2/index.html" title="API 1.2 (JavaDoc)">API 1.2 (JavaDoc)</a>
+                                                                                                                                                                        <ul>
+                                                                    </ul>
+                                                    </li>
+                                                                                                                        <li>
+                                                                                    <a href="cobertura/index.html" title="Test coverage">Test coverage</a>
+                                                                                                                                                                        <ul>
+                                                                    </ul>
+                                                    </li>
+                                                                                                                        <li>
+                                                                                    <a href="https://github.com/jcabi/jcabi-http/releases" title="Release History">Release History</a>
+                                                                                                                                                                        <ul>
+                                                                    </ul>
+                                                    </li>
+                                                                                        </ul>
+                                                    </li>
+                                            <li>
+                            Examples
+                                                            <ul>
+                                                                                                    <li>
+                                                                                    <a href="example-request.html" title="Make HTTP Request">Make HTTP Request</a>
+                                                                                                                                                                        <ul>
+                                                                    </ul>
+                                                    </li>
+                                                                                                                        <li>
+                                                                                    <a href="example-xml-response.html" title="XML Response">XML Response</a>
+                                                                                                                                                                        <ul>
+                                                                    </ul>
+                                                    </li>
+                                                                                                                        <li>
+                                                                                    <a href="example-json-response.html" title="JSON Response">JSON Response</a>
+                                                                                                                                                                        <ul>
+                                                                    </ul>
+                                                    </li>
+                                                                                                                        <li>
+                                                                                    <a href="example-matchers.html" title="XML/XHTML Matchers">XML/XHTML Matchers</a>
+                                                                                                                                                                        <ul>
+                                                                    </ul>
+                                                    </li>
+                                                                                                                        <li>
+                                                                                    <a href="example-web-linking-response.html" title="Web Linking Response">Web Linking Response</a>
+                                                                                                                                                                        <ul>
+                                                                    </ul>
+                                                    </li>
+                                                                                                                        <li>
+                                                                                    <a href="example-retry-request.html" title="HTTP Request that retries">HTTP Request that retries</a>
+                                                                                                                                                                        <ul>
+                                                                    </ul>
+                                                    </li>
+                                                                                        </ul>
+                                                    </li>
+                                            <li>
+                            Mock Servlet Container
+                                                            <ul>
+                                                                                                    <li>
+                                                                                    <a href="example-mock-container.html" title="HTTP client unit testing">HTTP client unit testing</a>
+                                                                                                                                                                        <ul>
+                                                                    </ul>
+                                                    </li>
+                                                                                        </ul>
+                                                    </li>
+                                            <li>
+                            Project Documentation
+                                                            <ul>
+                                                                                                    <li>
+                                                                                    <a href="project-info.html" title="Project Information">Project Information</a>
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                            </li>
+                                                                                                                        <li>
+                                                                                    <a href="project-reports.html" title="Project Reports">Project Reports</a>
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                    <ul>
+                                                                                                    <li>
+                                                                                    <a href="rempl.html" title="REMPL">REMPL</a>
+                                                                                                                                                                        <ul>
+                                                                    </ul>
+                                                    </li>
+                                                                                                                        <li>
+                                                                                    <a href="xref/index.html" title="Source Xref">Source Xref</a>
+                                                                                                                                                                        <ul>
+                                                                    </ul>
+                                                    </li>
+                                                                                                                        <li>
+                                                                                    <a href="xref-test/index.html" title="Test Source Xref">Test Source Xref</a>
+                                                                                                                                                                        <ul>
+                                                                    </ul>
+                                                    </li>
+                                                                                                                        <li>
+                                                            <strong>                        <a href="surefire-report.html" title="Surefire Report">Surefire Report</a>
         </strong>
-                                                                                                                <ul>
-                                                    </ul>
-                                    </li>
-                                                                                        <li>
-                                                                    <a href="changelog.html" title="Change Log">Change Log</a>
-                                                                                                                        <ul>
-                                                    </ul>
-                                    </li>
-                                                                                        <li>
-                                                                    <a href="dev-activity.html" title="Developer Activity">Developer Activity</a>
-                                                                                                                        <ul>
-                                                    </ul>
-                                    </li>
-                                                                                        <li>
-                                                                    <a href="file-activity.html" title="File Activity">File Activity</a>
-                                                                                                                        <ul>
-                                                    </ul>
-                                    </li>
-                                                                                        <li>
-                                                                    <a href="dependency-updates-report.html" title="Dependency Updates Report">Dependency Updates Report</a>
-                                                                                                                        <ul>
-                                                    </ul>
-                                    </li>
-                                                                                        <li>
-                                                                    <a href="plugin-updates-report.html" title="Plugin Updates Report">Plugin Updates Report</a>
-                                                                                                                        <ul>
-                                                    </ul>
-                                    </li>
-                                                                                        <li>
-                                                                    <a href="apidocs-1.1/index.html" title="JavaDocs">JavaDocs</a>
-                                                                                                                        <ul>
-                                                    </ul>
-                                    </li>
-                                                                                        <li>
-                                                                    <a href="cobertura/index.html" title="Cobertura Test Coverage">Cobertura Test Coverage</a>
-                                                                                                                        <ul>
-                                                    </ul>
-                                    </li>
-                                                                                        <li>
-                                                                    <a href="github-report.html" title="GitHub Report">GitHub Report</a>
-                                                                                                                        <ul>
-                                                    </ul>
-                                    </li>
-                                                                                        <li>
-                                                                    <a href="changes-report.html" title="Changes Report">Changes Report</a>
-                                                                                                                        <ul>
-                                                    </ul>
-                                    </li>
-                                                                </ul>
-                                    </li>
-                                                                </ul>
-                                    </li>
-                    </ul>
-        <div id="content">
-                            <a href="https://github.com/jcabi/jcabi-http">
-                    <img style="position: absolute; top: 0; right: 0; border: 0; width: 100px; height: 100px;"
-                        src="https://s3.amazonaws.com/github/ribbons/forkme_right_red_aa0000.png"
-                        alt="Fork me on GitHub" />
-                </a>
+                                                                                                                                                                <ul>
+                                                                    </ul>
+                                                    </li>
+                                                                                                                        <li>
+                                                                                    <a href="changelog.html" title="Change Log">Change Log</a>
+                                                                                                                                                                        <ul>
+                                                                    </ul>
+                                                    </li>
+                                                                                                                        <li>
+                                                                                    <a href="dev-activity.html" title="Developer Activity">Developer Activity</a>
+                                                                                                                                                                        <ul>
+                                                                    </ul>
+                                                    </li>
+                                                                                                                        <li>
+                                                                                    <a href="file-activity.html" title="File Activity">File Activity</a>
+                                                                                                                                                                        <ul>
+                                                                    </ul>
+                                                    </li>
+                                                                                                                        <li>
+                                                                                    <a href="dependency-updates-report.html" title="Dependency Updates Report">Dependency Updates Report</a>
+                                                                                                                                                                        <ul>
+                                                                    </ul>
+                                                    </li>
+                                                                                                                        <li>
+                                                                                    <a href="plugin-updates-report.html" title="Plugin Updates Report">Plugin Updates Report</a>
+                                                                                                                                                                        <ul>
+                                                                    </ul>
+                                                    </li>
+                                                                                                                        <li>
+                                                                                    <a href="apidocs-1.2/index.html" title="JavaDocs">JavaDocs</a>
+                                                                                                                                                                        <ul>
+                                                                    </ul>
+                                                    </li>
+                                                                                                                        <li>
+                                                                                    <a href="cobertura/index.html" title="Cobertura Test Coverage">Cobertura Test Coverage</a>
+                                                                                                                                                                        <ul>
+                                                                    </ul>
+                                                    </li>
+                                                                                                                        <li>
+                                                                                    <a href="github-report.html" title="GitHub Report">GitHub Report</a>
+                                                                                                                                                                        <ul>
+                                                                    </ul>
+                                                    </li>
+                                                                                                                        <li>
+                                                                                    <a href="changes-report.html" title="Changes Report">Changes Report</a>
+                                                                                                                                                                        <ul>
+                                                                    </ul>
+                                                    </li>
+                                                                                        </ul>
+                                                    </li>
+                                                                                        </ul>
+                                                    </li>
+                                    </ul>
+            </div>
+            <div id="right-side">
+                <div id="content">
+                    <i class="menu-button fa fa-align-justify"></i>
+                    <div class="logo-section">
                         <a href="../" title="${decoration.bannerLeft.title}">
-                <img src="http://img.jcabi.com/logo.png"
-                    alt="jcabi"
-                                            width="200"
-                                                                height="48"
-                                    />
-            </a>
-                        <p>
-                
-                31-Jan-2014
-                1.1
-            </p>
-            <article>
-                <script type="text/javascript">
+                            <img src="http://img.jcabi.com/logo.png"
+                                alt="jcabi"
+                                                                    width="200"
+                                                                                                    height="48"
+                                                            />
+                        </a>
+                    </div>
+                    <div class="date">
+                        <div class="date-numbers">
+                            
+                            07-Mar-2014
+                            1.2
+                        </div>
+                                                                            <div class="github">
+                                <iframe
+                                    class="github-large"
+                                    src="http://ghbtns.com/github-btn.html?user=jcabi&amp;repo=jcabi-http&amp;type=watch&amp;count=true&amp;size=large"
+                                    allowtransparency="true"
+                                    frameborder="0"
+                                    scrolling="0"
+                                    width="170"
+                                    height="30">
+                                </iframe>
+                                <iframe
+                                    class="github-small"
+                                    src="http://ghbtns.com/github-btn.html?user=jcabi&amp;repo=jcabi-http&amp;type=watch&amp;count=true&amp;size=small"
+                                    allowtransparency="true"
+                                    frameborder="0"
+                                    scrolling="0"
+                                    width="170"
+                                    height="30">
+                                </iframe>
+                            </div>
+                                            </div>
+                    <div id="here-goes-menu"></div>
+                    <article>
+                        <div class="section">
+                            <script type="text/javascript">
 //<![CDATA[
 function toggleDisplay(elementId) {
  var elm = document.getElementById(elementId + 'error');
@@ -205,12 +284,12 @@ function toggleDisplay(elementId) {
 <th>Success Rate</th>
 <th>Time</th></tr>
 <tr class="b">
-<td>55</td>
+<td>58</td>
 <td>0</td>
 <td>0</td>
-<td>1</td>
-<td>98.182%</td>
-<td>49.132</td></tr></table><br />
+<td>0</td>
+<td>100%</td>
+<td>98.566</td></tr></table><br />
 <p>Note: failures are anticipated and checked for with assertions while errors are unanticipated.</p><br /></div>
 <div class="section">
 <h2>Package List<a name="Package_List"></a></h2><a name="Package_List"></a>
@@ -231,23 +310,23 @@ function toggleDisplay(elementId) {
 <td>0</td>
 <td>0</td>
 <td>100%</td>
-<td>42.074</td></tr>
+<td>35.129</td></tr>
 <tr class="a">
 <td><a href="#com.jcabi.http.wire">com.jcabi.http.wire</a></td>
-<td>5</td>
+<td>7</td>
 <td>0</td>
 <td>0</td>
 <td>0</td>
 <td>100%</td>
-<td>5.252</td></tr>
+<td>54.877</td></tr>
 <tr class="b">
 <td><a href="#com.jcabi.http.response">com.jcabi.http.response</a></td>
-<td>11</td>
+<td>12</td>
 <td>0</td>
 <td>0</td>
 <td>0</td>
 <td>100%</td>
-<td>0.25</td></tr>
+<td>4.658</td></tr>
 <tr class="a">
 <td><a href="#com.jcabi.http.request">com.jcabi.http.request</a></td>
 <td>6</td>
@@ -255,15 +334,15 @@ function toggleDisplay(elementId) {
 <td>0</td>
 <td>0</td>
 <td>100%</td>
-<td>0.539</td></tr>
+<td>0.831</td></tr>
 <tr class="b">
 <td><a href="#com.jcabi.http.mock">com.jcabi.http.mock</a></td>
 <td>2</td>
 <td>0</td>
 <td>0</td>
-<td>1</td>
-<td>50%</td>
-<td>1.017</td></tr></table><br />
+<td>0</td>
+<td>100%</td>
+<td>3.071</td></tr></table><br />
 <p>Note: package statistics are not computed recursively, they only sum up all of its testsuites numbers.</p>
 <div class="section">
 <h3>com.jcabi.http<a name="com.jcabi.http"></a></h3><a name="com.jcabi.http"></a>
@@ -285,7 +364,7 @@ function toggleDisplay(elementId) {
 <td>0</td>
 <td>0</td>
 <td>100%</td>
-<td>0.001</td></tr>
+<td>0.156</td></tr>
 <tr class="a">
 <td><a href="#com.jcabi.httpRequestTest"><img src="images/icon_success_sml.gif" alt="" /></a></td>
 <td><a href="#com.jcabi.httpRequestTest">RequestTest</a></td>
@@ -294,7 +373,7 @@ function toggleDisplay(elementId) {
 <td>0</td>
 <td>0</td>
 <td>100%</td>
-<td>42.073</td></tr></table></div>
+<td>34.973</td></tr></table></div>
 <div class="section">
 <h3>com.jcabi.http.wire<a name="com.jcabi.http.wire"></a></h3><a name="com.jcabi.http.wire"></a>
 <table border="1" class="bodyTable">
@@ -315,7 +394,7 @@ function toggleDisplay(elementId) {
 <td>0</td>
 <td>0</td>
 <td>100%</td>
-<td>2.075</td></tr>
+<td>2.665</td></tr>
 <tr class="a">
 <td><a href="#com.jcabi.http.wireCookieOptimizingWireTest"><img src="images/icon_success_sml.gif" alt="" /></a></td>
 <td><a href="#com.jcabi.http.wireCookieOptimizingWireTest">CookieOptimizingWireTest</a></td>
@@ -324,7 +403,25 @@ function toggleDisplay(elementId) {
 <td>0</td>
 <td>0</td>
 <td>100%</td>
-<td>2.142</td></tr>
+<td>3.127</td></tr>
+<tr class="b">
+<td><a href="#com.jcabi.http.wireRetryWireTest"><img src="images/icon_success_sml.gif" alt="" /></a></td>
+<td><a href="#com.jcabi.http.wireRetryWireTest">RetryWireTest</a></td>
+<td>1</td>
+<td>0</td>
+<td>0</td>
+<td>0</td>
+<td>100%</td>
+<td>47.013</td></tr>
+<tr class="a">
+<td><a href="#com.jcabi.http.wireUserAgentWireTest"><img src="images/icon_success_sml.gif" alt="" /></a></td>
+<td><a href="#com.jcabi.http.wireUserAgentWireTest">UserAgentWireTest</a></td>
+<td>1</td>
+<td>0</td>
+<td>0</td>
+<td>0</td>
+<td>100%</td>
+<td>1.537</td></tr>
 <tr class="b">
 <td><a href="#com.jcabi.http.wireVerboseWireTest"><img src="images/icon_success_sml.gif" alt="" /></a></td>
 <td><a href="#com.jcabi.http.wireVerboseWireTest">VerboseWireTest</a></td>
@@ -333,7 +430,7 @@ function toggleDisplay(elementId) {
 <td>0</td>
 <td>0</td>
 <td>100%</td>
-<td>1.035</td></tr></table></div>
+<td>0.535</td></tr></table></div>
 <div class="section">
 <h3>com.jcabi.http.response<a name="com.jcabi.http.response"></a></h3><a name="com.jcabi.http.response"></a>
 <table border="1" class="bodyTable">
@@ -349,12 +446,12 @@ function toggleDisplay(elementId) {
 <tr class="b">
 <td><a href="#com.jcabi.http.responseJsonResponseTest"><img src="images/icon_success_sml.gif" alt="" /></a></td>
 <td><a href="#com.jcabi.http.responseJsonResponseTest">JsonResponseTest</a></td>
-<td>1</td>
+<td>2</td>
 <td>0</td>
 <td>0</td>
 <td>0</td>
 <td>100%</td>
-<td>0.018</td></tr>
+<td>0.531</td></tr>
 <tr class="a">
 <td><a href="#com.jcabi.http.responseRestResponseTest"><img src="images/icon_success_sml.gif" alt="" /></a></td>
 <td><a href="#com.jcabi.http.responseRestResponseTest">RestResponseTest</a></td>
@@ -363,7 +460,7 @@ function toggleDisplay(elementId) {
 <td>0</td>
 <td>0</td>
 <td>100%</td>
-<td>0.061</td></tr>
+<td>0.799</td></tr>
 <tr class="b">
 <td><a href="#com.jcabi.http.responseWebLinkingResponseTest"><img src="images/icon_success_sml.gif" alt="" /></a></td>
 <td><a href="#com.jcabi.http.responseWebLinkingResponseTest">WebLinkingResponseTest</a></td>
@@ -372,7 +469,7 @@ function toggleDisplay(elementId) {
 <td>0</td>
 <td>0</td>
 <td>100%</td>
-<td>0.074</td></tr>
+<td>0.026</td></tr>
 <tr class="a">
 <td><a href="#com.jcabi.http.responseXmlResponseTest"><img src="images/icon_success_sml.gif" alt="" /></a></td>
 <td><a href="#com.jcabi.http.responseXmlResponseTest">XmlResponseTest</a></td>
@@ -381,7 +478,7 @@ function toggleDisplay(elementId) {
 <td>0</td>
 <td>0</td>
 <td>100%</td>
-<td>0.097</td></tr></table></div>
+<td>3.302</td></tr></table></div>
 <div class="section">
 <h3>com.jcabi.http.request<a name="com.jcabi.http.request"></a></h3><a name="com.jcabi.http.request"></a>
 <table border="1" class="bodyTable">
@@ -402,7 +499,7 @@ function toggleDisplay(elementId) {
 <td>0</td>
 <td>0</td>
 <td>100%</td>
-<td>0.499</td></tr>
+<td>0.559</td></tr>
 <tr class="a">
 <td><a href="#com.jcabi.http.requestDefaultResponseTest"><img src="images/icon_success_sml.gif" alt="" /></a></td>
 <td><a href="#com.jcabi.http.requestDefaultResponseTest">DefaultResponseTest</a></td>
@@ -411,7 +508,7 @@ function toggleDisplay(elementId) {
 <td>0</td>
 <td>0</td>
 <td>100%</td>
-<td>0.008</td></tr>
+<td>0.252</td></tr>
 <tr class="b">
 <td><a href="#com.jcabi.http.requestFakeRequestTest"><img src="images/icon_success_sml.gif" alt="" /></a></td>
 <td><a href="#com.jcabi.http.requestFakeRequestTest">FakeRequestTest</a></td>
@@ -420,7 +517,7 @@ function toggleDisplay(elementId) {
 <td>0</td>
 <td>0</td>
 <td>100%</td>
-<td>0.032</td></tr></table></div>
+<td>0.02</td></tr></table></div>
 <div class="section">
 <h3>com.jcabi.http.mock<a name="com.jcabi.http.mock"></a></h3><a name="com.jcabi.http.mock"></a>
 <table border="1" class="bodyTable">
@@ -434,14 +531,14 @@ function toggleDisplay(elementId) {
 <th>Success Rate</th>
 <th>Time</th></tr>
 <tr class="b">
-<td><a href="#com.jcabi.http.mockMkContainerTest"><img src="images/icon_warning_sml.gif" alt="" /></a></td>
+<td><a href="#com.jcabi.http.mockMkContainerTest"><img src="images/icon_success_sml.gif" alt="" /></a></td>
 <td><a href="#com.jcabi.http.mockMkContainerTest">MkContainerTest</a></td>
 <td>2</td>
 <td>0</td>
 <td>0</td>
-<td>1</td>
-<td>50%</td>
-<td>1.017</td></tr></table></div><br /></div>
+<td>0</td>
+<td>100%</td>
+<td>3.071</td></tr></table></div><br /></div>
 <div class="section">
 <h2>Test Cases<a name="Test_Cases"></a></h2><a name="Test_Cases"></a>
 <p>[<a href="#Summary">Summary</a>] [<a href="#Package_List">Package List</a>] [<a href="#Test_Cases">Test Cases</a>]</p>
@@ -451,286 +548,293 @@ function toggleDisplay(elementId) {
 <tr class="a">
 <td><img src="images/icon_success_sml.gif" alt="" /></td>
 <td>normalizesHeaderKey</td>
-<td>0.001</td></tr></table></div>
+<td>0.156</td></tr></table></div>
 <div class="section">
 <h3>RequestTest<a name="RequestTest"></a></h3><a name="com.jcabi.httpRequestTest"></a>
 <table border="1" class="bodyTable">
 <tr class="a">
 <td><img src="images/icon_success_sml.gif" alt="" /></td>
 <td>sendsHttpRequestAndProcessesHttpResponse[0]</td>
-<td>2.896</td></tr>
+<td>1.45</td></tr>
 <tr class="b">
 <td><img src="images/icon_success_sml.gif" alt="" /></td>
 <td>assertsHttpStatus[0]</td>
-<td>2.9</td></tr>
+<td>1.445</td></tr>
 <tr class="a">
 <td><img src="images/icon_success_sml.gif" alt="" /></td>
 <td>sendsTextWithPostRequestMatchBody[0]</td>
-<td>2.86</td></tr>
+<td>1.448</td></tr>
 <tr class="b">
 <td><img src="images/icon_success_sml.gif" alt="" /></td>
 <td>assertsHttpResponseBody[0]</td>
-<td>2.886</td></tr>
+<td>1.439</td></tr>
 <tr class="a">
-<td><img src="images/icon_success_sml.gif" alt="" /></td>
-<td>sendsHttpRequestAndProcessesHttpResponse[1]</td>
-<td>2.245</td></tr>
-<tr class="b">
 <td><img src="images/icon_success_sml.gif" alt="" /></td>
 <td>assertsResponseBodyWithXpathQuery[0]</td>
-<td>1.621</td></tr>
-<tr class="a">
-<td><img src="images/icon_success_sml.gif" alt="" /></td>
-<td>sendsBasicAuthenticationHeader[0]</td>
-<td>1.497</td></tr>
+<td>1.437</td></tr>
 <tr class="b">
 <td><img src="images/icon_success_sml.gif" alt="" /></td>
 <td>acceptsUnicodeInPlainText[0]</td>
-<td>1.433</td></tr>
+<td>1.425</td></tr>
 <tr class="a">
 <td><img src="images/icon_success_sml.gif" alt="" /></td>
-<td>mockedUrlIsInCorrectFormat[0]</td>
-<td>1.462</td></tr>
+<td>sendsBasicAuthenticationHeader[0]</td>
+<td>1.425</td></tr>
 <tr class="b">
 <td><img src="images/icon_success_sml.gif" alt="" /></td>
 <td>doesntRedirectWithoutRequest[0]</td>
-<td>1.428</td></tr>
+<td>1.396</td></tr>
 <tr class="a">
+<td><img src="images/icon_success_sml.gif" alt="" /></td>
+<td>mockedUrlIsInCorrectFormat[0]</td>
+<td>1.066</td></tr>
+<tr class="b">
 <td><img src="images/icon_success_sml.gif" alt="" /></td>
 <td>sendsTextWithGetParameters[0]</td>
-<td>1.502</td></tr>
-<tr class="b">
+<td>1.393</td></tr>
+<tr class="a">
 <td><img src="images/icon_success_sml.gif" alt="" /></td>
 <td>assertsHttpHeaders[0]</td>
-<td>1.127</td></tr>
-<tr class="a">
+<td>1.382</td></tr>
+<tr class="b">
 <td><img src="images/icon_success_sml.gif" alt="" /></td>
 <td>sendsTextWithPostRequestMatchParam[0]</td>
-<td>1.099</td></tr>
-<tr class="b">
+<td>1.161</td></tr>
+<tr class="a">
 <td><img src="images/icon_success_sml.gif" alt="" /></td>
 <td>acceptsUnicodeInXml[0]</td>
-<td>1.133</td></tr>
-<tr class="a">
+<td>1.154</td></tr>
+<tr class="b">
 <td><img src="images/icon_success_sml.gif" alt="" /></td>
 <td>sendsHttpRequestWithHeaders[0]</td>
-<td>1.191</td></tr>
-<tr class="b">
-<td><img src="images/icon_success_sml.gif" alt="" /></td>
-<td>sendsIdenticalHttpRequestTwice[0]</td>
-<td>1.114</td></tr>
-<tr class="a">
-<td><img src="images/icon_success_sml.gif" alt="" /></td>
-<td>assertsHttpStatus[1]</td>
-<td>1.035</td></tr>
-<tr class="b">
-<td><img src="images/icon_success_sml.gif" alt="" /></td>
-<td>sendsTextWithPostRequestMatchBody[1]</td>
 <td>1.055</td></tr>
 <tr class="a">
 <td><img src="images/icon_success_sml.gif" alt="" /></td>
-<td>assertsHttpResponseBody[1]</td>
-<td>1.027</td></tr>
+<td>sendsIdenticalHttpRequestTwice[0]</td>
+<td>1.074</td></tr>
 <tr class="b">
 <td><img src="images/icon_success_sml.gif" alt="" /></td>
-<td>assertsResponseBodyWithXpathQuery[1]</td>
-<td>1.033</td></tr>
+<td>assertsHttpStatus[1]</td>
+<td>1.017</td></tr>
 <tr class="a">
 <td><img src="images/icon_success_sml.gif" alt="" /></td>
+<td>sendsHttpRequestAndProcessesHttpResponse[1]</td>
+<td>1.013</td></tr>
+<tr class="b">
+<td><img src="images/icon_success_sml.gif" alt="" /></td>
 <td>sendsBasicAuthenticationHeader[1]</td>
-<td>0.025</td></tr>
+<td>1.015</td></tr>
+<tr class="a">
+<td><img src="images/icon_success_sml.gif" alt="" /></td>
+<td>assertsResponseBodyWithXpathQuery[1]</td>
+<td>1.017</td></tr>
+<tr class="b">
+<td><img src="images/icon_success_sml.gif" alt="" /></td>
+<td>assertsHttpResponseBody[1]</td>
+<td>1.012</td></tr>
+<tr class="a">
+<td><img src="images/icon_success_sml.gif" alt="" /></td>
+<td>sendsTextWithPostRequestMatchBody[1]</td>
+<td>1.014</td></tr>
 <tr class="b">
 <td><img src="images/icon_success_sml.gif" alt="" /></td>
 <td>acceptsUnicodeInPlainText[1]</td>
-<td>1.154</td></tr>
+<td>1.019</td></tr>
 <tr class="a">
 <td><img src="images/icon_success_sml.gif" alt="" /></td>
 <td>mockedUrlIsInCorrectFormat[1]</td>
-<td>1.03</td></tr>
+<td>1.005</td></tr>
 <tr class="b">
 <td><img src="images/icon_success_sml.gif" alt="" /></td>
 <td>doesntRedirectWithoutRequest[1]</td>
-<td>1.041</td></tr>
+<td>1.009</td></tr>
 <tr class="a">
 <td><img src="images/icon_success_sml.gif" alt="" /></td>
 <td>sendsTextWithGetParameters[1]</td>
-<td>1.104</td></tr>
+<td>1.015</td></tr>
 <tr class="b">
 <td><img src="images/icon_success_sml.gif" alt="" /></td>
 <td>assertsHttpHeaders[1]</td>
-<td>1.05</td></tr>
+<td>1.009</td></tr>
 <tr class="a">
 <td><img src="images/icon_success_sml.gif" alt="" /></td>
 <td>sendsTextWithPostRequestMatchParam[1]</td>
-<td>1.058</td></tr>
+<td>1.019</td></tr>
 <tr class="b">
 <td><img src="images/icon_success_sml.gif" alt="" /></td>
 <td>acceptsUnicodeInXml[1]</td>
-<td>1.014</td></tr>
+<td>1.015</td></tr>
 <tr class="a">
 <td><img src="images/icon_success_sml.gif" alt="" /></td>
 <td>sendsHttpRequestWithHeaders[1]</td>
-<td>1.023</td></tr>
+<td>1.018</td></tr>
 <tr class="b">
 <td><img src="images/icon_success_sml.gif" alt="" /></td>
 <td>sendsIdenticalHttpRequestTwice[1]</td>
-<td>1.03</td></tr></table></div>
+<td>1.026</td></tr></table></div>
 <div class="section">
 <h3>MkContainerTest<a name="MkContainerTest"></a></h3><a name="com.jcabi.http.mockMkContainerTest"></a>
 <table border="1" class="bodyTable">
 <tr class="a">
 <td><img src="images/icon_success_sml.gif" alt="" /></td>
 <td>worksAsServletContainer</td>
-<td>1.017</td></tr>
+<td>1.536</td></tr>
 <tr class="b">
-<td><a href="#com.jcabi.http.mock.MkContainerTest.understandsDuplicateHeaders"><img src="images/icon_warning_sml.gif" alt="" /></a></td>
-<td><a href="#com.jcabi.http.mock.MkContainerTest.understandsDuplicateHeaders">understandsDuplicateHeaders</a>
-<div class="detailToggle" style="display:inline"><a href="javascript:toggleDisplay(&apos;com_jcabi_http_mock_MkContainerTest_understandsDuplicateHeaders&apos;);"><span style="display:inline;" id="com_jcabi_http_mock_MkContainerTest_understandsDuplicateHeadersoff"> + </span><span style="display:none;" id="com_jcabi_http_mock_MkContainerTest_understandsDuplicateHeaderson"> - </span>[ Detail ]</a></div></td>
-<td>0</td></tr>
-<tr class="a">
-<td></td>
-<td>skipped</td>
-<td></td></tr></table></div>
+<td><img src="images/icon_success_sml.gif" alt="" /></td>
+<td>understandsDuplicateHeaders</td>
+<td>1.535</td></tr></table></div>
 <div class="section">
 <h3>BaseRequestTest<a name="BaseRequestTest"></a></h3><a name="com.jcabi.http.requestBaseRequestTest"></a>
 <table border="1" class="bodyTable">
 <tr class="a">
 <td><img src="images/icon_success_sml.gif" alt="" /></td>
-<td>printsJsonInBody</td>
-<td>0.269</td></tr>
+<td>buildsDestinationUri</td>
+<td>0.308</td></tr>
 <tr class="b">
 <td><img src="images/icon_success_sml.gif" alt="" /></td>
-<td>buildsDestinationUri</td>
-<td>0.23</td></tr></table></div>
+<td>printsJsonInBody</td>
+<td>0.251</td></tr></table></div>
 <div class="section">
 <h3>DefaultResponseTest<a name="DefaultResponseTest"></a></h3><a name="com.jcabi.http.requestDefaultResponseTest"></a>
 <table border="1" class="bodyTable">
 <tr class="a">
 <td><img src="images/icon_success_sml.gif" alt="" /></td>
 <td>throwsWhenEntityIsNotAUnicodeString</td>
-<td>0.008</td></tr></table></div>
+<td>0.252</td></tr></table></div>
 <div class="section">
 <h3>FakeRequestTest<a name="FakeRequestTest"></a></h3><a name="com.jcabi.http.requestFakeRequestTest"></a>
 <table border="1" class="bodyTable">
 <tr class="a">
 <td><img src="images/icon_success_sml.gif" alt="" /></td>
 <td>changesUri</td>
-<td>0.017</td></tr>
+<td>0.003</td></tr>
 <tr class="b">
 <td><img src="images/icon_success_sml.gif" alt="" /></td>
 <td>changesUriInResponse</td>
-<td>0.004</td></tr>
+<td>0.005</td></tr>
 <tr class="a">
 <td><img src="images/icon_success_sml.gif" alt="" /></td>
 <td>sendsHttpRequestAndProcessesHttpResponse</td>
-<td>0.011</td></tr></table></div>
+<td>0.012</td></tr></table></div>
 <div class="section">
 <h3>JsonResponseTest<a name="JsonResponseTest"></a></h3><a name="com.jcabi.http.responseJsonResponseTest"></a>
 <table border="1" class="bodyTable">
 <tr class="a">
 <td><img src="images/icon_success_sml.gif" alt="" /></td>
+<td>readsControlCharacters</td>
+<td>0.266</td></tr>
+<tr class="b">
+<td><img src="images/icon_success_sml.gif" alt="" /></td>
 <td>readsJsonDocument</td>
-<td>0.018</td></tr></table></div>
+<td>0.265</td></tr></table></div>
 <div class="section">
 <h3>RestResponseTest<a name="RestResponseTest"></a></h3><a name="com.jcabi.http.responseRestResponseTest"></a>
 <table border="1" class="bodyTable">
 <tr class="a">
 <td><img src="images/icon_success_sml.gif" alt="" /></td>
 <td>retrievesCookieByName</td>
-<td>0.033</td></tr>
+<td>0.299</td></tr>
 <tr class="b">
 <td><img src="images/icon_success_sml.gif" alt="" /></td>
-<td>jumpsToRelativeUrls</td>
-<td>0.021</td></tr>
+<td>assertsHttpStatusCode</td>
+<td>0.25</td></tr>
 <tr class="a">
 <td><img src="images/icon_success_sml.gif" alt="" /></td>
-<td>assertsHttpStatusCode</td>
-<td>0.007</td></tr></table></div>
+<td>jumpsToRelativeUrls</td>
+<td>0.25</td></tr></table></div>
 <div class="section">
 <h3>WebLinkingResponseTest<a name="WebLinkingResponseTest"></a></h3><a name="com.jcabi.http.responseWebLinkingResponseTest"></a>
 <table border="1" class="bodyTable">
 <tr class="a">
 <td><img src="images/icon_success_sml.gif" alt="" /></td>
 <td>followsLinksInHeaders</td>
-<td>0.039</td></tr>
+<td>0.016</td></tr>
 <tr class="b">
 <td><img src="images/icon_success_sml.gif" alt="" /></td>
 <td>parsesLinksInHeaders</td>
-<td>0.035</td></tr></table></div>
+<td>0.01</td></tr></table></div>
 <div class="section">
 <h3>XmlResponseTest<a name="XmlResponseTest"></a></h3><a name="com.jcabi.http.responseXmlResponseTest"></a>
 <table border="1" class="bodyTable">
 <tr class="a">
 <td><img src="images/icon_success_sml.gif" alt="" /></td>
-<td>assertsWithXpath</td>
-<td>0.041</td></tr>
+<td>findsDocumentNodesWithXpathAndReturnsThem</td>
+<td>0.65</td></tr>
+<tr class="b">
+<td><img src="images/icon_success_sml.gif" alt="" /></td>
+<td>findsDocumentNodesWithXpath</td>
+<td>0.65</td></tr>
+<tr class="a">
+<td><img src="images/icon_success_sml.gif" alt="" /></td>
+<td>assertsWithXpathAndNamespaces</td>
+<td>0.674</td></tr>
 <tr class="b">
 <td><img src="images/icon_success_sml.gif" alt="" /></td>
 <td>assertsWithXpathWithCustomNamespace</td>
-<td>0.015</td></tr>
+<td>0.647</td></tr>
 <tr class="a">
 <td><img src="images/icon_success_sml.gif" alt="" /></td>
-<td>findsDocumentNodesWithXpathAndReturnsThem</td>
-<td>0.012</td></tr>
-<tr class="b">
-<td><img src="images/icon_success_sml.gif" alt="" /></td>
-<td>assertsWithXpathAndNamespaces</td>
-<td>0.02</td></tr>
-<tr class="a">
-<td><img src="images/icon_success_sml.gif" alt="" /></td>
-<td>findsDocumentNodesWithXpath</td>
-<td>0.009</td></tr></table></div>
+<td>assertsWithXpath</td>
+<td>0.681</td></tr></table></div>
 <div class="section">
 <h3>CachingWireTest<a name="CachingWireTest"></a></h3><a name="com.jcabi.http.wireCachingWireTest"></a>
 <table border="1" class="bodyTable">
 <tr class="a">
 <td><img src="images/icon_success_sml.gif" alt="" /></td>
 <td>ignoresPutRequest</td>
-<td>1.027</td></tr>
+<td>1.379</td></tr>
 <tr class="b">
 <td><img src="images/icon_success_sml.gif" alt="" /></td>
 <td>cachesGetRequest</td>
-<td>1.048</td></tr></table></div>
+<td>1.286</td></tr></table></div>
 <div class="section">
 <h3>CookieOptimizingWireTest<a name="CookieOptimizingWireTest"></a></h3><a name="com.jcabi.http.wireCookieOptimizingWireTest"></a>
 <table border="1" class="bodyTable">
 <tr class="a">
 <td><img src="images/icon_success_sml.gif" alt="" /></td>
 <td>avoidsTransferringOfEmptyCookiesOnFollow</td>
-<td>1.083</td></tr>
+<td>1.564</td></tr>
 <tr class="b">
 <td><img src="images/icon_success_sml.gif" alt="" /></td>
 <td>transfersCookiesOnFollow</td>
-<td>1.059</td></tr></table></div>
+<td>1.563</td></tr></table></div>
+<div class="section">
+<h3>RetryWireTest<a name="RetryWireTest"></a></h3><a name="com.jcabi.http.wireRetryWireTest"></a>
+<table border="1" class="bodyTable">
+<tr class="a">
+<td><img src="images/icon_success_sml.gif" alt="" /></td>
+<td>makesMultipleRequests</td>
+<td>47.013</td></tr></table></div>
+<div class="section">
+<h3>UserAgentWireTest<a name="UserAgentWireTest"></a></h3><a name="com.jcabi.http.wireUserAgentWireTest"></a>
+<table border="1" class="bodyTable">
+<tr class="a">
+<td><img src="images/icon_success_sml.gif" alt="" /></td>
+<td>addsUserAgentHeader</td>
+<td>1.537</td></tr></table></div>
 <div class="section">
 <h3>VerboseWireTest<a name="VerboseWireTest"></a></h3><a name="com.jcabi.http.wireVerboseWireTest"></a>
 <table border="1" class="bodyTable">
 <tr class="a">
 <td><img src="images/icon_success_sml.gif" alt="" /></td>
 <td>logsRequest</td>
-<td>1.035</td></tr></table></div><br /></div>
-<div class="section">
-<h2>Failure Details<a name="Failure_Details"></a></h2><a name="Failure_Details"></a>
-<p>[<a href="#Summary">Summary</a>] [<a href="#Package_List">Package List</a>] [<a href="#Test_Cases">Test Cases</a>]</p><br />
-<table border="1" class="bodyTable">
-<tr class="a">
-<td><img src="images/icon_warning_sml.gif" alt="" /></td>
-<td><a name="com.jcabi.http.mock.MkContainerTest.understandsDuplicateHeaders"></a>understandsDuplicateHeaders</td></tr>
-<tr class="b">
-<td></td>
-<td>skipped: skipped</td></tr></table><br /></div>
-            </article>
-            <p style="margin-bottom: 3em; margin-top: 2em;">
-                Copyright &#169;
-                                                    2012-2014
-                                jcabi.com, All Rights Reserved.
-                <a href="http://maven.apache.org/privacy-policy.html">Privacy Policy</a>.
-            </p>
-            <a href="http://maven.apache.org" title="site is built by Apache Maven"
-                style='position: absolute; bottom: 1em; right: 1em;'>
-                <img src='images/built-by-maven.png' style='width: 50px; height: 17px;'
-                    alt='site is built by Apache Maven'/>
-            </a>
+<td>0.535</td></tr></table></div><br /></div>
+                        </div>
+                    </article>
+                    <img class="maven-mobile" src="./images/built-by-maven.png"
+                        alt="built by maven" style="float:right" width="80"/>
+                </div>
+                <div class="legal-notes">
+                    <div class="copyright">
+                        Copyright &#169;
+                                                                            2012-2014
+                                                <br/>
+                        jcabi.com, All Rights Reserved.
+                        <br/>
+                        <a href="http://maven.apache.org/privacy-policy.html">Privacy Policy</a>.
+                    </div>
+                </div>
+            </div>
         </div>
     </body>
 </html>

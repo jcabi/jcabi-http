@@ -1,0 +1,265 @@
+<!DOCTYPE html>
+<!--
+ * Copyright (c) 2012-2013, JCabi.com
+ * All rights reserved.
+ -->
+<html xmlns="http://www.w3.org/1999/xhtml">
+    <head>
+        <meta charset="UTF-8"/>
+        <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+        <title>jcabi-http - </title>
+        <link media="all" rel="stylesheet" type="text/css" href="./css/jcabi.css"/>
+                            <script>
+                var _gaq = _gaq || [];
+                _gaq.push(['_setAccount', 'UA-1963507-23']);
+                _gaq.push(['_trackPageview']);
+                (function() {
+                    var ga = document.createElement('script'); ga.type = 'text/javascript'; ga.async = true;
+                    ga.src = ('https:' == document.location.protocol ? 'https://ssl' : 'http://www') + '.google-analytics.com/ga.js';
+                    var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga, s);
+                })();
+            </script>
+                                                                                                                
+<link rel="shortcut icon" href="http://img.jcabi.com/favicon.ico"/>
+                                                                                                                
+<link rel="author" href="https://plus.google.com/u/0/114792568016408327418?rel=author"/>
+                                            <link rel="stylesheet" href="./css/highlight.css" />
+        <script src="./js/jquery-1.8.3.min.js"></script>
+        <script src="./js/highlight-7.3.min.js"></script>
+        <link href="http://netdna.bootstrapcdn.com/font-awesome/4.0.3/css/font-awesome.css" rel="stylesheet"/>
+        <script>
+            $(document).ready(
+                function() {
+                    $('div.source pre').each(
+                        function (idx, element) {
+                            hljs.highlightBlock(element);
+                        }
+                    );
+                    $(".menu-button").click(
+                        function() {
+                            if ($("#here-goes-menu").attr("class") == "menu-off") {
+                                $("#menu").clone().attr("class", "mobile-menu").appendTo("#here-goes-menu");
+                                $("#here-goes-menu").attr("class", "menu-on");
+                            } else {
+                                $(".mobile-menu").hide();
+                                $("#here-goes-menu").attr("class", "menu-off");
+                            }
+                        }
+                    );
+                }
+            );
+        </script>
+        <style>
+            @import url("./css/wide.css") (min-width: 1200px) and (max-width:5000px);
+            @import url("./css/900-1199.css") (min-width: 900px) and (max-width:1199px);
+            @import url("./css/600-899.css") (min-width: 600px) and (max-width:899px);
+            @import url("./css/100-599.css") (min-width: 100px) and (max-width:599px);
+        </style>
+    </head>
+    <body style="background: url('./images/background.png') fixed;">
+                <div class="page">
+            <div class="menu-section">
+                <ul id="menu">
+                                                                                    <li>
+                            Overview
+                                                            <ul>
+                                                                                                    <li>
+                                                                                    <a href="index.html" title="Introduction">Introduction</a>
+                                                                                                                                                                        <ul>
+                                                                    </ul>
+                                                    </li>
+                                                                                                                        <li>
+                                                                                    <a href="apidocs-1.2/index.html" title="API 1.2 (JavaDoc)">API 1.2 (JavaDoc)</a>
+                                                                                                                                                                        <ul>
+                                                                    </ul>
+                                                    </li>
+                                                                                                                        <li>
+                                                                                    <a href="cobertura/index.html" title="Test coverage">Test coverage</a>
+                                                                                                                                                                        <ul>
+                                                                    </ul>
+                                                    </li>
+                                                                                                                        <li>
+                                                                                    <a href="https://github.com/jcabi/jcabi-http/releases" title="Release History">Release History</a>
+                                                                                                                                                                        <ul>
+                                                                    </ul>
+                                                    </li>
+                                                                                        </ul>
+                                                    </li>
+                                            <li>
+                            Examples
+                                                            <ul>
+                                                                                                    <li>
+                                                            <strong>                        <a href="example-request.html" title="Make HTTP Request">Make HTTP Request</a>
+        </strong>
+                                                                                                                                                                <ul>
+                                                                    </ul>
+                                                    </li>
+                                                                                                                        <li>
+                                                                                    <a href="example-xml-response.html" title="XML Response">XML Response</a>
+                                                                                                                                                                        <ul>
+                                                                    </ul>
+                                                    </li>
+                                                                                                                        <li>
+                                                                                    <a href="example-json-response.html" title="JSON Response">JSON Response</a>
+                                                                                                                                                                        <ul>
+                                                                    </ul>
+                                                    </li>
+                                                                                                                        <li>
+                                                                                    <a href="example-matchers.html" title="XML/XHTML Matchers">XML/XHTML Matchers</a>
+                                                                                                                                                                        <ul>
+                                                                    </ul>
+                                                    </li>
+                                                                                                                        <li>
+                                                                                    <a href="example-web-linking-response.html" title="Web Linking Response">Web Linking Response</a>
+                                                                                                                                                                        <ul>
+                                                                    </ul>
+                                                    </li>
+                                                                                                                        <li>
+                                                                                    <a href="example-retry-request.html" title="HTTP Request that retries">HTTP Request that retries</a>
+                                                                                                                                                                        <ul>
+                                                                    </ul>
+                                                    </li>
+                                                                                        </ul>
+                                                    </li>
+                                            <li>
+                            Mock Servlet Container
+                                                            <ul>
+                                                                                                    <li>
+                                                                                    <a href="example-mock-container.html" title="HTTP client unit testing">HTTP client unit testing</a>
+                                                                                                                                                                        <ul>
+                                                                    </ul>
+                                                    </li>
+                                                                                        </ul>
+                                                    </li>
+                                            <li>
+                            Project Documentation
+                                                            <ul>
+                                                                                                    <li>
+                                                                                    <a href="project-info.html" title="Project Information">Project Information</a>
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                            </li>
+                                                                                                                        <li>
+                                                                                    <a href="project-reports.html" title="Project Reports">Project Reports</a>
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                            </li>
+                                                                                        </ul>
+                                                    </li>
+                                    </ul>
+            </div>
+            <div id="right-side">
+                <div id="content">
+                    <i class="menu-button fa fa-align-justify"></i>
+                    <div class="logo-section">
+                        <a href="../" title="${decoration.bannerLeft.title}">
+                            <img src="http://img.jcabi.com/logo.png"
+                                alt="jcabi"
+                                                                    width="200"
+                                                                                                    height="48"
+                                                            />
+                        </a>
+                    </div>
+                    <div class="date">
+                        <div class="date-numbers">
+                            
+                            07-Mar-2014
+                            1.2
+                        </div>
+                                                                            <div class="github">
+                                <iframe
+                                    class="github-large"
+                                    src="http://ghbtns.com/github-btn.html?user=jcabi&amp;repo=jcabi-http&amp;type=watch&amp;count=true&amp;size=large"
+                                    allowtransparency="true"
+                                    frameborder="0"
+                                    scrolling="0"
+                                    width="170"
+                                    height="30">
+                                </iframe>
+                                <iframe
+                                    class="github-small"
+                                    src="http://ghbtns.com/github-btn.html?user=jcabi&amp;repo=jcabi-http&amp;type=watch&amp;count=true&amp;size=small"
+                                    allowtransparency="true"
+                                    frameborder="0"
+                                    scrolling="0"
+                                    width="170"
+                                    height="30">
+                                </iframe>
+                            </div>
+                                            </div>
+                    <div id="here-goes-menu"></div>
+                    <article>
+                        <div class="section">
+                            <h1>Making HTTP Request</h1>
+<p>There is one interface <a href="./apidocs-1.2/com/rexsl/test/Request.html"><tt>Request</tt></a> that represents an HTTP request. There are a few implementations of the interface, and the most popular and easy to use is <a href="./apidocs-1.2/com/rexsl/test/request/JdkRequest.html"><tt>JdkRequest</tt></a>. It makes a request using native JDK class <a class="externalLink" href="http://docs.oracle.com/javase/7/docs/api/java/net/HttpURLConnection.html"><tt>java.net.HttpURLConnection</tt></a>.</p>
+<p>First, make an instance of <a href="./apidocs-1.2/com/rexsl/test/request/JdkRequest.html"><tt>JdkRequest</tt></a>, providing target URI as the first and the only constructor argument (<tt>String</tt>, <tt>URI</tt>, and <tt>URL</tt> types are accepted):</p>
+
+<div class="source">
+<pre>Request request = new JdkRequest(&quot;http://my.example.com&quot;);
+</pre></div>
+<p>The object is ready to make an HTTP request using the URI provided, <tt>GET</tt> HTTP method, no custom HTTP headers and no request body. To fire an HTTP request and obtain a response use method <tt>fetch()</tt>:</p>
+
+<div class="source">
+<pre>Response response = request.fetch();
+int status = response.status();
+String body = response.body();
+</pre></div>
+<p><a href="./apidocs-1.2/com/rexsl/test/Request.html"><tt>Request</tt></a> is a trully immutable class, which means that you can&#x2019;t change any of its properties. However, you can create new requests. For example, you want to make a similar request, but with a <tt>POST</tt> HTTP method:</p>
+
+<div class="source">
+<pre>Request post = request.method(Request.POST);
+post.fetch();
+</pre></div>
+<p>This is a bigger example of <a href="./apidocs-1.2/com/rexsl/test/Request.html"><tt>Request</tt></a> usage:</p>
+
+<div class="source">
+<pre>Response response = new JdkRequest(&quot;http://my.example.com&quot;)
+  .uri().path(&quot;/users&quot;).queryParam(&quot;id&quot;, &quot;456&quot;).back()
+  .method(Request.POST)
+  .body()
+  .formParam(&quot;salary&quot;, &quot;55000&quot;)
+  .formParam(&quot;department&quot;, &quot;IT&quot;)
+  .back()
+  .header(&quot;Content-Type&quot;, &quot;application/json&quot;)
+  .header(&quot;User-Agent&quot;, &quot;My Custom App&quot;)
+  .fetch();
+</pre></div>
+<p>This code will make a <tt>POST</tt> HTTP request to <tt>http://my.example.com/users?id=456</tt>. Request body will be set to <tt>salary=55000&amp;department=IT</tt>. There will be two HTTP headers in the request: <tt>Content-Type</tt> and <tt>User-Agent</tt>.</p>
+<p><a href="./apidocs-1.2/com/rexsl/test/Response.html"><tt>Response</tt></a> has a few methods that return its data, including <tt>status()</tt>, <tt>reason()</tt>, <tt>headers()</tt>, <tt>body()</tt>, and <tt>binary()</tt>. Besides that, there is a method <tt>as(Class)</tt>, which allows you to wrap an existing response with a new custom decorator, that implements more methods, suitable for a particular use case.</p>
+<p>The simpliest decorator is <a href="./apidocs-1.2/com/rexsl/test/response/RestResponse.html"><tt>RestResponse</tt></a>. It helps you to make assertions on the response and follow redirects, for example:</p>
+
+<div class="source">
+<pre>String page = new JdkRequest(&quot;http://my.example.com&quot;)
+  .fetch()
+  .as(RestResponse.class)
+  .assertStatus(301) // AssertionError if status is not equal to 301
+  .follow() // new request, pointing to the URL from Location header
+  .fetch()
+  .as(RestResponse.class)
+  .assertStatus(200)
+  .body();
+</pre></div>
+<p><a href="./apidocs-1.2/com/rexsl/test/response/RestResponse.html"><tt>RestResponse</tt></a> also helps you to retrieve cookies from a response:</p>
+
+<div class="source">
+<pre>String cookie = new JdkRequest(&quot;http://my.example.com&quot;)
+  .fetch()
+  .as(RestResponse.class)
+  .cookie(&quot;SessionId&quot;);
+</pre></div>
+<p>Read also about <a href="./example-xml-response.html"><tt>XmlResponse</tt></a> and <a href="./example-json-response.html"><tt>JsonResponse</tt></a>.</p>
+                        </div>
+                    </article>
+                    <img class="maven-mobile" src="./images/built-by-maven.png"
+                        alt="built by maven" style="float:right" width="80"/>
+                </div>
+                <div class="legal-notes">
+                    <div class="copyright">
+                        Copyright &#169;
+                                                                            2012-2014
+                                                <br/>
+                        jcabi.com, All Rights Reserved.
+                        <br/>
+                        <a href="http://maven.apache.org/privacy-policy.html">Privacy Policy</a>.
+                    </div>
+                </div>
+            </div>
+        </div>
+    </body>
+</html>

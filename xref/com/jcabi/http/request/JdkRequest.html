@@ -112,7 +112,7 @@
 <a class="jxr_linenumber" name="102" href="#102">102</a>                 conn.setUseCaches(false);
 <a class="jxr_linenumber" name="103" href="#103">103</a>                 conn.setInstanceFollowRedirects(false);
 <a class="jxr_linenumber" name="104" href="#104">104</a>                 <strong class="jxr_keyword">for</strong> (<strong class="jxr_keyword">final</strong> Map.Entry&lt;String, String&gt; header : headers) {
-<a class="jxr_linenumber" name="105" href="#105">105</a>                     conn.setRequestProperty(header.getKey(), header.getValue());
+<a class="jxr_linenumber" name="105" href="#105">105</a>                     conn.addRequestProperty(header.getKey(), header.getValue());
 <a class="jxr_linenumber" name="106" href="#106">106</a>                 }
 <a class="jxr_linenumber" name="107" href="#107">107</a>                 <strong class="jxr_keyword">if</strong> (method.equals(Request.POST) || method.equals(Request.PUT)
 <a class="jxr_linenumber" name="108" href="#108">108</a>                     || method.equals(Request.PATCH)) {
