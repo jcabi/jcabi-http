@@ -4,10 +4,11 @@ More details are here: [http.jcabi.com](http://http.jcabi.com/index.html)
 
 ```java
 import com.jcabi.http.Request;
-import com.jcabi.http.request.ApacheRequest;
+import com.jcabi.http.request.JdkRequest;
+import com.jcabi.http.response.HttpResponse;
 public class Main {
   public static void main(String[] args) {
-    String html = new ApacheRequest("https://www.google.com")
+    String html = new JdkRequest("https://www.google.com")
       .uri().path("/users").queryParam("id", 333).back()
       .method(Request.GET)
       .header(HttpHeaders.ACCEPT, MediaType.TEXT_HTML)
@@ -25,7 +26,7 @@ You need just this dependency:
 <dependency>
   <groupId>com.jcabi</groupId>
   <artifactId>jcabi-http</artifactId>
-  <version>1.0</version>
+  <version>1.2</version>
 </dependency>
 ```
 
