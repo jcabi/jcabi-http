@@ -78,4 +78,18 @@ public final class BaseRequestTest {
         );
     }
 
+    /**
+     * BaseRequest can include the port number.
+     * @throws Exception If something goes wrong inside
+     */
+    @Test
+    public void includesPort() throws Exception {
+        final Wire wire = Mockito.mock(Wire.class);
+        MatcherAssert.assertThat(
+            // @checkstyle MagicNumber (2 lines)
+            new BaseRequest(wire, "http://localhost")
+                .uri().port(8080).back().uri().get(),
+            Matchers.hasToString("http://localhost:8080/")
+        );
+    }
 }

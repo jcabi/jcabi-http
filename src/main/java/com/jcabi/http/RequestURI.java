@@ -117,4 +117,12 @@ public interface RequestURI {
     @NotNull(message = "new request URI is never NULL")
     RequestURI userInfo(@NotNull(message = "info can't be NULL") String info);
 
+    /**
+     * Set port number.
+     * @param num The port number to set
+     * @return New altered URI
+     */
+    @NotNull(message = "new request URI is never NULL")
+    RequestURI port(int num);
+
 }
