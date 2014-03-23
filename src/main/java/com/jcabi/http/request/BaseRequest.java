@@ -237,11 +237,11 @@ final class BaseRequest implements Request {
         final Wire decorated;
         try {
             decorated = Wire.class.cast(ctor.newInstance(params));
-        } catch (InstantiationException ex) {
+        } catch (final InstantiationException ex) {
             throw new IllegalStateException(ex);
-        } catch (IllegalAccessException ex) {
+        } catch (final IllegalAccessException ex) {
             throw new IllegalStateException(ex);
-        } catch (InvocationTargetException ex) {
+        } catch (final InvocationTargetException ex) {
             throw new IllegalStateException(ex);
         }
         return new BaseRequest(
@@ -370,6 +370,14 @@ final class BaseRequest implements Request {
                     .build().toString()
             );
         }
+        @Override
+        public RequestURI port(final int num) {
+            return new BaseRequest.BaseURI(
+                this.owner,
+                UriBuilder.fromUri(this.address)
+                    .port(num).build().toString()
+            );
+        }
     }
 
     /**
@@ -450,7 +458,7 @@ final class BaseRequest implements Request {
                         .toString()
                         .getBytes(Charsets.UTF_8)
                 );
-            } catch (UnsupportedEncodingException ex) {
+            } catch (final UnsupportedEncodingException ex) {
                 throw new IllegalStateException(ex);
             }
         }
