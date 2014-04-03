@@ -31,6 +31,7 @@ package com.jcabi.http.response;
 
 import com.jcabi.aspects.Immutable;
 import com.jcabi.http.Response;
+import com.jcabi.log.Logger;
 import java.io.StringReader;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
@@ -99,9 +100,9 @@ public final class JsonResponse extends AbstractResponse {
      */
     @NotNull(message = "JSON reader is never NULL")
     public JsonReader json() {
-        return Json.createReader(
-            new StringReader(this.escapeControl(this.body()))
-        );
+        final String body = this.escapeControl(this.body());
+        Logger.info(this, "#json(): %s", body);
+        return Json.createReader(new StringReader(body));
     }
 
     /**

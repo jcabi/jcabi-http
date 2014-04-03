@@ -31,6 +31,10 @@ package com.jcabi.http.response;
 
 import com.jcabi.http.Response;
 import com.jcabi.http.request.FakeRequest;
+import java.io.ByteArrayOutputStream;
+import org.apache.commons.io.Charsets;
+import org.apache.log4j.SimpleLayout;
+import org.apache.log4j.WriterAppender;
 import org.hamcrest.MatcherAssert;
 import org.hamcrest.Matchers;
 import org.junit.Test;
@@ -75,6 +79,27 @@ public final class JsonResponseTest {
         MatcherAssert.assertThat(
             response.json().readObject().getString("test"),
             Matchers.is("\u001Fblah\u0001cwhoa\u0000!")
+        );
+    }
+
+    /**
+     * JsonResponse logs the result of json() method.
+     *
+     * @throws Exception If something goes wrong inside
+     */
+    @Test
+    public void logsJsonResponse() throws Exception {
+        final ByteArrayOutputStream stream = new ByteArrayOutputStream();
+        final WriterAppender appender =
+            new WriterAppender(new SimpleLayout(), stream);
+        appender.setEncoding(Charsets.UTF_8.name());
+        org.apache.log4j.Logger.getRootLogger().addAppender(appender);
+        final Response resp = new FakeRequest()
+            .withBody("{\"test\": \"logged!\"}").fetch();
+        new JsonResponse(resp).json();
+        MatcherAssert.assertThat(
+            new String(stream.toByteArray(), Charsets.UTF_8),
+            Matchers.containsString("#json(): {\"test\": \"logged!\"}")
         );
     }
 
