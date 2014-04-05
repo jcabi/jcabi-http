@@ -32,11 +32,13 @@ package com.jcabi.http.response;
 import com.jcabi.http.Response;
 import com.jcabi.http.request.FakeRequest;
 import java.io.ByteArrayOutputStream;
+import javax.json.stream.JsonParsingException;
 import org.apache.commons.io.Charsets;
 import org.apache.log4j.SimpleLayout;
 import org.apache.log4j.WriterAppender;
 import org.hamcrest.MatcherAssert;
 import org.hamcrest.Matchers;
+import org.junit.Assert;
 import org.junit.Test;
 
 /**
@@ -83,24 +85,80 @@ public final class JsonResponseTest {
     }
 
     /**
-     * JsonResponse logs the result of json() method.
+     * JsonResponse logs the JSON body for JSON object parse errors.
      *
      * @throws Exception If something goes wrong inside
      */
     @Test
-    public void logsJsonResponse() throws Exception {
+    public void logsForInvalidJsonObject() throws Exception {
         final ByteArrayOutputStream stream = new ByteArrayOutputStream();
         final WriterAppender appender =
             new WriterAppender(new SimpleLayout(), stream);
         appender.setEncoding(Charsets.UTF_8.name());
         org.apache.log4j.Logger.getRootLogger().addAppender(appender);
-        final Response resp = new FakeRequest()
-            .withBody("{\"test\": \"logged!\"}").fetch();
-        new JsonResponse(resp).json();
-        MatcherAssert.assertThat(
-            new String(stream.toByteArray(), Charsets.UTF_8),
-            Matchers.containsString("#json(): {\"test\": \"logged!\"}")
-        );
+        final String body = "{\"test\": \"logged!\"$@%#^&%@$#}";
+        final Response resp = new FakeRequest().withBody(body).fetch();
+        try {
+            new JsonResponse(resp).json().readObject();
+            Assert.fail("readObject() should have thrown JsonParsingException");
+        } catch (final JsonParsingException exp) {
+            MatcherAssert.assertThat(
+                new String(stream.toByteArray(), Charsets.UTF_8),
+                Matchers.containsString(body)
+            );
+        }
+    }
+
+    /**
+     * JsonResponse logs the JSON body for JSON array parse errors.
+     *
+     * @throws Exception If something goes wrong inside
+     */
+    @Test
+    public void logsForInvalidJsonArray() throws Exception {
+        final ByteArrayOutputStream stream = new ByteArrayOutputStream();
+        final WriterAppender appender =
+            new WriterAppender(new SimpleLayout(), stream);
+        appender.setEncoding(Charsets.UTF_8.name());
+        org.apache.log4j.Logger.getRootLogger().addAppender(appender);
+        final String body = "[\"test\": \"logged!\"$@%#^&%@$#]";
+        final Response resp = new FakeRequest().withBody(body).fetch();
+        try {
+            new JsonResponse(resp).json().readArray();
+            Assert.fail("readArray() should have thrown JsonParsingException");
+        } catch (final JsonParsingException exp) {
+            MatcherAssert.assertThat(
+                new String(stream.toByteArray(), Charsets.UTF_8),
+                Matchers.containsString(body)
+            );
+        }
+    }
+
+    /**
+     * JsonResponse logs the JSON body for JSON read() parse errors.
+     *
+     * @throws Exception If something goes wrong inside
+     */
+    @Test
+    public void logsForInvalidJson() throws Exception {
+        final ByteArrayOutputStream stream = new ByteArrayOutputStream();
+        final WriterAppender appender =
+            new WriterAppender(new SimpleLayout(), stream);
+        appender.setEncoding(Charsets.UTF_8.name());
+        org.apache.log4j.Logger.getRootLogger().addAppender(appender);
+        final String body = "{test:[]}}}";
+        final Response resp = new FakeRequest().withBody(body).fetch();
+        try {
+            new JsonResponse(resp).json().read();
+            Assert.fail(
+                "readStructure() should have thrown JsonParsingException"
+            );
+        } catch (final JsonParsingException exp) {
+            MatcherAssert.assertThat(
+                new String(stream.toByteArray(), Charsets.UTF_8),
+                Matchers.containsString(body)
+            );
+        }
     }
 
 }
