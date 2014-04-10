@@ -89,7 +89,7 @@ final class MkGrizzlyAdapter extends GrizzlyAdapter {
             response.getStream().write(body);
             response.setContentLength(body.length);
             // @checkstyle IllegalCatch (1 line)
-        } catch (Throwable ex) {
+        } catch (final Throwable ex) {
             MkGrizzlyAdapter.fail(response, ex);
         }
     }
@@ -134,7 +134,7 @@ final class MkGrizzlyAdapter extends GrizzlyAdapter {
                     CharEncoding.UTF_8
                 )
             );
-        } catch (UnsupportedEncodingException ex) {
+        } catch (final UnsupportedEncodingException ex) {
             throw new IllegalStateException(ex);
         }
         try {

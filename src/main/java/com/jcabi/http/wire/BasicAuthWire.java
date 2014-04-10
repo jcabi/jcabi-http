@@ -131,7 +131,7 @@ public final class BasicAuthWire implements Wire {
                         )
                     )
                 );
-            } catch (UnsupportedEncodingException ex) {
+            } catch (final UnsupportedEncodingException ex) {
                 throw new IllegalStateException(ex);
             }
         }

@@ -128,7 +128,7 @@ final class DefaultResponse implements Response {
     @SuppressWarnings("PMD.AvoidInstantiatingObjectsInLoops")
     public Map<String, List<String>> headers() {
         final ConcurrentMap<String, List<String>> map =
-            new ConcurrentHashMap<String, List<String>>();
+            new ConcurrentHashMap<String, List<String>>(0);
         for (final Map.Entry<String, String> header : this.hdrs) {
             map.putIfAbsent(header.getKey(), new LinkedList<String>());
             map.get(header.getKey()).add(header.getValue());
@@ -169,13 +169,13 @@ final class DefaultResponse implements Response {
         try {
             return type.getDeclaredConstructor(Response.class)
                 .newInstance(this);
-        } catch (InstantiationException ex) {
+        } catch (final InstantiationException ex) {
             throw new IllegalStateException(ex);
-        } catch (IllegalAccessException ex) {
+        } catch (final IllegalAccessException ex) {
             throw new IllegalStateException(ex);
-        } catch (InvocationTargetException ex) {
+        } catch (final InvocationTargetException ex) {
             throw new IllegalStateException(ex);
-        } catch (NoSuchMethodException ex) {
+        } catch (final NoSuchMethodException ex) {
             throw new IllegalStateException(ex);
         }
     }
