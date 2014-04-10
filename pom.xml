@@ -85,7 +85,7 @@
         <dependency>
             <groupId>com.rexsl</groupId>
             <artifactId>rexsl-test</artifactId>
-            <version>0.12</version>
+            <version>0.13.2</version>
         </dependency>
         <dependency>
             <groupId>com.jcabi</groupId>

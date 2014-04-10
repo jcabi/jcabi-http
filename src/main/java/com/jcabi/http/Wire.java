@@ -38,8 +38,8 @@ import java.util.Map;
  * Wire.
  *
  * <p>An instance of this interface can be used in
- * {@link Request#through(Class)} to decorate an existing {@code wire},
- * for example:
+ * {@link Request#through(Class,Object...)} to decorate
+ * an existing {@code wire}, for example:
  *
  * <pre> String html = new JdkRequest("http://google.com")
  *   .through(VerboseWire.class)
