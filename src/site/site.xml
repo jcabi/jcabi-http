@@ -33,14 +33,14 @@
     <skin>
         <groupId>com.jcabi</groupId>
         <artifactId>jcabi-maven-skin</artifactId>
-        <version>1.0-SNAPSHOT</version>
+        <version>1.0</version>
     </skin>
     <bannerLeft>
         <name>jcabi</name>
-        <src>http://img.jcabi.com/logo.png</src>
+        <src>http://img.jcabi.com/logo-square.png</src>
         <href>http://www.jcabi.com/</href>
-        <width>200</width>
-        <height>48</height>
+        <width>64</width>
+        <height>64</height>
     </bannerLeft>
     <googleAnalyticsAccountId>UA-1963507-23</googleAnalyticsAccountId>
     <body>
@@ -58,7 +58,6 @@
             <item name="Make HTTP Request" href="example-request.html"/>
             <item name="XML Response" href="example-xml-response.html"/>
             <item name="JSON Response" href="example-json-response.html"/>
-            <item name="XML/XHTML Matchers" href="example-matchers.html"/>
             <item name="Web Linking Response" href="example-web-linking-response.html"/>
             <item name="HTTP Request that retries" href="example-retry-request.html"/>
         </menu>

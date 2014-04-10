@@ -33,7 +33,7 @@
     <parent>
         <groupId>com.jcabi</groupId>
         <artifactId>jcabi</artifactId>
-        <version>1.4</version>
+        <version>1.5.1</version>
     </parent>
     <artifactId>jcabi-http</artifactId>
     <version>1.3</version>
