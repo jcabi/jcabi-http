@@ -68,9 +68,11 @@ import lombok.EqualsAndHashCode;
 public final class JsonResponse extends AbstractResponse {
 
     /**
-     * Pattern matching control characters U+0000 - U001F for JSON escaping.
+     * Pattern matching non-ASCII characters, to escape them before parsing.
      */
-    private static final Pattern CONTROL = Pattern.compile("[\u0000-\u001f]");
+    private static final Pattern CONTROL = Pattern.compile(
+        "[\u0000-\u0008\u000e-\u001f\u007f-\uffff]"
+    );
 
     /**
      * Public ctor.
