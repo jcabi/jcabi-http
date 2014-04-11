@@ -67,10 +67,6 @@
     </properties>
     <dependencies>
         <dependency>
-            <groupId>org.projectlombok</groupId>
-            <artifactId>lombok</artifactId>
-        </dependency>
-        <dependency>
             <groupId>com.rexsl</groupId>
             <artifactId>rexsl-test</artifactId>
             <version>0.13.3</version>
@@ -83,11 +79,6 @@
             <groupId>com.jcabi</groupId>
             <artifactId>jcabi-xml</artifactId>
             <version>0.7.8</version>
-            <optional>true</optional>
-        </dependency>
-        <dependency>
-            <groupId>javax.json</groupId>
-            <artifactId>javax.json-api</artifactId>
             <optional>true</optional>
         </dependency>
         <dependency>
@@ -122,6 +113,16 @@
             <groupId>org.aspectj</groupId>
             <artifactId>aspectjrt</artifactId>
             <scope>runtime</scope>
+        </dependency>
+        <dependency>
+            <groupId>org.projectlombok</groupId>
+            <artifactId>lombok</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>javax.json</groupId>
+            <artifactId>javax.json-api</artifactId>
+            <scope>provided</scope>
+            <optional>true</optional>
         </dependency>
         <dependency>
             <groupId>org.hamcrest</groupId>
