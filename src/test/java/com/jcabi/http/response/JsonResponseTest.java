@@ -51,7 +51,7 @@ public final class JsonResponseTest {
     @Test
     public void readsJsonDocument() throws Exception {
         final Response resp = new FakeRequest()
-            .withBody("{\"foo-foo\":2, \"bar\":\"hello!\"}")
+            .withBody("{\n\t\r\"foo-foo\":2,\n\"bar\":\"\u20ac\"}")
             .fetch();
         final JsonResponse response = new JsonResponse(resp);
         MatcherAssert.assertThat(
@@ -60,7 +60,7 @@ public final class JsonResponseTest {
         );
         MatcherAssert.assertThat(
             response.json().readObject().getString("bar"),
-            Matchers.equalTo("hello!")
+            Matchers.equalTo("\u20ac")
         );
     }
 
@@ -72,7 +72,7 @@ public final class JsonResponseTest {
     @Test
     public void readsControlCharacters() throws Exception {
         final Response resp = new FakeRequest()
-            .withBody("{\"test\": \"\u001Fblah\u0001cwhoa\u0000!\"}").fetch();
+            .withBody("{\"test\":\n\"\u001Fblah\u0001cwhoa\u0000!\"}").fetch();
         final JsonResponse response = new JsonResponse(resp);
         MatcherAssert.assertThat(
             response.json().readObject().getString("test"),
