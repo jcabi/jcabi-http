@@ -67,19 +67,8 @@
     </properties>
     <dependencies>
         <dependency>
-            <groupId>com.rexsl</groupId>
-            <artifactId>rexsl-test</artifactId>
-            <version>0.13.3</version>
-        </dependency>
-        <dependency>
             <groupId>com.jcabi</groupId>
             <artifactId>jcabi-immutable</artifactId>
-        </dependency>
-        <dependency>
-            <groupId>com.jcabi</groupId>
-            <artifactId>jcabi-xml</artifactId>
-            <version>0.7.8</version>
-            <optional>true</optional>
         </dependency>
         <dependency>
             <groupId>com.jcabi</groupId>
@@ -121,6 +110,20 @@
         <dependency>
             <groupId>javax.json</groupId>
             <artifactId>javax.json-api</artifactId>
+            <scope>provided</scope>
+            <optional>true</optional>
+        </dependency>
+        <dependency>
+            <groupId>com.rexsl</groupId>
+            <artifactId>rexsl-test</artifactId>
+            <version>0.13.3</version>
+            <scope>provided</scope>
+            <optional>true</optional>
+        </dependency>
+        <dependency>
+            <groupId>com.jcabi</groupId>
+            <artifactId>jcabi-xml</artifactId>
+            <version>0.7.8</version>
             <scope>provided</scope>
             <optional>true</optional>
         </dependency>
