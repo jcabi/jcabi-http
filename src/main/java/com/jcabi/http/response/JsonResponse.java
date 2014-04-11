@@ -31,7 +31,6 @@ package com.jcabi.http.response;
 
 import com.jcabi.aspects.Immutable;
 import com.jcabi.http.Response;
-import com.jcabi.log.Logger;
 import java.io.StringReader;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
@@ -104,65 +103,11 @@ public final class JsonResponse extends AbstractResponse {
      */
     @NotNull(message = "JSON reader is never NULL")
     public JsonReader json() {
-        final String body = this.escapeControl(this.body());
-        // @checkstyle AnonInnerLength (50 lines)
-        final JsonReader reader = new JsonReader() {
-            /**
-             * Underlying reader instance.
-             */
-            private final transient JsonReader rdr =
-                Json.createReader(new StringReader(body));
-            @Override
-            public JsonObject readObject() {
-                final JsonObject json;
-                try {
-                    json = this.rdr.readObject();
-                } catch (final JsonParsingException exp) {
-                    Logger.error(
-                        JsonResponse.this,
-                        "Failed to parse JSON object: %s, JSON body: %s",
-                        exp.getMessage(), body
-                    );
-                    throw exp;
-                }
-                return json;
-            }
-            @Override
-            public JsonArray readArray() {
-                final JsonArray array;
-                try {
-                    array = this.rdr.readArray();
-                } catch (final JsonParsingException exp) {
-                    Logger.error(
-                        JsonResponse.this,
-                        "Failed to parse JSON array: %s, JSON body: %s",
-                        exp.getMessage(), body
-                    );
-                    throw exp;
-                }
-                return array;
-            }
-            @Override
-            public JsonStructure read() {
-                final JsonStructure struct;
-                try {
-                    struct = this.rdr.read();
-                } catch (final JsonParsingException exp) {
-                    Logger.error(
-                        JsonResponse.this,
-                        "Failed to parse JSON structure: %s, JSON body: %s",
-                        exp.getMessage(), body
-                    );
-                    throw exp;
-                }
-                return struct;
-            }
-            @Override
-            public void close() {
-                this.rdr.close();
-            }
-        };
-        return reader;
+        final String body = this.body();
+        return new JsonResponse.VerboseReader(
+            Json.createReader(new StringReader(JsonResponse.escape(body))),
+            body
+        );
     }
 
     /**
@@ -172,8 +117,8 @@ public final class JsonResponse extends AbstractResponse {
      * @return Escaped JSON
      * @see <a href="http://tools.ietf.org/html/rfc4627">RFC 4627</a>
      */
-    private String escapeControl(final String input) {
-        final Matcher matcher = CONTROL.matcher(input);
+    private static String escape(final CharSequence input) {
+        final Matcher matcher = JsonResponse.CONTROL.matcher(input);
         final StringBuffer escaped = new StringBuffer(input.length());
         while (matcher.find()) {
             matcher.appendReplacement(
@@ -183,6 +128,63 @@ public final class JsonResponse extends AbstractResponse {
         }
         matcher.appendTail(escaped);
         return escaped.toString();
+    }
+
+    /**
+     * Verbose reader.
+     */
+    private static final class VerboseReader implements JsonReader {
+        /**
+         * Original reader.
+         */
+        private final transient JsonReader origin;
+        /**
+         * JSON body.
+         */
+        private final transient String json;
+        /**
+         * Ctor.
+         * @param reader Original reader
+         * @param body JSON body
+         */
+        VerboseReader(final JsonReader reader, final String body) {
+            this.origin = reader;
+            this.json = body;
+        }
+        @Override
+        public JsonObject readObject() {
+            try {
+                return this.origin.readObject();
+            } catch (final JsonParsingException ex) {
+                throw new JsonParsingException(
+                    this.json, ex, ex.getLocation()
+                );
+            }
+        }
+        @Override
+        public JsonArray readArray() {
+            try {
+                return this.origin.readArray();
+            } catch (final JsonParsingException ex) {
+                throw new JsonParsingException(
+                    this.json, ex, ex.getLocation()
+                );
+            }
+        }
+        @Override
+        public JsonStructure read() {
+            try {
+                return this.origin.read();
+            } catch (final JsonParsingException ex) {
+                throw new JsonParsingException(
+                    this.json, ex, ex.getLocation()
+                );
+            }
+        }
+        @Override
+        public void close() {
+            this.origin.close();
+        }
     }
 
 }
