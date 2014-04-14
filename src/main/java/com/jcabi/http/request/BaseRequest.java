@@ -46,6 +46,7 @@ import java.lang.reflect.Constructor;
 import java.lang.reflect.InvocationTargetException;
 import java.net.URI;
 import java.net.URLEncoder;
+import java.nio.charset.Charset;
 import java.util.Collection;
 import java.util.LinkedList;
 import java.util.Map;
@@ -54,7 +55,6 @@ import javax.json.JsonStructure;
 import javax.validation.constraints.NotNull;
 import javax.ws.rs.core.UriBuilder;
 import lombok.EqualsAndHashCode;
-import org.apache.commons.io.Charsets;
 
 /**
  * Base implementation of {@link Request}.
@@ -76,6 +76,11 @@ final class BaseRequest implements Request {
      * The encoding to use.
      */
     private static final String ENCODING = "UTF-8";
+
+    /**
+     * The Charset to use.
+     */
+    private static final Charset CHARSET = Charset.forName(ENCODING);
 
     /**
      * An empty immutable {@code byte} array.
@@ -428,12 +433,12 @@ final class BaseRequest implements Request {
         }
         @Override
         public String get() {
-            return new String(this.text, Charsets.UTF_8);
+            return new String(this.text, BaseRequest.CHARSET);
         }
         @Override
         public RequestBody set(@NotNull(message = "content can't be NULL")
             final String txt) {
-            return this.set(txt.getBytes(Charsets.UTF_8));
+            return this.set(txt.getBytes(BaseRequest.CHARSET));
         }
         @Override
         public RequestBody set(@NotNull(message = "JSON can't be NULL")
@@ -465,7 +470,7 @@ final class BaseRequest implements Request {
                         )
                         .append('&')
                         .toString()
-                        .getBytes(Charsets.UTF_8)
+                        .getBytes(BaseRequest.CHARSET)
                 );
             } catch (final UnsupportedEncodingException ex) {
                 throw new IllegalStateException(ex);

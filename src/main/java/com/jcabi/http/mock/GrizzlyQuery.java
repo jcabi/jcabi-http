@@ -33,8 +33,11 @@ import com.jcabi.aspects.Immutable;
 import com.jcabi.http.ImmutableHeader;
 import com.jcabi.immutable.ArrayMap;
 import com.sun.grizzly.tcp.http11.GrizzlyRequest;
+import java.io.ByteArrayOutputStream;
 import java.io.IOException;
+import java.io.InputStream;
 import java.net.URI;
+import java.nio.charset.Charset;
 import java.util.Collections;
 import java.util.Enumeration;
 import java.util.LinkedList;
@@ -42,8 +45,6 @@ import java.util.List;
 import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.ConcurrentMap;
-import org.apache.commons.io.Charsets;
-import org.apache.commons.io.IOUtils;
 
 /**
  * Mock HTTP query/request.
@@ -59,6 +60,11 @@ final class GrizzlyQuery implements MkQuery {
      * The encoding to use.
      */
     private static final String ENCODING = "UTF-8";
+
+    /**
+     * The Charset to use.
+     */
+    private static final Charset CHARSET = Charset.forName(ENCODING);
 
     /**
      * HTTP request method.
@@ -90,7 +96,15 @@ final class GrizzlyQuery implements MkQuery {
         this.home = GrizzlyQuery.uri(request);
         this.mtd = request.getMethod();
         this.hdrs = GrizzlyQuery.headers(request);
-        this.content = IOUtils.toByteArray(request.getInputStream());
+        // @checkstyle MagicNumber (1 line)
+        final byte[] buffer = new byte[8192];
+        final InputStream input = request.getInputStream();
+        final ByteArrayOutputStream output = new ByteArrayOutputStream();
+        for (int bytes = input.read(buffer); bytes != -1;
+            bytes = input.read(buffer)) {
+            output.write(buffer, 0, bytes);
+        }
+        this.content = output.toByteArray();
     }
 
     @Override
@@ -110,7 +124,7 @@ final class GrizzlyQuery implements MkQuery {
 
     @Override
     public String body() {
-        return new String(this.content, Charsets.UTF_8);
+        return new String(this.content, GrizzlyQuery.CHARSET);
     }
 
     /**

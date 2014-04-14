@@ -37,6 +37,7 @@ import com.jcabi.http.Response;
 import com.jcabi.immutable.Array;
 import com.jcabi.log.Logger;
 import java.lang.reflect.InvocationTargetException;
+import java.nio.charset.Charset;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
@@ -44,7 +45,6 @@ import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.ConcurrentMap;
 import javax.validation.constraints.NotNull;
 import lombok.EqualsAndHashCode;
-import org.apache.commons.io.Charsets;
 
 /**
  * Default implementation of {@link com.jcabi.http.Response}.
@@ -56,6 +56,11 @@ import org.apache.commons.io.Charsets;
 @EqualsAndHashCode(of = "req")
 @Loggable(Loggable.DEBUG)
 final class DefaultResponse implements Response {
+
+    /**
+     * The Charset to use.
+     */
+    private static final Charset CHARSET = Charset.forName("UTF-8");
 
     /**
      * UTF-8 error marker.
@@ -136,7 +141,7 @@ final class DefaultResponse implements Response {
 
     @Override
     public String body() {
-        final String body = new String(this.content, Charsets.UTF_8);
+        final String body = new String(this.content, DefaultResponse.CHARSET);
         if (body.contains(DefaultResponse.ERR)) {
             throw new IllegalStateException(
                 Logger.format(

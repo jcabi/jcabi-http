@@ -30,10 +30,10 @@
 package com.jcabi.http;
 
 import com.jcabi.aspects.Immutable;
+import java.nio.charset.Charset;
 import java.util.Map;
 import javax.json.JsonStructure;
 import javax.validation.constraints.NotNull;
-import org.apache.commons.io.Charsets;
 
 /**
  * Request body.
@@ -129,6 +129,10 @@ public interface RequestBody {
     @Immutable
     final class Printable {
         /**
+         * The Charset to use.
+         */
+        private static final Charset CHARSET = Charset.forName("UTF-8");
+        /**
          * Utility class.
          */
         private Printable() {
@@ -141,7 +145,8 @@ public interface RequestBody {
          */
         public static String toString(final byte[] bytes) {
             final StringBuilder text = new StringBuilder(0);
-            final char[] chrs = new String(bytes, Charsets.UTF_8).toCharArray();
+            final char[] chrs =
+                new String(bytes, Printable.CHARSET).toCharArray();
             if (chrs.length > 0) {
                 for (final char chr : chrs) {
                     // @checkstyle MagicNumber (1 line)
