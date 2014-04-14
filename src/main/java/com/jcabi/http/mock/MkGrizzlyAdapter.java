@@ -40,7 +40,6 @@ import java.net.HttpURLConnection;
 import java.util.Queue;
 import java.util.concurrent.ConcurrentLinkedQueue;
 import org.apache.commons.io.Charsets;
-import org.apache.commons.lang3.CharEncoding;
 import org.apache.http.HttpHeaders;
 
 /**
@@ -129,10 +128,7 @@ final class MkGrizzlyAdapter extends GrizzlyAdapter {
         final PrintWriter writer;
         try {
             writer = new PrintWriter(
-                new OutputStreamWriter(
-                    response.getStream(),
-                    CharEncoding.UTF_8
-                )
+                new OutputStreamWriter(response.getStream(), "UTF-8")
             );
         } catch (final UnsupportedEncodingException ex) {
             throw new IllegalStateException(ex);

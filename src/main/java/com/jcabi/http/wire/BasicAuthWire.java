@@ -48,7 +48,6 @@ import lombok.EqualsAndHashCode;
 import lombok.ToString;
 import org.apache.commons.codec.binary.Base64;
 import org.apache.commons.io.Charsets;
-import org.apache.commons.lang3.CharEncoding;
 
 /**
  * Wire with HTTP basic authentication based on user info of URI.
@@ -75,6 +74,11 @@ import org.apache.commons.lang3.CharEncoding;
 @ToString
 @EqualsAndHashCode(of = "origin")
 public final class BasicAuthWire implements Wire {
+
+    /**
+     * The encoding to use.
+     */
+    private static final String ENCODING = "UTF-8";
 
     /**
      * Original wire.
@@ -121,10 +125,10 @@ public final class BasicAuthWire implements Wire {
                                 Logger.format(
                                     "%s:%s",
                                     URLEncoder.encode(
-                                        parts[0], CharEncoding.UTF_8
+                                        parts[0], BasicAuthWire.ENCODING
                                     ),
                                     URLEncoder.encode(
-                                        parts[1], CharEncoding.UTF_8
+                                        parts[1], BasicAuthWire.ENCODING
                                     )
                                 ).getBytes(Charsets.UTF_8)
                             )

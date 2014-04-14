@@ -34,7 +34,6 @@ import java.util.Map;
 import javax.json.JsonStructure;
 import javax.validation.constraints.NotNull;
 import org.apache.commons.io.Charsets;
-import org.apache.commons.lang3.CharUtils;
 
 /**
  * Request body.
@@ -145,11 +144,12 @@ public interface RequestBody {
             final char[] chrs = new String(bytes, Charsets.UTF_8).toCharArray();
             if (chrs.length > 0) {
                 for (final char chr : chrs) {
-                    if (CharUtils.isAscii(chr)) {
+                    // @checkstyle MagicNumber (1 line)
+                    if (chr < 128) {
                         text.append(chr);
                     } else {
                         text.append("\\u").append(
-                            Integer.toHexString((int) chr)
+                            Integer.toHexString(chr)
                         );
                     }
                 }

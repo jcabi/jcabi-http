@@ -36,13 +36,13 @@ import com.jcabi.log.Logger;
 import java.net.HttpCookie;
 import java.net.URI;
 import java.util.Collections;
+import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 import javax.validation.constraints.NotNull;
 import javax.ws.rs.core.Cookie;
 import javax.ws.rs.core.HttpHeaders;
 import lombok.EqualsAndHashCode;
-import org.apache.commons.lang3.StringUtils;
 import org.hamcrest.CustomMatcher;
 import org.hamcrest.Matcher;
 import org.hamcrest.MatcherAssert;
@@ -266,9 +266,22 @@ public final class RestResponse extends AbstractResponse {
             "cookies should be set in HTTP header",
             headers.containsKey(HttpHeaders.SET_COOKIE)
         );
-        final String header = StringUtils.join(
-            headers.get(HttpHeaders.SET_COOKIE), ", "
-        );
+        final Iterator<String> iterator =
+            headers.get(HttpHeaders.SET_COOKIE).iterator();
+        final Object first = iterator.next();
+        // @checkstyle MagicNumber (1 line)
+        final StringBuilder buf = new StringBuilder(256);
+        if (first != null) {
+            buf.append(first);
+        }
+        while (iterator.hasNext()) {
+            buf.append(",");
+            final Object obj = iterator.next();
+            if (obj != null) {
+                buf.append(obj);
+            }
+        }
+        final String header = buf.toString();
         Cookie cookie = null;
         for (final HttpCookie candidate : HttpCookie.parse(header)) {
             if (candidate.getName().equals(name)) {

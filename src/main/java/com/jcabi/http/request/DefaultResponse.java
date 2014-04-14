@@ -45,8 +45,6 @@ import java.util.concurrent.ConcurrentMap;
 import javax.validation.constraints.NotNull;
 import lombok.EqualsAndHashCode;
 import org.apache.commons.io.Charsets;
-import org.apache.commons.lang3.ArrayUtils;
-import org.apache.commons.lang3.StringUtils;
 
 /**
  * Default implementation of {@link com.jcabi.http.Response}.
@@ -105,7 +103,7 @@ final class DefaultResponse implements Response {
         this.code = status;
         this.phrase = reason;
         this.hdrs = headers;
-        this.content = ArrayUtils.clone(body);
+        this.content = body.clone();
     }
 
     @Override
@@ -143,10 +141,7 @@ final class DefaultResponse implements Response {
             throw new IllegalStateException(
                 Logger.format(
                     "broken Unicode text at line #%d in '%[text]s' (%d bytes)",
-                    StringUtils.countMatches(
-                        "\n",
-                        body.substring(0, body.indexOf(DefaultResponse.ERR))
-                    ) + 2,
+                    body.length() - body.replace("\n", "").length(),
                     body,
                     this.content.length
                 )
@@ -157,7 +152,7 @@ final class DefaultResponse implements Response {
 
     @Override
     public byte[] binary() {
-        return ArrayUtils.clone(this.content);
+        return this.content.clone();
     }
     /**
      * {@inheritDoc}
