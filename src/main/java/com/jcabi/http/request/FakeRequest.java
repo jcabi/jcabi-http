@@ -40,12 +40,12 @@ import com.jcabi.http.Wire;
 import com.jcabi.immutable.Array;
 import java.io.IOException;
 import java.net.HttpURLConnection;
+import java.nio.charset.Charset;
 import java.util.Collection;
 import java.util.Collections;
 import java.util.Map;
 import javax.validation.constraints.NotNull;
 import lombok.EqualsAndHashCode;
-import org.apache.commons.io.Charsets;
 import org.apache.commons.lang3.ArrayUtils;
 
 /**
@@ -64,6 +64,11 @@ import org.apache.commons.lang3.ArrayUtils;
 @Loggable(Loggable.DEBUG)
 @SuppressWarnings("PMD.TooManyMethods")
 public final class FakeRequest implements Request {
+
+    /**
+     * The Charset to use.
+     */
+    private static final Charset CHARSET = Charset.forName("UTF-8");
 
     /**
      * Base request.
@@ -234,7 +239,7 @@ public final class FakeRequest implements Request {
      * @return New request
      */
     public FakeRequest withBody(final String text) {
-        return this.withBody(text.getBytes(Charsets.UTF_8));
+        return this.withBody(text.getBytes(FakeRequest.CHARSET));
     }
 
     /**

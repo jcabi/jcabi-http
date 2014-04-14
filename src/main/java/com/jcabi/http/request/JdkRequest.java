@@ -38,6 +38,7 @@ import com.jcabi.http.RequestURI;
 import com.jcabi.http.Response;
 import com.jcabi.http.Wire;
 import com.jcabi.immutable.Array;
+import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
@@ -51,7 +52,6 @@ import java.util.List;
 import java.util.Map;
 import javax.validation.constraints.NotNull;
 import lombok.EqualsAndHashCode;
-import org.apache.commons.io.IOUtils;
 
 /**
  * Implementation of {@link Request}, based on JDK.
@@ -163,7 +163,15 @@ public final class JdkRequest implements Request {
                 body = new byte[0];
             } else {
                 try {
-                    body = IOUtils.toByteArray(input);
+                    // @checkstyle MagicNumber (1 line)
+                    final byte[] buffer = new byte[8192];
+                    final ByteArrayOutputStream output =
+                        new ByteArrayOutputStream();
+                    for (int bytes = input.read(buffer); bytes != -1;
+                        bytes = input.read(buffer)) {
+                        output.write(buffer, 0, bytes);
+                    }
+                    body = output.toByteArray();
                 } finally {
                     input.close();
                 }

@@ -39,6 +39,7 @@ import java.io.IOException;
 import java.io.UnsupportedEncodingException;
 import java.net.URI;
 import java.net.URLEncoder;
+import java.nio.charset.Charset;
 import java.util.Collection;
 import java.util.LinkedList;
 import java.util.Map;
@@ -47,7 +48,6 @@ import javax.ws.rs.core.HttpHeaders;
 import lombok.EqualsAndHashCode;
 import lombok.ToString;
 import org.apache.commons.codec.binary.Base64;
-import org.apache.commons.io.Charsets;
 import org.apache.commons.lang3.CharEncoding;
 
 /**
@@ -75,6 +75,16 @@ import org.apache.commons.lang3.CharEncoding;
 @ToString
 @EqualsAndHashCode(of = "origin")
 public final class BasicAuthWire implements Wire {
+
+    /**
+     * The encoding to use.
+     */
+    private static final String ENCODING = "UTF-8";
+
+    /**
+     * The Charset to use.
+     */
+    private static final Charset CHARSET = Charset.forName(ENCODING);
 
     /**
      * Original wire.
@@ -126,7 +136,7 @@ public final class BasicAuthWire implements Wire {
                                     URLEncoder.encode(
                                         parts[1], CharEncoding.UTF_8
                                     )
-                                ).getBytes(Charsets.UTF_8)
+                                ).getBytes(BasicAuthWire.CHARSET)
                             )
                         )
                     )
