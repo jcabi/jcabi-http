@@ -71,6 +71,12 @@ import org.apache.commons.io.Charsets;
 @Loggable(Loggable.DEBUG)
 @SuppressWarnings("PMD.TooManyMethods")
 final class BaseRequest implements Request {
+
+    /**
+     * The encoding to use.
+     */
+    private static final String ENCODING = "UTF-8";
+
     /**
      * An empty immutable {@code byte} array.
      */
@@ -452,7 +458,10 @@ final class BaseRequest implements Request {
                         .append(name)
                         .append('=')
                         .append(
-                            URLEncoder.encode(value.toString(), "UTF-8")
+                            URLEncoder.encode(
+                                value.toString(),
+                                BaseRequest.ENCODING
+                            )
                         )
                         .append('&')
                         .toString()

@@ -56,6 +56,11 @@ import org.apache.commons.io.IOUtils;
 final class GrizzlyQuery implements MkQuery {
 
     /**
+     * The encoding to use.
+     */
+    private static final String ENCODING = "UTF-8";
+
+    /**
      * HTTP request method.
      */
     private final transient String mtd;
@@ -81,7 +86,7 @@ final class GrizzlyQuery implements MkQuery {
      * @throws IOException If fails
      */
     GrizzlyQuery(final GrizzlyRequest request) throws IOException {
-        request.setCharacterEncoding("UTF-8");
+        request.setCharacterEncoding(GrizzlyQuery.ENCODING);
         this.home = GrizzlyQuery.uri(request);
         this.mtd = request.getMethod();
         this.hdrs = GrizzlyQuery.headers(request);

@@ -52,6 +52,11 @@ import org.apache.http.HttpHeaders;
 final class MkGrizzlyAdapter extends GrizzlyAdapter {
 
     /**
+     * The encoding to use.
+     */
+    private static final String ENCODING = "UTF-8";
+
+    /**
      * Queries received.
      */
     private final transient Queue<MkQuery> queue =
@@ -128,7 +133,10 @@ final class MkGrizzlyAdapter extends GrizzlyAdapter {
         final PrintWriter writer;
         try {
             writer = new PrintWriter(
-                new OutputStreamWriter(response.getStream(), "UTF-8")
+                new OutputStreamWriter(
+                    response.getStream(),
+                    MkGrizzlyAdapter.ENCODING
+                )
             );
         } catch (final UnsupportedEncodingException ex) {
             throw new IllegalStateException(ex);
