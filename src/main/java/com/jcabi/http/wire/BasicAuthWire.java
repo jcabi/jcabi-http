@@ -45,9 +45,9 @@ import java.util.LinkedList;
 import java.util.Map;
 import javax.validation.constraints.NotNull;
 import javax.ws.rs.core.HttpHeaders;
+import javax.xml.bind.DatatypeConverter;
 import lombok.EqualsAndHashCode;
 import lombok.ToString;
-import org.apache.commons.codec.binary.Base64;
 
 /**
  * Wire with HTTP basic authentication based on user info of URI.
@@ -126,7 +126,7 @@ public final class BasicAuthWire implements Wire {
                         HttpHeaders.AUTHORIZATION,
                         Logger.format(
                             "Basic %s",
-                            Base64.encodeBase64String(
+                            DatatypeConverter.printBase64Binary(
                                 Logger.format(
                                     "%s:%s",
                                     URLEncoder.encode(
