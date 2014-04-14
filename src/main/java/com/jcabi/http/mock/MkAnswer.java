@@ -36,6 +36,7 @@ import com.jcabi.http.RequestBody;
 import com.jcabi.immutable.Array;
 import com.jcabi.log.Logger;
 import java.net.HttpURLConnection;
+import java.nio.charset.Charset;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
@@ -43,7 +44,6 @@ import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.ConcurrentMap;
 import javax.validation.constraints.NotNull;
 import lombok.EqualsAndHashCode;
-import org.apache.commons.io.Charsets;
 import org.apache.commons.lang3.ArrayUtils;
 
 /**
@@ -85,6 +85,10 @@ public interface MkAnswer {
     @Loggable(Loggable.DEBUG)
     final class Simple implements MkAnswer {
         /**
+         * The Charset to use.
+         */
+        private static final Charset CHARSET = Charset.forName("UTF-8");
+        /**
          * Encapsulated response.
          */
         private final transient int code;
@@ -111,7 +115,7 @@ public interface MkAnswer {
         public Simple(final int status, final String body) {
             this(
                 status, new Array<Map.Entry<String, String>>(),
-                body.getBytes(Charsets.UTF_8)
+                body.getBytes(Simple.CHARSET)
             );
         }
         /**
@@ -144,7 +148,7 @@ public interface MkAnswer {
         }
         @Override
         public String body() {
-            return new String(this.content, Charsets.UTF_8);
+            return new String(this.content, Simple.CHARSET);
         }
         @Override
         public String toString() {
@@ -198,7 +202,7 @@ public interface MkAnswer {
             return new MkAnswer.Simple(
                 this.code,
                 this.hdrs,
-                body.getBytes(Charsets.UTF_8)
+                body.getBytes(Simple.CHARSET)
             );
         }
     }

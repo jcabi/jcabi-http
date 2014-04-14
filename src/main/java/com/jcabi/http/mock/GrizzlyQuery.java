@@ -35,6 +35,7 @@ import com.jcabi.immutable.ArrayMap;
 import com.sun.grizzly.tcp.http11.GrizzlyRequest;
 import java.io.IOException;
 import java.net.URI;
+import java.nio.charset.Charset;
 import java.util.Collections;
 import java.util.Enumeration;
 import java.util.LinkedList;
@@ -42,7 +43,6 @@ import java.util.List;
 import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.ConcurrentMap;
-import org.apache.commons.io.Charsets;
 import org.apache.commons.io.IOUtils;
 import org.apache.commons.lang3.CharEncoding;
 
@@ -55,6 +55,16 @@ import org.apache.commons.lang3.CharEncoding;
  */
 @Immutable
 final class GrizzlyQuery implements MkQuery {
+
+    /**
+     * The encoding to use.
+     */
+    private static final String ENCODING = "UTF-8";
+
+    /**
+     * The Charset to use.
+     */
+    private static final Charset CHARSET = Charset.forName(ENCODING);
 
     /**
      * HTTP request method.
@@ -106,7 +116,7 @@ final class GrizzlyQuery implements MkQuery {
 
     @Override
     public String body() {
-        return new String(this.content, Charsets.UTF_8);
+        return new String(this.content, GrizzlyQuery.CHARSET);
     }
 
     /**
