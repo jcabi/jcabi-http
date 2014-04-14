@@ -45,7 +45,6 @@ import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 import javax.validation.constraints.NotNull;
 import lombok.EqualsAndHashCode;
-import org.apache.commons.lang3.StringUtils;
 
 /**
  * Web Linking response.
@@ -196,7 +195,7 @@ public final class WebLinkingResponse extends AbstractResponse {
                 final String[] parts = pair.split("=");
                 args.put(
                     parts[0].trim().toLowerCase(Locale.ENGLISH),
-                    StringUtils.strip(parts[1].trim(), "\"")
+                    parts[1].trim().replaceAll("(^\"|\"$)", "")
                 );
             }
             this.params = new ArrayMap<String, String>(args);

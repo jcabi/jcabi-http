@@ -46,7 +46,6 @@ import java.util.Collections;
 import java.util.Map;
 import javax.validation.constraints.NotNull;
 import lombok.EqualsAndHashCode;
-import org.apache.commons.lang3.ArrayUtils;
 
 /**
  * Implementation of {@link Request} that always returns the same
@@ -64,6 +63,11 @@ import org.apache.commons.lang3.ArrayUtils;
 @Loggable(Loggable.DEBUG)
 @SuppressWarnings("PMD.TooManyMethods")
 public final class FakeRequest implements Request {
+
+    /**
+     * An empty immutable {@code byte} array.
+     */
+    private static final byte[] EMPTY_BYTE_ARRAY = new byte[0];
 
     /**
      * The Charset to use.
@@ -121,7 +125,7 @@ public final class FakeRequest implements Request {
             HttpURLConnection.HTTP_OK,
             "OK",
             Collections.<Map.Entry<String, String>>emptyList(),
-            ArrayUtils.EMPTY_BYTE_ARRAY
+            FakeRequest.EMPTY_BYTE_ARRAY
         );
     }
 
@@ -141,7 +145,7 @@ public final class FakeRequest implements Request {
         this.code = status;
         this.phrase = reason;
         this.hdrs = new Array<Map.Entry<String, String>>(headers);
-        this.content = ArrayUtils.clone(body);
+        this.content = body.clone();
     }
 
     @Override

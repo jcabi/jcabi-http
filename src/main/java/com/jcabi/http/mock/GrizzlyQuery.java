@@ -45,7 +45,6 @@ import java.util.List;
 import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.ConcurrentMap;
-import org.apache.commons.lang3.CharEncoding;
 
 /**
  * Mock HTTP query/request.
@@ -93,7 +92,7 @@ final class GrizzlyQuery implements MkQuery {
      * @throws IOException If fails
      */
     GrizzlyQuery(final GrizzlyRequest request) throws IOException {
-        request.setCharacterEncoding(CharEncoding.UTF_8);
+        request.setCharacterEncoding(GrizzlyQuery.ENCODING);
         this.home = GrizzlyQuery.uri(request);
         this.mtd = request.getMethod();
         this.hdrs = GrizzlyQuery.headers(request);

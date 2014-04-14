@@ -44,7 +44,6 @@ import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.ConcurrentMap;
 import javax.validation.constraints.NotNull;
 import lombok.EqualsAndHashCode;
-import org.apache.commons.lang3.ArrayUtils;
 
 /**
  * Mock response.
@@ -129,7 +128,7 @@ public interface MkAnswer {
             final byte[] body) {
             this.code = status;
             this.hdrs = new Array<Map.Entry<String, String>>(headers);
-            this.content = ArrayUtils.clone(body);
+            this.content = body.clone();
         }
         @Override
         public int status() {

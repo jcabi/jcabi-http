@@ -44,7 +44,6 @@ import javax.validation.constraints.NotNull;
 import javax.ws.rs.core.HttpHeaders;
 import lombok.EqualsAndHashCode;
 import lombok.ToString;
-import org.apache.commons.lang3.StringUtils;
 
 /**
  * Wire that compresses cookies before sending.
@@ -107,13 +106,18 @@ public final class CookieOptimizingWire implements Wire {
             new ConcurrentHashMap<String, String>();
         for (final Map.Entry<String, String> header : headers) {
             if (header.getKey().equals(HttpHeaders.COOKIE)) {
-                final String[] parts = StringUtils.splitPreserveAllTokens(
-                    header.getValue(), "=", 2
-                );
-                cookies.put(parts[0], parts[1]);
-                continue;
+                final String cookie = header.getValue();
+                final int split = cookie.indexOf('=');
+                final String name = cookie.substring(0, split);
+                final String value = cookie.substring(split + 1);
+                if (value.isEmpty()) {
+                    cookies.remove(name);
+                } else {
+                    cookies.put(name, value);
+                }
+            } else {
+                hdrs.add(header);
             }
-            hdrs.add(header);
         }
         if (!cookies.isEmpty()) {
             final StringBuilder text = new StringBuilder(0);

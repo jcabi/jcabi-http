@@ -55,8 +55,6 @@ import javax.json.JsonStructure;
 import javax.validation.constraints.NotNull;
 import javax.ws.rs.core.UriBuilder;
 import lombok.EqualsAndHashCode;
-import org.apache.commons.lang3.ArrayUtils;
-import org.apache.commons.lang3.CharEncoding;
 
 /**
  * Base implementation of {@link Request}.
@@ -83,6 +81,11 @@ final class BaseRequest implements Request {
      * The Charset to use.
      */
     private static final Charset CHARSET = Charset.forName(ENCODING);
+
+    /**
+     * An empty immutable {@code byte} array.
+     */
+    private static final byte[] EMPTY_BYTE_ARRAY = new byte[0];
 
     /**
      * Wire to use.
@@ -118,7 +121,7 @@ final class BaseRequest implements Request {
         this(
             wre, uri,
             new Array<Map.Entry<String, String>>(),
-            Request.GET, ArrayUtils.EMPTY_BYTE_ARRAY
+            Request.GET, BaseRequest.EMPTY_BYTE_ARRAY
         );
     }
 
@@ -142,7 +145,7 @@ final class BaseRequest implements Request {
         this.home = addr.toString();
         this.hdrs = new Array<Map.Entry<String, String>>(headers);
         this.mtd = method;
-        this.content = ArrayUtils.clone(body);
+        this.content = body.clone();
     }
 
     @Override
@@ -412,7 +415,7 @@ final class BaseRequest implements Request {
          */
         public BaseBody(final BaseRequest req, final byte[] body) {
             this.owner = req;
-            this.text = ArrayUtils.clone(body);
+            this.text = body.clone();
         }
         @Override
         public String toString() {
@@ -461,7 +464,8 @@ final class BaseRequest implements Request {
                         .append('=')
                         .append(
                             URLEncoder.encode(
-                                value.toString(), CharEncoding.UTF_8
+                                value.toString(),
+                                BaseRequest.ENCODING
                             )
                         )
                         .append('&')
