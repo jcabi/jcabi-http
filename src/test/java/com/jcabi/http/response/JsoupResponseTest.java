@@ -29,80 +29,36 @@
  */
 package com.jcabi.http.response;
 
-import com.jcabi.aspects.Immutable;
-import com.jcabi.http.Request;
 import com.jcabi.http.Response;
-import java.util.List;
-import java.util.Map;
-import lombok.EqualsAndHashCode;
+import com.jcabi.http.request.FakeRequest;
+import com.rexsl.test.XhtmlMatchers;
+import org.hamcrest.MatcherAssert;
+import org.junit.Test;
 
 /**
- * Abstract response.
+ * Test case for {@link JsoupResponse}.
  *
- * @author Yegor Bugayenko (yegor@tpc2.com)
+ * @author Carlos Miranda (miranda.cma@gmail.com)
  * @version $Id$
- * @since 0.8
  */
-@Immutable
-@EqualsAndHashCode(of = "response")
-abstract class AbstractResponse implements Response {
+public final class JsoupResponseTest {
 
     /**
-     * Encapsulated response.
+     * JsoupResponse normalizes malformed HTML responses.
+     * @throws Exception If a problem occurs.
      */
-    private final transient Response response;
-
-    /**
-     * Ctor.
-     * @param resp Response
-     */
-    AbstractResponse(final Response resp) {
-        this.response = resp;
-    }
-
-    @Override
-    public final String toString() {
-        return this.response.toString();
-    }
-
-    @Override
-    public final Request back() {
-        return this.response.back();
-    }
-
-    @Override
-    public final int status() {
-        return this.response.status();
-    }
-
-    @Override
-    public final String reason() {
-        return this.response.reason();
-    }
-
-    @Override
-    public final Map<String, List<String>> headers() {
-        return this.response.headers();
-    }
-
-    @Override
-    public String body() {
-        return this.response.body();
-    }
-
-    @Override
-    public final byte[] binary() {
-        return this.response.binary();
-    }
-
-    /**
-     * {@inheritDoc}
-     * @checkstyle MethodName (4 lines)
-     */
-    @Override
-    @SuppressWarnings("PMD.ShortMethodName")
-    public final <T> T as(final Class<T> type) {
-        return this.response.as(type);
+    @Test
+    public void normalizesHtml() throws Exception {
+        final Response resp = new FakeRequest()
+            .withBody("<html><p>Hello world")
+            .fetch();
+        MatcherAssert.assertThat(
+            new JsoupResponse(resp).body(),
+            XhtmlMatchers.hasXPaths(
+                "/html/head",
+                "/html/body/p[.=\"Hello world\"]"
+            )
+        );
     }
 
 }
