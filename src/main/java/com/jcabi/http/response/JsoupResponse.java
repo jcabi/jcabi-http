@@ -30,79 +30,56 @@
 package com.jcabi.http.response;
 
 import com.jcabi.aspects.Immutable;
-import com.jcabi.http.Request;
 import com.jcabi.http.Response;
-import java.util.List;
-import java.util.Map;
+import javax.validation.constraints.NotNull;
 import lombok.EqualsAndHashCode;
+import org.jsoup.Jsoup;
 
 /**
- * Abstract response.
+ * Jsoup response.
  *
- * @author Yegor Bugayenko (yegor@tpc2.com)
+ * <p>This response decorator is able to parse HTTP response body as an HTML
+ * document. Example usage:
+ *
+ * <pre> String body = new JdkRequest("http://my.example.com")
+ *   .header(HttpHeaders.ACCEPT, MediaType.APPLICATION_JSON)
+ *   .fetch()
+ *   .as(JsoupResponse.class)
+ *   .body();</pre>
+ *
+ * <p>{@link #body()} will try to output clean HTML even for
+ *  malformed responses. For example:
+ * <ul>
+ *  <li>Unclosed tags will be closed ("&lt;p&gt;Hello" will become
+ *      "&lt;p&gt;Hello&lt;/p&gt;")
+ *  <li>Implicit tags will be made explicit (e.g. a naked &lt;td&gt; will be
+ *      wrapped in a &lt;table&gt;&lt;trgt;&lt;td&gt;?)
+ *  <li>Basic structure is guaranteed (i.e. html, head, body elements)
+ * </ul>
+ *
+ * <p>The class is immutable and thread-safe.
+ *
+ * @author Carlos Miranda (miranda.cma@gmail.com)
  * @version $Id$
- * @since 0.8
+ * @since 1.4
+ * @see <a href="http://jsoup.org/">Jsoup website</a>
  */
 @Immutable
-@EqualsAndHashCode(of = "response")
-abstract class AbstractResponse implements Response {
+@EqualsAndHashCode(callSuper = true)
+public final class JsoupResponse extends AbstractResponse {
 
     /**
-     * Encapsulated response.
-     */
-    private final transient Response response;
-
-    /**
-     * Ctor.
+     * Public ctor.
      * @param resp Response
      */
-    AbstractResponse(final Response resp) {
-        this.response = resp;
-    }
-
-    @Override
-    public final String toString() {
-        return this.response.toString();
-    }
-
-    @Override
-    public final Request back() {
-        return this.response.back();
-    }
-
-    @Override
-    public final int status() {
-        return this.response.status();
-    }
-
-    @Override
-    public final String reason() {
-        return this.response.reason();
-    }
-
-    @Override
-    public final Map<String, List<String>> headers() {
-        return this.response.headers();
+    public JsoupResponse(@NotNull(message = "response can't be NULL")
+        final Response resp) {
+        super(resp);
     }
 
     @Override
     public String body() {
-        return this.response.body();
-    }
-
-    @Override
-    public final byte[] binary() {
-        return this.response.binary();
-    }
-
-    /**
-     * {@inheritDoc}
-     * @checkstyle MethodName (4 lines)
-     */
-    @Override
-    @SuppressWarnings("PMD.ShortMethodName")
-    public final <T> T as(final Class<T> type) {
-        return this.response.as(type);
+        return Jsoup.parse(super.body()).html();
     }
 
 }
