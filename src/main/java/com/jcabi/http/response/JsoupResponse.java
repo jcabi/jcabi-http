@@ -61,6 +61,7 @@ import org.jsoup.Jsoup;
  *
  * @author Carlos Miranda (miranda.cma@gmail.com)
  * @version $Id$
+ * @since 1.4
  * @see <a href="http://jsoup.org/">Jsoup website</a>
  */
 @Immutable
