@@ -19,6 +19,10 @@ public class Main {
 }
 ```
 
+[This blog post](http://www.yegor256.com/2014/04/11/jcabi-http-intro.html)
+explains the
+benefits of this client comparing to Apache, Jersey, and others.
+
 Check [JavaDoc](./apidocs-${project.version}/index.html)
 for more details.
 
