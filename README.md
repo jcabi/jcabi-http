@@ -28,7 +28,7 @@ You need just this dependency:
 <dependency>
   <groupId>com.jcabi</groupId>
   <artifactId>jcabi-http</artifactId>
-  <version>1.3.3</version>
+  <version>1.4</version>
 </dependency>
 ```
 
