@@ -121,6 +121,11 @@ public final class JdkRequest implements Request {
                     this.headers(conn.getHeaderFields()),
                     this.body(conn)
                 );
+            } catch (final IOException exp) {
+                throw new IOException(
+                    String.format("Failed %s request to %s", method, home),
+                    exp
+                );
             } finally {
                 conn.disconnect();
             }
