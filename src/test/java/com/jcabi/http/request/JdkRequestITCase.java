@@ -30,6 +30,7 @@
 package com.jcabi.http.request;
 
 import java.io.IOException;
+import java.net.URI;
 import javax.ws.rs.HttpMethod;
 import org.hamcrest.Matchers;
 import org.junit.Rule;
@@ -37,23 +38,27 @@ import org.junit.Test;
 import org.junit.rules.ExpectedException;
 
 /**
- * Test case for {@link JdkRequest}.
- *
+ * Integration case for {@link JdkRequest}.
  * @author Carlos Miranda (miranda.cma@gmail.com)
  * @version $Id$
  */
-public final class JdkRequestTest {
-
-    @Rule
-    public ExpectedException thrown = ExpectedException.none();
+public final class JdkRequestITCase {
 
     /**
-     * JdkRequest throws a descriptive exception when an error occurs.
-     * @throws Exception
+     * Expected exception.
+     * @checkstyle VisibilityModifier (3 lines)
+     */
+    @Rule
+    public final transient ExpectedException thrown = ExpectedException.none();
+
+    /**
+     * BaseRequest throws an exception with a descriptive message showing the
+     * URI and method when an error occurs.
+     * @throws Exception If something goes wrong inside.
      */
     @Test
     public void throwsDescriptiveException() throws Exception {
-        final String uri = "http://an.invalid.uri";
+        final String uri = "http://localhost:6789";
         final String method = HttpMethod.POST;
         this.thrown.expect(IOException.class);
         this.thrown.expectMessage(
@@ -62,6 +67,7 @@ public final class JdkRequestTest {
                 Matchers.containsString(method)
             )
         );
-        new JdkRequest(uri).method(method).fetch();
+        new JdkRequest(new URI(uri)).method(method).fetch();
     }
+
 }
