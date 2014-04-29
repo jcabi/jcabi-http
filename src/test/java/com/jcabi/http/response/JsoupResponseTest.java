@@ -31,7 +31,7 @@ package com.jcabi.http.response;
 
 import com.jcabi.http.Response;
 import com.jcabi.http.request.FakeRequest;
-import com.rexsl.test.XhtmlMatchers;
+import com.jcabi.matchers.XhtmlMatchers;
 import org.hamcrest.MatcherAssert;
 import org.junit.Test;
 
