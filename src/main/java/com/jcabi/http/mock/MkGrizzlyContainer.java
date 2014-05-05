@@ -37,7 +37,7 @@ import java.net.ServerSocket;
 import java.net.URI;
 import lombok.EqualsAndHashCode;
 import org.hamcrest.Matcher;
-import org.hamcrest.Matchers;
+import org.hamcrest.core.IsAnything;
 
 /**
  * Implementation of {@link MkContainer} based on Grizzly Server.
@@ -70,7 +70,7 @@ public final class MkGrizzlyContainer implements MkContainer {
 
     @Override
     public MkContainer next(final MkAnswer answer) {
-        return this.next(answer, Matchers.any(MkQuery.class));
+        return this.next(answer, new IsAnything<MkQuery>());
     }
 
     @Override
