@@ -1,5 +1,5 @@
 /**
- * Copyright (c) 2011-2014, JCabi.com
+ * Copyright (c) 2011-2014, jcabi.com
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -77,9 +77,9 @@ public final class UserAgentWire implements Wire {
      * Default user agent.
      */
     private static final String AGENT = String.format(
-        "JCabi-%s/%s Java/%s",
-        Manifests.read("JCabi-Version"),
-        Manifests.read("JCabi-Build"),
+        "jcabi-%s/%s Java/%s",
+        Manifests.read("jcabi-Version"),
+        Manifests.read("jcabi-Build"),
         System.getProperty("java.version")
     );
 

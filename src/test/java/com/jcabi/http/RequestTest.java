@@ -1,5 +1,5 @@
 /**
- * Copyright (c) 2011-2014, JCabi.com
+ * Copyright (c) 2011-2014, jcabi.com
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -153,7 +153,7 @@ public final class RequestTest {
                 ),
                 Matchers.hasEntry(
                     Matchers.equalTo(HttpHeaders.USER_AGENT),
-                    Matchers.hasItem(Matchers.containsString("JCabi"))
+                    Matchers.hasItem(Matchers.containsString("jcabi"))
                 )
             )
         );
