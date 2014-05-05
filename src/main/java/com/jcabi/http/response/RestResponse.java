@@ -275,7 +275,7 @@ public final class RestResponse extends AbstractResponse {
             buf.append(first);
         }
         while (iterator.hasNext()) {
-            buf.append(",");
+            buf.append(',');
             final Object obj = iterator.next();
             if (obj != null) {
                 buf.append(obj);

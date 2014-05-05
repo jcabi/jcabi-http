@@ -160,6 +160,7 @@ public final class WebLinkingResponse extends AbstractResponse {
         /**
          * Pattern to match link value.
          */
+        @SuppressWarnings("PMD.UnusedPrivateField")
         private static final Pattern PTN = Pattern.compile(
             "<([^>]+)>\\s*;(.*)"
         );
@@ -177,8 +178,6 @@ public final class WebLinkingResponse extends AbstractResponse {
          * @throws IOException If fails
          */
         SimpleLink(final String text) throws IOException {
-            final ConcurrentMap<String, String> args =
-                new ConcurrentHashMap<String, String>();
             final Matcher matcher = WebLinkingResponse.SimpleLink.PTN
                 .matcher(text);
             if (!matcher.matches()) {
@@ -190,6 +189,8 @@ public final class WebLinkingResponse extends AbstractResponse {
                 );
             }
             this.addr = matcher.group(1);
+            final ConcurrentMap<String, String> args =
+                new ConcurrentHashMap<String, String>();
             for (final String pair
                 : matcher.group(2).trim().split("\\s*;\\s*")) {
                 final String[] parts = pair.split("=");

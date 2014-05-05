@@ -90,16 +90,6 @@ public final class RequestTest {
     }
 
     /**
-     * Make a request.
-     * @param uri URI to start with
-     * @return Request
-     * @throws Exception If fails
-     */
-    private Request request(final URI uri) throws Exception {
-        return this.type.getDeclaredConstructor(URI.class).newInstance(uri);
-    }
-
-    /**
      * BaseRequest can fetch HTTP request and process HTTP response.
      * @throws Exception If something goes wrong inside
      */
@@ -447,6 +437,16 @@ public final class RequestTest {
             .fetch().as(RestResponse.class)
             .assertStatus(HttpURLConnection.HTTP_SEE_OTHER);
         container.stop();
+    }
+
+    /**
+     * Make a request.
+     * @param uri URI to start with
+     * @return Request
+     * @throws Exception If fails
+     */
+    private Request request(final URI uri) throws Exception {
+        return this.type.getDeclaredConstructor(URI.class).newInstance(uri);
     }
 
 }
