@@ -31,6 +31,7 @@ package com.jcabi.http.mock;
 
 import java.io.IOException;
 import java.net.URI;
+import org.hamcrest.Matcher;
 
 /**
  * Mock version of Java Servlet container.
@@ -69,6 +70,25 @@ public interface MkContainer {
      * @return This object
      */
     MkContainer next(MkAnswer answer);
+
+    /**
+     * Give this answer on the next request if the matcher condition is
+     * satisfied.
+     * @param answer Next answer to give
+     * @param condition The condition to match
+     * @return This object
+     */
+    MkContainer next(MkAnswer answer, Matcher<MkQuery> condition);
+
+    /**
+     * Give this answer on the next request(s) if the matcher condition is
+     * satisfied up to a certain number of consecutive requests.
+     * @param answer Next answer to give
+     * @param condition The condition to match
+     * @param count Number of consecutive requests to match
+     * @return This object
+     */
+    MkContainer next(MkAnswer answer, Matcher<MkQuery> condition, int count);
 
     /**
      * Get the oldest request received
