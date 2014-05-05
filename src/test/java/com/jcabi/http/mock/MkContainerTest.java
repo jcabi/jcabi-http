@@ -34,9 +34,11 @@ import com.jcabi.http.request.JdkRequest;
 import com.jcabi.http.response.RestResponse;
 import com.jcabi.http.wire.VerboseWire;
 import java.net.HttpURLConnection;
+import java.util.NoSuchElementException;
 import javax.ws.rs.core.MediaType;
 import org.hamcrest.MatcherAssert;
 import org.hamcrest.Matchers;
+import org.hamcrest.core.IsAnything;
 import org.junit.Test;
 
 /**
@@ -91,4 +93,95 @@ public final class MkContainerTest {
         );
     }
 
+    /**
+     * MkContainer can return certain answers for matching conditions.
+     * @throws Exception If something goes wrong inside.
+     */
+    @Test
+    public void answersConditionally() throws Exception {
+        final String match = "matching";
+        final String mismatch = "not matching";
+        final MkContainer container = new MkGrizzlyContainer().next(
+            new MkAnswer.Simple(mismatch),
+            Matchers.not(new IsAnything<MkQuery>())
+        ).next(new MkAnswer.Simple(match), new IsAnything<MkQuery>()).start();
+        new JdkRequest(container.home())
+            .through(VerboseWire.class)
+            .fetch().as(RestResponse.class)
+            .assertStatus(HttpURLConnection.HTTP_OK)
+            .assertBody(
+                Matchers.allOf(
+                    Matchers.is(match),
+                    Matchers.not(mismatch)
+                )
+            );
+        container.stop();
+    }
+
+    /**
+     * MkContainer returns HTTP 500 if no answers match.
+     * @throws Exception If something goes wrong inside
+     */
+    @Test(expected = NoSuchElementException.class)
+    public void returnsErrorIfNoMatches() throws Exception {
+        final MkContainer container = new MkGrizzlyContainer().next(
+            new MkAnswer.Simple("not supposed to match"),
+            Matchers.not(new IsAnything<MkQuery>())
+        ).start();
+        new JdkRequest(container.home())
+            .through(VerboseWire.class)
+            .fetch().as(RestResponse.class)
+            .assertStatus(HttpURLConnection.HTTP_INTERNAL_ERROR);
+        container.stop();
+        container.take();
+    }
+
+    /**
+     * MkContainer can answer multiple times for matching requests.
+     * @throws Exception If something goes wrong inside
+     */
+    @Test
+    public void canAnswerMultipleTimes() throws Exception {
+        final String body = "multiple";
+        final int times = 5;
+        final MkContainer container = new MkGrizzlyContainer().next(
+            new MkAnswer.Simple(body),
+            new IsAnything<MkQuery>(),
+            times
+        ).start();
+        final Request req = new JdkRequest(container.home())
+            .through(VerboseWire.class);
+        for (int idx = 0; idx < times; idx += 1) {
+            req.fetch().as(RestResponse.class)
+                .assertStatus(HttpURLConnection.HTTP_OK)
+                .assertBody(Matchers.is(body));
+        }
+        container.stop();
+    }
+
+    /**
+     * MkContainer can prioritize multiple matching answers by using the
+     * first matching request.
+     * @throws Exception If something goes wrong inside.
+     */
+    @Test
+    public void prioritizesMatchingAnswers() throws Exception {
+        final String first = "first";
+        final String second = "second";
+        final MkContainer container = new MkGrizzlyContainer()
+            .next(new MkAnswer.Simple(first), new IsAnything<MkQuery>())
+            .next(new MkAnswer.Simple(second), new IsAnything<MkQuery>())
+            .start();
+        new JdkRequest(container.home())
+            .through(VerboseWire.class)
+            .fetch().as(RestResponse.class)
+            .assertStatus(HttpURLConnection.HTTP_OK)
+            .assertBody(
+                Matchers.allOf(
+                    Matchers.is(first),
+                    Matchers.not(second)
+                )
+            );
+        container.stop();
+    }
 }
