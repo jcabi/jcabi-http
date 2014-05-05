@@ -38,9 +38,14 @@ import java.io.PrintWriter;
 import java.io.UnsupportedEncodingException;
 import java.net.HttpURLConnection;
 import java.nio.charset.Charset;
+import java.util.Iterator;
+import java.util.NoSuchElementException;
 import java.util.Queue;
 import java.util.concurrent.ConcurrentLinkedQueue;
+import java.util.concurrent.atomic.AtomicInteger;
+import lombok.EqualsAndHashCode;
 import org.apache.http.HttpHeaders;
+import org.hamcrest.Matcher;
 
 /**
  * Mocker of Java Servlet container.
@@ -68,36 +73,54 @@ final class MkGrizzlyAdapter extends GrizzlyAdapter {
         new ConcurrentLinkedQueue<MkQuery>();
 
     /**
-     * Answers to give.
+     * Answers to give conditionally.
      */
-    private final transient Queue<MkAnswer> answers =
-        new ConcurrentLinkedQueue<MkAnswer>();
+    private final transient Queue<Conditional> conditionals =
+        new ConcurrentLinkedQueue<Conditional>();
 
+    // @checkstyle ExecutableStatementCount (50 lines)
     @Override
     @SuppressWarnings({ "PMD.AvoidCatchingThrowable", "rawtypes" })
     public void service(final GrizzlyRequest request,
         final GrizzlyResponse response) {
         try {
-            this.queue.add(new GrizzlyQuery(request));
-            final MkAnswer answer = this.answers.remove();
-            for (final String name : answer.headers().keySet()) {
-                for (final String value : answer.headers().get(name)) {
-                    response.addHeader(name, value);
+            final MkQuery query = new GrizzlyQuery(request);
+            final Iterator<Conditional> iter = this.conditionals.iterator();
+            boolean matched = false;
+            while (iter.hasNext()) {
+                final Conditional cond = iter.next();
+                if (cond.matches(query)) {
+                    matched = true;
+                    this.queue.add(query);
+                    final MkAnswer answer = cond.answer();
+                    for (final String name : answer.headers().keySet()) {
+                        // @checkstyle NestedForDepth (3 lines)
+                        for (final String value : answer.headers().get(name)) {
+                            response.addHeader(name, value);
+                        }
+                    }
+                    response.addHeader(
+                        HttpHeaders.SERVER,
+                        String.format(
+                            "%s query #%d, %d answer(s) left",
+                            this.getClass().getName(),
+                            this.queue.size(), this.conditionals.size()
+                        )
+                    );
+                    response.setStatus(answer.status());
+                    final byte[] body =
+                        answer.body().getBytes(MkGrizzlyAdapter.CHARSET);
+                    response.getStream().write(body);
+                    response.setContentLength(body.length);
+                    if (cond.decrement() == 0) {
+                        iter.remove();
+                    }
+                    break;
                 }
             }
-            response.addHeader(
-                HttpHeaders.SERVER,
-                String.format(
-                    "%s query #%d, %d answer(s) left",
-                    this.getClass().getName(),
-                    this.queue.size(), this.answers.size()
-                )
-            );
-            response.setStatus(answer.status());
-            final byte[] body =
-                answer.body().getBytes(MkGrizzlyAdapter.CHARSET);
-            response.getStream().write(body);
-            response.setContentLength(body.length);
+            if (!matched) {
+                throw new NoSuchElementException("No matching answers found.");
+            }
             // @checkstyle IllegalCatch (1 line)
         } catch (final Throwable ex) {
             MkGrizzlyAdapter.fail(response, ex);
@@ -105,11 +128,16 @@ final class MkGrizzlyAdapter extends GrizzlyAdapter {
     }
 
     /**
-     * Give this answer on the next request.
+     * Give this answer on the next request(s) if they match the given condition
+     * a certain number of consecutive times.
      * @param answer Next answer to give
+     * @param query The query that should be satisfied to return this answer
+     * @param count The number of times this answer can be returned for matching
+     *  requests
      */
-    public void next(final MkAnswer answer) {
-        this.answers.add(answer);
+    public void next(final MkAnswer answer, final Matcher<MkQuery> query,
+        final int count) {
+        this.conditionals.add(new Conditional(answer, query, count));
     }
 
     /**
@@ -154,4 +182,62 @@ final class MkGrizzlyAdapter extends GrizzlyAdapter {
         }
     }
 
+    /**
+     * Answer with condition.
+     */
+    @EqualsAndHashCode(of = { "answr", "condition" })
+    private static final class Conditional {
+        /**
+         * The MkAnswer.
+         */
+        private final transient MkAnswer answr;
+        /**
+         * Condition for this answer.
+         */
+        private final transient Matcher<MkQuery> condition;
+        /**
+         * The number of times the answer is expected to appear.
+         */
+        private transient AtomicInteger count;
+        /**
+         * Ctor.
+         * @param ans The answer.
+         * @param matcher The matcher.
+         * @param times Number of times the answer should appear.
+         */
+        public Conditional(final MkAnswer ans, final Matcher<MkQuery> matcher,
+            final int times) {
+            this.answr = ans;
+            this.condition = matcher;
+            if (times < 1) {
+                throw new IllegalArgumentException(
+                    "Answer must be returned at least once."
+                );
+            } else {
+                this.count = new AtomicInteger(times);
+            }
+        }
+        /**
+         * Get the answer.
+         * @return The answer
+         */
+        public MkAnswer answer() {
+            return this.answr;
+        }
+        /**
+         * Does the query match the answer?
+         * @param query The query to match
+         * @return True, if the query matches the condition
+         */
+        public boolean matches(final MkQuery query) {
+            return this.condition.matches(query);
+        }
+        /**
+         * Decrement the count for this conditional.
+         * @return The updated count
+         */
+        public int decrement() {
+            return this.count.decrementAndGet();
+        }
+    }
 }
