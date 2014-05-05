@@ -78,8 +78,8 @@ public final class UserAgentWire implements Wire {
      */
     private static final String AGENT = String.format(
         "jcabi-%s/%s Java/%s",
-        Manifests.read("jcabi-Version"),
-        Manifests.read("jcabi-Build"),
+        Manifests.read("JCabi-Version"),
+        Manifests.read("JCabi-Build"),
         System.getProperty("java.version")
     );
 
