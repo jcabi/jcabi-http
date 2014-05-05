@@ -61,6 +61,57 @@ import org.hamcrest.Matcher;
  * @version $Id$
  * @since 0.10
  * @see <a href="http://www.rexsl.com/rexsl-test/example-mock-servlet.html">Examples</a>
+ * @todo #19 Let's introduce a utility class MkQueryMatchers which contains
+ *  convenience methods for matching MkQuery objects. This is primarily intended
+ *  for use with the conditional MkContainer.next() methods. For example:
+ *
+ *  <pre> MkContainer container = new MkGrizzlyContainer();
+ *   .next(
+ *     new MkAnswer.Simple("hello, world!"),
+ *     Matchers.allOf(
+ *       MkQueryMatchers.hasHeader(
+ *         "Content-Type",
+ *         Matchers.equalTo("text/plain")
+ *       ),
+ *       MkQueryMatchers.hasBody(
+ *         Matchers.containsString("say hello")
+ *       )
+ *     )
+ *  )
+ *  .start();</pre>
+ *
+ *  <p>The above means that the answer will be returned only for requests
+ *  with a Content-Type header of "text/plain" and the request body contains
+ *  "say hello".
+ *
+ * @todo #19 Let's add methods take(Matcher&lt;MkAnswer&gt;) and
+ *  takeAll(Matcher&lt;MkAnswer&gt;), and a utility class MkAnswerMatchers.
+ *  Intended usage is as follows:
+ *
+ *  <pre>MatcherAssert.assertThat(
+ *    container.takeAll(
+ *      MkAnswerMatchers.hasHeader(
+ *        "Content-Type",
+ *        Matchers.equalTo("application/json")
+ *      )
+ *    ),
+ *    Matchers.allOf(
+ *      Matchers.hasSize(5),
+ *      Matchers.hasItem(
+ *        Matchers.allOf(
+ *          MkQueryMatchers.hasHeader("User-Agent"),
+ *          MkQueryMatchers.hasBody(
+ *            Matchers.containsString("say hello")
+ *          )
+ *        )
+ *      )
+ *    )
+ *  );</pre>
+ *
+ *  <p>This means that we're taking all requests received by the container,
+ *  which were answered with responses that had a header "content-type" with a
+ *  value "application/json". We're asserting that there were 5 those answers.
+ *  And all of them had body "say hello" and a header "User-Agent".
  */
 public interface MkContainer {
 
