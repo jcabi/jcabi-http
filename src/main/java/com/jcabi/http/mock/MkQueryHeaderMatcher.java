@@ -29,44 +29,56 @@
  */
 package com.jcabi.http.mock;
 
+import lombok.EqualsAndHashCode;
+import lombok.ToString;
+import org.hamcrest.Description;
 import org.hamcrest.Matcher;
+import org.hamcrest.TypeSafeMatcher;
 
 /**
- * Convenient set of matchers for {@link MkQuery}.
+ * Matcher for checking {@link MkQuery#header()} contents.
  * @author Carlos Miranda (miranda.cma@gmail.com)
  * @version $Id$
  */
-public final class MkQueryMatchers {
+@ToString
+@EqualsAndHashCode(callSuper = false, of = { "header", "matcher" })
+final class MkQueryHeaderMatcher extends TypeSafeMatcher<MkQuery> {
 
     /**
-     * Private ctor.
+     * The header to match.
      */
-    private MkQueryMatchers() {
-        // Utility class - cannot instantiate
-    }
+    private final transient String header;
 
     /**
-     * Matches the value of {@link MkQuery#body()} against the given matcher.
-     *
-     * @param matcher The matcher to use.
-     * @return Matcher for checking the body of MkQuery
+     * The Matcher to use against the header.
      */
-    public static Matcher<MkQuery> hasBody(final Matcher<String> matcher) {
-        return new MkQueryBodyMatcher(matcher);
-    }
+    private final transient Matcher<Iterable<? extends String>> matcher;
 
     /**
-     * Matches the content of {@link MkQuery#header()} against the given
-     * matcher. Note that for a valid match to occur, the header entry must
-     * exist <i>and</i> its value(s) must match the given matcher.
-     *
-     * @param header The header to check.
-     * @param matcher The matcher to use.
-     * @return Matcher for checking the body of MkQuery
+     * Ctor.
+     * @param hdr The header to match
+     * @param match The matcher to use for the header
      */
-    public static Matcher<MkQuery> hasHeader(final String header,
-        final Matcher<Iterable<? extends String>> matcher) {
-        return new MkQueryHeaderMatcher(header, matcher);
+    MkQueryHeaderMatcher(final String hdr,
+        final Matcher<Iterable<? extends String>> match) {
+        super();
+        this.header = hdr;
+        this.matcher = match;
     }
+
+    @Override
+    public void describeTo(final Description description) {
+        this.matcher.describeTo(
+            description.appendText("MkQuery containing header ")
+                .appendText(this.header)
+                .appendText(" with matching value(s) of: ")
+        );
+    }
+
+    @Override
+    protected boolean matchesSafely(final MkQuery item) {
+        return item.headers().containsKey(this.header)
+            && this.matcher.matches(item.headers().get(this.header));
+    };
 
 }

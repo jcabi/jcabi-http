@@ -61,7 +61,7 @@ final class MkQueryBodyMatcher extends TypeSafeMatcher<MkQuery> {
     @Override
     public void describeTo(final Description description) {
         this.matcher.describeTo(
-            description.appendText("MkQuery body matching ")
+            description.appendText("MkQuery body matching: ")
         );
     }
 

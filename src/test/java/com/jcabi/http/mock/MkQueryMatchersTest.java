@@ -29,6 +29,7 @@
  */
 package com.jcabi.http.mock;
 
+import java.util.Collections;
 import org.hamcrest.MatcherAssert;
 import org.hamcrest.Matchers;
 import org.junit.Test;
@@ -53,6 +54,26 @@ public final class MkQueryMatchersTest {
             query,
             MkQueryMatchers.hasBody(
                 Matchers.is(body)
+            )
+        );
+    }
+
+    /**
+     * MkQueryMatchers should be able to match MkQuery header.
+     */
+    @Test
+    public void canMatchHeader() {
+        final String header = "Content-Type";
+        final String value = "application/json";
+        final MkQuery query = Mockito.mock(MkQuery.class);
+        Mockito.doReturn(
+            Collections.singletonMap(header, Collections.singletonList(value))
+        ).when(query).headers();
+        MatcherAssert.assertThat(
+            query,
+            MkQueryMatchers.hasHeader(
+                header,
+                Matchers.contains(value)
             )
         );
     }
