@@ -66,7 +66,7 @@ final class MkQueryBodyMatcher extends TypeSafeMatcher<MkQuery> {
     }
 
     @Override
-    protected boolean matchesSafely(final MkQuery item) {
+    public boolean matchesSafely(final MkQuery item) {
         return this.matcher.matches(item.body());
     };
 

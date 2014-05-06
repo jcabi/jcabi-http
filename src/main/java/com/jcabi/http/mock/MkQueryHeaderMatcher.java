@@ -76,7 +76,7 @@ final class MkQueryHeaderMatcher extends TypeSafeMatcher<MkQuery> {
     }
 
     @Override
-    protected boolean matchesSafely(final MkQuery item) {
+    public boolean matchesSafely(final MkQuery item) {
         return item.headers().containsKey(this.header)
             && this.matcher.matches(item.headers().get(this.header));
     };
