@@ -31,6 +31,7 @@ package com.jcabi.http.mock;
 
 import java.io.IOException;
 import java.net.URI;
+import java.util.Collection;
 import org.hamcrest.Matcher;
 
 /**
@@ -61,35 +62,9 @@ import org.hamcrest.Matcher;
  * @version $Id$
  * @since 0.10
  * @see <a href="http://www.rexsl.com/rexsl-test/example-mock-servlet.html">Examples</a>
- * @todo #19 Let's add methods take(Matcher&lt;MkAnswer&gt;) and
- *  takeAll(Matcher&lt;MkAnswer&gt;), and a utility class MkAnswerMatchers.
- *  Intended usage is as follows:
- *
- *  <pre>MatcherAssert.assertThat(
- *    container.takeAll(
- *      MkAnswerMatchers.hasHeader(
- *        "Content-Type",
- *        Matchers.equalTo("application/json")
- *      )
- *    ),
- *    Matchers.allOf(
- *      Matchers.hasSize(5),
- *      Matchers.hasItem(
- *        Matchers.allOf(
- *          MkQueryMatchers.hasHeader("User-Agent"),
- *          MkQueryMatchers.hasBody(
- *            Matchers.containsString("say hello")
- *          )
- *        )
- *      )
- *    )
- *  );</pre>
- *
- *  <p>This means that we're taking all requests received by the container,
- *  which were answered with responses that had a header "content-type" with a
- *  value "application/json". We're asserting that there were 5 those answers.
- *  And all of them had body "say hello" and a header "User-Agent".
+ * @checkstyle TooManyMethods (200 lines)
  */
+@SuppressWarnings("PMD.TooManyMethods")
 public interface MkContainer {
 
     /**
@@ -110,10 +85,10 @@ public interface MkContainer {
 
     /**
      * Give this answer on the next request(s) if the matcher condition is
-     * satisfied up to a certain number of consecutive requests.
+     * satisfied up to a certain number of requests.
      * @param answer Next answer to give
      * @param condition The condition to match
-     * @param count Number of consecutive requests to match
+     * @param count Number of requests to match
      * @return This object
      */
     MkContainer next(MkAnswer answer, Matcher<MkQuery> condition, int count);
@@ -125,6 +100,25 @@ public interface MkContainer {
      * @return Request received
      */
     MkQuery take();
+
+    /**
+     * Get the oldest request received subject to the matching condition.
+     * ({@link java.util.NoSuchElementException} if no elements satisfy the
+     * condition).
+     * @param matcher The matcher specifying the condition
+     * @return Request received satisfying the matcher
+     */
+    MkQuery take(Matcher<MkAnswer> matcher);
+
+    /**
+     * Get the all requests received satisfying the given matcher.
+     * ({@link java.util.NoSuchElementException} if no elements satisfy the
+     * condition).
+     * @param matcher The matcher specifying the condition
+     * @return Collection of all requests satisfying the matcher, ordered from
+     *  oldest to newest.
+     */
+    Collection<MkQuery> takeAll(Matcher<MkAnswer> matcher);
 
     /**
      * How many queries we have left.
