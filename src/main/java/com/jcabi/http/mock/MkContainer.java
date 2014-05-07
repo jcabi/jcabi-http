@@ -63,34 +63,6 @@ import org.hamcrest.Matcher;
  * @since 0.10
  * @see <a href="http://www.rexsl.com/rexsl-test/example-mock-servlet.html">Examples</a>
  * @checkstyle TooManyMethods (200 lines)
- * @todo #19 Let's add methods take(Matcher&lt;MkAnswer&gt;) and
- *  takeAll(Matcher&lt;MkAnswer&gt;), and a utility class MkAnswerMatchers.
- *  Intended usage is as follows:
- *
- *  <pre>MatcherAssert.assertThat(
- *    container.takeAll(
- *      MkAnswerMatchers.hasHeader(
- *        "Content-Type",
- *        Matchers.equalTo("application/json")
- *      )
- *    ),
- *    Matchers.allOf(
- *      Matchers.hasSize(5),
- *      Matchers.hasItem(
- *        Matchers.allOf(
- *          MkQueryMatchers.hasHeader("User-Agent"),
- *          MkQueryMatchers.hasBody(
- *            Matchers.containsString("say hello")
- *          )
- *        )
- *      )
- *    )
- *  );</pre>
- *
- *  <p>This means that we're taking all requests received by the container,
- *  which were answered with responses that had a header "content-type" with a
- *  value "application/json". We're asserting that there were 5 those answers.
- *  And all of them had body "say hello" and a header "User-Agent".
  */
 @SuppressWarnings("PMD.TooManyMethods")
 public interface MkContainer {
@@ -113,10 +85,10 @@ public interface MkContainer {
 
     /**
      * Give this answer on the next request(s) if the matcher condition is
-     * satisfied up to a certain number of consecutive requests.
+     * satisfied up to a certain number of requests.
      * @param answer Next answer to give
      * @param condition The condition to match
-     * @param count Number of consecutive requests to match
+     * @param count Number of requests to match
      * @return This object
      */
     MkContainer next(MkAnswer answer, Matcher<MkQuery> condition, int count);

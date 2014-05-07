@@ -198,7 +198,6 @@ final class MkGrizzlyAdapter extends GrizzlyAdapter {
             if (matcher.matches(candidate.answer())) {
                 results.add(candidate.query());
                 iter.remove();
-                break;
             }
         }
         if (results.isEmpty()) {
