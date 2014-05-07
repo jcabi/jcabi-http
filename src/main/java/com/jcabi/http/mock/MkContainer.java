@@ -31,6 +31,7 @@ package com.jcabi.http.mock;
 
 import java.io.IOException;
 import java.net.URI;
+import java.util.Collection;
 import org.hamcrest.Matcher;
 
 /**
@@ -61,6 +62,7 @@ import org.hamcrest.Matcher;
  * @version $Id$
  * @since 0.10
  * @see <a href="http://www.rexsl.com/rexsl-test/example-mock-servlet.html">Examples</a>
+ * @checkstyle TooManyMethods (200 lines)
  * @todo #19 Let's add methods take(Matcher&lt;MkAnswer&gt;) and
  *  takeAll(Matcher&lt;MkAnswer&gt;), and a utility class MkAnswerMatchers.
  *  Intended usage is as follows:
@@ -90,6 +92,7 @@ import org.hamcrest.Matcher;
  *  value "application/json". We're asserting that there were 5 those answers.
  *  And all of them had body "say hello" and a header "User-Agent".
  */
+@SuppressWarnings("PMD.TooManyMethods")
 public interface MkContainer {
 
     /**
@@ -125,6 +128,25 @@ public interface MkContainer {
      * @return Request received
      */
     MkQuery take();
+
+    /**
+     * Get the oldest request received subject to the matching condition.
+     * ({@link java.util.NoSuchElementException} if no elements satisfy the
+     * condition).
+     * @param matcher The matcher specifying the condition
+     * @return Request received satisfying the matcher
+     */
+    MkQuery take(Matcher<MkAnswer> matcher);
+
+    /**
+     * Get the all requests received satisfying the given matcher.
+     * ({@link java.util.NoSuchElementException} if no elements satisfy the
+     * condition).
+     * @param matcher The matcher specifying the condition
+     * @return Collection of all requests satisfying the matcher, ordered from
+     *  oldest to newest.
+     */
+    Collection<MkQuery> takeAll(Matcher<MkAnswer> matcher);
 
     /**
      * How many queries we have left.

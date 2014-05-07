@@ -38,7 +38,9 @@ import java.io.PrintWriter;
 import java.io.UnsupportedEncodingException;
 import java.net.HttpURLConnection;
 import java.nio.charset.Charset;
+import java.util.Collection;
 import java.util.Iterator;
+import java.util.LinkedList;
 import java.util.NoSuchElementException;
 import java.util.Queue;
 import java.util.concurrent.ConcurrentLinkedQueue;
@@ -54,6 +56,7 @@ import org.hamcrest.Matcher;
  * @version $Id$
  * @since 0.10
  */
+@SuppressWarnings("PMD.TooManyMethods")
 final class MkGrizzlyAdapter extends GrizzlyAdapter {
 
     /**
@@ -69,8 +72,8 @@ final class MkGrizzlyAdapter extends GrizzlyAdapter {
     /**
      * Queries received.
      */
-    private final transient Queue<MkQuery> queue =
-        new ConcurrentLinkedQueue<MkQuery>();
+    private final transient Queue<QueryWithAnswer> queue =
+        new ConcurrentLinkedQueue<QueryWithAnswer>();
 
     /**
      * Answers to give conditionally.
@@ -78,9 +81,15 @@ final class MkGrizzlyAdapter extends GrizzlyAdapter {
     private final transient Queue<Conditional> conditionals =
         new ConcurrentLinkedQueue<Conditional>();
 
-    // @checkstyle ExecutableStatementCount (50 lines)
+    // @checkstyle ExecutableStatementCount (55 lines)
     @Override
-    @SuppressWarnings({ "PMD.AvoidCatchingThrowable", "rawtypes" })
+    @SuppressWarnings(
+        {
+            "PMD.AvoidCatchingThrowable",
+            "PMD.AvoidInstantiatingObjectsInLoops",
+            "rawtypes"
+        }
+    )
     public void service(final GrizzlyRequest request,
         final GrizzlyResponse response) {
         try {
@@ -91,8 +100,8 @@ final class MkGrizzlyAdapter extends GrizzlyAdapter {
                 final Conditional cond = iter.next();
                 if (cond.matches(query)) {
                     matched = true;
-                    this.queue.add(query);
                     final MkAnswer answer = cond.answer();
+                    this.queue.add(new QueryWithAnswer(query, answer));
                     for (final String name : answer.headers().keySet()) {
                         // @checkstyle NestedForDepth (3 lines)
                         for (final String value : answer.headers().get(name)) {
@@ -145,7 +154,57 @@ final class MkGrizzlyAdapter extends GrizzlyAdapter {
      * @return Request received
      */
     public MkQuery take() {
-        return this.queue.remove();
+        return this.queue.remove().que;
+    }
+
+    /**
+     * Get the oldest request received subject to the matching condition.
+     * ({@link java.util.NoSuchElementException} if no elements satisfy the
+     * condition).
+     * @param matcher The matcher specifying the condition
+     * @return Request received satisfying the matcher
+     */
+    public MkQuery take(final Matcher<MkAnswer> matcher) {
+        MkQuery result = null;
+        final Iterator<QueryWithAnswer> iter = this.queue.iterator();
+        while (iter.hasNext()) {
+            final QueryWithAnswer candidate = iter.next();
+            if (matcher.matches(candidate.answer())) {
+                result = candidate.query();
+                iter.remove();
+                break;
+            }
+        }
+        if (result == null) {
+            // @checkstyle MultipleStringLiterals (1 line)
+            throw new NoSuchElementException("No matching results found");
+        }
+        return result;
+    }
+
+    /**
+     * Get the all requests received satisfying the given matcher.
+     * ({@link java.util.NoSuchElementException} if no elements satisfy the
+     * condition).
+     * @param matcher The matcher specifying the condition
+     * @return Collection of all requests satisfying the matcher, ordered from
+     *  oldest to newest.
+     */
+    public Collection<MkQuery> takeAll(final Matcher<MkAnswer> matcher) {
+        final Collection<MkQuery> results = new LinkedList<MkQuery>();
+        final Iterator<QueryWithAnswer> iter = this.queue.iterator();
+        while (iter.hasNext()) {
+            final QueryWithAnswer candidate = iter.next();
+            if (matcher.matches(candidate.answer())) {
+                results.add(candidate.query());
+                iter.remove();
+                break;
+            }
+        }
+        if (results.isEmpty()) {
+            throw new NoSuchElementException("No matching results found");
+        }
+        return results;
     }
 
     /**
@@ -238,6 +297,44 @@ final class MkGrizzlyAdapter extends GrizzlyAdapter {
          */
         public int decrement() {
             return this.count.decrementAndGet();
+        }
+    }
+
+    /**
+     * Query with answer.
+     */
+    @EqualsAndHashCode(of = { "answr", "que" })
+    private static final class QueryWithAnswer {
+        /**
+         * The answer.
+         */
+        private final transient MkAnswer answr;
+        /**
+         * The query.
+         */
+        private final transient MkQuery que;
+        /**
+         * Ctor.
+         * @param qry The query
+         * @param ans The answer
+         */
+        public QueryWithAnswer(final MkQuery qry, final MkAnswer ans) {
+            this.answr = ans;
+            this.que = qry;
+        }
+        /**
+         * Get the query.
+         * @return The query.
+         */
+        public MkQuery query() {
+            return this.que;
+        }
+        /**
+         * Get the answer.
+         * @return Answer
+         */
+        public MkAnswer answer() {
+            return this.answr;
         }
     }
 }

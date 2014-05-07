@@ -35,6 +35,7 @@ import com.sun.grizzly.http.embed.GrizzlyWebServer;
 import java.io.IOException;
 import java.net.ServerSocket;
 import java.net.URI;
+import java.util.Collection;
 import lombok.EqualsAndHashCode;
 import org.hamcrest.Matcher;
 import org.hamcrest.core.IsAnything;
@@ -47,7 +48,9 @@ import org.hamcrest.core.IsAnything;
  * @since 0.10
  * @see MkContainer
  * @see <a href="http://www.rexsl.com/rexsl-test/example-mock-servlet.html">Examples</a>
+ * @checkstyle TooManyMethods (200 lines)
  */
+@SuppressWarnings("PMD.TooManyMethods")
 @EqualsAndHashCode(of = { "adapter", "gws", "port" })
 @Loggable(Loggable.DEBUG)
 public final class MkGrizzlyContainer implements MkContainer {
@@ -89,6 +92,16 @@ public final class MkGrizzlyContainer implements MkContainer {
     @Override
     public MkQuery take() {
         return this.adapter.take();
+    }
+
+    @Override
+    public MkQuery take(final Matcher<MkAnswer> matcher) {
+        return this.adapter.take(matcher);
+    }
+
+    @Override
+    public Collection<MkQuery> takeAll(final Matcher<MkAnswer> matcher) {
+        return this.adapter.takeAll(matcher);
     }
 
     @Override
