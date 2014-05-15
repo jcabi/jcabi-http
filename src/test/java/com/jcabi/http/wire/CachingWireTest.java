@@ -97,24 +97,26 @@ public final class CachingWireTest {
         final MkContainer container = new MkGrizzlyContainer()
             .next(new MkAnswer.Simple("first response"))
             .next(new MkAnswer.Simple("second response"))
+            .next(new MkAnswer.Simple("third response"))
             .start();
         final Request req = new JdkRequest(container.home())
-            .through(CachingWire.class, "/flush/.*");
+            .through(CachingWire.class, "POST /flush\\?a=1");
         req.fetch()
             .as(RestResponse.class)
-            .assertStatus(HttpURLConnection.HTTP_OK)
             .assertBody(Matchers.containsString("first"));
         req.fetch()
             .as(RestResponse.class)
-            .assertStatus(HttpURLConnection.HTTP_OK)
-            .assertBody(Matchers.containsString("first "));
-        req.uri().path("/flush").back()
-            .fetch()
+            .assertBody(Matchers.containsString("first re"));
+        req.method(Request.POST).uri().path("flush")
+            .queryParam("a", "1").back().fetch();
+        req.fetch()
             .as(RestResponse.class)
-            .assertStatus(HttpURLConnection.HTTP_OK)
-            .assertBody(Matchers.containsString("second"));
+            .assertBody(Matchers.containsString("third"));
         container.stop();
-        MatcherAssert.assertThat(container.queries(), Matchers.equalTo(2));
+        MatcherAssert.assertThat(
+            container.queries(),
+            Matchers.equalTo(Tv.THREE)
+        );
     }
 
 }

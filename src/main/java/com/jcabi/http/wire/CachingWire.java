@@ -36,6 +36,7 @@ import com.jcabi.http.Request;
 import com.jcabi.http.Response;
 import com.jcabi.http.Wire;
 import java.io.IOException;
+import java.net.URI;
 import java.util.Collection;
 import java.util.Map;
 import java.util.concurrent.TimeUnit;
@@ -59,9 +60,13 @@ import lombok.ToString;
  * on certain request URI's, for example:
  *
  * <pre>new JdkRequest(uri)
- *   .through(CachingWire.class, "/save/.*")
+ *   .through(CachingWire.class, "GET /save/.*")
  *   .uri().path("/save/123").back()
  *   .fetch();</pre>
+ *
+ * <p>The regular expression provided will be used against a string
+ * constructed as an HTTP method, space, path of the URI together with
+ * query part.
  *
  * <p>The class is immutable and thread-safe.
  *
@@ -106,23 +111,26 @@ public final class CachingWire implements Wire {
         this.regex = flsh;
     }
 
-    /**
-     * {@inheritDoc}
-     * @checkstyle ParameterNumber (13 lines)
-     */
+    // @checkstyle ParameterNumber (5 lines)
     @Override
     public Response send(final Request req, final String home,
         final String method,
         final Collection<Map.Entry<String, String>> headers,
         final byte[] content) throws IOException {
+        final URI uri = req.uri().get();
+        final StringBuilder label = new StringBuilder(Tv.HUNDRED)
+            .append(method).append(' ').append(uri.getPath());
+        if (uri.getQuery() != null) {
+            label.append('?').append(uri.getQuery());
+        }
+        if (label.toString().matches(this.regex)) {
+            this.flush();
+        }
         final Response rsp;
         if (method.equals(Request.GET)) {
             rsp = this.get(req, home, headers, content);
         } else {
             rsp = this.origin.send(req, home, method, headers, content);
-        }
-        if (req.uri().toString().matches(this.regex)) {
-            this.flush();
         }
         return rsp;
     }
