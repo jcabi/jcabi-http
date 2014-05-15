@@ -88,4 +88,33 @@ public final class CachingWireTest {
         MatcherAssert.assertThat(container.queries(), Matchers.equalTo(2));
     }
 
+    /**
+     * CachingWire can flush on regular expression match.
+     * @throws Exception If something goes wrong inside
+     */
+    @Test
+    public void flushesOnRegularExpressionMatch() throws Exception {
+        final MkContainer container = new MkGrizzlyContainer()
+            .next(new MkAnswer.Simple("first response"))
+            .next(new MkAnswer.Simple("second response"))
+            .start();
+        final Request req = new JdkRequest(container.home())
+            .through(CachingWire.class, "/flush/.*");
+        req.fetch()
+            .as(RestResponse.class)
+            .assertStatus(HttpURLConnection.HTTP_OK)
+            .assertBody(Matchers.containsString("first"));
+        req.fetch()
+            .as(RestResponse.class)
+            .assertStatus(HttpURLConnection.HTTP_OK)
+            .assertBody(Matchers.containsString("first "));
+        req.uri().path("/flush").back()
+            .fetch()
+            .as(RestResponse.class)
+            .assertStatus(HttpURLConnection.HTTP_OK)
+            .assertBody(Matchers.containsString("second"));
+        container.stop();
+        MatcherAssert.assertThat(container.queries(), Matchers.equalTo(2));
+    }
+
 }

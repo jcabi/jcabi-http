@@ -55,6 +55,14 @@ import lombok.ToString;
  *   .fetch()
  *   .body();</pre>
  *
+ * <p>Since 1.5, you can also configure it to flush the entire cache
+ * on certain request URI's, for example:
+ *
+ * <pre>new JdkRequest(uri)
+ *   .through(CachingWire.class, "/save/.*")
+ *   .uri().path("/save/123").back()
+ *   .fetch();</pre>
+ *
  * <p>The class is immutable and thread-safe.
  *
  * @author Yegor Bugayenko (yegor@tpc2.com)
@@ -63,7 +71,7 @@ import lombok.ToString;
  */
 @Immutable
 @ToString
-@EqualsAndHashCode(of = "origin")
+@EqualsAndHashCode(of = { "origin", "regex" })
 public final class CachingWire implements Wire {
 
     /**
@@ -72,12 +80,30 @@ public final class CachingWire implements Wire {
     private final transient Wire origin;
 
     /**
+     * Flushing regular expression.
+     */
+    private final transient String regex;
+
+    /**
      * Public ctor.
      * @param wire Original wire
      */
     public CachingWire(@NotNull(message = "wire can't be NULL")
         final Wire wire) {
+        this(wire, "$never");
+    }
+
+    /**
+     * Public ctor.
+     * @param wire Original wire
+     * @param flsh Flushing regular expression
+     * @since 1.5
+     */
+    public CachingWire(
+        @NotNull(message = "wire can't be NULL") final Wire wire,
+        @NotNull(message = "regular expression is NULL") final String flsh) {
         this.origin = wire;
+        this.regex = flsh;
     }
 
     /**
@@ -94,6 +120,9 @@ public final class CachingWire implements Wire {
             rsp = this.get(req, home, headers, content);
         } else {
             rsp = this.origin.send(req, home, method, headers, content);
+        }
+        if (req.uri().toString().matches(this.regex)) {
+            this.flush();
         }
         return rsp;
     }
@@ -114,4 +143,13 @@ public final class CachingWire implements Wire {
         final byte[] content) throws IOException {
         return this.origin.send(req, home, Request.GET, headers, content);
     }
+
+    /**
+     * Do nothing, just regex the entire cache.
+     */
+    @Cacheable.FlushAfter
+    private void flush() {
+        // intentionally empty
+    }
+
 }
