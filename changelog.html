@@ -1,13 +1,10 @@
 <!DOCTYPE html>
-<!--
- * Copyright (c) 2012-2013, JCabi.com
- * All rights reserved.
- -->
-<html xmlns="http://www.w3.org/1999/xhtml">
+<html xmlns="http://www.w3.org/1999/xhtml" lang="en-US">
     <head>
         <meta charset="UTF-8"/>
         <meta name="viewport" content="width=device-width, initial-scale=1.0" />
         <title>jcabi-http - Change Log Report</title>
+        <link media="all" rel="stylesheet" type="text/css" href="//netdna.bootstrapcdn.com/font-awesome/4.0.3/css/font-awesome.css"/>
         <link media="all" rel="stylesheet" type="text/css" href="./css/jcabi.css"/>
                             <script>
                 var _gaq = _gaq || [];
@@ -23,19 +20,10 @@
 <link rel="shortcut icon" href="http://img.jcabi.com/favicon.ico"/>
                                                                                                                 
 <link rel="author" href="https://plus.google.com/u/0/114792568016408327418?rel=author"/>
-                                            <link rel="stylesheet" href="./css/highlight.css" />
-        <script src="./js/jquery-1.8.3.min.js"></script>
-        <script src="./js/highlight-7.3.min.js"></script>
-        <link href="http://netdna.bootstrapcdn.com/font-awesome/4.0.3/css/font-awesome.css" rel="stylesheet"/>
-        <link href="./css/jcabi.css" rel="stylesheet"/>
+                                            <script src="//code.jquery.com/jquery-2.1.0.min.js"></script>
         <script>
             $(document).ready(
                 function() {
-                    $('div.source pre').each(
-                        function (idx, element) {
-                            hljs.highlightBlock(element);
-                        }
-                    );
                     $(".menu-button").click(
                         function() {
                             if ($("#here-goes-menu").attr("class") == "menu-off") {
@@ -52,30 +40,34 @@
         </script>
     </head>
     <body>
-                <div class="page">
-            <div class="menu-section">
-                <ul id="menu">
+                <section class="page" itemscope="" itemtype="http://schema.org/BlogPosting">
+            <nav class="menu-section" role="navigation">
+                <ul class="menu">
                                                                                     <li>
                             Overview
                                                             <ul>
-                                                                                                    <li>
-                                                                                    <a href="index.html" title="Introduction">Introduction</a>
-                                                                                                                                                                        <ul>
+                                                                                                    <li >
+                            <span>                        <a href="index.html" title="Introduction">Introduction</a>
+        </span>
+                                                                                                                                                                <ul>
                                                                     </ul>
                                                     </li>
-                                                                                                                        <li>
-                                                                                    <a href="apidocs-1.4.1/index.html" title="API 1.4.1 (JavaDoc)">API 1.4.1 (JavaDoc)</a>
-                                                                                                                                                                        <ul>
+                                                                                                                        <li >
+                            <span>                        <a href="apidocs-1.5/index.html" title="API 1.5 (JavaDoc)">API 1.5 (JavaDoc)</a>
+        </span>
+                                                                                                                                                                <ul>
                                                                     </ul>
                                                     </li>
-                                                                                                                        <li>
-                                                                                    <a href="cobertura/index.html" title="Test coverage">Test coverage</a>
-                                                                                                                                                                        <ul>
+                                                                                                                        <li >
+                            <span>                        <a href="cobertura/index.html" title="Test coverage">Test coverage</a>
+        </span>
+                                                                                                                                                                <ul>
                                                                     </ul>
                                                     </li>
-                                                                                                                        <li>
-                                                                                    <a href="https://github.com/jcabi/jcabi-http/releases" title="Release History">Release History</a>
-                                                                                                                                                                        <ul>
+                                                                                                                        <li >
+                            <span>                        <a href="https://github.com/jcabi/jcabi-http/releases" title="Release History">Release History</a>
+        </span>
+                                                                                                                                                                <ul>
                                                                     </ul>
                                                     </li>
                                                                                         </ul>
@@ -83,29 +75,34 @@
                                             <li>
                             Examples
                                                             <ul>
-                                                                                                    <li>
-                                                                                    <a href="example-request.html" title="Make HTTP Request">Make HTTP Request</a>
-                                                                                                                                                                        <ul>
+                                                                                                    <li >
+                            <span>                        <a href="example-request.html" title="Make HTTP Request">Make HTTP Request</a>
+        </span>
+                                                                                                                                                                <ul>
                                                                     </ul>
                                                     </li>
-                                                                                                                        <li>
-                                                                                    <a href="example-xml-response.html" title="XML Response">XML Response</a>
-                                                                                                                                                                        <ul>
+                                                                                                                        <li >
+                            <span>                        <a href="example-xml-response.html" title="XML Response">XML Response</a>
+        </span>
+                                                                                                                                                                <ul>
                                                                     </ul>
                                                     </li>
-                                                                                                                        <li>
-                                                                                    <a href="example-json-response.html" title="JSON Response">JSON Response</a>
-                                                                                                                                                                        <ul>
+                                                                                                                        <li >
+                            <span>                        <a href="example-json-response.html" title="JSON Response">JSON Response</a>
+        </span>
+                                                                                                                                                                <ul>
                                                                     </ul>
                                                     </li>
-                                                                                                                        <li>
-                                                                                    <a href="example-web-linking-response.html" title="Web Linking Response">Web Linking Response</a>
-                                                                                                                                                                        <ul>
+                                                                                                                        <li >
+                            <span>                        <a href="example-web-linking-response.html" title="Web Linking Response">Web Linking Response</a>
+        </span>
+                                                                                                                                                                <ul>
                                                                     </ul>
                                                     </li>
-                                                                                                                        <li>
-                                                                                    <a href="example-retry-request.html" title="HTTP Request that retries">HTTP Request that retries</a>
-                                                                                                                                                                        <ul>
+                                                                                                                        <li >
+                            <span>                        <a href="example-retry-request.html" title="HTTP Request that retries">HTTP Request that retries</a>
+        </span>
+                                                                                                                                                                <ul>
                                                                     </ul>
                                                     </li>
                                                                                         </ul>
@@ -113,9 +110,10 @@
                                             <li>
                             Mock Servlet Container
                                                             <ul>
-                                                                                                    <li>
-                                                                                    <a href="example-mock-container.html" title="HTTP client unit testing">HTTP client unit testing</a>
-                                                                                                                                                                        <ul>
+                                                                                                    <li >
+                            <span>                        <a href="example-mock-container.html" title="HTTP client unit testing">HTTP client unit testing</a>
+        </span>
+                                                                                                                                                                <ul>
                                                                     </ul>
                                                     </li>
                                                                                         </ul>
@@ -123,76 +121,90 @@
                                             <li>
                             Project Documentation
                                                             <ul>
-                                                                                                    <li>
-                                                                                    <a href="project-info.html" title="Project Information">Project Information</a>
-                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                            </li>
-                                                                                                                        <li>
-                                                                                    <a href="project-reports.html" title="Project Reports">Project Reports</a>
-                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                    <ul>
-                                                                                                    <li>
-                                                                                    <a href="rempl.html" title="REMPL">REMPL</a>
-                                                                                                                                                                        <ul>
-                                                                    </ul>
-                                                    </li>
-                                                                                                                        <li>
-                                                                                    <a href="xref-test/index.html" title="Test Source Xref">Test Source Xref</a>
-                                                                                                                                                                        <ul>
-                                                                    </ul>
-                                                    </li>
-                                                                                                                        <li>
-                                                                                    <a href="xref/index.html" title="Source Xref">Source Xref</a>
-                                                                                                                                                                        <ul>
-                                                                    </ul>
-                                                    </li>
-                                                                                                                        <li>
-                                                                                    <a href="surefire-report.html" title="Surefire Report">Surefire Report</a>
-                                                                                                                                                                        <ul>
-                                                                    </ul>
-                                                    </li>
-                                                                                                                        <li>
-                                                            <strong>                        <a href="changelog.html" title="Change Log">Change Log</a>
-        </strong>
+                                                                                                    <li >
+                            <span>                        <a href="project-info.html" title="Project Information">Project Information</a>
+        </span>
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                    </li>
+                                                                                                                        <li >
+                            <span>                        <a href="project-reports.html" title="Project Reports">Project Reports</a>
+        </span>
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                            <ul>
+                                                                                                    <li >
+                            <span>                        <a href="rempl.html" title="REMPL">REMPL</a>
+        </span>
                                                                                                                                                                 <ul>
                                                                     </ul>
                                                     </li>
-                                                                                                                        <li>
-                                                                                    <a href="dev-activity.html" title="Developer Activity">Developer Activity</a>
-                                                                                                                                                                        <ul>
+                                                                                                                        <li >
+                            <span>                        <a href="xref-test/index.html" title="Test Source Xref">Test Source Xref</a>
+        </span>
+                                                                                                                                                                <ul>
                                                                     </ul>
                                                     </li>
-                                                                                                                        <li>
-                                                                                    <a href="file-activity.html" title="File Activity">File Activity</a>
-                                                                                                                                                                        <ul>
+                                                                                                                        <li >
+                            <span>                        <a href="xref/index.html" title="Source Xref">Source Xref</a>
+        </span>
+                                                                                                                                                                <ul>
                                                                     </ul>
                                                     </li>
-                                                                                                                        <li>
-                                                                                    <a href="dependency-updates-report.html" title="Dependency Updates Report">Dependency Updates Report</a>
-                                                                                                                                                                        <ul>
+                                                                                                                        <li >
+                            <span>                        <a href="surefire-report.html" title="Surefire Report">Surefire Report</a>
+        </span>
+                                                                                                                                                                <ul>
                                                                     </ul>
                                                     </li>
-                                                                                                                        <li>
-                                                                                    <a href="plugin-updates-report.html" title="Plugin Updates Report">Plugin Updates Report</a>
-                                                                                                                                                                        <ul>
+                                                                                                                        <li  class='active' >
+                            <span>                        <a href="changelog.html" title="Change Log">Change Log</a>
+        </span>
+                                                                                                                                                                <ul>
                                                                     </ul>
                                                     </li>
-                                                                                                                        <li>
-                                                                                    <a href="apidocs-1.4.1/index.html" title="JavaDocs">JavaDocs</a>
-                                                                                                                                                                        <ul>
+                                                                                                                        <li >
+                            <span>                        <a href="dev-activity.html" title="Developer Activity">Developer Activity</a>
+        </span>
+                                                                                                                                                                <ul>
                                                                     </ul>
                                                     </li>
-                                                                                                                        <li>
-                                                                                    <a href="cobertura/index.html" title="Cobertura Test Coverage">Cobertura Test Coverage</a>
-                                                                                                                                                                        <ul>
+                                                                                                                        <li >
+                            <span>                        <a href="file-activity.html" title="File Activity">File Activity</a>
+        </span>
+                                                                                                                                                                <ul>
                                                                     </ul>
                                                     </li>
-                                                                                                                        <li>
-                                                                                    <a href="github-report.html" title="GitHub Report">GitHub Report</a>
-                                                                                                                                                                        <ul>
+                                                                                                                        <li >
+                            <span>                        <a href="dependency-updates-report.html" title="Dependency Updates Report">Dependency Updates Report</a>
+        </span>
+                                                                                                                                                                <ul>
                                                                     </ul>
                                                     </li>
-                                                                                                                        <li>
-                                                                                    <a href="changes-report.html" title="Changes Report">Changes Report</a>
-                                                                                                                                                                        <ul>
+                                                                                                                        <li >
+                            <span>                        <a href="plugin-updates-report.html" title="Plugin Updates Report">Plugin Updates Report</a>
+        </span>
+                                                                                                                                                                <ul>
+                                                                    </ul>
+                                                    </li>
+                                                                                                                        <li >
+                            <span>                        <a href="apidocs-1.5/index.html" title="JavaDocs">JavaDocs</a>
+        </span>
+                                                                                                                                                                <ul>
+                                                                    </ul>
+                                                    </li>
+                                                                                                                        <li >
+                            <span>                        <a href="cobertura/index.html" title="Cobertura Test Coverage">Cobertura Test Coverage</a>
+        </span>
+                                                                                                                                                                <ul>
+                                                                    </ul>
+                                                    </li>
+                                                                                                                        <li >
+                            <span>                        <a href="github-report.html" title="GitHub Report">GitHub Report</a>
+        </span>
+                                                                                                                                                                <ul>
+                                                                    </ul>
+                                                    </li>
+                                                                                                                        <li >
+                            <span>                        <a href="changes-report.html" title="Changes Report">Changes Report</a>
+        </span>
+                                                                                                                                                                <ul>
                                                                     </ul>
                                                     </li>
                                                                                         </ul>
@@ -200,64 +212,128 @@
                                                                                         </ul>
                                                     </li>
                                     </ul>
-            </div>
-            <div id="right-side">
-                <div id="content">
-                    <i class="menu-button fa fa-align-justify"></i>
-                    <div class="logo-section">
-                        <a href="../" title="${decoration.bannerLeft.title}">
-                            <img src="http://img.jcabi.com/logo-square.png"
-                                alt="jcabi"
-                                                                    width="64"
-                                                                                                    height="64"
-                                                            />
-                        </a>
-                    </div>
-                    <div class="date">
-                        <div class="date-numbers">
-                            <strong>1.4.1</strong>
-                            
-                            29-Apr-2014
-                        </div>
-                                                                            <div class="github">
-                                <iframe
-                                    class="github-large"
-                                    src="http://ghbtns.com/github-btn.html?user=jcabi&amp;repo=jcabi-http&amp;type=watch&amp;count=true&amp;size=large"
-                                    allowtransparency="true"
-                                    frameborder="0"
-                                    scrolling="0"
-                                    width="170"
-                                    height="30">
-                                </iframe>
-                                <iframe
-                                    class="github-small"
-                                    src="http://ghbtns.com/github-btn.html?user=jcabi&amp;repo=jcabi-http&amp;type=watch&amp;count=true&amp;size=small"
-                                    allowtransparency="true"
-                                    frameborder="0"
-                                    scrolling="0"
-                                    width="170"
-                                    height="30">
-                                </iframe>
+            </nav>
+            <div class="right-side">
+                <main role="main">
+                    <div class="content">
+                        <header>
+                            <i class="menu-button fa fa-align-justify"></i>
+                            <div class="logo">
+                                <a href="../"
+                                    title=" logo ">
+                                    <img src="http://img.jcabi.com/logo-square.png"
+                                        alt="jcabi"
+                                                                                    width="64"
+                                                                                                                            height="64"
+                                                                                itemprop="image"
+                                    />
+                                </a>
                             </div>
-                                            </div>
-                    <div id="here-goes-menu" class="menu-off"></div>
-                    <article>
-                        <div class="section">
+                            <div class="date">
+                                <div class="date-numbers">
+                                    <strong itemprop="version">1.5</strong>
+                                    
+                                    <time itemprop="datePublished" datetime="2014-05-15T02:18:15Z">
+                                        
+                                        15-May-2014
+                                    </time>
+                                </div>
+                                                                                                    <div>
+                                        <iframe src="http://ghbtns.com/github-btn.html?user=jcabi&amp;repo=jcabi-http&amp;type=watch&amp;count=true&amp;size=large"
+                                            style="border-width:0px;overflow:hidden;width:170px;height:30px;">
+                                        </iframe>
+                                    </div>
+                                                            </div>
+                            <div id="here-goes-menu" class="menu-off"></div>
+                        </header>
+                        <article role="article" itemprop="articleBody">
                             <div class="section">
 <h2>Change Log Report<a name="Change_Log_Report"></a></h2>
 <p>Total number of changed sets: 1</p>
 <div class="section">
-<h3>Changes between 2014-03-30 and 2014-04-30<a name="Changes_between_2014-03-30_and_2014-04-30"></a></h3>
-<p>Total commits: 39<br />Total number of files changed: 26</p>
+<h3>Changes between 2014-04-15 and 2014-05-16<a name="Changes_between_2014-04-15_and_2014-05-16"></a></h3>
+<p>Total commits: 29<br />Total number of files changed: 75</p>
 <table border="0" class="bodyTable">
 <tr class="a">
 <th>Timestamp</th>
 <th>Author</th>
 <th>Details</th></tr>
 <tr class="b">
-<td>2014-04-29 11:28:11</td>
+<td>2014-05-15 14:12:56</td>
 <td>Yegor Bugayenko &lt;yegor@tpc2.com&gt;</td>
-<td><a class="externalLink" href="https://github.com/jcabi/jcabi-http/pom.xml"><b>pom.xml</b></a> <a class="externalLink" href="https://github.com/jcabi/jcabi-http/pom.xml?rev=b1633852e9a35c4d53c9b75806dffbc57d911504&amp;content-type=text/vnd.viewcvs-markup">v b1633852e9a35c4d53c9b75806dffbc57d911504</a><br /><br />1.4.1</td></tr>
+<td><a class="externalLink" href="https://github.com/jcabi/jcabi-http/pom.xml"><b>pom.xml</b></a> <a class="externalLink" href="https://github.com/jcabi/jcabi-http/pom.xml?rev=5201b7897177a7e2f2dd16edecc3ec9cb94f6723&amp;content-type=text/vnd.viewcvs-markup">v 5201b7897177a7e2f2dd16edecc3ec9cb94f6723</a><br /><br />1.5</td></tr>
+<tr class="a">
+<td>2014-05-15 11:36:09</td>
+<td>Yegor Bugayenko &lt;yegor@tpc2.com&gt;</td>
+<td><a class="externalLink" href="https://github.com/jcabi/jcabi-http/src/site/site.xml">src/site/<b>site.xml</b></a> <a class="externalLink" href="https://github.com/jcabi/jcabi-http/src/site/site.xml?rev=b539edd1fe4d3de40403b3341a53afc236e4070c&amp;content-type=text/vnd.viewcvs-markup">v b539edd1fe4d3de40403b3341a53afc236e4070c</a><br /><br />skin 1.3</td></tr>
+<tr class="b">
+<td>2014-05-15 10:41:05</td>
+<td>Yegor Bugayenko &lt;yegor@tpc2.com&gt;</td>
+<td><a class="externalLink" href="https://github.com/jcabi/jcabi-http/pom.xml"><b>pom.xml</b></a> <a class="externalLink" href="https://github.com/jcabi/jcabi-http/pom.xml?rev=b6c8c61f023898ea05947eea8cfb220d8996b54c&amp;content-type=text/vnd.viewcvs-markup">v b6c8c61f023898ea05947eea8cfb220d8996b54c</a><br /><br />#master: newest jersey</td></tr>
+<tr class="a">
+<td>2014-05-15 10:39:47</td>
+<td>Yegor Bugayenko &lt;yegor@tpc2.com&gt;</td>
+<td><a class="externalLink" href="https://github.com/jcabi/jcabi-http/src/main/java/com/jcabi/http/wire/CachingWire.java">src/main/java/com/jcabi/http/wire/<b>CachingWire.java</b></a> <a class="externalLink" href="https://github.com/jcabi/jcabi-http/src/main/java/com/jcabi/http/wire/CachingWire.java?rev=ad5958a1ee3b88b64134b7a0e5f24565082f97c8&amp;content-type=text/vnd.viewcvs-markup">v ad5958a1ee3b88b64134b7a0e5f24565082f97c8</a><br /><a class="externalLink" href="https://github.com/jcabi/jcabi-http/src/test/java/com/jcabi/http/wire/CachingWireTest.java">src/test/java/com/jcabi/http/wire/<b>CachingWireTest.java</b></a> <a class="externalLink" href="https://github.com/jcabi/jcabi-http/src/test/java/com/jcabi/http/wire/CachingWireTest.java?rev=ad5958a1ee3b88b64134b7a0e5f24565082f97c8&amp;content-type=text/vnd.viewcvs-markup">v ad5958a1ee3b88b64134b7a0e5f24565082f97c8</a><br /><br />#28 CachingWire gets second ctor argument</td></tr>
+<tr class="b">
+<td>2014-05-07 11:48:06</td>
+<td>Carlos Miranda &lt;carlosmiranda@users.noreply.github.com&gt;</td>
+<td><a class="externalLink" href="https://github.com/jcabi/jcabi-http/src/main/java/com/jcabi/http/mock/MkContainer.java">src/main/java/com/jcabi/http/mock/<b>MkContainer.java</b></a> <a class="externalLink" href="https://github.com/jcabi/jcabi-http/src/main/java/com/jcabi/http/mock/MkContainer.java?rev=9aa74bbefbc4113aa71240638166a5e31b9930cf&amp;content-type=text/vnd.viewcvs-markup">v 9aa74bbefbc4113aa71240638166a5e31b9930cf</a><br /><a class="externalLink" href="https://github.com/jcabi/jcabi-http/src/main/java/com/jcabi/http/mock/MkGrizzlyAdapter.java">src/main/java/com/jcabi/http/mock/<b>MkGrizzlyAdapter.java</b></a> <a class="externalLink" href="https://github.com/jcabi/jcabi-http/src/main/java/com/jcabi/http/mock/MkGrizzlyAdapter.java?rev=9aa74bbefbc4113aa71240638166a5e31b9930cf&amp;content-type=text/vnd.viewcvs-markup">v 9aa74bbefbc4113aa71240638166a5e31b9930cf</a><br /><a class="externalLink" href="https://github.com/jcabi/jcabi-http/src/test/java/com/jcabi/http/mock/MkContainerTest.java">src/test/java/com/jcabi/http/mock/<b>MkContainerTest.java</b></a> <a class="externalLink" href="https://github.com/jcabi/jcabi-http/src/test/java/com/jcabi/http/mock/MkContainerTest.java?rev=9aa74bbefbc4113aa71240638166a5e31b9930cf&amp;content-type=text/vnd.viewcvs-markup">v 9aa74bbefbc4113aa71240638166a5e31b9930cf</a><br /><br />#24 Unit tests, removed puzzle</td></tr>
+<tr class="a">
+<td>2014-05-07 10:50:31</td>
+<td>Carlos Miranda &lt;carlosmiranda@users.noreply.github.com&gt;</td>
+<td><a class="externalLink" href="https://github.com/jcabi/jcabi-http/src/main/java/com/jcabi/http/mock/MkContainer.java">src/main/java/com/jcabi/http/mock/<b>MkContainer.java</b></a> <a class="externalLink" href="https://github.com/jcabi/jcabi-http/src/main/java/com/jcabi/http/mock/MkContainer.java?rev=4e852c5817048ae53e18eb6974b2a143eccd7596&amp;content-type=text/vnd.viewcvs-markup">v 4e852c5817048ae53e18eb6974b2a143eccd7596</a><br /><a class="externalLink" href="https://github.com/jcabi/jcabi-http/src/main/java/com/jcabi/http/mock/MkGrizzlyAdapter.java">src/main/java/com/jcabi/http/mock/<b>MkGrizzlyAdapter.java</b></a> <a class="externalLink" href="https://github.com/jcabi/jcabi-http/src/main/java/com/jcabi/http/mock/MkGrizzlyAdapter.java?rev=4e852c5817048ae53e18eb6974b2a143eccd7596&amp;content-type=text/vnd.viewcvs-markup">v 4e852c5817048ae53e18eb6974b2a143eccd7596</a><br /><a class="externalLink" href="https://github.com/jcabi/jcabi-http/src/main/java/com/jcabi/http/mock/MkGrizzlyContainer.java">src/main/java/com/jcabi/http/mock/<b>MkGrizzlyContainer.java</b></a> <a class="externalLink" href="https://github.com/jcabi/jcabi-http/src/main/java/com/jcabi/http/mock/MkGrizzlyContainer.java?rev=4e852c5817048ae53e18eb6974b2a143eccd7596&amp;content-type=text/vnd.viewcvs-markup">v 4e852c5817048ae53e18eb6974b2a143eccd7596</a><br /><br />#24 take and takeAll methods</td></tr>
+<tr class="b">
+<td>2014-05-07 09:35:07</td>
+<td>Carlos Miranda &lt;carlosmiranda@users.noreply.github.com&gt;</td>
+<td><a class="externalLink" href="https://github.com/jcabi/jcabi-http/src/main/java/com/jcabi/http/mock/MkAnswerBodyMatcher.java">src/main/java/com/jcabi/http/mock/<b>MkAnswerBodyMatcher.java</b></a> <a class="externalLink" href="https://github.com/jcabi/jcabi-http/src/main/java/com/jcabi/http/mock/MkAnswerBodyMatcher.java?rev=9438fc2d9a1baa4c9ba26c94926fa8af6618a741&amp;content-type=text/vnd.viewcvs-markup">v 9438fc2d9a1baa4c9ba26c94926fa8af6618a741</a><br /><a class="externalLink" href="https://github.com/jcabi/jcabi-http/src/main/java/com/jcabi/http/mock/MkAnswerHeaderMatcher.java">src/main/java/com/jcabi/http/mock/<b>MkAnswerHeaderMatcher.java</b></a> <a class="externalLink" href="https://github.com/jcabi/jcabi-http/src/main/java/com/jcabi/http/mock/MkAnswerHeaderMatcher.java?rev=9438fc2d9a1baa4c9ba26c94926fa8af6618a741&amp;content-type=text/vnd.viewcvs-markup">v 9438fc2d9a1baa4c9ba26c94926fa8af6618a741</a><br /><a class="externalLink" href="https://github.com/jcabi/jcabi-http/src/main/java/com/jcabi/http/mock/MkAnswerMatchers.java">src/main/java/com/jcabi/http/mock/<b>MkAnswerMatchers.java</b></a> <a class="externalLink" href="https://github.com/jcabi/jcabi-http/src/main/java/com/jcabi/http/mock/MkAnswerMatchers.java?rev=9438fc2d9a1baa4c9ba26c94926fa8af6618a741&amp;content-type=text/vnd.viewcvs-markup">v 9438fc2d9a1baa4c9ba26c94926fa8af6618a741</a><br /><a class="externalLink" href="https://github.com/jcabi/jcabi-http/src/test/java/com/jcabi/http/mock/MkAnswerMatchersTest.java">src/test/java/com/jcabi/http/mock/<b>MkAnswerMatchersTest.java</b></a> <a class="externalLink" href="https://github.com/jcabi/jcabi-http/src/test/java/com/jcabi/http/mock/MkAnswerMatchersTest.java?rev=9438fc2d9a1baa4c9ba26c94926fa8af6618a741&amp;content-type=text/vnd.viewcvs-markup">v 9438fc2d9a1baa4c9ba26c94926fa8af6618a741</a><br /><br />#24 Added MkAnswerMatchers</td></tr>
+<tr class="a">
+<td>2014-05-06 11:16:58</td>
+<td>Carlos Miranda &lt;carlosmiranda@users.noreply.github.com&gt;</td>
+<td><a class="externalLink" href="https://github.com/jcabi/jcabi-http/src/main/java/com/jcabi/http/mock/MkQueryBodyMatcher.java">src/main/java/com/jcabi/http/mock/<b>MkQueryBodyMatcher.java</b></a> <a class="externalLink" href="https://github.com/jcabi/jcabi-http/src/main/java/com/jcabi/http/mock/MkQueryBodyMatcher.java?rev=ec89f5e64cbcb447d5b11d639d9e094af2b9fd87&amp;content-type=text/vnd.viewcvs-markup">v ec89f5e64cbcb447d5b11d639d9e094af2b9fd87</a><br /><a class="externalLink" href="https://github.com/jcabi/jcabi-http/src/main/java/com/jcabi/http/mock/MkQueryHeaderMatcher.java">src/main/java/com/jcabi/http/mock/<b>MkQueryHeaderMatcher.java</b></a> <a class="externalLink" href="https://github.com/jcabi/jcabi-http/src/main/java/com/jcabi/http/mock/MkQueryHeaderMatcher.java?rev=ec89f5e64cbcb447d5b11d639d9e094af2b9fd87&amp;content-type=text/vnd.viewcvs-markup">v ec89f5e64cbcb447d5b11d639d9e094af2b9fd87</a><br /><br />#25 Fixed Qulice errors</td></tr>
+<tr class="b">
+<td>2014-05-06 10:20:14</td>
+<td>Carlos Miranda &lt;carlosmiranda@users.noreply.github.com&gt;</td>
+<td><a class="externalLink" href="https://github.com/jcabi/jcabi-http/src/main/java/com/jcabi/http/mock/MkContainer.java">src/main/java/com/jcabi/http/mock/<b>MkContainer.java</b></a> <a class="externalLink" href="https://github.com/jcabi/jcabi-http/src/main/java/com/jcabi/http/mock/MkContainer.java?rev=bd542b30f71d84fe4040659e8e90190e46ad2206&amp;content-type=text/vnd.viewcvs-markup">v bd542b30f71d84fe4040659e8e90190e46ad2206</a><br /><br />#25 Removed puzzle</td></tr>
+<tr class="a">
+<td>2014-05-06 10:19:02</td>
+<td>Carlos Miranda &lt;carlosmiranda@users.noreply.github.com&gt;</td>
+<td><a class="externalLink" href="https://github.com/jcabi/jcabi-http/src/main/java/com/jcabi/http/mock/MkQueryBodyMatcher.java">src/main/java/com/jcabi/http/mock/<b>MkQueryBodyMatcher.java</b></a> <a class="externalLink" href="https://github.com/jcabi/jcabi-http/src/main/java/com/jcabi/http/mock/MkQueryBodyMatcher.java?rev=c81d4b0edf5be86af58932dcefdb14b66b888d61&amp;content-type=text/vnd.viewcvs-markup">v c81d4b0edf5be86af58932dcefdb14b66b888d61</a><br /><a class="externalLink" href="https://github.com/jcabi/jcabi-http/src/main/java/com/jcabi/http/mock/MkQueryHeaderMatcher.java">src/main/java/com/jcabi/http/mock/<b>MkQueryHeaderMatcher.java</b></a> <a class="externalLink" href="https://github.com/jcabi/jcabi-http/src/main/java/com/jcabi/http/mock/MkQueryHeaderMatcher.java?rev=c81d4b0edf5be86af58932dcefdb14b66b888d61&amp;content-type=text/vnd.viewcvs-markup">v c81d4b0edf5be86af58932dcefdb14b66b888d61</a><br /><a class="externalLink" href="https://github.com/jcabi/jcabi-http/src/main/java/com/jcabi/http/mock/MkQueryMatchers.java">src/main/java/com/jcabi/http/mock/<b>MkQueryMatchers.java</b></a> <a class="externalLink" href="https://github.com/jcabi/jcabi-http/src/main/java/com/jcabi/http/mock/MkQueryMatchers.java?rev=c81d4b0edf5be86af58932dcefdb14b66b888d61&amp;content-type=text/vnd.viewcvs-markup">v c81d4b0edf5be86af58932dcefdb14b66b888d61</a><br /><a class="externalLink" href="https://github.com/jcabi/jcabi-http/src/test/java/com/jcabi/http/mock/MkQueryMatchersTest.java">src/test/java/com/jcabi/http/mock/<b>MkQueryMatchersTest.java</b></a> <a class="externalLink" href="https://github.com/jcabi/jcabi-http/src/test/java/com/jcabi/http/mock/MkQueryMatchersTest.java?rev=c81d4b0edf5be86af58932dcefdb14b66b888d61&amp;content-type=text/vnd.viewcvs-markup">v c81d4b0edf5be86af58932dcefdb14b66b888d61</a><br /><br />#25 MkQueryHeaderMatcher</td></tr>
+<tr class="b">
+<td>2014-05-06 09:41:58</td>
+<td>Carlos Miranda &lt;carlosmiranda@users.noreply.github.com&gt;</td>
+<td><a class="externalLink" href="https://github.com/jcabi/jcabi-http/src/main/java/com/jcabi/http/mock/MkQueryBodyMatcher.java">src/main/java/com/jcabi/http/mock/<b>MkQueryBodyMatcher.java</b></a> <a class="externalLink" href="https://github.com/jcabi/jcabi-http/src/main/java/com/jcabi/http/mock/MkQueryBodyMatcher.java?rev=3076153c05981ca4ab58c93ed55b2043f0066be7&amp;content-type=text/vnd.viewcvs-markup">v 3076153c05981ca4ab58c93ed55b2043f0066be7</a><br /><a class="externalLink" href="https://github.com/jcabi/jcabi-http/src/main/java/com/jcabi/http/mock/MkQueryMatchers.java">src/main/java/com/jcabi/http/mock/<b>MkQueryMatchers.java</b></a> <a class="externalLink" href="https://github.com/jcabi/jcabi-http/src/main/java/com/jcabi/http/mock/MkQueryMatchers.java?rev=3076153c05981ca4ab58c93ed55b2043f0066be7&amp;content-type=text/vnd.viewcvs-markup">v 3076153c05981ca4ab58c93ed55b2043f0066be7</a><br /><a class="externalLink" href="https://github.com/jcabi/jcabi-http/src/test/java/com/jcabi/http/mock/MkQueryMatchersTest.java">src/test/java/com/jcabi/http/mock/<b>MkQueryMatchersTest.java</b></a> <a class="externalLink" href="https://github.com/jcabi/jcabi-http/src/test/java/com/jcabi/http/mock/MkQueryMatchersTest.java?rev=3076153c05981ca4ab58c93ed55b2043f0066be7&amp;content-type=text/vnd.viewcvs-markup">v 3076153c05981ca4ab58c93ed55b2043f0066be7</a><br /><br />#25 MkQueryBodyMatcher</td></tr>
+<tr class="a">
+<td>2014-05-05 22:35:29</td>
+<td>Yegor Bugayenko &lt;yegor@tpc2.com&gt;</td>
+<td><a class="externalLink" href="https://github.com/jcabi/jcabi-http/pom.xml"><b>pom.xml</b></a> <a class="externalLink" href="https://github.com/jcabi/jcabi-http/pom.xml?rev=5e4ce1e34142b74e7b3e01ad1c153ff891b824ba&amp;content-type=text/vnd.viewcvs-markup">v 5e4ce1e34142b74e7b3e01ad1c153ff891b824ba</a><br /><br />#master: 1.6.1 parent</td></tr>
+<tr class="b">
+<td>2014-05-05 21:48:52</td>
+<td>Yegor Bugayenko &lt;yegor@tpc2.com&gt;</td>
+<td><a class="externalLink" href="https://github.com/jcabi/jcabi-http/pom.xml"><b>pom.xml</b></a> <a class="externalLink" href="https://github.com/jcabi/jcabi-http/pom.xml?rev=6c151bf7f0f1bd1c650ace23977353f767fa94d9&amp;content-type=text/vnd.viewcvs-markup">v 6c151bf7f0f1bd1c650ace23977353f767fa94d9</a><br /><a class="externalLink" href="https://github.com/jcabi/jcabi-http/src/main/java/com/jcabi/http/response/RestResponse.java">src/main/java/com/jcabi/http/response/<b>RestResponse.java</b></a> <a class="externalLink" href="https://github.com/jcabi/jcabi-http/src/main/java/com/jcabi/http/response/RestResponse.java?rev=6c151bf7f0f1bd1c650ace23977353f767fa94d9&amp;content-type=text/vnd.viewcvs-markup">v 6c151bf7f0f1bd1c650ace23977353f767fa94d9</a><br /><a class="externalLink" href="https://github.com/jcabi/jcabi-http/src/main/java/com/jcabi/http/response/WebLinkingResponse.java">src/main/java/com/jcabi/http/response/<b>WebLinkingResponse.java</b></a> <a class="externalLink" href="https://github.com/jcabi/jcabi-http/src/main/java/com/jcabi/http/response/WebLinkingResponse.java?rev=6c151bf7f0f1bd1c650ace23977353f767fa94d9&amp;content-type=text/vnd.viewcvs-markup">v 6c151bf7f0f1bd1c650ace23977353f767fa94d9</a><br /><a class="externalLink" href="https://github.com/jcabi/jcabi-http/src/site/site.xml">src/site/<b>site.xml</b></a> <a class="externalLink" href="https://github.com/jcabi/jcabi-http/src/site/site.xml?rev=6c151bf7f0f1bd1c650ace23977353f767fa94d9&amp;content-type=text/vnd.viewcvs-markup">v 6c151bf7f0f1bd1c650ace23977353f767fa94d9</a><br /><a class="externalLink" href="https://github.com/jcabi/jcabi-http/src/test/java/com/jcabi/http/RequestITCase.java">src/test/java/com/jcabi/http/<b>RequestITCase.java</b></a> <a class="externalLink" href="https://github.com/jcabi/jcabi-http/src/test/java/com/jcabi/http/RequestITCase.java?rev=6c151bf7f0f1bd1c650ace23977353f767fa94d9&amp;content-type=text/vnd.viewcvs-markup">v 6c151bf7f0f1bd1c650ace23977353f767fa94d9</a><br /><a class="externalLink" href="https://github.com/jcabi/jcabi-http/src/test/java/com/jcabi/http/RequestTest.java">src/test/java/com/jcabi/http/<b>RequestTest.java</b></a> <a class="externalLink" href="https://github.com/jcabi/jcabi-http/src/test/java/com/jcabi/http/RequestTest.java?rev=6c151bf7f0f1bd1c650ace23977353f767fa94d9&amp;content-type=text/vnd.viewcvs-markup">v 6c151bf7f0f1bd1c650ace23977353f767fa94d9</a><br /><br />#master: parent 1.6</td></tr>
+<tr class="a">
+<td>2014-05-05 21:31:44</td>
+<td>Yegor Bugayenko &lt;yegor@tpc2.com&gt;</td>
+<td><a class="externalLink" href="https://github.com/jcabi/jcabi-http/pom.xml"><b>pom.xml</b></a> <a class="externalLink" href="https://github.com/jcabi/jcabi-http/pom.xml?rev=529c15ca613609ba60c6d252843925c31e5b6421&amp;content-type=text/vnd.viewcvs-markup">v 529c15ca613609ba60c6d252843925c31e5b6421</a><br /><a class="externalLink" href="https://github.com/jcabi/jcabi-http/src/main/java/com/jcabi/http/wire/UserAgentWire.java">src/main/java/com/jcabi/http/wire/<b>UserAgentWire.java</b></a> <a class="externalLink" href="https://github.com/jcabi/jcabi-http/src/main/java/com/jcabi/http/wire/UserAgentWire.java?rev=529c15ca613609ba60c6d252843925c31e5b6421&amp;content-type=text/vnd.viewcvs-markup">v 529c15ca613609ba60c6d252843925c31e5b6421</a><br /><br />typo</td></tr>
+<tr class="b">
+<td>2014-05-05 21:28:42</td>
+<td>Yegor Bugayenko &lt;yegor@tpc2.com&gt;</td>
+<td><a class="externalLink" href="https://github.com/jcabi/jcabi-http/LICENSE.txt"><b>LICENSE.txt</b></a> <a class="externalLink" href="https://github.com/jcabi/jcabi-http/LICENSE.txt?rev=cb659564be50526283692533937f82f17cc67255&amp;content-type=text/vnd.viewcvs-markup">v cb659564be50526283692533937f82f17cc67255</a><br /><a class="externalLink" href="https://github.com/jcabi/jcabi-http/pom.xml"><b>pom.xml</b></a> <a class="externalLink" href="https://github.com/jcabi/jcabi-http/pom.xml?rev=cb659564be50526283692533937f82f17cc67255&amp;content-type=text/vnd.viewcvs-markup">v cb659564be50526283692533937f82f17cc67255</a><br /><a class="externalLink" href="https://github.com/jcabi/jcabi-http/src/changes/changes.xml">src/changes/<b>changes.xml</b></a> <a class="externalLink" href="https://github.com/jcabi/jcabi-http/src/changes/changes.xml?rev=cb659564be50526283692533937f82f17cc67255&amp;content-type=text/vnd.viewcvs-markup">v cb659564be50526283692533937f82f17cc67255</a><br /><a class="externalLink" href="https://github.com/jcabi/jcabi-http/src/main/java/com/jcabi/http/ImmutableHeader.java">src/main/java/com/jcabi/http/<b>ImmutableHeader.java</b></a> <a class="externalLink" href="https://github.com/jcabi/jcabi-http/src/main/java/com/jcabi/http/ImmutableHeader.java?rev=cb659564be50526283692533937f82f17cc67255&amp;content-type=text/vnd.viewcvs-markup">v cb659564be50526283692533937f82f17cc67255</a><br /><a class="externalLink" href="https://github.com/jcabi/jcabi-http/src/main/java/com/jcabi/http/Request.java">src/main/java/com/jcabi/http/<b>Request.java</b></a> <a class="externalLink" href="https://github.com/jcabi/jcabi-http/src/main/java/com/jcabi/http/Request.java?rev=cb659564be50526283692533937f82f17cc67255&amp;content-type=text/vnd.viewcvs-markup">v cb659564be50526283692533937f82f17cc67255</a><br /><a class="externalLink" href="https://github.com/jcabi/jcabi-http/src/main/java/com/jcabi/http/RequestBody.java">src/main/java/com/jcabi/http/<b>RequestBody.java</b></a> <a class="externalLink" href="https://github.com/jcabi/jcabi-http/src/main/java/com/jcabi/http/RequestBody.java?rev=cb659564be50526283692533937f82f17cc67255&amp;content-type=text/vnd.viewcvs-markup">v cb659564be50526283692533937f82f17cc67255</a><br /><a class="externalLink" href="https://github.com/jcabi/jcabi-http/src/main/java/com/jcabi/http/RequestURI.java">src/main/java/com/jcabi/http/<b>RequestURI.java</b></a> <a class="externalLink" href="https://github.com/jcabi/jcabi-http/src/main/java/com/jcabi/http/RequestURI.java?rev=cb659564be50526283692533937f82f17cc67255&amp;content-type=text/vnd.viewcvs-markup">v cb659564be50526283692533937f82f17cc67255</a><br /><a class="externalLink" href="https://github.com/jcabi/jcabi-http/src/main/java/com/jcabi/http/Response.java">src/main/java/com/jcabi/http/<b>Response.java</b></a> <a class="externalLink" href="https://github.com/jcabi/jcabi-http/src/main/java/com/jcabi/http/Response.java?rev=cb659564be50526283692533937f82f17cc67255&amp;content-type=text/vnd.viewcvs-markup">v cb659564be50526283692533937f82f17cc67255</a><br /><a class="externalLink" href="https://github.com/jcabi/jcabi-http/src/main/java/com/jcabi/http/Wire.java">src/main/java/com/jcabi/http/<b>Wire.java</b></a> <a class="externalLink" href="https://github.com/jcabi/jcabi-http/src/main/java/com/jcabi/http/Wire.java?rev=cb659564be50526283692533937f82f17cc67255&amp;content-type=text/vnd.viewcvs-markup">v cb659564be50526283692533937f82f17cc67255</a><br /><a class="externalLink" href="https://github.com/jcabi/jcabi-http/src/main/java/com/jcabi/http/mock/GrizzlyQuery.java">src/main/java/com/jcabi/http/mock/<b>GrizzlyQuery.java</b></a> <a class="externalLink" href="https://github.com/jcabi/jcabi-http/src/main/java/com/jcabi/http/mock/GrizzlyQuery.java?rev=cb659564be50526283692533937f82f17cc67255&amp;content-type=text/vnd.viewcvs-markup">v cb659564be50526283692533937f82f17cc67255</a><br /><a class="externalLink" href="https://github.com/jcabi/jcabi-http/src/main/java/com/jcabi/http/mock/MkAnswer.java">src/main/java/com/jcabi/http/mock/<b>MkAnswer.java</b></a> <a class="externalLink" href="https://github.com/jcabi/jcabi-http/src/main/java/com/jcabi/http/mock/MkAnswer.java?rev=cb659564be50526283692533937f82f17cc67255&amp;content-type=text/vnd.viewcvs-markup">v cb659564be50526283692533937f82f17cc67255</a><br /><a class="externalLink" href="https://github.com/jcabi/jcabi-http/src/main/java/com/jcabi/http/mock/MkContainer.java">src/main/java/com/jcabi/http/mock/<b>MkContainer.java</b></a> <a class="externalLink" href="https://github.com/jcabi/jcabi-http/src/main/java/com/jcabi/http/mock/MkContainer.java?rev=cb659564be50526283692533937f82f17cc67255&amp;content-type=text/vnd.viewcvs-markup">v cb659564be50526283692533937f82f17cc67255</a><br /><a class="externalLink" href="https://github.com/jcabi/jcabi-http/src/main/java/com/jcabi/http/mock/MkGrizzlyAdapter.java">src/main/java/com/jcabi/http/mock/<b>MkGrizzlyAdapter.java</b></a> <a class="externalLink" href="https://github.com/jcabi/jcabi-http/src/main/java/com/jcabi/http/mock/MkGrizzlyAdapter.java?rev=cb659564be50526283692533937f82f17cc67255&amp;content-type=text/vnd.viewcvs-markup">v cb659564be50526283692533937f82f17cc67255</a><br /><a class="externalLink" href="https://github.com/jcabi/jcabi-http/src/main/java/com/jcabi/http/mock/MkGrizzlyContainer.java">src/main/java/com/jcabi/http/mock/<b>MkGrizzlyContainer.java</b></a> <a class="externalLink" href="https://github.com/jcabi/jcabi-http/src/main/java/com/jcabi/http/mock/MkGrizzlyContainer.java?rev=cb659564be50526283692533937f82f17cc67255&amp;content-type=text/vnd.viewcvs-markup">v cb659564be50526283692533937f82f17cc67255</a><br /><a class="externalLink" href="https://github.com/jcabi/jcabi-http/src/main/java/com/jcabi/http/mock/MkQuery.java">src/main/java/com/jcabi/http/mock/<b>MkQuery.java</b></a> <a class="externalLink" href="https://github.com/jcabi/jcabi-http/src/main/java/com/jcabi/http/mock/MkQuery.java?rev=cb659564be50526283692533937f82f17cc67255&amp;content-type=text/vnd.viewcvs-markup">v cb659564be50526283692533937f82f17cc67255</a><br /><a class="externalLink" href="https://github.com/jcabi/jcabi-http/src/main/java/com/jcabi/http/mock/package-info.java">src/main/java/com/jcabi/http/mock/<b>package-info.java</b></a> <a class="externalLink" href="https://github.com/jcabi/jcabi-http/src/main/java/com/jcabi/http/mock/package-info.java?rev=cb659564be50526283692533937f82f17cc67255&amp;content-type=text/vnd.viewcvs-markup">v cb659564be50526283692533937f82f17cc67255</a><br /><a class="externalLink" href="https://github.com/jcabi/jcabi-http/src/main/java/com/jcabi/http/package-info.java">src/main/java/com/jcabi/http/<b>package-info.java</b></a> <a class="externalLink" href="https://github.com/jcabi/jcabi-http/src/main/java/com/jcabi/http/package-info.java?rev=cb659564be50526283692533937f82f17cc67255&amp;content-type=text/vnd.viewcvs-markup">v cb659564be50526283692533937f82f17cc67255</a><br /><a class="externalLink" href="https://github.com/jcabi/jcabi-http/src/main/java/com/jcabi/http/request/ApacheRequest.java">src/main/java/com/jcabi/http/request/<b>ApacheRequest.java</b></a> <a class="externalLink" href="https://github.com/jcabi/jcabi-http/src/main/java/com/jcabi/http/request/ApacheRequest.java?rev=cb659564be50526283692533937f82f17cc67255&amp;content-type=text/vnd.viewcvs-markup">v cb659564be50526283692533937f82f17cc67255</a><br /><a class="externalLink" href="https://github.com/jcabi/jcabi-http/src/main/java/com/jcabi/http/request/BaseRequest.java">src/main/java/com/jcabi/http/request/<b>BaseRequest.java</b></a> <a class="externalLink" href="https://github.com/jcabi/jcabi-http/src/main/java/com/jcabi/http/request/BaseRequest.java?rev=cb659564be50526283692533937f82f17cc67255&amp;content-type=text/vnd.viewcvs-markup">v cb659564be50526283692533937f82f17cc67255</a><br /><a class="externalLink" href="https://github.com/jcabi/jcabi-http/src/main/java/com/jcabi/http/request/DefaultResponse.java">src/main/java/com/jcabi/http/request/<b>DefaultResponse.java</b></a> <a class="externalLink" href="https://github.com/jcabi/jcabi-http/src/main/java/com/jcabi/http/request/DefaultResponse.java?rev=cb659564be50526283692533937f82f17cc67255&amp;content-type=text/vnd.viewcvs-markup">v cb659564be50526283692533937f82f17cc67255</a><br /><a class="externalLink" href="https://github.com/jcabi/jcabi-http/src/main/java/com/jcabi/http/request/FakeRequest.java">src/main/java/com/jcabi/http/request/<b>FakeRequest.java</b></a> <a class="externalLink" href="https://github.com/jcabi/jcabi-http/src/main/java/com/jcabi/http/request/FakeRequest.java?rev=cb659564be50526283692533937f82f17cc67255&amp;content-type=text/vnd.viewcvs-markup">v cb659564be50526283692533937f82f17cc67255</a><br /><a class="externalLink" href="https://github.com/jcabi/jcabi-http/src/main/java/com/jcabi/http/request/JdkRequest.java">src/main/java/com/jcabi/http/request/<b>JdkRequest.java</b></a> <a class="externalLink" href="https://github.com/jcabi/jcabi-http/src/main/java/com/jcabi/http/request/JdkRequest.java?rev=cb659564be50526283692533937f82f17cc67255&amp;content-type=text/vnd.viewcvs-markup">v cb659564be50526283692533937f82f17cc67255</a><br /><a class="externalLink" href="https://github.com/jcabi/jcabi-http/src/main/java/com/jcabi/http/request/package-info.java">src/main/java/com/jcabi/http/request/<b>package-info.java</b></a> <a class="externalLink" href="https://github.com/jcabi/jcabi-http/src/main/java/com/jcabi/http/request/package-info.java?rev=cb659564be50526283692533937f82f17cc67255&amp;content-type=text/vnd.viewcvs-markup">v cb659564be50526283692533937f82f17cc67255</a><br /><a class="externalLink" href="https://github.com/jcabi/jcabi-http/src/main/java/com/jcabi/http/response/AbstractResponse.java">src/main/java/com/jcabi/http/response/<b>AbstractResponse.java</b></a> <a class="externalLink" href="https://github.com/jcabi/jcabi-http/src/main/java/com/jcabi/http/response/AbstractResponse.java?rev=cb659564be50526283692533937f82f17cc67255&amp;content-type=text/vnd.viewcvs-markup">v cb659564be50526283692533937f82f17cc67255</a><br /><a class="externalLink" href="https://github.com/jcabi/jcabi-http/src/main/java/com/jcabi/http/response/JsonResponse.java">src/main/java/com/jcabi/http/response/<b>JsonResponse.java</b></a> <a class="externalLink" href="https://github.com/jcabi/jcabi-http/src/main/java/com/jcabi/http/response/JsonResponse.java?rev=cb659564be50526283692533937f82f17cc67255&amp;content-type=text/vnd.viewcvs-markup">v cb659564be50526283692533937f82f17cc67255</a><br /><a class="externalLink" href="https://github.com/jcabi/jcabi-http/src/main/java/com/jcabi/http/response/JsoupResponse.java">src/main/java/com/jcabi/http/response/<b>JsoupResponse.java</b></a> <a class="externalLink" href="https://github.com/jcabi/jcabi-http/src/main/java/com/jcabi/http/response/JsoupResponse.java?rev=cb659564be50526283692533937f82f17cc67255&amp;content-type=text/vnd.viewcvs-markup">v cb659564be50526283692533937f82f17cc67255</a><br /><a class="externalLink" href="https://github.com/jcabi/jcabi-http/src/main/java/com/jcabi/http/response/RestResponse.java">src/main/java/com/jcabi/http/response/<b>RestResponse.java</b></a> <a class="externalLink" href="https://github.com/jcabi/jcabi-http/src/main/java/com/jcabi/http/response/RestResponse.java?rev=cb659564be50526283692533937f82f17cc67255&amp;content-type=text/vnd.viewcvs-markup">v cb659564be50526283692533937f82f17cc67255</a><br /><a class="externalLink" href="https://github.com/jcabi/jcabi-http/src/main/java/com/jcabi/http/response/WebLinkingResponse.java">src/main/java/com/jcabi/http/response/<b>WebLinkingResponse.java</b></a> <a class="externalLink" href="https://github.com/jcabi/jcabi-http/src/main/java/com/jcabi/http/response/WebLinkingResponse.java?rev=cb659564be50526283692533937f82f17cc67255&amp;content-type=text/vnd.viewcvs-markup">v cb659564be50526283692533937f82f17cc67255</a><br /><a class="externalLink" href="https://github.com/jcabi/jcabi-http/src/main/java/com/jcabi/http/response/XmlResponse.java">src/main/java/com/jcabi/http/response/<b>XmlResponse.java</b></a> <a class="externalLink" href="https://github.com/jcabi/jcabi-http/src/main/java/com/jcabi/http/response/XmlResponse.java?rev=cb659564be50526283692533937f82f17cc67255&amp;content-type=text/vnd.viewcvs-markup">v cb659564be50526283692533937f82f17cc67255</a><br /><a class="externalLink" href="https://github.com/jcabi/jcabi-http/src/main/java/com/jcabi/http/response/package-info.java">src/main/java/com/jcabi/http/response/<b>package-info.java</b></a> <a class="externalLink" href="https://github.com/jcabi/jcabi-http/src/main/java/com/jcabi/http/response/package-info.java?rev=cb659564be50526283692533937f82f17cc67255&amp;content-type=text/vnd.viewcvs-markup">v cb659564be50526283692533937f82f17cc67255</a><br /><a class="externalLink" href="https://github.com/jcabi/jcabi-http/src/main/java/com/jcabi/http/wire/BasicAuthWire.java">src/main/java/com/jcabi/http/wire/<b>BasicAuthWire.java</b></a> <a class="externalLink" href="https://github.com/jcabi/jcabi-http/src/main/java/com/jcabi/http/wire/BasicAuthWire.java?rev=cb659564be50526283692533937f82f17cc67255&amp;content-type=text/vnd.viewcvs-markup">v cb659564be50526283692533937f82f17cc67255</a><br /><a class="externalLink" href="https://github.com/jcabi/jcabi-http/src/main/java/com/jcabi/http/wire/CachingWire.java">src/main/java/com/jcabi/http/wire/<b>CachingWire.java</b></a> <a class="externalLink" href="https://github.com/jcabi/jcabi-http/src/main/java/com/jcabi/http/wire/CachingWire.java?rev=cb659564be50526283692533937f82f17cc67255&amp;content-type=text/vnd.viewcvs-markup">v cb659564be50526283692533937f82f17cc67255</a><br /><a class="externalLink" href="https://github.com/jcabi/jcabi-http/src/main/java/com/jcabi/http/wire/CookieOptimizingWire.java">src/main/java/com/jcabi/http/wire/<b>CookieOptimizingWire.java</b></a> <a class="externalLink" href="https://github.com/jcabi/jcabi-http/src/main/java/com/jcabi/http/wire/CookieOptimizingWire.java?rev=cb659564be50526283692533937f82f17cc67255&amp;content-type=text/vnd.viewcvs-markup">v cb659564be50526283692533937f82f17cc67255</a><br /><a class="externalLink" href="https://github.com/jcabi/jcabi-http/src/main/java/com/jcabi/http/wire/OneMinuteWire.java">src/main/java/com/jcabi/http/wire/<b>OneMinuteWire.java</b></a> <a class="externalLink" href="https://github.com/jcabi/jcabi-http/src/main/java/com/jcabi/http/wire/OneMinuteWire.java?rev=cb659564be50526283692533937f82f17cc67255&amp;content-type=text/vnd.viewcvs-markup">v cb659564be50526283692533937f82f17cc67255</a><br /><a class="externalLink" href="https://github.com/jcabi/jcabi-http/src/main/java/com/jcabi/http/wire/RetryWire.java">src/main/java/com/jcabi/http/wire/<b>RetryWire.java</b></a> <a class="externalLink" href="https://github.com/jcabi/jcabi-http/src/main/java/com/jcabi/http/wire/RetryWire.java?rev=cb659564be50526283692533937f82f17cc67255&amp;content-type=text/vnd.viewcvs-markup">v cb659564be50526283692533937f82f17cc67255</a><br /><a class="externalLink" href="https://github.com/jcabi/jcabi-http/src/main/java/com/jcabi/http/wire/UserAgentWire.java">src/main/java/com/jcabi/http/wire/<b>UserAgentWire.java</b></a> <a class="externalLink" href="https://github.com/jcabi/jcabi-http/src/main/java/com/jcabi/http/wire/UserAgentWire.java?rev=cb659564be50526283692533937f82f17cc67255&amp;content-type=text/vnd.viewcvs-markup">v cb659564be50526283692533937f82f17cc67255</a><br /><a class="externalLink" href="https://github.com/jcabi/jcabi-http/src/main/java/com/jcabi/http/wire/VerboseWire.java">src/main/java/com/jcabi/http/wire/<b>VerboseWire.java</b></a> <a class="externalLink" href="https://github.com/jcabi/jcabi-http/src/main/java/com/jcabi/http/wire/VerboseWire.java?rev=cb659564be50526283692533937f82f17cc67255&amp;content-type=text/vnd.viewcvs-markup">v cb659564be50526283692533937f82f17cc67255</a><br /><a class="externalLink" href="https://github.com/jcabi/jcabi-http/src/main/java/com/jcabi/http/wire/package-info.java">src/main/java/com/jcabi/http/wire/<b>package-info.java</b></a> <a class="externalLink" href="https://github.com/jcabi/jcabi-http/src/main/java/com/jcabi/http/wire/package-info.java?rev=cb659564be50526283692533937f82f17cc67255&amp;content-type=text/vnd.viewcvs-markup">v cb659564be50526283692533937f82f17cc67255</a><br /><a class="externalLink" href="https://github.com/jcabi/jcabi-http/src/site/site.xml">src/site/<b>site.xml</b></a> <a class="externalLink" href="https://github.com/jcabi/jcabi-http/src/site/site.xml?rev=cb659564be50526283692533937f82f17cc67255&amp;content-type=text/vnd.viewcvs-markup">v cb659564be50526283692533937f82f17cc67255</a><br /><a class="externalLink" href="https://github.com/jcabi/jcabi-http/src/test/java/com/jcabi/http/ImmutableHeaderTest.java">src/test/java/com/jcabi/http/<b>ImmutableHeaderTest.java</b></a> <a class="externalLink" href="https://github.com/jcabi/jcabi-http/src/test/java/com/jcabi/http/ImmutableHeaderTest.java?rev=cb659564be50526283692533937f82f17cc67255&amp;content-type=text/vnd.viewcvs-markup">v cb659564be50526283692533937f82f17cc67255</a><br /><a class="externalLink" href="https://github.com/jcabi/jcabi-http/src/test/java/com/jcabi/http/RequestITCase.java">src/test/java/com/jcabi/http/<b>RequestITCase.java</b></a> <a class="externalLink" href="https://github.com/jcabi/jcabi-http/src/test/java/com/jcabi/http/RequestITCase.java?rev=cb659564be50526283692533937f82f17cc67255&amp;content-type=text/vnd.viewcvs-markup">v cb659564be50526283692533937f82f17cc67255</a><br /><a class="externalLink" href="https://github.com/jcabi/jcabi-http/src/test/java/com/jcabi/http/RequestTest.java">src/test/java/com/jcabi/http/<b>RequestTest.java</b></a> <a class="externalLink" href="https://github.com/jcabi/jcabi-http/src/test/java/com/jcabi/http/RequestTest.java?rev=cb659564be50526283692533937f82f17cc67255&amp;content-type=text/vnd.viewcvs-markup">v cb659564be50526283692533937f82f17cc67255</a><br /><a class="externalLink" href="https://github.com/jcabi/jcabi-http/src/test/java/com/jcabi/http/mock/MkContainerTest.java">src/test/java/com/jcabi/http/mock/<b>MkContainerTest.java</b></a> <a class="externalLink" href="https://github.com/jcabi/jcabi-http/src/test/java/com/jcabi/http/mock/MkContainerTest.java?rev=cb659564be50526283692533937f82f17cc67255&amp;content-type=text/vnd.viewcvs-markup">v cb659564be50526283692533937f82f17cc67255</a><br /><a class="externalLink" href="https://github.com/jcabi/jcabi-http/src/test/java/com/jcabi/http/mock/package-info.java">src/test/java/com/jcabi/http/mock/<b>package-info.java</b></a> <a class="externalLink" href="https://github.com/jcabi/jcabi-http/src/test/java/com/jcabi/http/mock/package-info.java?rev=cb659564be50526283692533937f82f17cc67255&amp;content-type=text/vnd.viewcvs-markup">v cb659564be50526283692533937f82f17cc67255</a><br /><a class="externalLink" href="https://github.com/jcabi/jcabi-http/src/test/java/com/jcabi/http/package-info.java">src/test/java/com/jcabi/http/<b>package-info.java</b></a> <a class="externalLink" href="https://github.com/jcabi/jcabi-http/src/test/java/com/jcabi/http/package-info.java?rev=cb659564be50526283692533937f82f17cc67255&amp;content-type=text/vnd.viewcvs-markup">v cb659564be50526283692533937f82f17cc67255</a><br /><a class="externalLink" href="https://github.com/jcabi/jcabi-http/src/test/java/com/jcabi/http/request/BaseRequestTest.java">src/test/java/com/jcabi/http/request/<b>BaseRequestTest.java</b></a> <a class="externalLink" href="https://github.com/jcabi/jcabi-http/src/test/java/com/jcabi/http/request/BaseRequestTest.java?rev=cb659564be50526283692533937f82f17cc67255&amp;content-type=text/vnd.viewcvs-markup">v cb659564be50526283692533937f82f17cc67255</a><br /><a class="externalLink" href="https://github.com/jcabi/jcabi-http/src/test/java/com/jcabi/http/request/DefaultResponseTest.java">src/test/java/com/jcabi/http/request/<b>DefaultResponseTest.java</b></a> <a class="externalLink" href="https://github.com/jcabi/jcabi-http/src/test/java/com/jcabi/http/request/DefaultResponseTest.java?rev=cb659564be50526283692533937f82f17cc67255&amp;content-type=text/vnd.viewcvs-markup">v cb659564be50526283692533937f82f17cc67255</a><br /><a class="externalLink" href="https://github.com/jcabi/jcabi-http/src/test/java/com/jcabi/http/request/FakeRequestTest.java">src/test/java/com/jcabi/http/request/<b>FakeRequestTest.java</b></a> <a class="externalLink" href="https://github.com/jcabi/jcabi-http/src/test/java/com/jcabi/http/request/FakeRequestTest.java?rev=cb659564be50526283692533937f82f17cc67255&amp;content-type=text/vnd.viewcvs-markup">v cb659564be50526283692533937f82f17cc67255</a><br /><a class="externalLink" href="https://github.com/jcabi/jcabi-http/src/test/java/com/jcabi/http/request/JdkRequestITCase.java">src/test/java/com/jcabi/http/request/<b>JdkRequestITCase.java</b></a> <a class="externalLink" href="https://github.com/jcabi/jcabi-http/src/test/java/com/jcabi/http/request/JdkRequestITCase.java?rev=cb659564be50526283692533937f82f17cc67255&amp;content-type=text/vnd.viewcvs-markup">v cb659564be50526283692533937f82f17cc67255</a><br /><a class="externalLink" href="https://github.com/jcabi/jcabi-http/src/test/java/com/jcabi/http/request/package-info.java">src/test/java/com/jcabi/http/request/<b>package-info.java</b></a> <a class="externalLink" href="https://github.com/jcabi/jcabi-http/src/test/java/com/jcabi/http/request/package-info.java?rev=cb659564be50526283692533937f82f17cc67255&amp;content-type=text/vnd.viewcvs-markup">v cb659564be50526283692533937f82f17cc67255</a><br /><a class="externalLink" href="https://github.com/jcabi/jcabi-http/src/test/java/com/jcabi/http/response/JsonResponseTest.java">src/test/java/com/jcabi/http/response/<b>JsonResponseTest.java</b></a> <a class="externalLink" href="https://github.com/jcabi/jcabi-http/src/test/java/com/jcabi/http/response/JsonResponseTest.java?rev=cb659564be50526283692533937f82f17cc67255&amp;content-type=text/vnd.viewcvs-markup">v cb659564be50526283692533937f82f17cc67255</a><br /><a class="externalLink" href="https://github.com/jcabi/jcabi-http/src/test/java/com/jcabi/http/response/JsoupResponseTest.java">src/test/java/com/jcabi/http/response/<b>JsoupResponseTest.java</b></a> <a class="externalLink" href="https://github.com/jcabi/jcabi-http/src/test/java/com/jcabi/http/response/JsoupResponseTest.java?rev=cb659564be50526283692533937f82f17cc67255&amp;content-type=text/vnd.viewcvs-markup">v cb659564be50526283692533937f82f17cc67255</a><br /><a class="externalLink" href="https://github.com/jcabi/jcabi-http/src/test/java/com/jcabi/http/response/RestResponseTest.java">src/test/java/com/jcabi/http/response/<b>RestResponseTest.java</b></a> <a class="externalLink" href="https://github.com/jcabi/jcabi-http/src/test/java/com/jcabi/http/response/RestResponseTest.java?rev=cb659564be50526283692533937f82f17cc67255&amp;content-type=text/vnd.viewcvs-markup">v cb659564be50526283692533937f82f17cc67255</a><br /><a class="externalLink" href="https://github.com/jcabi/jcabi-http/src/test/java/com/jcabi/http/response/WebLinkingResponseTest.java">src/test/java/com/jcabi/http/response/<b>WebLinkingResponseTest.java</b></a> <a class="externalLink" href="https://github.com/jcabi/jcabi-http/src/test/java/com/jcabi/http/response/WebLinkingResponseTest.java?rev=cb659564be50526283692533937f82f17cc67255&amp;content-type=text/vnd.viewcvs-markup">v cb659564be50526283692533937f82f17cc67255</a><br /><a class="externalLink" href="https://github.com/jcabi/jcabi-http/src/test/java/com/jcabi/http/response/XmlResponseTest.java">src/test/java/com/jcabi/http/response/<b>XmlResponseTest.java</b></a> <a class="externalLink" href="https://github.com/jcabi/jcabi-http/src/test/java/com/jcabi/http/response/XmlResponseTest.java?rev=cb659564be50526283692533937f82f17cc67255&amp;content-type=text/vnd.viewcvs-markup">v cb659564be50526283692533937f82f17cc67255</a><br /><a class="externalLink" href="https://github.com/jcabi/jcabi-http/src/test/java/com/jcabi/http/response/package-info.java">src/test/java/com/jcabi/http/response/<b>package-info.java</b></a> <a class="externalLink" href="https://github.com/jcabi/jcabi-http/src/test/java/com/jcabi/http/response/package-info.java?rev=cb659564be50526283692533937f82f17cc67255&amp;content-type=text/vnd.viewcvs-markup">v cb659564be50526283692533937f82f17cc67255</a><br /><a class="externalLink" href="https://github.com/jcabi/jcabi-http/src/test/java/com/jcabi/http/wire/CachingWireTest.java">src/test/java/com/jcabi/http/wire/<b>CachingWireTest.java</b></a> <a class="externalLink" href="https://github.com/jcabi/jcabi-http/src/test/java/com/jcabi/http/wire/CachingWireTest.java?rev=cb659564be50526283692533937f82f17cc67255&amp;content-type=text/vnd.viewcvs-markup">v cb659564be50526283692533937f82f17cc67255</a><br /><a class="externalLink" href="https://github.com/jcabi/jcabi-http/src/test/java/com/jcabi/http/wire/CookieOptimizingWireTest.java">src/test/java/com/jcabi/http/wire/<b>CookieOptimizingWireTest.java</b></a> <a class="externalLink" href="https://github.com/jcabi/jcabi-http/src/test/java/com/jcabi/http/wire/CookieOptimizingWireTest.java?rev=cb659564be50526283692533937f82f17cc67255&amp;content-type=text/vnd.viewcvs-markup">v cb659564be50526283692533937f82f17cc67255</a><br /><a class="externalLink" href="https://github.com/jcabi/jcabi-http/src/test/java/com/jcabi/http/wire/RetryWireTest.java">src/test/java/com/jcabi/http/wire/<b>RetryWireTest.java</b></a> <a class="externalLink" href="https://github.com/jcabi/jcabi-http/src/test/java/com/jcabi/http/wire/RetryWireTest.java?rev=cb659564be50526283692533937f82f17cc67255&amp;content-type=text/vnd.viewcvs-markup">v cb659564be50526283692533937f82f17cc67255</a><br /><a class="externalLink" href="https://github.com/jcabi/jcabi-http/src/test/java/com/jcabi/http/wire/UserAgentWireTest.java">src/test/java/com/jcabi/http/wire/<b>UserAgentWireTest.java</b></a> <a class="externalLink" href="https://github.com/jcabi/jcabi-http/src/test/java/com/jcabi/http/wire/UserAgentWireTest.java?rev=cb659564be50526283692533937f82f17cc67255&amp;content-type=text/vnd.viewcvs-markup">v cb659564be50526283692533937f82f17cc67255</a><br /><a class="externalLink" href="https://github.com/jcabi/jcabi-http/src/test/java/com/jcabi/http/wire/VerboseWireTest.java">src/test/java/com/jcabi/http/wire/<b>VerboseWireTest.java</b></a> <a class="externalLink" href="https://github.com/jcabi/jcabi-http/src/test/java/com/jcabi/http/wire/VerboseWireTest.java?rev=cb659564be50526283692533937f82f17cc67255&amp;content-type=text/vnd.viewcvs-markup">v cb659564be50526283692533937f82f17cc67255</a><br /><a class="externalLink" href="https://github.com/jcabi/jcabi-http/src/test/java/com/jcabi/http/wire/package-info.java">src/test/java/com/jcabi/http/wire/<b>package-info.java</b></a> <a class="externalLink" href="https://github.com/jcabi/jcabi-http/src/test/java/com/jcabi/http/wire/package-info.java?rev=cb659564be50526283692533937f82f17cc67255&amp;content-type=text/vnd.viewcvs-markup">v cb659564be50526283692533937f82f17cc67255</a><br /><a class="externalLink" href="https://github.com/jcabi/jcabi-http/src/test/resources/log4j.properties">src/test/resources/<b>log4j.properties</b></a> <a class="externalLink" href="https://github.com/jcabi/jcabi-http/src/test/resources/log4j.properties?rev=cb659564be50526283692533937f82f17cc67255&amp;content-type=text/vnd.viewcvs-markup">v cb659564be50526283692533937f82f17cc67255</a><br /><br />name</td></tr>
+<tr class="a">
+<td>2014-05-05 13:06:14</td>
+<td>Carlos Miranda &lt;carlosmiranda@users.noreply.github.com&gt;</td>
+<td><a class="externalLink" href="https://github.com/jcabi/jcabi-http/src/main/java/com/jcabi/http/mock/MkContainer.java">src/main/java/com/jcabi/http/mock/<b>MkContainer.java</b></a> <a class="externalLink" href="https://github.com/jcabi/jcabi-http/src/main/java/com/jcabi/http/mock/MkContainer.java?rev=cef5888b3181d5115f2c999a7be00a721a8ba442&amp;content-type=text/vnd.viewcvs-markup">v cef5888b3181d5115f2c999a7be00a721a8ba442</a><br /><br />#19 Puzzles for MkQueryMatchers and MkAnswerMatchers</td></tr>
+<tr class="b">
+<td>2014-05-05 12:46:24</td>
+<td>Carlos Miranda &lt;carlosmiranda@users.noreply.github.com&gt;</td>
+<td><a class="externalLink" href="https://github.com/jcabi/jcabi-http/src/main/java/com/jcabi/http/mock/MkGrizzlyContainer.java">src/main/java/com/jcabi/http/mock/<b>MkGrizzlyContainer.java</b></a> <a class="externalLink" href="https://github.com/jcabi/jcabi-http/src/main/java/com/jcabi/http/mock/MkGrizzlyContainer.java?rev=d8b107b14e50beddb1b3246f50df2d0e058418ee&amp;content-type=text/vnd.viewcvs-markup">v d8b107b14e50beddb1b3246f50df2d0e058418ee</a><br /><a class="externalLink" href="https://github.com/jcabi/jcabi-http/src/test/java/com/jcabi/http/mock/MkContainerTest.java">src/test/java/com/jcabi/http/mock/<b>MkContainerTest.java</b></a> <a class="externalLink" href="https://github.com/jcabi/jcabi-http/src/test/java/com/jcabi/http/mock/MkContainerTest.java?rev=d8b107b14e50beddb1b3246f50df2d0e058418ee&amp;content-type=text/vnd.viewcvs-markup">v d8b107b14e50beddb1b3246f50df2d0e058418ee</a><br /><br />#19 Unit tests</td></tr>
+<tr class="a">
+<td>2014-05-05 11:18:39</td>
+<td>Carlos Miranda &lt;carlosmiranda@users.noreply.github.com&gt;</td>
+<td><a class="externalLink" href="https://github.com/jcabi/jcabi-http/src/main/java/com/jcabi/http/mock/MkContainer.java">src/main/java/com/jcabi/http/mock/<b>MkContainer.java</b></a> <a class="externalLink" href="https://github.com/jcabi/jcabi-http/src/main/java/com/jcabi/http/mock/MkContainer.java?rev=8c3def3c4045620d8665d6c3bd0501c0ad01c864&amp;content-type=text/vnd.viewcvs-markup">v 8c3def3c4045620d8665d6c3bd0501c0ad01c864</a><br /><a class="externalLink" href="https://github.com/jcabi/jcabi-http/src/main/java/com/jcabi/http/mock/MkGrizzlyAdapter.java">src/main/java/com/jcabi/http/mock/<b>MkGrizzlyAdapter.java</b></a> <a class="externalLink" href="https://github.com/jcabi/jcabi-http/src/main/java/com/jcabi/http/mock/MkGrizzlyAdapter.java?rev=8c3def3c4045620d8665d6c3bd0501c0ad01c864&amp;content-type=text/vnd.viewcvs-markup">v 8c3def3c4045620d8665d6c3bd0501c0ad01c864</a><br /><a class="externalLink" href="https://github.com/jcabi/jcabi-http/src/main/java/com/jcabi/http/mock/MkGrizzlyContainer.java">src/main/java/com/jcabi/http/mock/<b>MkGrizzlyContainer.java</b></a> <a class="externalLink" href="https://github.com/jcabi/jcabi-http/src/main/java/com/jcabi/http/mock/MkGrizzlyContainer.java?rev=8c3def3c4045620d8665d6c3bd0501c0ad01c864&amp;content-type=text/vnd.viewcvs-markup">v 8c3def3c4045620d8665d6c3bd0501c0ad01c864</a><br /><br />#19 Conditional answers in MkContainer</td></tr>
+<tr class="b">
+<td>2014-05-05 11:08:24</td>
+<td>Yegor Bugayenko &lt;yegor@tpc2.com&gt;</td>
+<td><a class="externalLink" href="https://github.com/jcabi/jcabi-http/.travis.yml"><b>.travis.yml</b></a> <a class="externalLink" href="https://github.com/jcabi/jcabi-http/.travis.yml?rev=b384923d369a234d340a97b649c3b79843badd6d&amp;content-type=text/vnd.viewcvs-markup">v b384923d369a234d340a97b649c3b79843badd6d</a><br /><br />#master: build matrix</td></tr>
 <tr class="a">
 <td>2014-04-29 09:14:35</td>
 <td>Carlos Miranda &lt;carlosmiranda@users.noreply.github.com&gt;</td>
@@ -297,135 +373,20 @@
 <tr class="b">
 <td>2014-04-16 09:11:18</td>
 <td>Carlos Miranda &lt;carlosmiranda@users.noreply.github.com&gt;</td>
-<td><a class="externalLink" href="https://github.com/jcabi/jcabi-http/pom.xml"><b>pom.xml</b></a> <a class="externalLink" href="https://github.com/jcabi/jcabi-http/pom.xml?rev=5dfcc9bff5033cab667f6955528416127519a782&amp;content-type=text/vnd.viewcvs-markup">v 5dfcc9bff5033cab667f6955528416127519a782</a><br /><a class="externalLink" href="https://github.com/jcabi/jcabi-http/src/main/java/com/jcabi/http/response/AbstractResponse.java">src/main/java/com/jcabi/http/response/<b>AbstractResponse.java</b></a> <a class="externalLink" href="https://github.com/jcabi/jcabi-http/src/main/java/com/jcabi/http/response/AbstractResponse.java?rev=5dfcc9bff5033cab667f6955528416127519a782&amp;content-type=text/vnd.viewcvs-markup">v 5dfcc9bff5033cab667f6955528416127519a782</a><br /><a class="externalLink" href="https://github.com/jcabi/jcabi-http/src/main/java/com/jcabi/http/response/JsoupResponse.java">src/main/java/com/jcabi/http/response/<b>JsoupResponse.java</b></a> <a class="externalLink" href="https://github.com/jcabi/jcabi-http/src/main/java/com/jcabi/http/response/JsoupResponse.java?rev=5dfcc9bff5033cab667f6955528416127519a782&amp;content-type=text/vnd.viewcvs-markup">v 5dfcc9bff5033cab667f6955528416127519a782</a><br /><a class="externalLink" href="https://github.com/jcabi/jcabi-http/src/test/java/com/jcabi/http/response/JsoupResponseTest.java">src/test/java/com/jcabi/http/response/<b>JsoupResponseTest.java</b></a> <a class="externalLink" href="https://github.com/jcabi/jcabi-http/src/test/java/com/jcabi/http/response/JsoupResponseTest.java?rev=5dfcc9bff5033cab667f6955528416127519a782&amp;content-type=text/vnd.viewcvs-markup">v 5dfcc9bff5033cab667f6955528416127519a782</a><br /><br />Issue #13 Implemented JsoupResponse</td></tr>
-<tr class="a">
-<td>2014-04-15 07:29:43</td>
-<td>Carlos Miranda &lt;carlosmiranda@users.noreply.github.com&gt;</td>
-<td><a class="externalLink" href="https://github.com/jcabi/jcabi-http/pom.xml"><b>pom.xml</b></a> <a class="externalLink" href="https://github.com/jcabi/jcabi-http/pom.xml?rev=24e3166154d46139f7b8ad65dc286cf674de7913&amp;content-type=text/vnd.viewcvs-markup">v 24e3166154d46139f7b8ad65dc286cf674de7913</a><br /><a class="externalLink" href="https://github.com/jcabi/jcabi-http/src/main/java/com/jcabi/http/wire/BasicAuthWire.java">src/main/java/com/jcabi/http/wire/<b>BasicAuthWire.java</b></a> <a class="externalLink" href="https://github.com/jcabi/jcabi-http/src/main/java/com/jcabi/http/wire/BasicAuthWire.java?rev=24e3166154d46139f7b8ad65dc286cf674de7913&amp;content-type=text/vnd.viewcvs-markup">v 24e3166154d46139f7b8ad65dc286cf674de7913</a><br /><br />Issue #11 Removed commons-codec; using javax.xml.bind.DataTypeConverter</td></tr>
-<tr class="b">
-<td>2014-04-14 10:41:32</td>
-<td>Carlos Miranda &lt;carlosmiranda@users.noreply.github.com&gt;</td>
-<td><a class="externalLink" href="https://github.com/jcabi/jcabi-http/pom.xml"><b>pom.xml</b></a> <a class="externalLink" href="https://github.com/jcabi/jcabi-http/pom.xml?rev=ac7e410c15291f550aa34be929b10dc26d91dd38&amp;content-type=text/vnd.viewcvs-markup">v ac7e410c15291f550aa34be929b10dc26d91dd38</a><br /><a class="externalLink" href="https://github.com/jcabi/jcabi-http/src/main/java/com/jcabi/http/mock/GrizzlyQuery.java">src/main/java/com/jcabi/http/mock/<b>GrizzlyQuery.java</b></a> <a class="externalLink" href="https://github.com/jcabi/jcabi-http/src/main/java/com/jcabi/http/mock/GrizzlyQuery.java?rev=ac7e410c15291f550aa34be929b10dc26d91dd38&amp;content-type=text/vnd.viewcvs-markup">v ac7e410c15291f550aa34be929b10dc26d91dd38</a><br /><a class="externalLink" href="https://github.com/jcabi/jcabi-http/src/main/java/com/jcabi/http/request/JdkRequest.java">src/main/java/com/jcabi/http/request/<b>JdkRequest.java</b></a> <a class="externalLink" href="https://github.com/jcabi/jcabi-http/src/main/java/com/jcabi/http/request/JdkRequest.java?rev=ac7e410c15291f550aa34be929b10dc26d91dd38&amp;content-type=text/vnd.viewcvs-markup">v ac7e410c15291f550aa34be929b10dc26d91dd38</a><br /><br />Issue #9 Removed IOUtils and commons.io dependency</td></tr>
-<tr class="a">
-<td>2014-04-14 10:23:22</td>
-<td>Carlos Miranda &lt;carlosmiranda@users.noreply.github.com&gt;</td>
-<td><a class="externalLink" href="https://github.com/jcabi/jcabi-http/src/main/java/com/jcabi/http/RequestBody.java">src/main/java/com/jcabi/http/<b>RequestBody.java</b></a> <a class="externalLink" href="https://github.com/jcabi/jcabi-http/src/main/java/com/jcabi/http/RequestBody.java?rev=5791b2e20ff6d8464f4759213a43e6432b053d3a&amp;content-type=text/vnd.viewcvs-markup">v 5791b2e20ff6d8464f4759213a43e6432b053d3a</a><br /><a class="externalLink" href="https://github.com/jcabi/jcabi-http/src/main/java/com/jcabi/http/mock/GrizzlyQuery.java">src/main/java/com/jcabi/http/mock/<b>GrizzlyQuery.java</b></a> <a class="externalLink" href="https://github.com/jcabi/jcabi-http/src/main/java/com/jcabi/http/mock/GrizzlyQuery.java?rev=5791b2e20ff6d8464f4759213a43e6432b053d3a&amp;content-type=text/vnd.viewcvs-markup">v 5791b2e20ff6d8464f4759213a43e6432b053d3a</a><br /><a class="externalLink" href="https://github.com/jcabi/jcabi-http/src/main/java/com/jcabi/http/mock/MkAnswer.java">src/main/java/com/jcabi/http/mock/<b>MkAnswer.java</b></a> <a class="externalLink" href="https://github.com/jcabi/jcabi-http/src/main/java/com/jcabi/http/mock/MkAnswer.java?rev=5791b2e20ff6d8464f4759213a43e6432b053d3a&amp;content-type=text/vnd.viewcvs-markup">v 5791b2e20ff6d8464f4759213a43e6432b053d3a</a><br /><a class="externalLink" href="https://github.com/jcabi/jcabi-http/src/main/java/com/jcabi/http/mock/MkGrizzlyAdapter.java">src/main/java/com/jcabi/http/mock/<b>MkGrizzlyAdapter.java</b></a> <a class="externalLink" href="https://github.com/jcabi/jcabi-http/src/main/java/com/jcabi/http/mock/MkGrizzlyAdapter.java?rev=5791b2e20ff6d8464f4759213a43e6432b053d3a&amp;content-type=text/vnd.viewcvs-markup">v 5791b2e20ff6d8464f4759213a43e6432b053d3a</a><br /><a class="externalLink" href="https://github.com/jcabi/jcabi-http/src/main/java/com/jcabi/http/request/BaseRequest.java">src/main/java/com/jcabi/http/request/<b>BaseRequest.java</b></a> <a class="externalLink" href="https://github.com/jcabi/jcabi-http/src/main/java/com/jcabi/http/request/BaseRequest.java?rev=5791b2e20ff6d8464f4759213a43e6432b053d3a&amp;content-type=text/vnd.viewcvs-markup">v 5791b2e20ff6d8464f4759213a43e6432b053d3a</a><br /><a class="externalLink" href="https://github.com/jcabi/jcabi-http/src/main/java/com/jcabi/http/request/DefaultResponse.java">src/main/java/com/jcabi/http/request/<b>DefaultResponse.java</b></a> <a class="externalLink" href="https://github.com/jcabi/jcabi-http/src/main/java/com/jcabi/http/request/DefaultResponse.java?rev=5791b2e20ff6d8464f4759213a43e6432b053d3a&amp;content-type=text/vnd.viewcvs-markup">v 5791b2e20ff6d8464f4759213a43e6432b053d3a</a><br /><a class="externalLink" href="https://github.com/jcabi/jcabi-http/src/main/java/com/jcabi/http/request/FakeRequest.java">src/main/java/com/jcabi/http/request/<b>FakeRequest.java</b></a> <a class="externalLink" href="https://github.com/jcabi/jcabi-http/src/main/java/com/jcabi/http/request/FakeRequest.java?rev=5791b2e20ff6d8464f4759213a43e6432b053d3a&amp;content-type=text/vnd.viewcvs-markup">v 5791b2e20ff6d8464f4759213a43e6432b053d3a</a><br /><a class="externalLink" href="https://github.com/jcabi/jcabi-http/src/main/java/com/jcabi/http/wire/BasicAuthWire.java">src/main/java/com/jcabi/http/wire/<b>BasicAuthWire.java</b></a> <a class="externalLink" href="https://github.com/jcabi/jcabi-http/src/main/java/com/jcabi/http/wire/BasicAuthWire.java?rev=5791b2e20ff6d8464f4759213a43e6432b053d3a&amp;content-type=text/vnd.viewcvs-markup">v 5791b2e20ff6d8464f4759213a43e6432b053d3a</a><br /><br />Issue #9 Removed Charsets</td></tr>
-<tr class="b">
-<td>2014-04-14 10:11:47</td>
-<td>Carlos Miranda &lt;carlosmiranda@users.noreply.github.com&gt;</td>
-<td><a class="externalLink" href="https://github.com/jcabi/jcabi-http/src/main/java/com/jcabi/http/mock/GrizzlyQuery.java">src/main/java/com/jcabi/http/mock/<b>GrizzlyQuery.java</b></a> <a class="externalLink" href="https://github.com/jcabi/jcabi-http/src/main/java/com/jcabi/http/mock/GrizzlyQuery.java?rev=ee483b9296ef0ea74d24d2e44af127c3c9ce83d7&amp;content-type=text/vnd.viewcvs-markup">v ee483b9296ef0ea74d24d2e44af127c3c9ce83d7</a><br /><a class="externalLink" href="https://github.com/jcabi/jcabi-http/src/main/java/com/jcabi/http/mock/MkGrizzlyAdapter.java">src/main/java/com/jcabi/http/mock/<b>MkGrizzlyAdapter.java</b></a> <a class="externalLink" href="https://github.com/jcabi/jcabi-http/src/main/java/com/jcabi/http/mock/MkGrizzlyAdapter.java?rev=ee483b9296ef0ea74d24d2e44af127c3c9ce83d7&amp;content-type=text/vnd.viewcvs-markup">v ee483b9296ef0ea74d24d2e44af127c3c9ce83d7</a><br /><a class="externalLink" href="https://github.com/jcabi/jcabi-http/src/main/java/com/jcabi/http/request/BaseRequest.java">src/main/java/com/jcabi/http/request/<b>BaseRequest.java</b></a> <a class="externalLink" href="https://github.com/jcabi/jcabi-http/src/main/java/com/jcabi/http/request/BaseRequest.java?rev=ee483b9296ef0ea74d24d2e44af127c3c9ce83d7&amp;content-type=text/vnd.viewcvs-markup">v ee483b9296ef0ea74d24d2e44af127c3c9ce83d7</a><br /><br />Issue #10 Private static final fields for encoding name</td></tr>
-<tr class="a">
-<td>2014-04-14 09:55:29</td>
-<td>Carlos Miranda &lt;carlosmiranda@users.noreply.github.com&gt;</td>
-<td><a class="externalLink" href="https://github.com/jcabi/jcabi-http/pom.xml"><b>pom.xml</b></a> <a class="externalLink" href="https://github.com/jcabi/jcabi-http/pom.xml?rev=54ba0f90d7393a80d204c33569306d1e45fb59fe&amp;content-type=text/vnd.viewcvs-markup">v 54ba0f90d7393a80d204c33569306d1e45fb59fe</a><br /><a class="externalLink" href="https://github.com/jcabi/jcabi-http/src/main/java/com/jcabi/http/RequestBody.java">src/main/java/com/jcabi/http/<b>RequestBody.java</b></a> <a class="externalLink" href="https://github.com/jcabi/jcabi-http/src/main/java/com/jcabi/http/RequestBody.java?rev=54ba0f90d7393a80d204c33569306d1e45fb59fe&amp;content-type=text/vnd.viewcvs-markup">v 54ba0f90d7393a80d204c33569306d1e45fb59fe</a><br /><a class="externalLink" href="https://github.com/jcabi/jcabi-http/src/main/java/com/jcabi/http/mock/GrizzlyQuery.java">src/main/java/com/jcabi/http/mock/<b>GrizzlyQuery.java</b></a> <a class="externalLink" href="https://github.com/jcabi/jcabi-http/src/main/java/com/jcabi/http/mock/GrizzlyQuery.java?rev=54ba0f90d7393a80d204c33569306d1e45fb59fe&amp;content-type=text/vnd.viewcvs-markup">v 54ba0f90d7393a80d204c33569306d1e45fb59fe</a><br /><a class="externalLink" href="https://github.com/jcabi/jcabi-http/src/main/java/com/jcabi/http/mock/MkAnswer.java">src/main/java/com/jcabi/http/mock/<b>MkAnswer.java</b></a> <a class="externalLink" href="https://github.com/jcabi/jcabi-http/src/main/java/com/jcabi/http/mock/MkAnswer.java?rev=54ba0f90d7393a80d204c33569306d1e45fb59fe&amp;content-type=text/vnd.viewcvs-markup">v 54ba0f90d7393a80d204c33569306d1e45fb59fe</a><br /><a class="externalLink" href="https://github.com/jcabi/jcabi-http/src/main/java/com/jcabi/http/mock/MkGrizzlyAdapter.java">src/main/java/com/jcabi/http/mock/<b>MkGrizzlyAdapter.java</b></a> <a class="externalLink" href="https://github.com/jcabi/jcabi-http/src/main/java/com/jcabi/http/mock/MkGrizzlyAdapter.java?rev=54ba0f90d7393a80d204c33569306d1e45fb59fe&amp;content-type=text/vnd.viewcvs-markup">v 54ba0f90d7393a80d204c33569306d1e45fb59fe</a><br /><a class="externalLink" href="https://github.com/jcabi/jcabi-http/src/main/java/com/jcabi/http/request/BaseRequest.java">src/main/java/com/jcabi/http/request/<b>BaseRequest.java</b></a> <a class="externalLink" href="https://github.com/jcabi/jcabi-http/src/main/java/com/jcabi/http/request/BaseRequest.java?rev=54ba0f90d7393a80d204c33569306d1e45fb59fe&amp;content-type=text/vnd.viewcvs-markup">v 54ba0f90d7393a80d204c33569306d1e45fb59fe</a><br /><a class="externalLink" href="https://github.com/jcabi/jcabi-http/src/main/java/com/jcabi/http/request/DefaultResponse.java">src/main/java/com/jcabi/http/request/<b>DefaultResponse.java</b></a> <a class="externalLink" href="https://github.com/jcabi/jcabi-http/src/main/java/com/jcabi/http/request/DefaultResponse.java?rev=54ba0f90d7393a80d204c33569306d1e45fb59fe&amp;content-type=text/vnd.viewcvs-markup">v 54ba0f90d7393a80d204c33569306d1e45fb59fe</a><br /><a class="externalLink" href="https://github.com/jcabi/jcabi-http/src/main/java/com/jcabi/http/request/FakeRequest.java">src/main/java/com/jcabi/http/request/<b>FakeRequest.java</b></a> <a class="externalLink" href="https://github.com/jcabi/jcabi-http/src/main/java/com/jcabi/http/request/FakeRequest.java?rev=54ba0f90d7393a80d204c33569306d1e45fb59fe&amp;content-type=text/vnd.viewcvs-markup">v 54ba0f90d7393a80d204c33569306d1e45fb59fe</a><br /><a class="externalLink" href="https://github.com/jcabi/jcabi-http/src/main/java/com/jcabi/http/response/RestResponse.java">src/main/java/com/jcabi/http/response/<b>RestResponse.java</b></a> <a class="externalLink" href="https://github.com/jcabi/jcabi-http/src/main/java/com/jcabi/http/response/RestResponse.java?rev=54ba0f90d7393a80d204c33569306d1e45fb59fe&amp;content-type=text/vnd.viewcvs-markup">v 54ba0f90d7393a80d204c33569306d1e45fb59fe</a><br /><a class="externalLink" href="https://github.com/jcabi/jcabi-http/src/main/java/com/jcabi/http/response/WebLinkingResponse.java">src/main/java/com/jcabi/http/response/<b>WebLinkingResponse.java</b></a> <a class="externalLink" href="https://github.com/jcabi/jcabi-http/src/main/java/com/jcabi/http/response/WebLinkingResponse.java?rev=54ba0f90d7393a80d204c33569306d1e45fb59fe&amp;content-type=text/vnd.viewcvs-markup">v 54ba0f90d7393a80d204c33569306d1e45fb59fe</a><br /><a class="externalLink" href="https://github.com/jcabi/jcabi-http/src/main/java/com/jcabi/http/wire/BasicAuthWire.java">src/main/java/com/jcabi/http/wire/<b>BasicAuthWire.java</b></a> <a class="externalLink" href="https://github.com/jcabi/jcabi-http/src/main/java/com/jcabi/http/wire/BasicAuthWire.java?rev=54ba0f90d7393a80d204c33569306d1e45fb59fe&amp;content-type=text/vnd.viewcvs-markup">v 54ba0f90d7393a80d204c33569306d1e45fb59fe</a><br /><a class="externalLink" href="https://github.com/jcabi/jcabi-http/src/main/java/com/jcabi/http/wire/CookieOptimizingWire.java">src/main/java/com/jcabi/http/wire/<b>CookieOptimizingWire.java</b></a> <a class="externalLink" href="https://github.com/jcabi/jcabi-http/src/main/java/com/jcabi/http/wire/CookieOptimizingWire.java?rev=54ba0f90d7393a80d204c33569306d1e45fb59fe&amp;content-type=text/vnd.viewcvs-markup">v 54ba0f90d7393a80d204c33569306d1e45fb59fe</a><br /><br />Issue #10 Moved commons-lang3 to test scope</td></tr>
-<tr class="b">
-<td>2014-04-11 20:20:44</td>
-<td>Yegor Bugayenko &lt;yegor@tpc2.com&gt;</td>
-<td><a class="externalLink" href="https://github.com/jcabi/jcabi-http/README.md"><b>README.md</b></a> <a class="externalLink" href="https://github.com/jcabi/jcabi-http/README.md?rev=aba620186abf489b6dad7c730f41ab837f648398&amp;content-type=text/vnd.viewcvs-markup">v aba620186abf489b6dad7c730f41ab837f648398</a><br /><br />build status in README.md</td></tr>
-<tr class="a">
-<td>2014-04-11 20:04:23</td>
-<td>Yegor Bugayenko &lt;yegor@tpc2.com&gt;</td>
-<td><a class="externalLink" href="https://github.com/jcabi/jcabi-http/.travis.yml"><b>.travis.yml</b></a> <a class="externalLink" href="https://github.com/jcabi/jcabi-http/.travis.yml?rev=3c92236a6b949d86984a3ab9d2117ed6fe705e78&amp;content-type=text/vnd.viewcvs-markup">v 3c92236a6b949d86984a3ab9d2117ed6fe705e78</a><br /><br />travis.yml</td></tr>
-<tr class="b">
-<td>2014-04-11 11:56:13</td>
-<td>Yegor Bugayenko &lt;yegor@tpc2.com&gt;</td>
-<td><a class="externalLink" href="https://github.com/jcabi/jcabi-http/pom.xml"><b>pom.xml</b></a> <a class="externalLink" href="https://github.com/jcabi/jcabi-http/pom.xml?rev=0c1e3868d1483540ab27a798ea528837941fe671&amp;content-type=text/vnd.viewcvs-markup">v 0c1e3868d1483540ab27a798ea528837941fe671</a><br /><br />snapshot</td></tr>
-<tr class="a">
-<td>2014-04-11 11:55:58</td>
-<td>Yegor Bugayenko &lt;yegor@tpc2.com&gt;</td>
-<td><a class="externalLink" href="https://github.com/jcabi/jcabi-http/README.md"><b>README.md</b></a> <a class="externalLink" href="https://github.com/jcabi/jcabi-http/README.md?rev=cae3f797775496eed75db72258e0859d7ab9dd48&amp;content-type=text/vnd.viewcvs-markup">v cae3f797775496eed75db72258e0859d7ab9dd48</a><br /><br />version up</td></tr>
-<tr class="b">
-<td>2014-04-11 11:53:33</td>
-<td>Yegor Bugayenko &lt;yegor@tpc2.com&gt;</td>
-<td><a class="externalLink" href="https://github.com/jcabi/jcabi-http/pom.xml"><b>pom.xml</b></a> <a class="externalLink" href="https://github.com/jcabi/jcabi-http/pom.xml?rev=a52929ec26da527a33ad1fa439652a308a34516f&amp;content-type=text/vnd.viewcvs-markup">v a52929ec26da527a33ad1fa439652a308a34516f</a><br /><br />1.3.3</td></tr>
-<tr class="a">
-<td>2014-04-11 11:53:15</td>
-<td>Yegor Bugayenko &lt;yegor@tpc2.com&gt;</td>
-<td><a class="externalLink" href="https://github.com/jcabi/jcabi-http/src/main/java/com/jcabi/http/response/JsonResponse.java">src/main/java/com/jcabi/http/response/<b>JsonResponse.java</b></a> <a class="externalLink" href="https://github.com/jcabi/jcabi-http/src/main/java/com/jcabi/http/response/JsonResponse.java?rev=469daf70f67bf975f928f148d262e3b50ab91930&amp;content-type=text/vnd.viewcvs-markup">v 469daf70f67bf975f928f148d262e3b50ab91930</a><br /><br />#12 fixed</td></tr>
-<tr class="b">
-<td>2014-04-11 11:46:50</td>
-<td>Yegor Bugayenko &lt;yegor@tpc2.com&gt;</td>
-<td><a class="externalLink" href="https://github.com/jcabi/jcabi-http/src/test/java/com/jcabi/http/response/JsonResponseTest.java">src/test/java/com/jcabi/http/response/<b>JsonResponseTest.java</b></a> <a class="externalLink" href="https://github.com/jcabi/jcabi-http/src/test/java/com/jcabi/http/response/JsonResponseTest.java?rev=a24ac0dbfe4de2ce78eeef37c2352689fd62e34b&amp;content-type=text/vnd.viewcvs-markup">v a24ac0dbfe4de2ce78eeef37c2352689fd62e34b</a><br /><br />#12 reproduced</td></tr>
-<tr class="a">
-<td>2014-04-11 11:06:07</td>
-<td>Yegor Bugayenko &lt;yegor@tpc2.com&gt;</td>
-<td><a class="externalLink" href="https://github.com/jcabi/jcabi-http/pom.xml"><b>pom.xml</b></a> <a class="externalLink" href="https://github.com/jcabi/jcabi-http/pom.xml?rev=9cf65d2852658837b0d9f42a1783b3ae8b7d5a26&amp;content-type=text/vnd.viewcvs-markup">v 9cf65d2852658837b0d9f42a1783b3ae8b7d5a26</a><br /><br />snapshot</td></tr>
-<tr class="b">
-<td>2014-04-11 10:32:19</td>
-<td>Yegor Bugayenko &lt;yegor@tpc2.com&gt;</td>
-<td><a class="externalLink" href="https://github.com/jcabi/jcabi-http/pom.xml"><b>pom.xml</b></a> <a class="externalLink" href="https://github.com/jcabi/jcabi-http/pom.xml?rev=a3a8644cb2f5a54c4491fad0dc756a36011776e8&amp;content-type=text/vnd.viewcvs-markup">v a3a8644cb2f5a54c4491fad0dc756a36011776e8</a><br /><br />more deps are optional</td></tr>
-<tr class="a">
-<td>2014-04-11 10:25:51</td>
-<td>Yegor Bugayenko &lt;yegor@tpc2.com&gt;</td>
-<td><a class="externalLink" href="https://github.com/jcabi/jcabi-http/pom.xml"><b>pom.xml</b></a> <a class="externalLink" href="https://github.com/jcabi/jcabi-http/pom.xml?rev=207fb324d3573d2bebb123e4b807f3d6e7aae4db&amp;content-type=text/vnd.viewcvs-markup">v 207fb324d3573d2bebb123e4b807f3d6e7aae4db</a><br /><br />1.3.2</td></tr>
-<tr class="b">
-<td>2014-04-11 10:16:52</td>
-<td>Yegor Bugayenko &lt;yegor@tpc2.com&gt;</td>
-<td><a class="externalLink" href="https://github.com/jcabi/jcabi-http/pom.xml"><b>pom.xml</b></a> <a class="externalLink" href="https://github.com/jcabi/jcabi-http/pom.xml?rev=8faafe6becb54c90a313818ba32238e4390cd9ff&amp;content-type=text/vnd.viewcvs-markup">v 8faafe6becb54c90a313818ba32238e4390cd9ff</a><br /><br />more deps fixed</td></tr>
-<tr class="a">
-<td>2014-04-11 10:13:19</td>
-<td>Yegor Bugayenko &lt;yegor@tpc2.com&gt;</td>
-<td><a class="externalLink" href="https://github.com/jcabi/jcabi-http/pom.xml"><b>pom.xml</b></a> <a class="externalLink" href="https://github.com/jcabi/jcabi-http/pom.xml?rev=05fa8d80b4a78f6714c408853a628a42d5ddf25b&amp;content-type=text/vnd.viewcvs-markup">v 05fa8d80b4a78f6714c408853a628a42d5ddf25b</a><br /><br />more deps moved</td></tr>
-<tr class="b">
-<td>2014-04-11 10:11:18</td>
-<td>Yegor Bugayenko &lt;yegor@tpc2.com&gt;</td>
-<td><a class="externalLink" href="https://github.com/jcabi/jcabi-http/pom.xml"><b>pom.xml</b></a> <a class="externalLink" href="https://github.com/jcabi/jcabi-http/pom.xml?rev=1f55d8ace6825287e7607ac72973939d4606436f&amp;content-type=text/vnd.viewcvs-markup">v 1f55d8ace6825287e7607ac72973939d4606436f</a><br /><br />more deps in provided scope</td></tr>
-<tr class="a">
-<td>2014-04-11 10:09:15</td>
-<td>Yegor Bugayenko &lt;yegor@tpc2.com&gt;</td>
-<td><a class="externalLink" href="https://github.com/jcabi/jcabi-http/pom.xml"><b>pom.xml</b></a> <a class="externalLink" href="https://github.com/jcabi/jcabi-http/pom.xml?rev=e775797f13cec6a21744fa3c3bf621c14f31561a&amp;content-type=text/vnd.viewcvs-markup">v e775797f13cec6a21744fa3c3bf621c14f31561a</a><br /><br />dep removed</td></tr>
-<tr class="b">
-<td>2014-04-11 09:55:56</td>
-<td>Yegor Bugayenko &lt;yegor@tpc2.com&gt;</td>
-<td><a class="externalLink" href="https://github.com/jcabi/jcabi-http/src/main/java/com/jcabi/http/response/JsonResponse.java">src/main/java/com/jcabi/http/response/<b>JsonResponse.java</b></a> <a class="externalLink" href="https://github.com/jcabi/jcabi-http/src/main/java/com/jcabi/http/response/JsonResponse.java?rev=f89d0efd4c8d6a641e0947b86ef33125a4b64677&amp;content-type=text/vnd.viewcvs-markup">v f89d0efd4c8d6a641e0947b86ef33125a4b64677</a><br /><a class="externalLink" href="https://github.com/jcabi/jcabi-http/src/test/java/com/jcabi/http/response/JsonResponseTest.java">src/test/java/com/jcabi/http/response/<b>JsonResponseTest.java</b></a> <a class="externalLink" href="https://github.com/jcabi/jcabi-http/src/test/java/com/jcabi/http/response/JsonResponseTest.java?rev=f89d0efd4c8d6a641e0947b86ef33125a4b64677&amp;content-type=text/vnd.viewcvs-markup">v f89d0efd4c8d6a641e0947b86ef33125a4b64677</a><br /><br />JsonResponse verbosity through exception</td></tr>
-<tr class="a">
-<td>2014-04-10 19:31:32</td>
-<td>Yegor Bugayenko &lt;yegor@tpc2.com&gt;</td>
-<td><a class="externalLink" href="https://github.com/jcabi/jcabi-http/pom.xml"><b>pom.xml</b></a> <a class="externalLink" href="https://github.com/jcabi/jcabi-http/pom.xml?rev=ad154cb29e7fa60a24d29f3d3d9e4cbc042d1286&amp;content-type=text/vnd.viewcvs-markup">v ad154cb29e7fa60a24d29f3d3d9e4cbc042d1286</a><br /><br />snapshot</td></tr>
-<tr class="b">
-<td>2014-04-10 19:24:44</td>
-<td>Yegor Bugayenko &lt;yegor@tpc2.com&gt;</td>
-<td><a class="externalLink" href="https://github.com/jcabi/jcabi-http/README.md"><b>README.md</b></a> <a class="externalLink" href="https://github.com/jcabi/jcabi-http/README.md?rev=9a6744684dd6406a5aaedba17a5c09bdf7bb8ad1&amp;content-type=text/vnd.viewcvs-markup">v 9a6744684dd6406a5aaedba17a5c09bdf7bb8ad1</a><br /><br />ver</td></tr>
-<tr class="a">
-<td>2014-04-10 19:22:15</td>
-<td>Yegor Bugayenko &lt;yegor@tpc2.com&gt;</td>
-<td><a class="externalLink" href="https://github.com/jcabi/jcabi-http/src/main/java/com/jcabi/http/mock/MkGrizzlyAdapter.java">src/main/java/com/jcabi/http/mock/<b>MkGrizzlyAdapter.java</b></a> <a class="externalLink" href="https://github.com/jcabi/jcabi-http/src/main/java/com/jcabi/http/mock/MkGrizzlyAdapter.java?rev=7d3e88e8a23c6d84b5c5550ca9f63c3b1387053f&amp;content-type=text/vnd.viewcvs-markup">v 7d3e88e8a23c6d84b5c5550ca9f63c3b1387053f</a><br /><a class="externalLink" href="https://github.com/jcabi/jcabi-http/src/main/java/com/jcabi/http/request/DefaultResponse.java">src/main/java/com/jcabi/http/request/<b>DefaultResponse.java</b></a> <a class="externalLink" href="https://github.com/jcabi/jcabi-http/src/main/java/com/jcabi/http/request/DefaultResponse.java?rev=7d3e88e8a23c6d84b5c5550ca9f63c3b1387053f&amp;content-type=text/vnd.viewcvs-markup">v 7d3e88e8a23c6d84b5c5550ca9f63c3b1387053f</a><br /><a class="externalLink" href="https://github.com/jcabi/jcabi-http/src/main/java/com/jcabi/http/wire/BasicAuthWire.java">src/main/java/com/jcabi/http/wire/<b>BasicAuthWire.java</b></a> <a class="externalLink" href="https://github.com/jcabi/jcabi-http/src/main/java/com/jcabi/http/wire/BasicAuthWire.java?rev=7d3e88e8a23c6d84b5c5550ca9f63c3b1387053f&amp;content-type=text/vnd.viewcvs-markup">v 7d3e88e8a23c6d84b5c5550ca9f63c3b1387053f</a><br /><br />polished</td></tr>
-<tr class="b">
-<td>2014-04-10 19:20:04</td>
-<td>Yegor Bugayenko &lt;yegor@tpc2.com&gt;</td>
-<td><a class="externalLink" href="https://github.com/jcabi/jcabi-http/pom.xml"><b>pom.xml</b></a> <a class="externalLink" href="https://github.com/jcabi/jcabi-http/pom.xml?rev=ee81f3bb88a6cc92364f56f6c7c39a4f1ee6ad25&amp;content-type=text/vnd.viewcvs-markup">v ee81f3bb88a6cc92364f56f6c7c39a4f1ee6ad25</a><br /><a class="externalLink" href="https://github.com/jcabi/jcabi-http/src/site/site.xml">src/site/<b>site.xml</b></a> <a class="externalLink" href="https://github.com/jcabi/jcabi-http/src/site/site.xml?rev=ee81f3bb88a6cc92364f56f6c7c39a4f1ee6ad25&amp;content-type=text/vnd.viewcvs-markup">v ee81f3bb88a6cc92364f56f6c7c39a4f1ee6ad25</a><br /><br />site fixed</td></tr>
-<tr class="a">
-<td>2014-04-10 19:18:00</td>
-<td>Yegor Bugayenko &lt;yegor@tpc2.com&gt;</td>
-<td><a class="externalLink" href="https://github.com/jcabi/jcabi-http/pom.xml"><b>pom.xml</b></a> <a class="externalLink" href="https://github.com/jcabi/jcabi-http/pom.xml?rev=9962cfe90531dd7aaaf554edfcb03eaa8e5f349b&amp;content-type=text/vnd.viewcvs-markup">v 9962cfe90531dd7aaaf554edfcb03eaa8e5f349b</a><br /><br />1.3</td></tr>
-<tr class="b">
-<td>2014-04-10 19:17:48</td>
-<td>Yegor Bugayenko &lt;yegor@tpc2.com&gt;</td>
-<td><a class="externalLink" href="https://github.com/jcabi/jcabi-http/pom.xml"><b>pom.xml</b></a> <a class="externalLink" href="https://github.com/jcabi/jcabi-http/pom.xml?rev=aa444af4a18d72174c38a89583fe11944325a10f&amp;content-type=text/vnd.viewcvs-markup">v aa444af4a18d72174c38a89583fe11944325a10f</a><br /><a class="externalLink" href="https://github.com/jcabi/jcabi-http/src/main/java/com/jcabi/http/Wire.java">src/main/java/com/jcabi/http/<b>Wire.java</b></a> <a class="externalLink" href="https://github.com/jcabi/jcabi-http/src/main/java/com/jcabi/http/Wire.java?rev=aa444af4a18d72174c38a89583fe11944325a10f&amp;content-type=text/vnd.viewcvs-markup">v aa444af4a18d72174c38a89583fe11944325a10f</a><br /><br />versions up</td></tr>
-<tr class="a">
-<td>2014-04-05 08:03:54</td>
-<td>Carlos Miranda &lt;carlosmiranda@users.noreply.github.com&gt;</td>
-<td><a class="externalLink" href="https://github.com/jcabi/jcabi-http/src/main/java/com/jcabi/http/response/JsonResponse.java">src/main/java/com/jcabi/http/response/<b>JsonResponse.java</b></a> <a class="externalLink" href="https://github.com/jcabi/jcabi-http/src/main/java/com/jcabi/http/response/JsonResponse.java?rev=551008083614d8c406443d58259d89caf9286a37&amp;content-type=text/vnd.viewcvs-markup">v 551008083614d8c406443d58259d89caf9286a37</a><br /><a class="externalLink" href="https://github.com/jcabi/jcabi-http/src/test/java/com/jcabi/http/response/JsonResponseTest.java">src/test/java/com/jcabi/http/response/<b>JsonResponseTest.java</b></a> <a class="externalLink" href="https://github.com/jcabi/jcabi-http/src/test/java/com/jcabi/http/response/JsonResponseTest.java?rev=551008083614d8c406443d58259d89caf9286a37&amp;content-type=text/vnd.viewcvs-markup">v 551008083614d8c406443d58259d89caf9286a37</a><br /><br />Issue #7 Logging JsonParseException scenarios</td></tr>
-<tr class="b">
-<td>2014-04-03 10:34:56</td>
-<td>Carlos Miranda &lt;carlosmiranda@users.noreply.github.com&gt;</td>
-<td><a class="externalLink" href="https://github.com/jcabi/jcabi-http/src/main/java/com/jcabi/http/response/JsonResponse.java">src/main/java/com/jcabi/http/response/<b>JsonResponse.java</b></a> <a class="externalLink" href="https://github.com/jcabi/jcabi-http/src/main/java/com/jcabi/http/response/JsonResponse.java?rev=5738be5d0b20171e7a50ad80310e20859865b959&amp;content-type=text/vnd.viewcvs-markup">v 5738be5d0b20171e7a50ad80310e20859865b959</a><br /><a class="externalLink" href="https://github.com/jcabi/jcabi-http/src/test/java/com/jcabi/http/response/JsonResponseTest.java">src/test/java/com/jcabi/http/response/<b>JsonResponseTest.java</b></a> <a class="externalLink" href="https://github.com/jcabi/jcabi-http/src/test/java/com/jcabi/http/response/JsonResponseTest.java?rev=5738be5d0b20171e7a50ad80310e20859865b959&amp;content-type=text/vnd.viewcvs-markup">v 5738be5d0b20171e7a50ad80310e20859865b959</a><br /><br />Issue #7 JsonResponse.json() now logs the JSON body</td></tr></table></div></div>
-                        </div>
-                    </article>
-                    <img class="maven-mobile" src="./images/built-by-maven.png"
-                        alt="built by maven" style="float:right" width="80"/>
-                </div>
-                <div class="legal-notes">
-                    <div class="copyright">
+<td><a class="externalLink" href="https://github.com/jcabi/jcabi-http/pom.xml"><b>pom.xml</b></a> <a class="externalLink" href="https://github.com/jcabi/jcabi-http/pom.xml?rev=5dfcc9bff5033cab667f6955528416127519a782&amp;content-type=text/vnd.viewcvs-markup">v 5dfcc9bff5033cab667f6955528416127519a782</a><br /><a class="externalLink" href="https://github.com/jcabi/jcabi-http/src/main/java/com/jcabi/http/response/AbstractResponse.java">src/main/java/com/jcabi/http/response/<b>AbstractResponse.java</b></a> <a class="externalLink" href="https://github.com/jcabi/jcabi-http/src/main/java/com/jcabi/http/response/AbstractResponse.java?rev=5dfcc9bff5033cab667f6955528416127519a782&amp;content-type=text/vnd.viewcvs-markup">v 5dfcc9bff5033cab667f6955528416127519a782</a><br /><a class="externalLink" href="https://github.com/jcabi/jcabi-http/src/main/java/com/jcabi/http/response/JsoupResponse.java">src/main/java/com/jcabi/http/response/<b>JsoupResponse.java</b></a> <a class="externalLink" href="https://github.com/jcabi/jcabi-http/src/main/java/com/jcabi/http/response/JsoupResponse.java?rev=5dfcc9bff5033cab667f6955528416127519a782&amp;content-type=text/vnd.viewcvs-markup">v 5dfcc9bff5033cab667f6955528416127519a782</a><br /><a class="externalLink" href="https://github.com/jcabi/jcabi-http/src/test/java/com/jcabi/http/response/JsoupResponseTest.java">src/test/java/com/jcabi/http/response/<b>JsoupResponseTest.java</b></a> <a class="externalLink" href="https://github.com/jcabi/jcabi-http/src/test/java/com/jcabi/http/response/JsoupResponseTest.java?rev=5dfcc9bff5033cab667f6955528416127519a782&amp;content-type=text/vnd.viewcvs-markup">v 5dfcc9bff5033cab667f6955528416127519a782</a><br /><br />Issue #13 Implemented JsoupResponse</td></tr></table></div></div>
+                            <img class="maven-logo" src="//img.jcabi.com/built-by-maven.png" alt="built by maven"/>
+                        </article>
+                    </div>
+                </main>
+                <footer class="legal-notes">
+                    <div>
                         Copyright &#169;
                                                                             2012-2014
-                                                <br/>
-                        jcabi.com, All Rights Reserved.
-                        <br/>
-                        <a href="http://maven.apache.org/privacy-policy.html">Privacy Policy</a>.
-                    </div>
-                </div>
+                                            </div>
+                    <div>jcabi.com, All Rights Reserved.</div>
+                    <div><a href="http://maven.apache.org/privacy-policy.html">Privacy Policy</a>.</div>
+                </footer>
             </div>
-        </div>
+        </section>
     </body>
 </html>
