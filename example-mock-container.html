@@ -53,7 +53,7 @@
                                                                     </ul>
                                                     </li>
                                                                                                                         <li >
-                            <span>                        <a href="apidocs-1.5/index.html" title="API 1.5 (JavaDoc)">API 1.5 (JavaDoc)</a>
+                            <span>                        <a href="apidocs-1.5.2/index.html" title="API 1.5.2 (JavaDoc)">API 1.5.2 (JavaDoc)</a>
         </span>
                                                                                                                                                                 <ul>
                                                                     </ul>
@@ -151,11 +151,11 @@
                             </div>
                             <div class="date">
                                 <div class="date-numbers">
-                                    <strong itemprop="version">1.5</strong>
+                                    <strong itemprop="version">1.5.2</strong>
                                     
-                                    <time itemprop="datePublished" datetime="2014-05-15T02:18:13Z">
+                                    <time itemprop="datePublished" datetime="2014-05-19T01:40:22Z">
                                         
-                                        15-May-2014
+                                        19-May-2014
                                     </time>
                                 </div>
                                                                                                     <div>
@@ -168,7 +168,7 @@
                         </header>
                         <article role="article" itemprop="articleBody">
                             <h1>Mock Servlet Container</h1>
-<p><a href="./apidocs-1.5/com/rexsl/test/mock/MkContainer.html"><tt>MkContainer</tt></a> is a simple lightweight Java servlet container that can act as a mock server-side of your application, in order to test your RESTful client, for example:</p>
+<p><a href="./apidocs-1.5.2/com/rexsl/test/mock/MkContainer.html"><tt>MkContainer</tt></a> is a simple lightweight Java servlet container that can act as a mock server-side of your application, in order to test your RESTful client, for example:</p>
 
 <div class="source">
 <pre>public class ClientTest {
@@ -197,12 +197,12 @@
   }
 }
 </pre></div>
-<p>Let&#x2019;s see what&#x2019;s happening here. First, a new instance of <a href="./apidocs-1.5/com/rexsl/test/mock/MkContainer.html"><tt>MkContainer</tt></a> is created, with a Grizzly-based implementation <a href="./apidocs-1.5/com/rexsl/test/mock/MkGrizzlyContainer.html"><tt>MkGrizzlyContainer</tt></a>:</p>
+<p>Let&#x2019;s see what&#x2019;s happening here. First, a new instance of <a href="./apidocs-1.5.2/com/rexsl/test/mock/MkContainer.html"><tt>MkContainer</tt></a> is created, with a Grizzly-based implementation <a href="./apidocs-1.5.2/com/rexsl/test/mock/MkGrizzlyContainer.html"><tt>MkGrizzlyContainer</tt></a>:</p>
 
 <div class="source">
 <pre>MkContainer container = new MkGrizzlyContainer();
 </pre></div>
-<p>The container is not yet started and doesn&#x2019;t know what to reply when a new HTTP request comes in. We should add at least one instance of <a href="./apidocs-1.5/com/rexsl/test/mock/MkAnswer.html"><tt>MkAnswer</tt></a> to its queue of ready-to-be-dispached answers:</p>
+<p>The container is not yet started and doesn&#x2019;t know what to reply when a new HTTP request comes in. We should add at least one instance of <a href="./apidocs-1.5.2/com/rexsl/test/mock/MkAnswer.html"><tt>MkAnswer</tt></a> to its queue of ready-to-be-dispached answers:</p>
 
 <div class="source">
 <pre>container.next(
@@ -211,13 +211,13 @@
     .withHeader(&quot;Server&quot;, &quot;mock&quot;)
 );
 </pre></div>
-<p>It&#x2019;s possible to add more instances of <a href="./apidocs-1.5/com/rexsl/test/mock/MkAnswer.html"><tt>MkAnswer</tt></a>, using this method <tt>next()</tt>. They will be returned by a running container one by one in response to incoming HTTP &#x201c;queries&#x201d; (which will be recorded by the container as instances of <a href="./apidocs-1.5/com/rexsl/test/mock/MkQuery.html"><tt>MkQuery</tt></a> and available later through method <tt>take()</tt>).</p>
+<p>It&#x2019;s possible to add more instances of <a href="./apidocs-1.5.2/com/rexsl/test/mock/MkAnswer.html"><tt>MkAnswer</tt></a>, using this method <tt>next()</tt>. They will be returned by a running container one by one in response to incoming HTTP &#x201c;queries&#x201d; (which will be recorded by the container as instances of <a href="./apidocs-1.5.2/com/rexsl/test/mock/MkQuery.html"><tt>MkQuery</tt></a> and available later through method <tt>take()</tt>).</p>
 <p>Now it&#x2019;s time to start the container on a randomly allocated TCP port (you can also use a fixed port number, but random allocation is preferred):</p>
 
 <div class="source">
 <pre>container.start();
 </pre></div>
-<p>Then, we&#x2019;re making a request to a running container, getting its main entry URI by <tt>container.home()</tt> (<a href="./apidocs-1.5/com/rexsl/test/wire/VerboseWire.html"><tt>VerboseWire</tt></a> is used in order to make HTTP request and response details visible in log):</p>
+<p>Then, we&#x2019;re making a request to a running container, getting its main entry URI by <tt>container.home()</tt> (<a href="./apidocs-1.5.2/com/rexsl/test/wire/VerboseWire.html"><tt>VerboseWire</tt></a> is used in order to make HTTP request and response details visible in log):</p>
 
 <div class="source">
 <pre>new JdkRequest(container.home())
@@ -246,7 +246,7 @@
   )
 );
 </pre></div>
-<p><a href="./apidocs-1.5/com/rexsl/test/mock/MkGrzillyContainer.html"><tt>MkGrizzlyContainer</tt></a> depends on <a class="externalLink" href="https://java.net/projects/grizzly-servlet-container">Grizzly Servlet Webserver</a>, and this dependency is required in your <tt>pom.xml</tt>:</p>
+<p><a href="./apidocs-1.5.2/com/rexsl/test/mock/MkGrzillyContainer.html"><tt>MkGrizzlyContainer</tt></a> depends on <a class="externalLink" href="https://java.net/projects/grizzly-servlet-container">Grizzly Servlet Webserver</a>, and this dependency is required in your <tt>pom.xml</tt>:</p>
 
 <div class="source">
 <pre>&lt;dependency&gt;
