@@ -222,6 +222,7 @@ public final class MkContainerTest {
      * @throws Exception If something goes wrong inside
      */
     @Test
+    @SuppressWarnings("unchecked")
     public void takesAllMatchingQueries() throws Exception {
         final String match = "multipleRequestMatches";
         final String mismatch = "multipleRequestNotMatching";
@@ -250,11 +251,11 @@ public final class MkContainerTest {
             container.takeAll(MkAnswerMatchers.hasBody(Matchers.is(response))),
             Matchers.allOf(
                 Matchers.<MkQuery>iterableWithSize(2),
-                Matchers.hasItem(
+                Matchers.hasItems(
                     MkQueryMatchers.hasBody(Matchers.is(match))
                 ),
                 Matchers.not(
-                    Matchers.hasItem(
+                    Matchers.hasItems(
                         MkQueryMatchers.hasBody(Matchers.is(mismatch))
                     )
                 )
