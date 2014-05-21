@@ -1,6 +1,7 @@
 <img src="http://img.jcabi.com/logo-square.png" width="64px" height="64px" />
  
 [![Build Status](https://travis-ci.org/jcabi/jcabi-http.svg?branch=master)](https://travis-ci.org/jcabi/jcabi-http)
+[![Maven Central](https://maven-badges.herokuapp.com/maven-central/com.jcabi/jcabi-http/badge.svg)](https://maven-badges.herokuapp.com/maven-central/com.jcabi/jcabi-http)
 
 More details are here: [http.jcabi.com](http://http.jcabi.com/index.html)
 
@@ -20,16 +21,6 @@ public class Main {
       .body();
   }
 }
-```
-
-You need just this dependency:
-
-```xml
-<dependency>
-  <groupId>com.jcabi</groupId>
-  <artifactId>jcabi-http</artifactId>
-  <version>1.4</version>
-</dependency>
 ```
 
 ## Questions?
