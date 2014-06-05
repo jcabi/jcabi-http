@@ -35,10 +35,10 @@ import com.jcabi.http.Request;
 import com.jcabi.http.Response;
 import com.jcabi.http.Wire;
 import java.io.IOException;
+import java.net.HttpURLConnection;
 import java.util.Collection;
 import java.util.Map.Entry;
 import java.util.concurrent.TimeUnit;
-import javax.validation.constraints.NotNull;
 import lombok.EqualsAndHashCode;
 import lombok.ToString;
 
@@ -78,8 +78,7 @@ public final class AutoRedirectingWire implements Wire {
      * Public ctor.
      * @param wire Original wire
      */
-    public AutoRedirectingWire(@NotNull(message = "wire can't be NULL")
-        final Wire wire) {
+    public AutoRedirectingWire(final Wire wire) {
         this(wire, Tv.FIVE);
     }
 
@@ -88,8 +87,7 @@ public final class AutoRedirectingWire implements Wire {
      * @param wire Original wire
      * @param retries Maximum number of retries
      */
-    public AutoRedirectingWire(@NotNull(message = "wire can't be NULL")
-        final Wire wire, final int retries) {
+    public AutoRedirectingWire(final Wire wire, final int retries) {
         this.origin = wire;
         this.max = retries;
     }
@@ -114,7 +112,8 @@ public final class AutoRedirectingWire implements Wire {
             attempts += 1;
         // @checkstyle MagicNumber (2 lines)
         } while (
-            response.status() >= 300 && response.status() <= 399
+            response.status() >= HttpURLConnection.HTTP_MULT_CHOICE
+                && response.status() <= HttpURLConnection.HTTP_USE_PROXY
                 && attempts < this.max
         );
         return response;
