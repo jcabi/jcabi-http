@@ -59,6 +59,7 @@ import lombok.ToString;
  *
  * @author Carlos Miranda (miranda.cma@gmail.com)
  * @version $Id$
+ * @since 1.6
  */
 @Immutable
 @ToString
