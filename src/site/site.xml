@@ -62,6 +62,7 @@
             <item name="JSON Response" href="example-json-response.html"/>
             <item name="Web Linking Response" href="example-web-linking-response.html"/>
             <item name="HTTP Request that retries" href="example-retry-request.html"/>
+            <item name="Retrying for redirect responses" href="example-auto-redirecting.html"/>
         </menu>
         <menu name="Mock Servlet Container">
             <item name="HTTP client unit testing" href="example-mock-container.html"/>
