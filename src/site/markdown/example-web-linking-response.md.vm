@@ -2,7 +2,7 @@
 
 [RFC 5988 "Web Linking"](http://tools.ietf.org/html/rfc5988) recommends to use
 `Link` HTTP header for linking pages.
-[`WebLinkingResponse`](./apidocs-${project.version}/com/rexsl/test/response/WebLinkingResponse.html)
+[`WebLinkingResponse`](./apidocs-${project.version}/com/jcabi/http/response/WebLinkingResponse.html)
 implements parsing of such header. This is how you can use it:
 
 ```java

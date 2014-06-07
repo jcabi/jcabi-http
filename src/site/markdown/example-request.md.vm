@@ -1,14 +1,14 @@
 # Making HTTP Request
 
 There is one interface
-[`Request`](./apidocs-${project.version}/com/rexsl/test/Request.html)
+[`Request`](./apidocs-${project.version}/com/jcabi/http/Request.html)
 that represents an HTTP request. There are a few implementations
 of the interface, and the most popular and easy to use is
-[`JdkRequest`](./apidocs-${project.version}/com/rexsl/test/request/JdkRequest.html).
+[`JdkRequest`](./apidocs-${project.version}/com/jcabi/http/request/JdkRequest.html).
 It makes a request using native JDK class
 [`java.net.HttpURLConnection`](http://docs.oracle.com/javase/7/docs/api/java/net/HttpURLConnection.html).
 
-First, make an instance of [`JdkRequest`](./apidocs-${project.version}/com/rexsl/test/request/JdkRequest.html),
+First, make an instance of [`JdkRequest`](./apidocs-${project.version}/com/jcabi/http/request/JdkRequest.html),
 providing target URI as the first and the only constructor argument
 (`String`, `URI`, and `URL` types are accepted):
 
@@ -26,7 +26,7 @@ int status = response.status();
 String body = response.body();
 ```
 
-[`Request`](./apidocs-${project.version}/com/rexsl/test/Request.html)
+[`Request`](./apidocs-${project.version}/com/jcabi/http/Request.html)
 is a trully immutable class, which means that you
 can't change any of its properties. However,
 you can create new requests. For example, you want to make a similar
@@ -38,7 +38,7 @@ post.fetch();
 ```
 
 This is a bigger example of
-[`Request`](./apidocs-${project.version}/com/rexsl/test/Request.html)
+[`Request`](./apidocs-${project.version}/com/jcabi/http/Request.html)
 usage:
 
 ```java
@@ -59,7 +59,7 @@ This code will make a `POST` HTTP request to
 will be set to `salary=55000&department=IT`. There will be
 two HTTP headers in the request: `Content-Type` and `User-Agent`.
 
-[`Response`](./apidocs-${project.version}/com/rexsl/test/Response.html)
+[`Response`](./apidocs-${project.version}/com/jcabi/http/Response.html)
 has a few methods that return its data, including `status()`,
 `reason()`, `headers()`, `body()`, and `binary()`. Besides that,
 there is a method `as(Class)`, which allows you to wrap an existing
@@ -67,7 +67,7 @@ response with a new custom decorator, that implements more methods, suitable
 for a particular use case.
 
 The simpliest decorator is
-[`RestResponse`](./apidocs-${project.version}/com/rexsl/test/response/RestResponse.html).
+[`RestResponse`](./apidocs-${project.version}/com/jcabi/http/response/RestResponse.html).
 It helps you to make assertions on the response and follow redirects,
 for example:
 
@@ -83,7 +83,7 @@ String page = new JdkRequest("http://my.example.com")
   .body();
 ```
 
-[`RestResponse`](./apidocs-${project.version}/com/rexsl/test/response/RestResponse.html)
+[`RestResponse`](./apidocs-${project.version}/com/jcabi/http/response/RestResponse.html)
 also helps you to retrieve cookies from a response:
 
 ```java

@@ -1,8 +1,8 @@
 # HTTP Request that Retries on Failure
 
-[`RetryWire`](./apidocs-${project.version}/com/rexsl/test/wire/RetryWire.html).
+[`RetryWire`](./apidocs-${project.version}/com/jcabi/http/wire/RetryWire.html).
 is a decorator of
-[`Wire`](./apidocs-${project.version}/com/rexsl/test/Wire.html)
+[`Wire`](./apidocs-${project.version}/com/jcabi/http/Wire.html)
 that retries to fetch a response a few times before giving up and
 throwing `IOException`, for example:
 
