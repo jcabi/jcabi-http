@@ -1,6 +1,6 @@
 # Mock Servlet Container
 
-[`MkContainer`](./apidocs-${project.version}/com/rexsl/test/mock/MkContainer.html)
+[`MkContainer`](./apidocs-${project.version}/com/jcabi/http/mock/MkContainer.html)
 is a simple lightweight Java servlet container that can act
 as a mock server-side of your application, in order to test your
 RESTful client, for example:
@@ -34,9 +34,9 @@ public class ClientTest {
 ```
 
 Let's see what's happening here. First, a new instance of
-[`MkContainer`](./apidocs-${project.version}/com/rexsl/test/mock/MkContainer.html)
+[`MkContainer`](./apidocs-${project.version}/com/jcabi/http/mock/MkContainer.html)
 is created, with a Grizzly-based implementation
-[`MkGrizzlyContainer`](./apidocs-${project.version}/com/rexsl/test/mock/MkGrizzlyContainer.html):
+[`MkGrizzlyContainer`](./apidocs-${project.version}/com/jcabi/http/mock/MkGrizzlyContainer.html):
 
 ```java
 MkContainer container = new MkGrizzlyContainer();
@@ -44,7 +44,7 @@ MkContainer container = new MkGrizzlyContainer();
 
 The container is not yet started and doesn't know what to reply when
 a new HTTP request comes in. We should add at least one instance of
-[`MkAnswer`](./apidocs-${project.version}/com/rexsl/test/mock/MkAnswer.html)
+[`MkAnswer`](./apidocs-${project.version}/com/jcabi/http/mock/MkAnswer.html)
 to its queue of ready-to-be-dispached answers:
 
 ```java
@@ -56,11 +56,11 @@ container.next(
 ```
 
 It's possible to add more instances of
-[`MkAnswer`](./apidocs-${project.version}/com/rexsl/test/mock/MkAnswer.html),
+[`MkAnswer`](./apidocs-${project.version}/com/jcabi/http/mock/MkAnswer.html),
 using this method `next()`. They will be returned by a running container
 one by one in response to incoming HTTP "queries"
 (which will be recorded by the container as instances of
-[`MkQuery`](./apidocs-${project.version}/com/rexsl/test/mock/MkQuery.html)
+[`MkQuery`](./apidocs-${project.version}/com/jcabi/http/mock/MkQuery.html)
 and available later through method `take()`).
 
 Now it's time to start the container on a randomly allocated
@@ -73,7 +73,7 @@ container.start();
 
 Then, we're making a request to a running container, getting its
 main entry URI by `container.home()`
-([`VerboseWire`](./apidocs-${project.version}/com/rexsl/test/wire/VerboseWire.html)
+([`VerboseWire`](./apidocs-${project.version}/com/jcabi/http/wire/VerboseWire.html)
 is used in order to make HTTP request and response details visible in log):
 
 ```java
@@ -109,7 +109,7 @@ MatcherAssert.assertThat(
 );
 ```
 
-[`MkGrizzlyContainer`](./apidocs-${project.version}/com/rexsl/test/mock/MkGrzillyContainer.html)
+[`MkGrizzlyContainer`](./apidocs-${project.version}/com/jcabi/http/mock/MkGrizzlyContainer.html)
 depends on
 [Grizzly Servlet Webserver](https://java.net/projects/grizzly-servlet-container),
 and this dependency is required in your `pom.xml`:
