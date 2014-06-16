@@ -26,7 +26,7 @@ benefits of this client comparing to Apache, Jersey, and others.
 Check [JavaDoc](./apidocs-${project.version}/index.html)
 for more details.
 
-The only dependency you need is
+The main dependency that you need is
 (you can also download
 [jcabi-http-${project.version}.jar](http://repo1.maven.org/maven2/com/jcabi/jcabi-http/${project.version}/jcabi-http-${project.version}.jar)
 and add it to the classpath):
@@ -38,6 +38,10 @@ and add it to the classpath):
   <version>${project.version}</version>
 </dependency>
 ```
+
+Other dependencies may be required in order to use all features of this library.
+See [here](./optional-dependencies.html) for a full list of the dependencies
+that you may need.
 
 Cutting Edge Version
 -----------------------
