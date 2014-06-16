@@ -53,6 +53,7 @@
         <menu name="Overview">
             <item name="Introduction" href="index.html"/>
             <item name="API ${project.version} (JavaDoc)" href="./apidocs-${project.version}/index.html"/>
+            <item name="Optional Dependencies" href="optional-dependencies.html"/>
             <item name="Test coverage" href="./cobertura/index.html"/>
             <item name="Release History" href="https://github.com/jcabi/jcabi-http/releases"/>
         </menu>
