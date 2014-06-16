@@ -42,7 +42,7 @@
     <body>
                 <section class="page" itemscope="" itemtype="http://schema.org/BlogPosting">
             <nav class="menu-section" role="navigation">
-                <ul class="menu">
+                <ul class="menu" id="menu">
                                                                                     <li>
                             Overview
                                                             <ul>
@@ -53,7 +53,13 @@
                                                                     </ul>
                                                     </li>
                                                                                                                         <li >
-                            <span>                        <a href="apidocs-1.5.2/index.html" title="API 1.5.2 (JavaDoc)">API 1.5.2 (JavaDoc)</a>
+                            <span>                        <a href="apidocs-1.6/index.html" title="API 1.6 (JavaDoc)">API 1.6 (JavaDoc)</a>
+        </span>
+                                                                                                                                                                <ul>
+                                                                    </ul>
+                                                    </li>
+                                                                                                                        <li >
+                            <span>                        <a href="optional-dependencies.html" title="Optional Dependencies">Optional Dependencies</a>
         </span>
                                                                                                                                                                 <ul>
                                                                     </ul>
@@ -105,6 +111,12 @@
                                                                                                                                                                 <ul>
                                                                     </ul>
                                                     </li>
+                                                                                                                        <li >
+                            <span>                        <a href="example-auto-redirecting.html" title="Retrying for redirect responses">Retrying for redirect responses</a>
+        </span>
+                                                                                                                                                                <ul>
+                                                                    </ul>
+                                                    </li>
                                                                                         </ul>
                                                     </li>
                                             <li>
@@ -128,7 +140,7 @@
                                                                                                                         <li >
                             <span>                        <a href="project-reports.html" title="Project Reports">Project Reports</a>
         </span>
-                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                    </li>
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                            </li>
                                                                                         </ul>
                                                     </li>
                                     </ul>
@@ -151,11 +163,11 @@
                             </div>
                             <div class="date">
                                 <div class="date-numbers">
-                                    <strong itemprop="version">1.5.2</strong>
+                                    <strong itemprop="version">1.6</strong>
                                     
-                                    <time itemprop="datePublished" datetime="2014-05-19T01:40:22Z">
+                                    <time itemprop="datePublished" datetime="2014-06-16T03:15:21Z">
                                         
-                                        19-May-2014
+                                        16-Jun-2014
                                     </time>
                                 </div>
                                                                                                     <div>
@@ -187,16 +199,17 @@ public class Main {
 }
 </pre></div>
 <p><a class="externalLink" href="http://www.yegor256.com/2014/04/11/jcabi-http-intro.html">This blog post</a> explains the benefits of this client comparing to Apache, Jersey, and others.</p>
-<p>Check <a href="./apidocs-1.5.2/index.html">JavaDoc</a> for more details.</p>
-<p>The only dependency you need is (you can also download <a class="externalLink" href="http://repo1.maven.org/maven2/com/jcabi/jcabi-http/1.5.2/jcabi-http-1.5.2.jar">jcabi-http-1.5.2.jar</a> and add it to the classpath):</p>
+<p>Check <a href="./apidocs-1.6/index.html">JavaDoc</a> for more details.</p>
+<p>The main dependency that you need is (you can also download <a class="externalLink" href="http://repo1.maven.org/maven2/com/jcabi/jcabi-http/1.6/jcabi-http-1.6.jar">jcabi-http-1.6.jar</a> and add it to the classpath):</p>
 
 <div class="source">
 <pre>&lt;dependency&gt;
   &lt;groupId&gt;com.jcabi&lt;/groupId&gt;
   &lt;artifactId&gt;jcabi-http&lt;/artifactId&gt;
-  &lt;version&gt;1.5.2&lt;/version&gt;
+  &lt;version&gt;1.6&lt;/version&gt;
 &lt;/dependency&gt;
 </pre></div>
+<p>Other dependencies may be required in order to use all features of this library. See <a href="./optional-dependencies.html">here</a> for a full list of the dependencies that you may need.</p>
 <div class="section">
 <h2>Cutting Edge Version<a name="Cutting_Edge_Version"></a></h2>
 <p>If you want to use current version of the product, you can do it with this configuration in your <tt>pom.xml</tt>:</p>
