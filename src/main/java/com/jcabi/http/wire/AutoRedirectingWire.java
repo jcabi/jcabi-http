@@ -37,7 +37,7 @@ import com.jcabi.http.Wire;
 import java.io.IOException;
 import java.net.HttpURLConnection;
 import java.util.Collection;
-import java.util.Map.Entry;
+import java.util.Map;
 import java.util.concurrent.TimeUnit;
 import lombok.EqualsAndHashCode;
 import lombok.ToString;
@@ -47,8 +47,12 @@ import lombok.ToString;
  *
  * <p>This wire will retry a request a certain number of times (default: 5)
  * after a short delay when a HTTP response with a status code of 300-399 is
- * received. If the maximum number of retries are reached, the last response
+ * received. On every next attempt a new URL will be used, according
+ * to the value of {@code Location} HTTP header of the response.
+ *
+ * <p>If the maximum number of retries are reached, the last response
  * received is returned to the caller, regardless of its status code.
+ *
  * <pre> String html = new JdkRequest("http://goggle.com")
  *   .through(AutoRedirectingWire.class)
  *   .header(HttpHeaders.ACCEPT, MediaType.TEXT_PLAIN)
@@ -58,6 +62,7 @@ import lombok.ToString;
  * <p>The class is immutable and thread-safe.
  *
  * @author Carlos Miranda (miranda.cma@gmail.com)
+ * @author Yegor Bugayenko (yegor@tpc2.com)
  * @version $Id$
  * @since 1.6
  */
@@ -73,7 +78,7 @@ public final class AutoRedirectingWire implements Wire {
     /**
      * Maximum number of retries to be made.
      */
-    private final transient int max;
+    private final transient long max;
 
     /**
      * Public ctor.
@@ -90,28 +95,28 @@ public final class AutoRedirectingWire implements Wire {
      */
     public AutoRedirectingWire(final Wire wire, final int retries) {
         this.origin = wire;
-        this.max = retries;
+        this.max = (long) retries;
     }
 
     /**
      * {@inheritDoc}
-     * @checkstyle ParameterNumber (6 lines)
+     * @checkstyle ParameterNumber (8 lines)
      */
     @Override
     public Response send(final Request req, final String home,
-        final String method, final Collection<Entry<String, String>> headers,
+        final String method,
+        final Collection<Map.Entry<String, String>> headers,
         final byte[] content) throws IOException {
-        Response response = null;
-        int attempts = 0;
+        Response response;
+        long attempts = 0L;
         do {
             try {
-                TimeUnit.SECONDS.sleep(1 * attempts);
+                TimeUnit.SECONDS.sleep(attempts);
             } catch (final InterruptedException ex) {
                 throw new IOException(ex);
             }
             response = this.origin.send(req, home, method, headers, content);
-            attempts += 1;
-        // @checkstyle MagicNumber (2 lines)
+            ++attempts;
         } while (
             response.status() >= HttpURLConnection.HTTP_MULT_CHOICE
                 && response.status() <= HttpURLConnection.HTTP_USE_PROXY
