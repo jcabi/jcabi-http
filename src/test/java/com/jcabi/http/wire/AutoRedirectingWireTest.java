@@ -36,6 +36,7 @@ import com.jcabi.http.mock.MkGrizzlyContainer;
 import com.jcabi.http.mock.MkQuery;
 import com.jcabi.http.request.JdkRequest;
 import com.jcabi.http.response.RestResponse;
+import javax.ws.rs.core.HttpHeaders;
 import org.apache.http.HttpStatus;
 import org.hamcrest.MatcherAssert;
 import org.hamcrest.Matchers;
@@ -58,7 +59,9 @@ public final class AutoRedirectingWireTest {
     @Test
     public void retriesForHttpRedirectStatus() throws Exception {
         final MkContainer container = new MkGrizzlyContainer().next(
-            new MkAnswer.Simple(HttpStatus.SC_MOVED_TEMPORARILY, ""),
+            new MkAnswer.Simple(HttpStatus.SC_MOVED_TEMPORARILY, "")
+                // @checkstyle MultipleStringLiteralsCheck (1 line)
+                .withHeader(HttpHeaders.LOCATION, "/"),
             Matchers.any(MkQuery.class),
             Integer.MAX_VALUE
         ).start();
@@ -86,7 +89,8 @@ public final class AutoRedirectingWireTest {
     public void returnsValidResponseAfterRetry() throws Exception {
         final String body = "success";
         final MkContainer container = new MkGrizzlyContainer().next(
-            new MkAnswer.Simple(HttpStatus.SC_MOVED_TEMPORARILY, ""),
+            new MkAnswer.Simple(HttpStatus.SC_MOVED_TEMPORARILY, "")
+                .withHeader(HttpHeaders.LOCATION, "/"),
             Matchers.any(MkQuery.class),
             2
         ).next(new MkAnswer.Simple(body)).start();

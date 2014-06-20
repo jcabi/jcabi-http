@@ -36,9 +36,12 @@ import com.jcabi.http.Response;
 import com.jcabi.http.Wire;
 import java.io.IOException;
 import java.net.HttpURLConnection;
+import java.net.URI;
 import java.util.Collection;
+import java.util.List;
 import java.util.Map;
 import java.util.concurrent.TimeUnit;
+import javax.ws.rs.core.HttpHeaders;
 import lombok.EqualsAndHashCode;
 import lombok.ToString;
 
@@ -107,21 +110,37 @@ public final class AutoRedirectingWire implements Wire {
         final String method,
         final Collection<Map.Entry<String, String>> headers,
         final byte[] content) throws IOException {
-        Response response;
-        long attempts = 0L;
-        do {
+        Response response = this.origin.send(
+            req, home, method, headers, content
+        );
+        long attempt = 1L;
+        final URI uri = URI.create(home);
+        while (attempt < this.max) {
+            if (response.status() < HttpURLConnection.HTTP_MULT_CHOICE
+                || response.status() >= HttpURLConnection.HTTP_BAD_REQUEST) {
+                break;
+            }
+            final List<String> locations = response.headers().get(
+                HttpHeaders.LOCATION
+            );
+            if (locations == null || locations.size() != 1) {
+                break;
+            }
+            URI location = URI.create(locations.get(0));
+            if (!location.isAbsolute()) {
+                location = uri.resolve(uri);
+            }
+            response = this.origin.send(
+                req, location.toString(),
+                method, headers, content
+            );
             try {
-                TimeUnit.SECONDS.sleep(attempts);
+                TimeUnit.SECONDS.sleep(attempt);
             } catch (final InterruptedException ex) {
                 throw new IOException(ex);
             }
-            response = this.origin.send(req, home, method, headers, content);
-            ++attempts;
-        } while (
-            response.status() >= HttpURLConnection.HTTP_MULT_CHOICE
-                && response.status() <= HttpURLConnection.HTTP_USE_PROXY
-                && attempts < this.max
-        );
+            ++attempt;
+        }
         return response;
     }
 
