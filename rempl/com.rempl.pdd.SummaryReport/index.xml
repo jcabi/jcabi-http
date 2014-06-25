@@ -3,10 +3,9 @@
 <puzzle>
 <ticket>1</ticket>
 <file>src/test/java/com/jcabi/http/response/JsoupResponseTest.java</file>
-<prefix>     * </prefix>
 <body>Saxon complains about HTML 1.0, and I'm not sure how this is possible to fix. All we need to check in this test is that the output is a clean HTML document. Aparently JSOUP produces a broken HTML? Let's investigate and fix.</body>
+<role>IMP</role>
 <estimate>0</estimate>
 <lines>50-53</lines>
-<owner>someone</owner>
 </puzzle>
 </puzzles>
