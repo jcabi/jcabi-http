@@ -110,6 +110,7 @@ final class BaseRequest implements Request {
     /**
      * Body to use.
      */
+    @Immutable.Array
     private final transient byte[] content;
 
     /**
@@ -404,6 +405,7 @@ final class BaseRequest implements Request {
         /**
          * Content encapsulated.
          */
+        @Immutable.Array
         private final transient byte[] text;
         /**
          * Base request encapsulated.

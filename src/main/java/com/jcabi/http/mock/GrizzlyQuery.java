@@ -74,6 +74,7 @@ final class GrizzlyQuery implements MkQuery {
     /**
      * HTTP request content.
      */
+    @Immutable.Array
     private final transient byte[] content;
 
     /**

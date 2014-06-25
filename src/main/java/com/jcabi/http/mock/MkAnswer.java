@@ -98,6 +98,7 @@ public interface MkAnswer {
         /**
          * Content received.
          */
+        @Immutable.Array
         private final transient byte[] content;
         /**
          * Public ctor.

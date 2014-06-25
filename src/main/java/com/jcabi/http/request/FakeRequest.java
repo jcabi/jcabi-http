@@ -115,6 +115,7 @@ public final class FakeRequest implements Request {
     /**
      * Content received.
      */
+    @Immutable.Array
     private final transient byte[] content;
 
     /**

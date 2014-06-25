@@ -90,6 +90,7 @@ final class DefaultResponse implements Response {
     /**
      * Content received.
      */
+    @Immutable.Array
     private final transient byte[] content;
 
     /**
