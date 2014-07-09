@@ -33,7 +33,6 @@ import com.jcabi.http.Response;
 import com.jcabi.http.request.FakeRequest;
 import com.jcabi.matchers.XhtmlMatchers;
 import org.hamcrest.MatcherAssert;
-import org.junit.Ignore;
 import org.junit.Test;
 
 /**
@@ -47,22 +46,17 @@ public final class JsoupResponseTest {
     /**
      * JsoupResponse normalizes malformed HTML responses.
      * @throws Exception If a problem occurs.
-     * @todo #1 Saxon complains about HTML 1.0, and I'm not sure how this
-     *  is possible to fix. All we need to check in this test is that
-     *  the output is a clean HTML document. Aparently JSOUP produces
-     *  a broken HTML? Let's investigate and fix.
      */
     @Test
-    @Ignore
     public void normalizesHtml() throws Exception {
-        final Response resp = new FakeRequest()
-            .withBody("<html><p>Hello world")
-            .fetch();
+        final Response resp = new FakeRequest().withBody(
+            "<html xmlns='http://www.w3.org/1999/xhtml'><p>Hello world"
+        ).fetch();
         MatcherAssert.assertThat(
             new JsoupResponse(resp).body(),
             XhtmlMatchers.hasXPaths(
-                "/html/head",
-                "/html/body/p[.=\"Hello world\"]"
+                "/xhtml:html/xhtml:head",
+                "/xhtml:html/xhtml:body/xhtml:p[.=\"Hello world\"]"
             )
         );
     }
