@@ -168,6 +168,7 @@ public interface Request {
      * @param stream The input stream to use
      * @return Response
      * @throws IOException If fails to fetch HTTP request
+     * @since 1.8
      */
     Response fetch(InputStream stream) throws IOException;
 
