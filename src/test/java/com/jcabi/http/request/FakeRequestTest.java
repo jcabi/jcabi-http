@@ -36,7 +36,7 @@ import java.net.HttpURLConnection;
 import java.net.URI;
 import javax.ws.rs.core.HttpHeaders;
 import javax.ws.rs.core.MediaType;
-import org.apache.commons.io.Charsets;
+import org.apache.commons.lang3.CharEncoding;
 import org.hamcrest.MatcherAssert;
 import org.hamcrest.Matchers;
 import org.junit.Test;
@@ -101,19 +101,13 @@ public final class FakeRequestTest {
      * @throws Exception If something goes wrong inside
      */
     @Test
-    @org.junit.Ignore
     public void sendsHttpRequestUsingInputStream() throws Exception {
         final String body = "hello";
         new FakeRequest()
-            .withStatus(HttpURLConnection.HTTP_OK)
-            .withReason("OK2")
-            .withHeader(HttpHeaders.CONTENT_TYPE, MediaType.TEXT_PLAIN)
             .uri().path("/hellostream").back()
             .method(Request.POST)
-            .fetch(new ByteArrayInputStream(body.getBytes(Charsets.UTF_8)))
+            .fetch(new ByteArrayInputStream(body.getBytes(CharEncoding.UTF_8)))
             .as(RestResponse.class)
-            .assertStatus(HttpURLConnection.HTTP_OK)
-            .assertHeader(HttpHeaders.CONTENT_TYPE, MediaType.TEXT_PLAIN)
             .assertBody(Matchers.is(body));
     }
 
@@ -123,15 +117,13 @@ public final class FakeRequestTest {
      * @throws Exception If something goes wrong inside
      */
     @Test(expected = IllegalStateException.class)
-    @org.junit.Ignore
     public void fetchThrowsExceptionWhenBodyIsNotEmpty() throws Exception {
         new FakeRequest()
             .withStatus(HttpURLConnection.HTTP_OK)
             .withBody("blah")
-            .withHeader(HttpHeaders.CONTENT_TYPE, MediaType.TEXT_PLAIN)
-            .uri().path("/hellostreamexception").back()
-            .method(Request.POST)
-            .fetch(new ByteArrayInputStream("foo".getBytes(Charsets.UTF_8)));
+            .fetch(
+                new ByteArrayInputStream("foo".getBytes(CharEncoding.UTF_8))
+            );
     }
 
 }

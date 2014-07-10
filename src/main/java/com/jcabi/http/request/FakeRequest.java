@@ -38,6 +38,7 @@ import com.jcabi.http.RequestURI;
 import com.jcabi.http.Response;
 import com.jcabi.http.Wire;
 import com.jcabi.immutable.Array;
+import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.net.HttpURLConnection;
@@ -77,6 +78,7 @@ public final class FakeRequest implements Request {
 
     /**
      * Base request.
+     *      * @checkstyle AnonInnerLength (50 lines)
      * @checkstyle ParameterNumber (15 lines)
      */
     private final transient Request base = new BaseRequest(
@@ -85,13 +87,28 @@ public final class FakeRequest implements Request {
             public Response send(final Request req, final String home,
                 final String method,
                 final Collection<Map.Entry<String, String>> headers,
-                final InputStream text) {
+                final InputStream text) throws IOException {
+                final ByteArrayOutputStream output =
+                    new ByteArrayOutputStream();
+                // @checkstyle MagicNumber (1 line)
+                final byte[] buffer = new byte[8192];
+                for (int bytes = text.read(buffer); bytes != -1;
+                    bytes = text.read(buffer)) {
+                    output.write(buffer, 0, bytes);
+                }
+                output.flush();
+                final byte[] body;
+                if (output.size() > 0) {
+                    body = output.toByteArray();
+                } else {
+                    body = FakeRequest.this.content;
+                }
                 return new DefaultResponse(
                     req,
                     FakeRequest.this.code,
                     FakeRequest.this.phrase,
                     FakeRequest.this.hdrs,
-                    FakeRequest.this.content
+                    body
                 );
             }
         },
@@ -192,6 +209,11 @@ public final class FakeRequest implements Request {
 
     @Override
     public Response fetch(final InputStream stream) throws IOException {
+        if (this.content.length > 0) {
+            throw new IllegalStateException(
+                "Request Body is not empty, use fetch() instead"
+            );
+        }
         return this.base.fetch(stream);
     }
 

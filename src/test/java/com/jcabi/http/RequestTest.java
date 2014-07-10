@@ -39,6 +39,7 @@ import com.jcabi.http.response.RestResponse;
 import com.jcabi.http.response.XmlResponse;
 import com.jcabi.http.wire.BasicAuthWire;
 import com.jcabi.http.wire.UserAgentWire;
+import java.io.ByteArrayInputStream;
 import java.net.HttpURLConnection;
 import java.net.URI;
 import java.net.URLDecoder;
@@ -437,6 +438,47 @@ public final class RequestTest {
             .fetch().as(RestResponse.class)
             .assertStatus(HttpURLConnection.HTTP_SEE_OTHER);
         container.stop();
+    }
+
+    /**
+     * BaseRequest can fetch body with HTTP POST request.
+     * @throws Exception If something goes wrong inside
+     */
+    @Test
+    public void sendsRequestBodyAsInputStream() throws Exception {
+        final MkContainer container = new MkGrizzlyContainer().next(
+            new MkAnswer.Simple("")
+        ).start();
+        final String value = "\u20ac body as stream \"&^%*;'\"";
+        final ByteArrayInputStream stream =
+            new ByteArrayInputStream(value.getBytes(CharEncoding.UTF_8));
+        this.request(container.home())
+            .method(Request.POST)
+            .header(
+                HttpHeaders.CONTENT_TYPE,
+                MediaType.APPLICATION_FORM_URLENCODED
+            )
+            .fetch(stream).as(RestResponse.class)
+            .assertStatus(HttpURLConnection.HTTP_OK);
+        final MkQuery query = container.take();
+        MatcherAssert.assertThat(
+            query.body(),
+            Matchers.containsString(value)
+        );
+        container.stop();
+    }
+
+    /**
+     * BaseRequest.fetch(InputStream) throws an exception if the body has been
+     * previously set.
+     * @throws Exception If something goes wrong inside
+     */
+    @Test(expected = IllegalStateException.class)
+    public void fetchThrowsExceptionWhenBodyIsNotEmpty() throws Exception {
+        this.request(new URI("http://localhost:78787"))
+            .method(Request.GET)
+            .body().set("already set").back()
+            .fetch(new ByteArrayInputStream("ba".getBytes(CharEncoding.UTF_8)));
     }
 
     /**
