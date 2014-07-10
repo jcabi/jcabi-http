@@ -85,7 +85,7 @@ public final class FakeRequest implements Request {
             public Response send(final Request req, final String home,
                 final String method,
                 final Collection<Map.Entry<String, String>> headers,
-                final byte[] text) {
+                final InputStream text) {
                 return new DefaultResponse(
                     req,
                     FakeRequest.this.code,

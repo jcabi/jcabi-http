@@ -39,6 +39,7 @@ import com.jcabi.http.Response;
 import com.jcabi.http.Wire;
 import com.jcabi.immutable.Array;
 import com.jcabi.log.Logger;
+import java.io.ByteArrayInputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.StringWriter;
@@ -208,30 +209,17 @@ final class BaseRequest implements Request {
 
     @Override
     public Response fetch() throws IOException {
-        final long start = System.currentTimeMillis();
-        final Response response = this.wire.send(
-            this, this.home, this.mtd,
-            this.hdrs, this.content
-        );
-        final URI uri = URI.create(this.home);
-        Logger.info(
-            this,
-            "#fetch(%s %s%s %s): [%d %s] in %[ms]s",
-            this.mtd,
-            uri.getHost(),
-            // @checkstyle AvoidInlineConditionalsCheck (1 line)
-            uri.getPort() > 0 ? String.format(":%d", uri.getPort()) : "",
-            uri.getPath(),
-            response.status(),
-            response.reason(),
-            System.currentTimeMillis() - start
-        );
-        return response;
+        return this.fetchResponse(new ByteArrayInputStream(this.content));
     }
 
     @Override
     public Response fetch(final InputStream stream) throws IOException {
-        throw new UnsupportedOperationException("Not yet implemented.");
+        if (this.content.length > 0) {
+            throw new IllegalStateException(
+                "Request Body is not empty, use fetch() instead"
+            );
+        }
+        return this.fetchResponse(stream);
     }
 
     @Override
@@ -295,6 +283,35 @@ final class BaseRequest implements Request {
         return text.append('\n')
             .append(RequestBody.Printable.toString(this.content))
             .toString();
+    }
+
+    /**
+     * Fetch response from server.
+     * @param stream The content to send.
+     * @return The obtained response
+     * @throws IOException If an IO exception occurs.
+     */
+    private Response fetchResponse(final InputStream stream)
+        throws IOException {
+        final long start = System.currentTimeMillis();
+        final Response response = this.wire.send(
+            this, this.home, this.mtd,
+            this.hdrs, stream
+        );
+        final URI uri = URI.create(this.home);
+        Logger.info(
+            this,
+            "#fetch(%s %s%s %s): [%d %s] in %[ms]s",
+            this.mtd,
+            uri.getHost(),
+            // @checkstyle AvoidInlineConditionalsCheck (1 line)
+            uri.getPort() > 0 ? String.format(":%d", uri.getPort()) : "",
+            uri.getPath(),
+            response.status(),
+            response.reason(),
+            System.currentTimeMillis() - start
+        );
+        return response;
     }
 
     /**

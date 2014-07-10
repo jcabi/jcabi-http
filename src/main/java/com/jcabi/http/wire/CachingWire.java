@@ -35,7 +35,9 @@ import com.jcabi.aspects.Tv;
 import com.jcabi.http.Request;
 import com.jcabi.http.Response;
 import com.jcabi.http.Wire;
+import java.io.ByteArrayInputStream;
 import java.io.IOException;
+import java.io.InputStream;
 import java.net.URI;
 import java.util.Collection;
 import java.util.Map;
@@ -116,7 +118,7 @@ public final class CachingWire implements Wire {
     public Response send(final Request req, final String home,
         final String method,
         final Collection<Map.Entry<String, String>> headers,
-        final byte[] content) throws IOException {
+        final InputStream content) throws IOException {
         final URI uri = req.uri().get();
         final StringBuilder label = new StringBuilder(Tv.HUNDRED)
             .append(method).append(' ').append(uri.getPath());
@@ -128,7 +130,7 @@ public final class CachingWire implements Wire {
         }
         final Response rsp;
         if (method.equals(Request.GET)) {
-            rsp = this.get(req, home, headers, content);
+            rsp = this.get(req, home, headers);
         } else {
             rsp = this.origin.send(req, home, method, headers, content);
         }
@@ -140,16 +142,18 @@ public final class CachingWire implements Wire {
      * @param req Request
      * @param home URI to fetch
      * @param headers Headers
-     * @param content HTTP body
      * @return Response obtained
      * @throws IOException if fails
      * @checkstyle ParameterNumber (13 lines)
      */
     @Cacheable(lifetime = Tv.FIVE, unit = TimeUnit.MINUTES)
     public Response get(final Request req, final String home,
-        final Collection<Map.Entry<String, String>> headers,
-        final byte[] content) throws IOException {
-        return this.origin.send(req, home, Request.GET, headers, content);
+        final Collection<Map.Entry<String, String>> headers)
+        throws IOException {
+        return this.origin.send(
+            req, home, Request.GET, headers,
+            new ByteArrayInputStream(new byte[0])
+        );
     }
 
     /**

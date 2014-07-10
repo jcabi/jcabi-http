@@ -35,7 +35,9 @@ import com.jcabi.http.RequestBody;
 import com.jcabi.http.Response;
 import com.jcabi.http.Wire;
 import com.jcabi.log.Logger;
+import java.io.ByteArrayOutputStream;
 import java.io.IOException;
+import java.io.InputStream;
 import java.util.Collection;
 import java.util.Map;
 import javax.validation.constraints.NotNull;
@@ -87,7 +89,7 @@ public final class VerboseWire implements Wire {
     public Response send(final Request req, final String home,
         final String method,
         final Collection<Map.Entry<String, String>> headers,
-        final byte[] content) throws IOException {
+        final InputStream content) throws IOException {
         final Response response = this.origin.send(
             req, home, method, headers, content
         );
@@ -98,7 +100,17 @@ public final class VerboseWire implements Wire {
                 .append(header.getValue())
                 .append('\n');
         }
-        text.append('\n').append(RequestBody.Printable.toString(content));
+        final ByteArrayOutputStream output = new ByteArrayOutputStream();
+        // @checkstyle MagicNumber (1 line)
+        final byte[] buffer = new byte[8192];
+        for (int bytes = content.read(buffer); bytes != -1;
+            bytes = content.read(buffer)) {
+            output.write(buffer, 0, bytes);
+        }
+        output.flush();
+        text.append('\n').append(
+            RequestBody.Printable.toString(output.toByteArray())
+        );
         Logger.info(
             this,
             "#send(%s %s):\nHTTP Request (%s):\n%s\nHTTP Response (%s):\n%s",

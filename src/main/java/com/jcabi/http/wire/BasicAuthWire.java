@@ -36,6 +36,7 @@ import com.jcabi.http.Response;
 import com.jcabi.http.Wire;
 import com.jcabi.log.Logger;
 import java.io.IOException;
+import java.io.InputStream;
 import java.io.UnsupportedEncodingException;
 import java.net.URI;
 import java.net.URLEncoder;
@@ -107,7 +108,7 @@ public final class BasicAuthWire implements Wire {
     public Response send(final Request req, final String home,
         final String method,
         final Collection<Map.Entry<String, String>> headers,
-        final byte[] content) throws IOException {
+        final InputStream content) throws IOException {
         final Collection<Map.Entry<String, String>> hdrs =
             new LinkedList<Map.Entry<String, String>>();
         boolean absent = true;

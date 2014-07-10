@@ -31,6 +31,7 @@ package com.jcabi.http;
 
 import com.jcabi.aspects.Immutable;
 import java.io.IOException;
+import java.io.InputStream;
 import java.util.Collection;
 import java.util.Map;
 
@@ -70,7 +71,7 @@ public interface Wire {
      * @checkstyle ParameterNumber (6 lines)
      */
     Response send(Request req, String home, String method,
-        Collection<Map.Entry<String, String>> headers, byte[] content)
+        Collection<Map.Entry<String, String>> headers, InputStream content)
         throws IOException;
 
 }

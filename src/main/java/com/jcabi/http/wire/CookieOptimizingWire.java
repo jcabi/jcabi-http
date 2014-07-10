@@ -35,6 +35,7 @@ import com.jcabi.http.Request;
 import com.jcabi.http.Response;
 import com.jcabi.http.Wire;
 import java.io.IOException;
+import java.io.InputStream;
 import java.util.Collection;
 import java.util.LinkedList;
 import java.util.Map;
@@ -99,7 +100,7 @@ public final class CookieOptimizingWire implements Wire {
     public Response send(final Request req, final String home,
         final String method,
         final Collection<Map.Entry<String, String>> headers,
-        final byte[] content) throws IOException {
+        final InputStream content) throws IOException {
         final Collection<Map.Entry<String, String>> hdrs =
             new LinkedList<Map.Entry<String, String>>();
         final ConcurrentMap<String, String> cookies =

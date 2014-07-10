@@ -35,6 +35,7 @@ import com.jcabi.http.Request;
 import com.jcabi.http.Response;
 import com.jcabi.http.Wire;
 import java.io.IOException;
+import java.io.InputStream;
 import java.net.HttpURLConnection;
 import java.net.URI;
 import java.util.Collection;
@@ -98,7 +99,7 @@ public final class AutoRedirectingWire implements Wire {
      */
     public AutoRedirectingWire(final Wire wire, final int retries) {
         this.origin = wire;
-        this.max = (long) retries;
+        this.max = retries;
     }
 
     /**
@@ -109,7 +110,7 @@ public final class AutoRedirectingWire implements Wire {
     public Response send(final Request req, final String home,
         final String method,
         final Collection<Map.Entry<String, String>> headers,
-        final byte[] content) throws IOException {
+        final InputStream content) throws IOException {
         Response response = this.origin.send(
             req, home, method, headers, content
         );

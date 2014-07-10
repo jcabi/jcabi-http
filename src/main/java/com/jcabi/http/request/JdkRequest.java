@@ -87,7 +87,7 @@ public final class JdkRequest implements Request {
         public Response send(final Request req, final String home,
             final String method,
             final Collection<Map.Entry<String, String>> headers,
-            final byte[] content) throws IOException {
+            final InputStream content) throws IOException {
             final URLConnection raw = new URL(home).openConnection();
             if (!(raw instanceof HttpURLConnection)) {
                 throw new IOException(
@@ -110,9 +110,10 @@ public final class JdkRequest implements Request {
                     conn.setDoOutput(true);
                     final OutputStream output = conn.getOutputStream();
                     try {
-                        output.write(content);
+                        this.writeFully(content, output);
                     } finally {
                         output.close();
+                        content.close();
                     }
                 }
                 return new DefaultResponse(
@@ -129,6 +130,21 @@ public final class JdkRequest implements Request {
                 );
             } finally {
                 conn.disconnect();
+            }
+        }
+        /**
+         * Fully write the input stream contents to the output stream.
+         * @param content The content to write
+         * @param output The output stream to write to
+         * @throws IOException If an IO Exception occurs
+         */
+        private void writeFully(final InputStream content,
+            final OutputStream output) throws IOException {
+            // @checkstyle MagicNumber (1 line)
+            final byte[] buffer = new byte[8192];
+            for (int bytes = content.read(buffer); bytes != -1;
+                bytes = content.read(buffer)) {
+                output.write(buffer, 0, bytes);
             }
         }
         /**

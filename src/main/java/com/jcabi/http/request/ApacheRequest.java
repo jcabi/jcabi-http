@@ -52,7 +52,8 @@ import org.apache.http.HttpEntity;
 import org.apache.http.client.config.RequestConfig;
 import org.apache.http.client.methods.CloseableHttpResponse;
 import org.apache.http.client.methods.HttpEntityEnclosingRequestBase;
-import org.apache.http.entity.ByteArrayEntity;
+import org.apache.http.entity.BufferedHttpEntity;
+import org.apache.http.entity.InputStreamEntity;
 import org.apache.http.impl.client.HttpClients;
 import org.apache.http.util.EntityUtils;
 
@@ -86,7 +87,7 @@ public final class ApacheRequest implements Request {
         public Response send(final Request req, final String home,
             final String method,
             final Collection<Map.Entry<String, String>> headers,
-            final byte[] content) throws IOException {
+            final InputStream content) throws IOException {
             final CloseableHttpResponse response =
                 HttpClients.createSystem().execute(
                     this.httpRequest(home, method, headers, content)
@@ -106,12 +107,13 @@ public final class ApacheRequest implements Request {
         /**
          * Create request.
          * @return Request
+         * @throws IOException If an IO Exception occurs
          * @checkstyle ParameterNumber (6 lines)
          */
         public HttpEntityEnclosingRequestBase httpRequest(final String home,
             final String method,
             final Collection<Map.Entry<String, String>> headers,
-            final byte[] content) {
+            final InputStream content) throws IOException {
             final HttpEntityEnclosingRequestBase req =
                 new HttpEntityEnclosingRequestBase() {
                     @Override
@@ -127,7 +129,9 @@ public final class ApacheRequest implements Request {
                     .build()
             );
             req.setURI(uri);
-            req.setEntity(new ByteArrayEntity(content));
+            req.setEntity(
+                new BufferedHttpEntity(new InputStreamEntity(content))
+            );
             for (final Map.Entry<String, String> header : headers) {
                 req.addHeader(header.getKey(), header.getValue());
             }
