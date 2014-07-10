@@ -40,6 +40,7 @@ import com.jcabi.http.Wire;
 import com.jcabi.immutable.Array;
 import com.jcabi.log.Logger;
 import java.io.IOException;
+import java.io.InputStream;
 import java.io.StringWriter;
 import java.io.UnsupportedEncodingException;
 import java.lang.reflect.Constructor;
@@ -226,6 +227,11 @@ final class BaseRequest implements Request {
             System.currentTimeMillis() - start
         );
         return response;
+    }
+
+    @Override
+    public Response fetch(final InputStream stream) throws IOException {
+        throw new UnsupportedOperationException("Not yet implemented.");
     }
 
     @Override

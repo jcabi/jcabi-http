@@ -31,6 +31,7 @@ package com.jcabi.http;
 
 import com.jcabi.aspects.Immutable;
 import java.io.IOException;
+import java.io.InputStream;
 import javax.validation.constraints.NotNull;
 
 /**
@@ -157,6 +158,18 @@ public interface Request {
      * @throws IOException If fails to fetch HTTP request
      */
     Response fetch() throws IOException;
+
+    /**
+     * Execute this request using the content provided by the
+     * {@link InputStream} being passed as the request body. Note that the
+     * request MUST have an empty body when this method is being invoked, or
+     * it will throw an {@link IllegalStateException}.
+     *
+     * @param stream The input stream to use
+     * @return Response
+     * @throws IOException If fails to fetch HTTP request
+     */
+    Response fetch(InputStream stream) throws IOException;
 
     /**
      * Send it through a decorating {@link Wire}.

@@ -71,6 +71,7 @@ import lombok.EqualsAndHashCode;
 @Immutable
 @EqualsAndHashCode(of = "base")
 @Loggable(Loggable.DEBUG)
+@SuppressWarnings("PMD.TooManyMethods")
 public final class JdkRequest implements Request {
 
     /**
@@ -250,6 +251,11 @@ public final class JdkRequest implements Request {
     @Override
     public Response fetch() throws IOException {
         return this.base.fetch();
+    }
+
+    @Override
+    public Response fetch(final InputStream stream) throws IOException {
+        return this.base.fetch(stream);
     }
 
     @Override

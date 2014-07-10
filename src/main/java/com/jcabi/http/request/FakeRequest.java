@@ -39,6 +39,7 @@ import com.jcabi.http.Response;
 import com.jcabi.http.Wire;
 import com.jcabi.immutable.Array;
 import java.io.IOException;
+import java.io.InputStream;
 import java.net.HttpURLConnection;
 import java.nio.charset.Charset;
 import java.util.Collection;
@@ -187,6 +188,11 @@ public final class FakeRequest implements Request {
     @Override
     public Response fetch() throws IOException {
         return this.base.fetch();
+    }
+
+    @Override
+    public Response fetch(final InputStream stream) throws IOException {
+        return this.base.fetch(stream);
     }
 
     @Override
