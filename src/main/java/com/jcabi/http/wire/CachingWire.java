@@ -147,7 +147,7 @@ public final class CachingWire implements Wire {
      * @checkstyle ParameterNumber (13 lines)
      */
     @Cacheable(lifetime = Tv.FIVE, unit = TimeUnit.MINUTES)
-    public Response get(final Request req, final String home,
+    private Response get(final Request req, final String home,
         final Collection<Map.Entry<String, String>> headers)
         throws IOException {
         return this.origin.send(
