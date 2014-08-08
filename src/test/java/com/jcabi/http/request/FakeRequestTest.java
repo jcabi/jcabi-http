@@ -97,21 +97,6 @@ public final class FakeRequestTest {
     }
 
     /**
-     * FakeRequest can send HTTP requests using InputStream.
-     * @throws Exception If something goes wrong inside
-     */
-    @Test
-    public void sendsHttpRequestUsingInputStream() throws Exception {
-        final String body = "hello";
-        new FakeRequest()
-            .uri().path("/hellostream").back()
-            .method(Request.POST)
-            .fetch(new ByteArrayInputStream(body.getBytes(CharEncoding.UTF_8)))
-            .as(RestResponse.class)
-            .assertBody(Matchers.is(body));
-    }
-
-    /**
      * FakeRequest.fetch(InputStream) throws an exception if a non-empty body
      * has been previously set.
      * @throws Exception If something goes wrong inside
@@ -123,6 +108,27 @@ public final class FakeRequestTest {
             .withBody("blah")
             .fetch(
                 new ByteArrayInputStream("foo".getBytes(CharEncoding.UTF_8))
+            );
+    }
+
+    /**
+     * FakeRequest returns the Response Body if the Request Body is set.
+     * @throws Exception If something goes wrong inside.
+     * @see https://github.com/jcabi/jcabi-http/issues/47
+     */
+    @Test
+    public void fakeRequestReturnsResponseBody() throws Exception {
+        final String response = "the response body";
+        final String request = "the request body";
+        new FakeRequest().withBody(response)
+            .body().set(request).back()
+            .fetch()
+            .as(RestResponse.class)
+            .assertBody(
+                Matchers.allOf(
+                    Matchers.is(response),
+                    Matchers.not(Matchers.is(request))
+                )
             );
     }
 
