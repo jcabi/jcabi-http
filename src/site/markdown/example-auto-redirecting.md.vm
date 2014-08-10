@@ -18,7 +18,7 @@ String body = new JdkRequest("http://www.google.com")
  last response to be received will be returned. You may specify the number of
  retries with an optional parameter:
 
- ```java
+```java
 String body = new JdkRequest("http://www.google.com")
   .through(AutoRedirectingWire.class, 10) // Retry up to 10 times
   .fetch()
