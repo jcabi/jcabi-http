@@ -4,7 +4,6 @@
         <meta charset="UTF-8"/>
         <meta name="viewport" content="width=device-width, initial-scale=1.0" />
         <title>jcabi-http - </title>
-        <link media="all" rel="stylesheet" type="text/css" href="//netdna.bootstrapcdn.com/font-awesome/4.0.3/css/font-awesome.css"/>
         <link media="all" rel="stylesheet" type="text/css" href="./css/jcabi.css"/>
                             <script>
                 var _gaq = _gaq || [];
@@ -44,7 +43,7 @@
             <nav class="menu-section" role="navigation">
                 <ul class="menu" id="menu">
                                                                                     <li>
-                            Overview
+                            <span>Overview</span>
                                                             <ul>
                                                                                                     <li >
                             <span>                        <a href="index.html" title="Introduction">Introduction</a>
@@ -53,7 +52,7 @@
                                                                     </ul>
                                                     </li>
                                                                                                                         <li >
-                            <span>                        <a href="apidocs-1.8.1/index.html" title="API 1.8.1 (JavaDoc)">API 1.8.1 (JavaDoc)</a>
+                            <span>                        <a href="apidocs-1.8.2/index.html" title="API 1.8.2 (JavaDoc)">API 1.8.2 (JavaDoc)</a>
         </span>
                                                                                                                                                                 <ul>
                                                                     </ul>
@@ -79,7 +78,7 @@
                                                                                         </ul>
                                                     </li>
                                             <li>
-                            Examples
+                            <span>Examples</span>
                                                             <ul>
                                                                                                     <li >
                             <span>                        <a href="example-request.html" title="Make HTTP Request">Make HTTP Request</a>
@@ -120,7 +119,7 @@
                                                                                         </ul>
                                                     </li>
                                             <li>
-                            Mock Servlet Container
+                            <span>Mock Servlet Container</span>
                                                             <ul>
                                                                                                     <li  class='active' >
                             <span>                        <a href="example-mock-container.html" title="HTTP client unit testing">HTTP client unit testing</a>
@@ -131,7 +130,7 @@
                                                                                         </ul>
                                                     </li>
                                             <li>
-                            Project Documentation
+                            <span>Project Documentation</span>
                                                             <ul>
                                                                                                     <li >
                             <span>                        <a href="project-info.html" title="Project Information">Project Information</a>
@@ -140,7 +139,7 @@
                                                                                                                         <li >
                             <span>                        <a href="project-reports.html" title="Project Reports">Project Reports</a>
         </span>
-                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                            </li>
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                    </li>
                                                                                         </ul>
                                                     </li>
                                     </ul>
@@ -149,11 +148,10 @@
                 <main role="main">
                     <div class="content">
                         <header>
-                            <i class="menu-button fa fa-align-justify"></i>
                             <div class="logo">
                                 <a href="../"
                                     title=" logo ">
-                                    <img src="http://img.jcabi.com/logo-square.png"
+                                    <img src="http://img.jcabi.com/logo-square.svg"
                                         alt="jcabi"
                                                                                     width="64"
                                                                                                                             height="64"
@@ -161,26 +159,32 @@
                                     />
                                 </a>
                             </div>
-                            <div class="date">
-                                <div class="date-numbers">
-                                    <strong itemprop="version">1.8.1</strong>
+                            <div class="teamed">
+                                <a href="http://www.teamed.io">
+                                    <img src="http://img.teamed.io/btn.svg" alt="teamed.io logo"/>
+                                </a>
+                            </div>
+                            <ul class="badges">
+                                <li>
+                                    <strong itemprop="version">1.8.2</strong>
+                                </li>
+                                <li>
                                     
-                                    <time itemprop="datePublished" datetime="2014-07-27T03:00:21Z">
+                                    <time itemprop="datePublished" datetime="2014-08-14T06:57:57Z">
                                         
-                                        27-Jul-2014
+                                        14-Aug-2014
                                     </time>
-                                </div>
-                                                                                                    <div>
-                                        <iframe src="http://ghbtns.com/github-btn.html?user=jcabi&amp;repo=jcabi-http&amp;type=watch&amp;count=true&amp;size=large"
-                                            style="border-width:0px;overflow:hidden;width:170px;height:30px;">
-                                        </iframe>
-                                    </div>
-                                                            </div>
-                            <div id="here-goes-menu" class="menu-off"></div>
+                                </li>
+                                <li class="menu-button">menu</li>
+                            </ul>
                         </header>
-                        <article role="article" itemprop="articleBody">
+                        <div id="here-goes-menu" class="menu-off"></div>
+                                                                            <a href="https://github.com/jcabi/jcabi-http">
+                                <img src="http://img.jcabi.com/fork-me.svg" class="fork-me"/>
+                            </a>
+                                                <article role="article" itemprop="articleBody">
                             <h1>Mock Servlet Container</h1>
-<p><a href="./apidocs-1.8.1/com/jcabi/http/mock/MkContainer.html"><tt>MkContainer</tt></a> is a simple lightweight Java servlet container that can act as a mock server-side of your application, in order to test your RESTful client, for example:</p>
+<p><a href="./apidocs-1.8.2/com/jcabi/http/mock/MkContainer.html"><tt>MkContainer</tt></a> is a simple lightweight Java servlet container that can act as a mock server-side of your application, in order to test your RESTful client, for example:</p>
 
 <div class="source">
 <pre>public class ClientTest {
@@ -209,12 +213,12 @@
   }
 }
 </pre></div>
-<p>Let&#x2019;s see what&#x2019;s happening here. First, a new instance of <a href="./apidocs-1.8.1/com/jcabi/http/mock/MkContainer.html"><tt>MkContainer</tt></a> is created, with a Grizzly-based implementation <a href="./apidocs-1.8.1/com/jcabi/http/mock/MkGrizzlyContainer.html"><tt>MkGrizzlyContainer</tt></a>:</p>
+<p>Let&#x2019;s see what&#x2019;s happening here. First, a new instance of <a href="./apidocs-1.8.2/com/jcabi/http/mock/MkContainer.html"><tt>MkContainer</tt></a> is created, with a Grizzly-based implementation <a href="./apidocs-1.8.2/com/jcabi/http/mock/MkGrizzlyContainer.html"><tt>MkGrizzlyContainer</tt></a>:</p>
 
 <div class="source">
 <pre>MkContainer container = new MkGrizzlyContainer();
 </pre></div>
-<p>The container is not yet started and doesn&#x2019;t know what to reply when a new HTTP request comes in. We should add at least one instance of <a href="./apidocs-1.8.1/com/jcabi/http/mock/MkAnswer.html"><tt>MkAnswer</tt></a> to its queue of ready-to-be-dispached answers:</p>
+<p>The container is not yet started and doesn&#x2019;t know what to reply when a new HTTP request comes in. We should add at least one instance of <a href="./apidocs-1.8.2/com/jcabi/http/mock/MkAnswer.html"><tt>MkAnswer</tt></a> to its queue of ready-to-be-dispached answers:</p>
 
 <div class="source">
 <pre>container.next(
@@ -223,13 +227,13 @@
     .withHeader(&quot;Server&quot;, &quot;mock&quot;)
 );
 </pre></div>
-<p>It&#x2019;s possible to add more instances of <a href="./apidocs-1.8.1/com/jcabi/http/mock/MkAnswer.html"><tt>MkAnswer</tt></a>, using this method <tt>next()</tt>. They will be returned by a running container one by one in response to incoming HTTP &#x201c;queries&#x201d; (which will be recorded by the container as instances of <a href="./apidocs-1.8.1/com/jcabi/http/mock/MkQuery.html"><tt>MkQuery</tt></a> and available later through method <tt>take()</tt>).</p>
+<p>It&#x2019;s possible to add more instances of <a href="./apidocs-1.8.2/com/jcabi/http/mock/MkAnswer.html"><tt>MkAnswer</tt></a>, using this method <tt>next()</tt>. They will be returned by a running container one by one in response to incoming HTTP &#x201c;queries&#x201d; (which will be recorded by the container as instances of <a href="./apidocs-1.8.2/com/jcabi/http/mock/MkQuery.html"><tt>MkQuery</tt></a> and available later through method <tt>take()</tt>).</p>
 <p>Now it&#x2019;s time to start the container on a randomly allocated TCP port (you can also use a fixed port number, but random allocation is preferred):</p>
 
 <div class="source">
 <pre>container.start();
 </pre></div>
-<p>Then, we&#x2019;re making a request to a running container, getting its main entry URI by <tt>container.home()</tt> (<a href="./apidocs-1.8.1/com/jcabi/http/wire/VerboseWire.html"><tt>VerboseWire</tt></a> is used in order to make HTTP request and response details visible in log):</p>
+<p>Then, we&#x2019;re making a request to a running container, getting its main entry URI by <tt>container.home()</tt> (<a href="./apidocs-1.8.2/com/jcabi/http/wire/VerboseWire.html"><tt>VerboseWire</tt></a> is used in order to make HTTP request and response details visible in log):</p>
 
 <div class="source">
 <pre>new JdkRequest(container.home())
@@ -258,7 +262,7 @@
   )
 );
 </pre></div>
-<p><a href="./apidocs-1.8.1/com/jcabi/http/mock/MkGrizzlyContainer.html"><tt>MkGrizzlyContainer</tt></a> depends on <a class="externalLink" href="https://java.net/projects/grizzly-servlet-container">Grizzly Servlet Webserver</a>, and this dependency is required in your <tt>pom.xml</tt>:</p>
+<p><a href="./apidocs-1.8.2/com/jcabi/http/mock/MkGrizzlyContainer.html"><tt>MkGrizzlyContainer</tt></a> depends on <a class="externalLink" href="https://java.net/projects/grizzly-servlet-container">Grizzly Servlet Webserver</a>, and this dependency is required in your <tt>pom.xml</tt>:</p>
 
 <div class="source">
 <pre>&lt;dependency&gt;
@@ -268,7 +272,6 @@
   &lt;scope&gt;test&lt;/scope&gt;
 &lt;/dependency&gt;
 </pre></div>
-                            <img class="maven-logo" src="//img.jcabi.com/built-by-maven.png" alt="built by maven"/>
                         </article>
                     </div>
                 </main>

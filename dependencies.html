@@ -4,7 +4,6 @@
         <meta charset="UTF-8"/>
         <meta name="viewport" content="width=device-width, initial-scale=1.0" />
         <title>jcabi-http - Project Dependencies</title>
-        <link media="all" rel="stylesheet" type="text/css" href="//netdna.bootstrapcdn.com/font-awesome/4.0.3/css/font-awesome.css"/>
         <link media="all" rel="stylesheet" type="text/css" href="./css/jcabi.css"/>
                             <script>
                 var _gaq = _gaq || [];
@@ -44,7 +43,7 @@
             <nav class="menu-section" role="navigation">
                 <ul class="menu" id="menu">
                                                                                     <li>
-                            Overview
+                            <span>Overview</span>
                                                             <ul>
                                                                                                     <li >
                             <span>                        <a href="index.html" title="Introduction">Introduction</a>
@@ -53,7 +52,7 @@
                                                                     </ul>
                                                     </li>
                                                                                                                         <li >
-                            <span>                        <a href="apidocs-1.8.1/index.html" title="API 1.8.1 (JavaDoc)">API 1.8.1 (JavaDoc)</a>
+                            <span>                        <a href="apidocs-1.8.2/index.html" title="API 1.8.2 (JavaDoc)">API 1.8.2 (JavaDoc)</a>
         </span>
                                                                                                                                                                 <ul>
                                                                     </ul>
@@ -79,7 +78,7 @@
                                                                                         </ul>
                                                     </li>
                                             <li>
-                            Examples
+                            <span>Examples</span>
                                                             <ul>
                                                                                                     <li >
                             <span>                        <a href="example-request.html" title="Make HTTP Request">Make HTTP Request</a>
@@ -120,7 +119,7 @@
                                                                                         </ul>
                                                     </li>
                                             <li>
-                            Mock Servlet Container
+                            <span>Mock Servlet Container</span>
                                                             <ul>
                                                                                                     <li >
                             <span>                        <a href="example-mock-container.html" title="HTTP client unit testing">HTTP client unit testing</a>
@@ -131,7 +130,7 @@
                                                                                         </ul>
                                                     </li>
                                             <li>
-                            Project Documentation
+                            <span>Project Documentation</span>
                                                             <ul>
                                                                                                     <li >
                             <span>                        <a href="project-info.html" title="Project Information">Project Information</a>
@@ -196,7 +195,7 @@
                                                                                                                         <li >
                             <span>                        <a href="project-reports.html" title="Project Reports">Project Reports</a>
         </span>
-                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                            </li>
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                    </li>
                                                                                         </ul>
                                                     </li>
                                     </ul>
@@ -205,11 +204,10 @@
                 <main role="main">
                     <div class="content">
                         <header>
-                            <i class="menu-button fa fa-align-justify"></i>
                             <div class="logo">
                                 <a href="../"
                                     title=" logo ">
-                                    <img src="http://img.jcabi.com/logo-square.png"
+                                    <img src="http://img.jcabi.com/logo-square.svg"
                                         alt="jcabi"
                                                                                     width="64"
                                                                                                                             height="64"
@@ -217,24 +215,30 @@
                                     />
                                 </a>
                             </div>
-                            <div class="date">
-                                <div class="date-numbers">
-                                    <strong itemprop="version">1.8.1</strong>
+                            <div class="teamed">
+                                <a href="http://www.teamed.io">
+                                    <img src="http://img.teamed.io/btn.svg" alt="teamed.io logo"/>
+                                </a>
+                            </div>
+                            <ul class="badges">
+                                <li>
+                                    <strong itemprop="version">1.8.2</strong>
+                                </li>
+                                <li>
                                     
-                                    <time itemprop="datePublished" datetime="2014-07-27T03:00:24Z">
+                                    <time itemprop="datePublished" datetime="2014-08-14T06:57:59Z">
                                         
-                                        27-Jul-2014
+                                        14-Aug-2014
                                     </time>
-                                </div>
-                                                                                                    <div>
-                                        <iframe src="http://ghbtns.com/github-btn.html?user=jcabi&amp;repo=jcabi-http&amp;type=watch&amp;count=true&amp;size=large"
-                                            style="border-width:0px;overflow:hidden;width:170px;height:30px;">
-                                        </iframe>
-                                    </div>
-                                                            </div>
-                            <div id="here-goes-menu" class="menu-off"></div>
+                                </li>
+                                <li class="menu-button">menu</li>
+                            </ul>
                         </header>
-                        <article role="article" itemprop="articleBody">
+                        <div id="here-goes-menu" class="menu-off"></div>
+                                                                            <a href="https://github.com/jcabi/jcabi-http">
+                                <img src="http://img.jcabi.com/fork-me.svg" class="fork-me"/>
+                            </a>
+                                                <article role="article" itemprop="articleBody">
                             <a name="Project_Dependencies"></a>
 <div class="section">
 <h2>Project Dependencies<a name="Project_Dependencies"></a></h2><a name="Project_Dependencies_compile"></a>
@@ -263,13 +267,13 @@
 <tr class="b">
 <td>com.jcabi</td>
 <td><a class="externalLink" href="http://www.jcabi.com/jcabi-log">jcabi-log</a></td>
-<td>0.13</td>
+<td>0.14.1</td>
 <td>jar</td>
 <td><a class="externalLink" href="http://www.jcabi.com/LICENSE.txt">BSD</a></td></tr>
 <tr class="a">
 <td>com.jcabi</td>
 <td><a class="externalLink" href="http://www.jcabi.com/jcabi-manifests">jcabi-manifests</a></td>
-<td>0.8.2</td>
+<td>1.0.3</td>
 <td>jar</td>
 <td><a class="externalLink" href="http://www.jcabi.com/LICENSE.txt">BSD</a></td></tr>
 <tr class="b">
@@ -377,7 +381,7 @@
 <tr class="a">
 <td>org.hibernate</td>
 <td><a class="externalLink" href="http://validator.hibernate.org/hibernate-validator">hibernate-validator</a></td>
-<td>5.1.1.Final</td>
+<td>5.1.2.Final</td>
 <td>-</td>
 <td>jar</td>
 <td><a class="externalLink" href="http://www.apache.org/licenses/LICENSE-2.0.txt">Apache License, Version 2.0</a></td>
@@ -385,7 +389,7 @@
 <tr class="b">
 <td>org.projectlombok</td>
 <td><a class="externalLink" href="http://projectlombok.org">lombok</a></td>
-<td>1.14.2</td>
+<td>1.14.4</td>
 <td>-</td>
 <td>jar</td>
 <td><a class="externalLink" href="http://projectlombok.org/LICENSE">The MIT License</a></td>
@@ -524,12 +528,6 @@
 <th>Type</th>
 <th>License</th></tr>
 <tr class="b">
-<td>commons-io</td>
-<td><a class="externalLink" href="http://commons.apache.org/io/">commons-io</a></td>
-<td>2.4</td>
-<td>jar</td>
-<td><a class="externalLink" href="http://www.apache.org/licenses/LICENSE-2.0.txt">The Apache Software License, Version 2.0</a></td></tr>
-<tr class="a">
 <td>org.slf4j</td>
 <td><a class="externalLink" href="http://www.slf4j.org">slf4j-api</a></td>
 <td>1.7.5</td>
@@ -577,62 +575,69 @@
 <td><a class="externalLink" href="http://www.apache.org/licenses/LICENSE-2.0.txt">The Apache Software License, Version 2.0</a></td>
 <td>No</td></tr>
 <tr class="b">
+<td>commons-io</td>
+<td><a class="externalLink" href="http://commons.apache.org/io/">commons-io</a></td>
+<td>2.4</td>
+<td>jar</td>
+<td><a class="externalLink" href="http://www.apache.org/licenses/LICENSE-2.0.txt">The Apache Software License, Version 2.0</a></td>
+<td>No</td></tr>
+<tr class="a">
 <td>org.jboss.logging</td>
 <td><a class="externalLink" href="http://www.jboss.org">jboss-logging</a></td>
 <td>3.1.3.GA</td>
 <td>jar</td>
 <td><a class="externalLink" href="http://www.apache.org/licenses/LICENSE-2.0.txt">Apache License, version 2.0</a></td>
 <td>No</td></tr>
-<tr class="a">
+<tr class="b">
 <td>com.sun.grizzly</td>
 <td><a class="externalLink" href="https://grizzly.dev.java.net">grizzly-framework</a></td>
 <td>1.9.59</td>
 <td>jar</td>
 <td><a class="externalLink" href="http://glassfish.java.net/public/CDDL+GPL.html">CDDL+GPL</a></td>
 <td>Yes</td></tr>
-<tr class="b">
+<tr class="a">
 <td>com.sun.grizzly</td>
 <td><a class="externalLink" href="https://grizzly.dev.java.net">grizzly-http</a></td>
 <td>1.9.59</td>
 <td>jar</td>
 <td><a class="externalLink" href="http://glassfish.java.net/public/CDDL+GPL.html">CDDL+GPL</a></td>
 <td>Yes</td></tr>
-<tr class="a">
+<tr class="b">
 <td>com.sun.grizzly</td>
 <td><a class="externalLink" href="https://grizzly.dev.java.net">grizzly-http-servlet</a></td>
 <td>1.9.59</td>
 <td>jar</td>
 <td><a class="externalLink" href="http://glassfish.java.net/public/CDDL+GPL.html">CDDL+GPL</a></td>
 <td>Yes</td></tr>
-<tr class="b">
+<tr class="a">
 <td>com.sun.grizzly</td>
 <td><a class="externalLink" href="https://grizzly.dev.java.net">grizzly-lzma</a></td>
 <td>1.9.59</td>
 <td>jar</td>
 <td><a class="externalLink" href="http://glassfish.java.net/public/CDDL+GPL.html">CDDL+GPL</a></td>
 <td>Yes</td></tr>
-<tr class="a">
+<tr class="b">
 <td>com.sun.grizzly</td>
 <td><a class="externalLink" href="https://grizzly.dev.java.net">grizzly-portunif</a></td>
 <td>1.9.59</td>
 <td>jar</td>
 <td><a class="externalLink" href="http://glassfish.java.net/public/CDDL+GPL.html">CDDL+GPL</a></td>
 <td>Yes</td></tr>
-<tr class="b">
+<tr class="a">
 <td>com.sun.grizzly</td>
 <td><a class="externalLink" href="https://grizzly.dev.java.net">grizzly-rcm</a></td>
 <td>1.9.59</td>
 <td>jar</td>
 <td><a class="externalLink" href="http://glassfish.java.net/public/CDDL+GPL.html">CDDL+GPL</a></td>
 <td>Yes</td></tr>
-<tr class="a">
+<tr class="b">
 <td>com.sun.grizzly</td>
 <td><a class="externalLink" href="https://grizzly.dev.java.net">grizzly-utils</a></td>
 <td>1.9.59</td>
 <td>jar</td>
 <td><a class="externalLink" href="http://glassfish.java.net/public/CDDL+GPL.html">CDDL+GPL</a></td>
 <td>Yes</td></tr>
-<tr class="b">
+<tr class="a">
 <td>commons-logging</td>
 <td><a class="externalLink" href="http://commons.apache.org/proper/commons-logging/">commons-logging</a></td>
 <td>1.1.3</td>
@@ -661,7 +666,7 @@
 <div class="section">
 <h3>Dependency Tree<a name="Dependency_Tree"></a></h3>
 <ul>
-<li>com.jcabi:jcabi-http:jar:1.8.1 <img id="_img1" src="./images/icon_info_sml.gif" alt="Information" onclick="toggleDependencyDetail( '_dep0', '_img1' );" style="cursor: pointer;vertical-align:text-bottom;"></img><div id="_dep0" style="display:none">
+<li>com.jcabi:jcabi-http:jar:1.8.2 <img id="_img1" src="./images/icon_info_sml.gif" alt="Information" onclick="toggleDependencyDetail( '_dep0', '_img1' );" style="cursor: pointer;vertical-align:text-bottom;"></img><div id="_dep0" style="display:none">
 <table border="0" class="bodyTable">
 <tr class="a">
 <th>jcabi-http</th></tr>
@@ -698,7 +703,7 @@
 <p><b>Description: </b>Bean Validation API</p>
 <p><b>URL: </b><a class="externalLink" href="http://beanvalidation.org">http://beanvalidation.org</a></p>
 <p><b>Project License: </b><a class="externalLink" href="http://www.apache.org/licenses/LICENSE-2.0.txt">The Apache Software License, Version 2.0</a></p></td></tr></table></div></li>
-<li>com.jcabi:jcabi-log:jar:0.13 (compile) <img id="_img9" src="./images/icon_info_sml.gif" alt="Information" onclick="toggleDependencyDetail( '_dep8', '_img9' );" style="cursor: pointer;vertical-align:text-bottom;"></img><div id="_dep8" style="display:none">
+<li>com.jcabi:jcabi-log:jar:0.14.1 (compile) <img id="_img9" src="./images/icon_info_sml.gif" alt="Information" onclick="toggleDependencyDetail( '_dep8', '_img9' );" style="cursor: pointer;vertical-align:text-bottom;"></img><div id="_dep8" style="display:none">
 <table border="0" class="bodyTable">
 <tr class="a">
 <th>jcabi-log</th></tr>
@@ -717,7 +722,7 @@
 <p><b>Description: </b>The slf4j API</p>
 <p><b>URL: </b><a class="externalLink" href="http://www.slf4j.org">http://www.slf4j.org</a></p>
 <p><b>Project License: </b><a class="externalLink" href="http://www.opensource.org/licenses/mit-license.php">MIT License</a></p></td></tr></table></div></li></ul></li>
-<li>com.jcabi:jcabi-manifests:jar:0.8.2 (compile) <img id="_img13" src="./images/icon_info_sml.gif" alt="Information" onclick="toggleDependencyDetail( '_dep12', '_img13' );" style="cursor: pointer;vertical-align:text-bottom;"></img><div id="_dep12" style="display:none">
+<li>com.jcabi:jcabi-manifests:jar:1.0.3 (compile) <img id="_img13" src="./images/icon_info_sml.gif" alt="Information" onclick="toggleDependencyDetail( '_dep12', '_img13' );" style="cursor: pointer;vertical-align:text-bottom;"></img><div id="_dep12" style="display:none">
 <table border="0" class="bodyTable">
 <tr class="a">
 <th>jcabi-manifests</th></tr>
@@ -725,19 +730,8 @@
 <td>
 <p><b>Description: </b>Manager of MANIFEST.MF files</p>
 <p><b>URL: </b><a class="externalLink" href="http://www.jcabi.com/jcabi-manifests">http://www.jcabi.com/jcabi-manifests</a></p>
-<p><b>Project License: </b><a class="externalLink" href="http://www.jcabi.com/LICENSE.txt">BSD</a></p></td></tr></table></div>
-<ul>
-<li>commons-io:commons-io:jar:2.4 (compile) <img id="_img15" src="./images/icon_info_sml.gif" alt="Information" onclick="toggleDependencyDetail( '_dep14', '_img15' );" style="cursor: pointer;vertical-align:text-bottom;"></img><div id="_dep14" style="display:none">
-<table border="0" class="bodyTable">
-<tr class="a">
-<th>Commons IO</th></tr>
-<tr class="b">
-<td>
-<p><b>Description: </b>The Commons IO library contains utility classes, stream implementations, file filters, 
-file comparators, endian transformation classes, and much more.</p>
-<p><b>URL: </b><a class="externalLink" href="http://commons.apache.org/io/">http://commons.apache.org/io/</a></p>
-<p><b>Project License: </b><a class="externalLink" href="http://www.apache.org/licenses/LICENSE-2.0.txt">The Apache Software License, Version 2.0</a></p></td></tr></table></div></li></ul></li>
-<li>org.apache.commons:commons-lang3:jar:3.3.2 (test) <img id="_img17" src="./images/icon_info_sml.gif" alt="Information" onclick="toggleDependencyDetail( '_dep16', '_img17' );" style="cursor: pointer;vertical-align:text-bottom;"></img><div id="_dep16" style="display:none">
+<p><b>Project License: </b><a class="externalLink" href="http://www.jcabi.com/LICENSE.txt">BSD</a></p></td></tr></table></div></li>
+<li>org.apache.commons:commons-lang3:jar:3.3.2 (test) <img id="_img15" src="./images/icon_info_sml.gif" alt="Information" onclick="toggleDependencyDetail( '_dep14', '_img15' );" style="cursor: pointer;vertical-align:text-bottom;"></img><div id="_dep14" style="display:none">
 <table border="0" class="bodyTable">
 <tr class="a">
 <th>Apache Commons Lang</th></tr>
@@ -748,7 +742,7 @@ file comparators, endian transformation classes, and much more.</p>
   standard as to justify existence in java.lang.</p>
 <p><b>URL: </b><a class="externalLink" href="http://commons.apache.org/proper/commons-lang/">http://commons.apache.org/proper/commons-lang/</a></p>
 <p><b>Project License: </b><a class="externalLink" href="http://www.apache.org/licenses/LICENSE-2.0.txt">The Apache Software License, Version 2.0</a></p></td></tr></table></div></li>
-<li>org.aspectj:aspectjrt:jar:1.8.1 (runtime) <img id="_img19" src="./images/icon_info_sml.gif" alt="Information" onclick="toggleDependencyDetail( '_dep18', '_img19' );" style="cursor: pointer;vertical-align:text-bottom;"></img><div id="_dep18" style="display:none">
+<li>org.aspectj:aspectjrt:jar:1.8.1 (runtime) <img id="_img17" src="./images/icon_info_sml.gif" alt="Information" onclick="toggleDependencyDetail( '_dep16', '_img17' );" style="cursor: pointer;vertical-align:text-bottom;"></img><div id="_dep16" style="display:none">
 <table border="0" class="bodyTable">
 <tr class="a">
 <th>AspectJ runtime</th></tr>
@@ -757,7 +751,7 @@ file comparators, endian transformation classes, and much more.</p>
 <p><b>Description: </b>The runtime needed to execute a program using AspectJ</p>
 <p><b>URL: </b><a class="externalLink" href="http://www.aspectj.org">http://www.aspectj.org</a></p>
 <p><b>Project License: </b><a class="externalLink" href="http://www.eclipse.org/legal/epl-v10.html">Eclipse Public License - v 1.0</a></p></td></tr></table></div></li>
-<li>org.projectlombok:lombok:jar:1.14.2 (provided) <img id="_img21" src="./images/icon_info_sml.gif" alt="Information" onclick="toggleDependencyDetail( '_dep20', '_img21' );" style="cursor: pointer;vertical-align:text-bottom;"></img><div id="_dep20" style="display:none">
+<li>org.projectlombok:lombok:jar:1.14.4 (provided) <img id="_img19" src="./images/icon_info_sml.gif" alt="Information" onclick="toggleDependencyDetail( '_dep18', '_img19' );" style="cursor: pointer;vertical-align:text-bottom;"></img><div id="_dep18" style="display:none">
 <table border="0" class="bodyTable">
 <tr class="a">
 <th>Project Lombok</th></tr>
@@ -766,7 +760,7 @@ file comparators, endian transformation classes, and much more.</p>
 <p><b>Description: </b>Spice up your java: Automatic Resource Management, automatic generation of getters, setters, equals, hashCode and toString, and more!</p>
 <p><b>URL: </b><a class="externalLink" href="http://projectlombok.org">http://projectlombok.org</a></p>
 <p><b>Project License: </b><a class="externalLink" href="http://projectlombok.org/LICENSE">The MIT License</a></p></td></tr></table></div></li>
-<li>javax.json:javax.json-api:jar:1.0 (provided) <img id="_img23" src="./images/icon_info_sml.gif" alt="Information" onclick="toggleDependencyDetail( '_dep22', '_img23' );" style="cursor: pointer;vertical-align:text-bottom;"></img><div id="_dep22" style="display:none">
+<li>javax.json:javax.json-api:jar:1.0 (provided) <img id="_img21" src="./images/icon_info_sml.gif" alt="Information" onclick="toggleDependencyDetail( '_dep20', '_img21' );" style="cursor: pointer;vertical-align:text-bottom;"></img><div id="_dep20" style="display:none">
 <table border="0" class="bodyTable">
 <tr class="a">
 <th>JSR 353 (JSON Processing) API</th></tr>
@@ -775,7 +769,7 @@ file comparators, endian transformation classes, and much more.</p>
 <p><b>Description: </b>API module of JSR 353:Java API for Processing JSON</p>
 <p><b>URL: </b><a class="externalLink" href="http://json-processing-spec.java.net">http://json-processing-spec.java.net</a></p>
 <p><b>Project License: </b><a class="externalLink" href="https://glassfish.java.net/public/CDDL+GPL_1_1.html">Dual license consisting of the CDDL v1.1 and GPL v2</a></p></td></tr></table></div></li>
-<li>com.jcabi:jcabi-matchers:jar:1.1 (provided) <img id="_img25" src="./images/icon_info_sml.gif" alt="Information" onclick="toggleDependencyDetail( '_dep24', '_img25' );" style="cursor: pointer;vertical-align:text-bottom;"></img><div id="_dep24" style="display:none">
+<li>com.jcabi:jcabi-matchers:jar:1.1 (provided) <img id="_img23" src="./images/icon_info_sml.gif" alt="Information" onclick="toggleDependencyDetail( '_dep22', '_img23' );" style="cursor: pointer;vertical-align:text-bottom;"></img><div id="_dep22" style="display:none">
 <table border="0" class="bodyTable">
 <tr class="a">
 <th>jcabi-matchers</th></tr>
@@ -783,7 +777,18 @@ file comparators, endian transformation classes, and much more.</p>
 <td>
 <p><b>Description: </b>Hamcrest Matchers</p>
 <p><b>URL: </b><a class="externalLink" href="http://www.jcabi.com/jcabi-matchers">http://www.jcabi.com/jcabi-matchers</a></p>
-<p><b>Project License: </b><a class="externalLink" href="http://www.jcabi.com/LICENSE.txt">BSD</a></p></td></tr></table></div></li>
+<p><b>Project License: </b><a class="externalLink" href="http://www.jcabi.com/LICENSE.txt">BSD</a></p></td></tr></table></div>
+<ul>
+<li>commons-io:commons-io:jar:2.4 (provided) <img id="_img25" src="./images/icon_info_sml.gif" alt="Information" onclick="toggleDependencyDetail( '_dep24', '_img25' );" style="cursor: pointer;vertical-align:text-bottom;"></img><div id="_dep24" style="display:none">
+<table border="0" class="bodyTable">
+<tr class="a">
+<th>Commons IO</th></tr>
+<tr class="b">
+<td>
+<p><b>Description: </b>The Commons IO library contains utility classes, stream implementations, file filters, 
+file comparators, endian transformation classes, and much more.</p>
+<p><b>URL: </b><a class="externalLink" href="http://commons.apache.org/io/">http://commons.apache.org/io/</a></p>
+<p><b>Project License: </b><a class="externalLink" href="http://www.apache.org/licenses/LICENSE-2.0.txt">The Apache Software License, Version 2.0</a></p></td></tr></table></div></li></ul></li>
 <li>com.jcabi:jcabi-xml:jar:0.10 (provided) <img id="_img27" src="./images/icon_info_sml.gif" alt="Information" onclick="toggleDependencyDetail( '_dep26', '_img27' );" style="cursor: pointer;vertical-align:text-bottom;"></img><div id="_dep26" style="display:none">
 <table border="0" class="bodyTable">
 <tr class="a">
@@ -1013,7 +1018,7 @@ file comparators, endian transformation classes, and much more.</p>
 <p><b>Description: </b>jsoup HTML parser</p>
 <p><b>URL: </b><a class="externalLink" href="http://jsoup.org/">http://jsoup.org/</a></p>
 <p><b>Project License: </b><a class="externalLink" href="http://jsoup.com/license">The MIT License</a></p></td></tr></table></div></li>
-<li>org.hibernate:hibernate-validator:jar:5.1.1.Final (provided) <img id="_img75" src="./images/icon_info_sml.gif" alt="Information" onclick="toggleDependencyDetail( '_dep74', '_img75' );" style="cursor: pointer;vertical-align:text-bottom;"></img><div id="_dep74" style="display:none">
+<li>org.hibernate:hibernate-validator:jar:5.1.2.Final (provided) <img id="_img75" src="./images/icon_info_sml.gif" alt="Information" onclick="toggleDependencyDetail( '_dep74', '_img75' );" style="cursor: pointer;vertical-align:text-bottom;"></img><div id="_dep74" style="display:none">
 <table border="0" class="bodyTable">
 <tr class="a">
 <th>Hibernate Validator Engine</th></tr>
@@ -1117,7 +1122,6 @@ file comparators, endian transformation classes, and much more.</p>
 <p><b>Common Public License Version 1.0: </b>JUnit</p>
 <p><b>MIT License: </b>Objenesis, SLF4J API Module, SLF4J LOG4J-12 Binding</p>
 <p><b>The MIT License: </b>Mockito, Project Lombok, jsoup</p></div>
-                            <img class="maven-logo" src="//img.jcabi.com/built-by-maven.png" alt="built by maven"/>
                         </article>
                     </div>
                 </main>
