@@ -29,7 +29,6 @@
  */
 package com.jcabi.http.wire;
 
-import com.jcabi.aspects.Cacheable;
 import com.jcabi.aspects.Immutable;
 import com.jcabi.aspects.Tv;
 import com.jcabi.http.Request;
@@ -45,6 +44,9 @@ import java.util.concurrent.TimeUnit;
 import javax.validation.constraints.NotNull;
 import lombok.EqualsAndHashCode;
 import lombok.ToString;
+import org.cache2k.Cache;
+import org.cache2k.CacheBuilder;
+import org.cache2k.CacheSource;
 
 /**
  * Wire that caches GET requests (for five minutes).
@@ -80,6 +82,24 @@ import lombok.ToString;
 @ToString
 @EqualsAndHashCode(of = { "origin", "regex" })
 public final class CachingWire implements Wire {
+
+    /**
+     * Cache.
+     */
+    private static final Cache<CachingWire.Query, Response> CACHE =
+        CacheBuilder.newCache(CachingWire.Query.class, Response.class)
+            .expirySecs((int) TimeUnit.MINUTES.toSeconds((long) Tv.FIVE))
+            .name(CachingWire.class.getCanonicalName())
+            .source(
+                new CacheSource<CachingWire.Query, Response>() {
+                    @Override
+                    public Response get(final CachingWire.Query query)
+                        throws Throwable {
+                        return query.fetch();
+                    }
+                }
+            )
+            .build();
 
     /**
      * Original wire.
@@ -126,11 +146,15 @@ public final class CachingWire implements Wire {
             label.append('?').append(uri.getQuery());
         }
         if (label.toString().matches(this.regex)) {
-            this.flush();
+            CachingWire.CACHE.clear();
         }
         final Response rsp;
         if (method.equals(Request.GET)) {
-            rsp = this.get(req, home, headers);
+            rsp = CachingWire.CACHE.get(
+                new CachingWire.Query(
+                    this.origin, req, home, headers
+                )
+            );
         } else {
             rsp = this.origin.send(req, home, method, headers, content);
         }
@@ -138,30 +162,52 @@ public final class CachingWire implements Wire {
     }
 
     /**
-     * Fetch GET request and cache it.
-     * @param req Request
-     * @param home URI to fetch
-     * @param headers Headers
-     * @return Response obtained
-     * @throws IOException if fails
-     * @checkstyle ParameterNumber (13 lines)
+     * Query.
      */
-    @Cacheable(lifetime = Tv.FIVE, unit = TimeUnit.MINUTES)
-    private Response get(final Request req, final String home,
-        final Collection<Map.Entry<String, String>> headers)
-        throws IOException {
-        return this.origin.send(
-            req, home, Request.GET, headers,
-            new ByteArrayInputStream(new byte[0])
-        );
-    }
-
-    /**
-     * Do nothing, just regex the entire cache.
-     */
-    @Cacheable.FlushAfter
-    private void flush() {
-        // intentionally empty
+    @ToString
+    @EqualsAndHashCode(of = { "origin", "request", "uri", "headers" })
+    private static final class Query {
+        /**
+         * Origin wire.
+         */
+        private final transient Wire origin;
+        /**
+         * Request.
+         */
+        private final transient Request request;
+        /**
+         * URI.
+         */
+        private final transient String uri;
+        /**
+         * Headers.
+         */
+        private final transient Collection<Map.Entry<String, String>> headers;
+        /**
+         * Ctor.
+         * @param wire Original wire
+         * @param req Request
+         * @param home URI to fetch
+         * @param hdrs Headers
+         */
+        Query(final Wire wire, final Request req, final String home,
+            final Collection<Map.Entry<String, String>> hdrs) {
+            this.origin = wire;
+            this.request = req;
+            this.uri = home;
+            this.headers = hdrs;
+        }
+        /**
+         * Fetch.
+         * @return Response
+         * @throws IOException If fails
+         */
+        public Response fetch() throws IOException {
+            return this.origin.send(
+                this.request, this.uri, Request.GET, this.headers,
+                new ByteArrayInputStream(new byte[0])
+            );
+        }
     }
 
 }
