@@ -84,21 +84,45 @@ import org.cache2k.CacheSource;
 public final class CachingWire implements Wire {
 
     /**
+     * Source, first.
+     */
+    private static final CacheSource<Wire,
+        Cache<CachingWire.Query, Response>> FIRST =
+        new CacheSource<Wire, Cache<CachingWire.Query, Response>>() {
+            @Override
+            public Cache<CachingWire.Query, Response> get(final Wire wire) {
+                return CacheBuilder
+                    .newCache(CachingWire.Query.class, Response.class)
+                    .expirySecs(
+                        (int) TimeUnit.MINUTES.toSeconds((long) Tv.FIVE)
+                    )
+                    .name(CachingWire.class.getCanonicalName())
+                    .source(CachingWire.SECOND)
+                    .build();
+            }
+        };
+
+    /**
+     * Source, second.
+     */
+    private static final CacheSource<CachingWire.Query, Response> SECOND =
+        new CacheSource<CachingWire.Query, Response>() {
+            @Override
+            public Response get(final CachingWire.Query query)
+                throws IOException {
+                return query.fetch();
+            }
+        };
+
+    /**
      * Cache.
      */
-    private static final Cache<CachingWire.Query, Response> CACHE =
-        CacheBuilder.newCache(CachingWire.Query.class, Response.class)
-            .expirySecs((int) TimeUnit.MINUTES.toSeconds((long) Tv.FIVE))
+    @SuppressWarnings({ "unchecked", "rawtypes" })
+    private static final Cache<Wire, Cache<CachingWire.Query, Response>> CACHE =
+        (Cache<Wire, Cache<CachingWire.Query, Response>>) (Object)
+        CacheBuilder.newCache(Wire.class, Cache.class)
             .name(CachingWire.class.getCanonicalName())
-            .source(
-                new CacheSource<CachingWire.Query, Response>() {
-                    @Override
-                    public Response get(final CachingWire.Query query)
-                        throws Throwable {
-                        return query.fetch();
-                    }
-                }
-            )
+            .source((CacheSource<Wire, Cache>) (Object) CachingWire.FIRST)
             .build();
 
     /**
@@ -146,11 +170,11 @@ public final class CachingWire implements Wire {
             label.append('?').append(uri.getQuery());
         }
         if (label.toString().matches(this.regex)) {
-            CachingWire.CACHE.clear();
+            CachingWire.CACHE.get(this).clear();
         }
         final Response rsp;
         if (method.equals(Request.GET)) {
-            rsp = CachingWire.CACHE.get(
+            rsp = CachingWire.CACHE.get(this).get(
                 new CachingWire.Query(
                     this.origin, req, home, headers
                 )
@@ -189,6 +213,7 @@ public final class CachingWire implements Wire {
          * @param req Request
          * @param home URI to fetch
          * @param hdrs Headers
+         * @checkstyle ParameterNumberCheck (5 lines)
          */
         Query(final Wire wire, final Request req, final String home,
             final Collection<Map.Entry<String, String>> hdrs) {

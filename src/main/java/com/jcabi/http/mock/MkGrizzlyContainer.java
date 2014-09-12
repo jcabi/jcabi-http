@@ -134,7 +134,9 @@ public final class MkGrizzlyContainer implements MkContainer {
 
     @Override
     public void stop() {
-        this.gws.stop();
+        if (this.gws != null) {
+            this.gws.stop();
+        }
         Logger.info(this, "stopped on port #%s", this.port);
         this.port = 0;
     }
