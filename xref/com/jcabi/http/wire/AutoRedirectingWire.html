@@ -90,7 +90,7 @@
 <a class="jxr_linenumber" name="L82" href="#L82">82</a>      <em class="jxr_javadoccomment">/**</em>
 <a class="jxr_linenumber" name="L83" href="#L83">83</a>  <em class="jxr_javadoccomment">     * Maximum number of retries to be made.</em>
 <a class="jxr_linenumber" name="L84" href="#L84">84</a>  <em class="jxr_javadoccomment">     */</em>
-<a class="jxr_linenumber" name="L85" href="#L85">85</a>      <strong class="jxr_keyword">private</strong> <strong class="jxr_keyword">final</strong> <strong class="jxr_keyword">transient</strong> <strong class="jxr_keyword">long</strong> max;
+<a class="jxr_linenumber" name="L85" href="#L85">85</a>      <strong class="jxr_keyword">private</strong> <strong class="jxr_keyword">final</strong> <strong class="jxr_keyword">transient</strong> <strong class="jxr_keyword">int</strong> max;
 <a class="jxr_linenumber" name="L86" href="#L86">86</a>  
 <a class="jxr_linenumber" name="L87" href="#L87">87</a>      <em class="jxr_javadoccomment">/**</em>
 <a class="jxr_linenumber" name="L88" href="#L88">88</a>  <em class="jxr_javadoccomment">     * Public ctor.</em>
@@ -110,50 +110,47 @@
 <a class="jxr_linenumber" name="L102" href="#L102">102</a>         <strong class="jxr_keyword">this</strong>.max = retries;
 <a class="jxr_linenumber" name="L103" href="#L103">103</a>     }
 <a class="jxr_linenumber" name="L104" href="#L104">104</a> 
-<a class="jxr_linenumber" name="L105" href="#L105">105</a>     <em class="jxr_javadoccomment">/**</em>
-<a class="jxr_linenumber" name="L106" href="#L106">106</a> <em class="jxr_javadoccomment">     * {@inheritDoc}</em>
-<a class="jxr_linenumber" name="L107" href="#L107">107</a> <em class="jxr_javadoccomment">     * @checkstyle ParameterNumber (8 lines)</em>
-<a class="jxr_linenumber" name="L108" href="#L108">108</a> <em class="jxr_javadoccomment">     */</em>
-<a class="jxr_linenumber" name="L109" href="#L109">109</a>     @Override
-<a class="jxr_linenumber" name="L110" href="#L110">110</a>     <strong class="jxr_keyword">public</strong> <a href="../../../../com/jcabi/http/Response.html">Response</a> send(<strong class="jxr_keyword">final</strong> <a href="../../../../com/jcabi/http/Request.html">Request</a> req, <strong class="jxr_keyword">final</strong> String home,
-<a class="jxr_linenumber" name="L111" href="#L111">111</a>         <strong class="jxr_keyword">final</strong> String method,
-<a class="jxr_linenumber" name="L112" href="#L112">112</a>         <strong class="jxr_keyword">final</strong> Collection&lt;Map.Entry&lt;String, String&gt;&gt; headers,
-<a class="jxr_linenumber" name="L113" href="#L113">113</a>         <strong class="jxr_keyword">final</strong> InputStream content) <strong class="jxr_keyword">throws</strong> IOException {
-<a class="jxr_linenumber" name="L114" href="#L114">114</a>         <a href="../../../../com/jcabi/http/Response.html">Response</a> response = <strong class="jxr_keyword">this</strong>.origin.send(
-<a class="jxr_linenumber" name="L115" href="#L115">115</a>             req, home, method, headers, content
-<a class="jxr_linenumber" name="L116" href="#L116">116</a>         );
-<a class="jxr_linenumber" name="L117" href="#L117">117</a>         <strong class="jxr_keyword">long</strong> attempt = 1L;
-<a class="jxr_linenumber" name="L118" href="#L118">118</a>         <strong class="jxr_keyword">final</strong> URI uri = URI.create(home);
-<a class="jxr_linenumber" name="L119" href="#L119">119</a>         <strong class="jxr_keyword">while</strong> (attempt &lt; <strong class="jxr_keyword">this</strong>.max) {
-<a class="jxr_linenumber" name="L120" href="#L120">120</a>             <strong class="jxr_keyword">if</strong> (response.status() &lt; HttpURLConnection.HTTP_MULT_CHOICE
-<a class="jxr_linenumber" name="L121" href="#L121">121</a>                 || response.status() &gt;= HttpURLConnection.HTTP_BAD_REQUEST) {
-<a class="jxr_linenumber" name="L122" href="#L122">122</a>                 <strong class="jxr_keyword">break</strong>;
-<a class="jxr_linenumber" name="L123" href="#L123">123</a>             }
-<a class="jxr_linenumber" name="L124" href="#L124">124</a>             <strong class="jxr_keyword">final</strong> List&lt;String&gt; locations = response.headers().get(
-<a class="jxr_linenumber" name="L125" href="#L125">125</a>                 HttpHeaders.LOCATION
-<a class="jxr_linenumber" name="L126" href="#L126">126</a>             );
-<a class="jxr_linenumber" name="L127" href="#L127">127</a>             <strong class="jxr_keyword">if</strong> (locations == <strong class="jxr_keyword">null</strong> || locations.size() != 1) {
-<a class="jxr_linenumber" name="L128" href="#L128">128</a>                 <strong class="jxr_keyword">break</strong>;
-<a class="jxr_linenumber" name="L129" href="#L129">129</a>             }
-<a class="jxr_linenumber" name="L130" href="#L130">130</a>             URI location = URI.create(locations.get(0));
-<a class="jxr_linenumber" name="L131" href="#L131">131</a>             <strong class="jxr_keyword">if</strong> (!location.isAbsolute()) {
-<a class="jxr_linenumber" name="L132" href="#L132">132</a>                 location = uri.resolve(uri);
-<a class="jxr_linenumber" name="L133" href="#L133">133</a>             }
-<a class="jxr_linenumber" name="L134" href="#L134">134</a>             response = <strong class="jxr_keyword">this</strong>.origin.send(
-<a class="jxr_linenumber" name="L135" href="#L135">135</a>                 req, location.toString(),
-<a class="jxr_linenumber" name="L136" href="#L136">136</a>                 method, headers, content
-<a class="jxr_linenumber" name="L137" href="#L137">137</a>             );
-<a class="jxr_linenumber" name="L138" href="#L138">138</a>             <strong class="jxr_keyword">try</strong> {
-<a class="jxr_linenumber" name="L139" href="#L139">139</a>                 TimeUnit.SECONDS.sleep(attempt);
-<a class="jxr_linenumber" name="L140" href="#L140">140</a>             } <strong class="jxr_keyword">catch</strong> (<strong class="jxr_keyword">final</strong> InterruptedException ex) {
-<a class="jxr_linenumber" name="L141" href="#L141">141</a>                 <strong class="jxr_keyword">throw</strong> <strong class="jxr_keyword">new</strong> IOException(ex);
-<a class="jxr_linenumber" name="L142" href="#L142">142</a>             }
-<a class="jxr_linenumber" name="L143" href="#L143">143</a>             ++attempt;
-<a class="jxr_linenumber" name="L144" href="#L144">144</a>         }
-<a class="jxr_linenumber" name="L145" href="#L145">145</a>         <strong class="jxr_keyword">return</strong> response;
-<a class="jxr_linenumber" name="L146" href="#L146">146</a>     }
-<a class="jxr_linenumber" name="L147" href="#L147">147</a> 
-<a class="jxr_linenumber" name="L148" href="#L148">148</a> }
+<a class="jxr_linenumber" name="L105" href="#L105">105</a>     <em class="jxr_comment">// @checkstyle ParameterNumber (5 lines)</em>
+<a class="jxr_linenumber" name="L106" href="#L106">106</a>     @Override
+<a class="jxr_linenumber" name="L107" href="#L107">107</a>     <strong class="jxr_keyword">public</strong> <a href="../../../../com/jcabi/http/Response.html">Response</a> send(<strong class="jxr_keyword">final</strong> <a href="../../../../com/jcabi/http/Request.html">Request</a> req, <strong class="jxr_keyword">final</strong> String home,
+<a class="jxr_linenumber" name="L108" href="#L108">108</a>         <strong class="jxr_keyword">final</strong> String method,
+<a class="jxr_linenumber" name="L109" href="#L109">109</a>         <strong class="jxr_keyword">final</strong> Collection&lt;Map.Entry&lt;String, String&gt;&gt; headers,
+<a class="jxr_linenumber" name="L110" href="#L110">110</a>         <strong class="jxr_keyword">final</strong> InputStream content) <strong class="jxr_keyword">throws</strong> IOException {
+<a class="jxr_linenumber" name="L111" href="#L111">111</a>         <a href="../../../../com/jcabi/http/Response.html">Response</a> response = <strong class="jxr_keyword">this</strong>.origin.send(
+<a class="jxr_linenumber" name="L112" href="#L112">112</a>             req, home, method, headers, content
+<a class="jxr_linenumber" name="L113" href="#L113">113</a>         );
+<a class="jxr_linenumber" name="L114" href="#L114">114</a>         <strong class="jxr_keyword">int</strong> attempt = 1;
+<a class="jxr_linenumber" name="L115" href="#L115">115</a>         <strong class="jxr_keyword">final</strong> URI uri = URI.create(home);
+<a class="jxr_linenumber" name="L116" href="#L116">116</a>         <strong class="jxr_keyword">while</strong> (attempt &lt; <strong class="jxr_keyword">this</strong>.max) {
+<a class="jxr_linenumber" name="L117" href="#L117">117</a>             <strong class="jxr_keyword">if</strong> (response.status() &lt; HttpURLConnection.HTTP_MULT_CHOICE
+<a class="jxr_linenumber" name="L118" href="#L118">118</a>                 || response.status() &gt;= HttpURLConnection.HTTP_BAD_REQUEST) {
+<a class="jxr_linenumber" name="L119" href="#L119">119</a>                 <strong class="jxr_keyword">break</strong>;
+<a class="jxr_linenumber" name="L120" href="#L120">120</a>             }
+<a class="jxr_linenumber" name="L121" href="#L121">121</a>             <strong class="jxr_keyword">final</strong> List&lt;String&gt; locations = response.headers().get(
+<a class="jxr_linenumber" name="L122" href="#L122">122</a>                 HttpHeaders.LOCATION
+<a class="jxr_linenumber" name="L123" href="#L123">123</a>             );
+<a class="jxr_linenumber" name="L124" href="#L124">124</a>             <strong class="jxr_keyword">if</strong> (locations == <strong class="jxr_keyword">null</strong> || locations.size() != 1) {
+<a class="jxr_linenumber" name="L125" href="#L125">125</a>                 <strong class="jxr_keyword">break</strong>;
+<a class="jxr_linenumber" name="L126" href="#L126">126</a>             }
+<a class="jxr_linenumber" name="L127" href="#L127">127</a>             URI location = URI.create(locations.get(0));
+<a class="jxr_linenumber" name="L128" href="#L128">128</a>             <strong class="jxr_keyword">if</strong> (!location.isAbsolute()) {
+<a class="jxr_linenumber" name="L129" href="#L129">129</a>                 location = uri.resolve(uri);
+<a class="jxr_linenumber" name="L130" href="#L130">130</a>             }
+<a class="jxr_linenumber" name="L131" href="#L131">131</a>             response = <strong class="jxr_keyword">this</strong>.origin.send(
+<a class="jxr_linenumber" name="L132" href="#L132">132</a>                 req, location.toString(),
+<a class="jxr_linenumber" name="L133" href="#L133">133</a>                 method, headers, content
+<a class="jxr_linenumber" name="L134" href="#L134">134</a>             );
+<a class="jxr_linenumber" name="L135" href="#L135">135</a>             <strong class="jxr_keyword">try</strong> {
+<a class="jxr_linenumber" name="L136" href="#L136">136</a>                 TimeUnit.SECONDS.sleep((<strong class="jxr_keyword">long</strong>) attempt);
+<a class="jxr_linenumber" name="L137" href="#L137">137</a>             } <strong class="jxr_keyword">catch</strong> (<strong class="jxr_keyword">final</strong> InterruptedException ex) {
+<a class="jxr_linenumber" name="L138" href="#L138">138</a>                 <strong class="jxr_keyword">throw</strong> <strong class="jxr_keyword">new</strong> IOException(ex);
+<a class="jxr_linenumber" name="L139" href="#L139">139</a>             }
+<a class="jxr_linenumber" name="L140" href="#L140">140</a>             ++attempt;
+<a class="jxr_linenumber" name="L141" href="#L141">141</a>         }
+<a class="jxr_linenumber" name="L142" href="#L142">142</a>         <strong class="jxr_keyword">return</strong> response;
+<a class="jxr_linenumber" name="L143" href="#L143">143</a>     }
+<a class="jxr_linenumber" name="L144" href="#L144">144</a> 
+<a class="jxr_linenumber" name="L145" href="#L145">145</a> }
 </pre>
 <hr/>
 <div id="footer">Copyright &#169; 2012&#x2013;2014 <a href="http://www.jcabi.com">jcabi.com</a>. All rights reserved.</div>

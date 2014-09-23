@@ -168,50 +168,47 @@
 <a class="jxr_linenumber" name="L160" href="#L160">160</a>     <strong class="jxr_keyword">public</strong> byte[] binary() {
 <a class="jxr_linenumber" name="L161" href="#L161">161</a>         <strong class="jxr_keyword">return</strong> <strong class="jxr_keyword">this</strong>.content.clone();
 <a class="jxr_linenumber" name="L162" href="#L162">162</a>     }
-<a class="jxr_linenumber" name="L163" href="#L163">163</a>     <em class="jxr_javadoccomment">/**</em>
-<a class="jxr_linenumber" name="L164" href="#L164">164</a> <em class="jxr_javadoccomment">     * {@inheritDoc}</em>
-<a class="jxr_linenumber" name="L165" href="#L165">165</a> <em class="jxr_javadoccomment">     * @checkstyle MethodName (4 lines)</em>
-<a class="jxr_linenumber" name="L166" href="#L166">166</a> <em class="jxr_javadoccomment">     */</em>
-<a class="jxr_linenumber" name="L167" href="#L167">167</a>     @Override
-<a class="jxr_linenumber" name="L168" href="#L168">168</a>     @SuppressWarnings(<span class="jxr_string">"PMD.ShortMethodName"</span>)
-<a class="jxr_linenumber" name="L169" href="#L169">169</a>     <strong class="jxr_keyword">public</strong> &lt;T&gt; T as(<strong class="jxr_keyword">final</strong> Class&lt;T&gt; type) {
-<a class="jxr_linenumber" name="L170" href="#L170">170</a>         <strong class="jxr_keyword">try</strong> {
-<a class="jxr_linenumber" name="L171" href="#L171">171</a>             <strong class="jxr_keyword">return</strong> type.getDeclaredConstructor(Response.<strong class="jxr_keyword">class</strong>)
-<a class="jxr_linenumber" name="L172" href="#L172">172</a>                 .newInstance(<strong class="jxr_keyword">this</strong>);
-<a class="jxr_linenumber" name="L173" href="#L173">173</a>         } <strong class="jxr_keyword">catch</strong> (<strong class="jxr_keyword">final</strong> InstantiationException ex) {
-<a class="jxr_linenumber" name="L174" href="#L174">174</a>             <strong class="jxr_keyword">throw</strong> <strong class="jxr_keyword">new</strong> IllegalStateException(ex);
-<a class="jxr_linenumber" name="L175" href="#L175">175</a>         } <strong class="jxr_keyword">catch</strong> (<strong class="jxr_keyword">final</strong> IllegalAccessException ex) {
-<a class="jxr_linenumber" name="L176" href="#L176">176</a>             <strong class="jxr_keyword">throw</strong> <strong class="jxr_keyword">new</strong> IllegalStateException(ex);
-<a class="jxr_linenumber" name="L177" href="#L177">177</a>         } <strong class="jxr_keyword">catch</strong> (<strong class="jxr_keyword">final</strong> InvocationTargetException ex) {
-<a class="jxr_linenumber" name="L178" href="#L178">178</a>             <strong class="jxr_keyword">throw</strong> <strong class="jxr_keyword">new</strong> IllegalStateException(ex);
-<a class="jxr_linenumber" name="L179" href="#L179">179</a>         } <strong class="jxr_keyword">catch</strong> (<strong class="jxr_keyword">final</strong> NoSuchMethodException ex) {
-<a class="jxr_linenumber" name="L180" href="#L180">180</a>             <strong class="jxr_keyword">throw</strong> <strong class="jxr_keyword">new</strong> IllegalStateException(ex);
-<a class="jxr_linenumber" name="L181" href="#L181">181</a>         }
-<a class="jxr_linenumber" name="L182" href="#L182">182</a>     }
-<a class="jxr_linenumber" name="L183" href="#L183">183</a> 
-<a class="jxr_linenumber" name="L184" href="#L184">184</a>     @Override
-<a class="jxr_linenumber" name="L185" href="#L185">185</a>     <strong class="jxr_keyword">public</strong> String toString() {
-<a class="jxr_linenumber" name="L186" href="#L186">186</a>         <strong class="jxr_keyword">final</strong> StringBuilder text = <strong class="jxr_keyword">new</strong> StringBuilder(0)
-<a class="jxr_linenumber" name="L187" href="#L187">187</a>             .append(<strong class="jxr_keyword">this</strong>.code).append(' ')
-<a class="jxr_linenumber" name="L188" href="#L188">188</a>             .append(<strong class="jxr_keyword">this</strong>.phrase)
-<a class="jxr_linenumber" name="L189" href="#L189">189</a>             .append(<span class="jxr_string">" ["</span>)
-<a class="jxr_linenumber" name="L190" href="#L190">190</a>             .append(<strong class="jxr_keyword">this</strong>.back().uri().get())
-<a class="jxr_linenumber" name="L191" href="#L191">191</a>             .append(<span class="jxr_string">"]\n"</span>);
-<a class="jxr_linenumber" name="L192" href="#L192">192</a>         <strong class="jxr_keyword">for</strong> (<strong class="jxr_keyword">final</strong> Map.Entry&lt;String, String&gt; header : <strong class="jxr_keyword">this</strong>.hdrs) {
-<a class="jxr_linenumber" name="L193" href="#L193">193</a>             text.append(
-<a class="jxr_linenumber" name="L194" href="#L194">194</a>                 Logger.format(
-<a class="jxr_linenumber" name="L195" href="#L195">195</a>                     <span class="jxr_string">"%s: %s\n"</span>,
-<a class="jxr_linenumber" name="L196" href="#L196">196</a>                     header.getKey(),
-<a class="jxr_linenumber" name="L197" href="#L197">197</a>                     header.getValue()
-<a class="jxr_linenumber" name="L198" href="#L198">198</a>                 )
-<a class="jxr_linenumber" name="L199" href="#L199">199</a>             );
-<a class="jxr_linenumber" name="L200" href="#L200">200</a>         }
-<a class="jxr_linenumber" name="L201" href="#L201">201</a>         <strong class="jxr_keyword">return</strong> text.append('\n')
-<a class="jxr_linenumber" name="L202" href="#L202">202</a>             .append(RequestBody.Printable.toString(<strong class="jxr_keyword">this</strong>.content))
-<a class="jxr_linenumber" name="L203" href="#L203">203</a>             .toString();
-<a class="jxr_linenumber" name="L204" href="#L204">204</a>     }
-<a class="jxr_linenumber" name="L205" href="#L205">205</a> 
-<a class="jxr_linenumber" name="L206" href="#L206">206</a> }
+<a class="jxr_linenumber" name="L163" href="#L163">163</a>     <em class="jxr_comment">// @checkstyle MethodName (4 lines)</em>
+<a class="jxr_linenumber" name="L164" href="#L164">164</a>     @Override
+<a class="jxr_linenumber" name="L165" href="#L165">165</a>     @SuppressWarnings(<span class="jxr_string">"PMD.ShortMethodName"</span>)
+<a class="jxr_linenumber" name="L166" href="#L166">166</a>     <strong class="jxr_keyword">public</strong> &lt;T&gt; T as(<strong class="jxr_keyword">final</strong> Class&lt;T&gt; type) {
+<a class="jxr_linenumber" name="L167" href="#L167">167</a>         <strong class="jxr_keyword">try</strong> {
+<a class="jxr_linenumber" name="L168" href="#L168">168</a>             <strong class="jxr_keyword">return</strong> type.getDeclaredConstructor(Response.<strong class="jxr_keyword">class</strong>)
+<a class="jxr_linenumber" name="L169" href="#L169">169</a>                 .newInstance(<strong class="jxr_keyword">this</strong>);
+<a class="jxr_linenumber" name="L170" href="#L170">170</a>         } <strong class="jxr_keyword">catch</strong> (<strong class="jxr_keyword">final</strong> InstantiationException ex) {
+<a class="jxr_linenumber" name="L171" href="#L171">171</a>             <strong class="jxr_keyword">throw</strong> <strong class="jxr_keyword">new</strong> IllegalStateException(ex);
+<a class="jxr_linenumber" name="L172" href="#L172">172</a>         } <strong class="jxr_keyword">catch</strong> (<strong class="jxr_keyword">final</strong> IllegalAccessException ex) {
+<a class="jxr_linenumber" name="L173" href="#L173">173</a>             <strong class="jxr_keyword">throw</strong> <strong class="jxr_keyword">new</strong> IllegalStateException(ex);
+<a class="jxr_linenumber" name="L174" href="#L174">174</a>         } <strong class="jxr_keyword">catch</strong> (<strong class="jxr_keyword">final</strong> InvocationTargetException ex) {
+<a class="jxr_linenumber" name="L175" href="#L175">175</a>             <strong class="jxr_keyword">throw</strong> <strong class="jxr_keyword">new</strong> IllegalStateException(ex);
+<a class="jxr_linenumber" name="L176" href="#L176">176</a>         } <strong class="jxr_keyword">catch</strong> (<strong class="jxr_keyword">final</strong> NoSuchMethodException ex) {
+<a class="jxr_linenumber" name="L177" href="#L177">177</a>             <strong class="jxr_keyword">throw</strong> <strong class="jxr_keyword">new</strong> IllegalStateException(ex);
+<a class="jxr_linenumber" name="L178" href="#L178">178</a>         }
+<a class="jxr_linenumber" name="L179" href="#L179">179</a>     }
+<a class="jxr_linenumber" name="L180" href="#L180">180</a> 
+<a class="jxr_linenumber" name="L181" href="#L181">181</a>     @Override
+<a class="jxr_linenumber" name="L182" href="#L182">182</a>     <strong class="jxr_keyword">public</strong> String toString() {
+<a class="jxr_linenumber" name="L183" href="#L183">183</a>         <strong class="jxr_keyword">final</strong> StringBuilder text = <strong class="jxr_keyword">new</strong> StringBuilder(0)
+<a class="jxr_linenumber" name="L184" href="#L184">184</a>             .append(<strong class="jxr_keyword">this</strong>.code).append(' ')
+<a class="jxr_linenumber" name="L185" href="#L185">185</a>             .append(<strong class="jxr_keyword">this</strong>.phrase)
+<a class="jxr_linenumber" name="L186" href="#L186">186</a>             .append(<span class="jxr_string">" ["</span>)
+<a class="jxr_linenumber" name="L187" href="#L187">187</a>             .append(<strong class="jxr_keyword">this</strong>.back().uri().get())
+<a class="jxr_linenumber" name="L188" href="#L188">188</a>             .append(<span class="jxr_string">"]\n"</span>);
+<a class="jxr_linenumber" name="L189" href="#L189">189</a>         <strong class="jxr_keyword">for</strong> (<strong class="jxr_keyword">final</strong> Map.Entry&lt;String, String&gt; header : <strong class="jxr_keyword">this</strong>.hdrs) {
+<a class="jxr_linenumber" name="L190" href="#L190">190</a>             text.append(
+<a class="jxr_linenumber" name="L191" href="#L191">191</a>                 Logger.format(
+<a class="jxr_linenumber" name="L192" href="#L192">192</a>                     <span class="jxr_string">"%s: %s\n"</span>,
+<a class="jxr_linenumber" name="L193" href="#L193">193</a>                     header.getKey(),
+<a class="jxr_linenumber" name="L194" href="#L194">194</a>                     header.getValue()
+<a class="jxr_linenumber" name="L195" href="#L195">195</a>                 )
+<a class="jxr_linenumber" name="L196" href="#L196">196</a>             );
+<a class="jxr_linenumber" name="L197" href="#L197">197</a>         }
+<a class="jxr_linenumber" name="L198" href="#L198">198</a>         <strong class="jxr_keyword">return</strong> text.append('\n')
+<a class="jxr_linenumber" name="L199" href="#L199">199</a>             .append(RequestBody.Printable.toString(<strong class="jxr_keyword">this</strong>.content))
+<a class="jxr_linenumber" name="L200" href="#L200">200</a>             .toString();
+<a class="jxr_linenumber" name="L201" href="#L201">201</a>     }
+<a class="jxr_linenumber" name="L202" href="#L202">202</a> 
+<a class="jxr_linenumber" name="L203" href="#L203">203</a> }
 </pre>
 <hr/>
 <div id="footer">Copyright &#169; 2012&#x2013;2014 <a href="http://www.jcabi.com">jcabi.com</a>. All rights reserved.</div>

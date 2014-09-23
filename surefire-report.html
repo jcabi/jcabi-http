@@ -3,8 +3,9 @@
     <head>
         <meta charset="UTF-8"/>
         <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-        <title>jcabi-http - Surefire Report</title>
+        <title>jcabi-http &#x2013; Surefire Report</title>
         <link media="all" rel="stylesheet" type="text/css" href="./css/jcabi.css"/>
+        <link media="all" rel="stylesheet" type="text/css" href="./ico/ico.css"/>
                             <script>
                 var _gaq = _gaq || [];
                 _gaq.push(['_setAccount', 'UA-1963507-23']);
@@ -19,24 +20,8 @@
 <link rel="shortcut icon" href="http://img.jcabi.com/favicon.ico"/>
                                                                                                                 
 <link rel="author" href="https://plus.google.com/u/0/114792568016408327418?rel=author"/>
-                                            <script src="//code.jquery.com/jquery-2.1.0.min.js"></script>
-        <script>
-            $(document).ready(
-                function() {
-                    $(".menu-button").click(
-                        function() {
-                            if ($("#here-goes-menu").attr("class") == "menu-off") {
-                                $("#menu").clone().attr("class", "mobile-menu").appendTo("#here-goes-menu");
-                                $("#here-goes-menu").attr("class", "menu-on");
-                            } else {
-                                $(".mobile-menu").hide();
-                                $("#here-goes-menu").attr("class", "menu-off");
-                            }
-                        }
-                    );
-                }
-            );
-        </script>
+                                            <script src="http://code.jquery.com/jquery-2.1.0.min.js"></script>
+        <script type="text/javascript" src="./js/jcabi.js"></script>
     </head>
     <body>
                 <section class="page" itemscope="" itemtype="http://schema.org/BlogPosting">
@@ -52,7 +37,7 @@
                                                                     </ul>
                                                     </li>
                                                                                                                         <li >
-                            <span>                        <a href="apidocs-1.8.2/index.html" title="API 1.8.2 (JavaDoc)">API 1.8.2 (JavaDoc)</a>
+                            <span>                        <a href="apidocs-1.9/index.html" title="API 1.9 (JavaDoc)">API 1.9 (JavaDoc)</a>
         </span>
                                                                                                                                                                 <ul>
                                                                     </ul>
@@ -171,7 +156,7 @@
                                                                     </ul>
                                                     </li>
                                                                                                                         <li >
-                            <span>                        <a href="apidocs-1.8.2/index.html" title="JavaDocs">JavaDocs</a>
+                            <span>                        <a href="apidocs-1.9/index.html" title="JavaDocs">JavaDocs</a>
         </span>
                                                                                                                                                                 <ul>
                                                                     </ul>
@@ -210,17 +195,51 @@
                             </div>
                             <ul class="badges">
                                 <li>
-                                    <strong itemprop="version">1.8.2</strong>
+                                    <strong itemprop="version">1.9</strong>
                                 </li>
                                 <li>
                                     
-                                    <time itemprop="datePublished" datetime="2014-08-14T06:58:00Z">
+                                    <time itemprop="datePublished" datetime="2014-09-23T07:35:31Z">
                                         
-                                        14-Aug-2014
+                                        23-Sep-2014
                                     </time>
                                 </li>
                                 <li class="menu-button">menu</li>
                             </ul>
+                            <div class="social">
+                                <a href="http://www.facebook.com/sharer/sharer.php?u=URL"
+                                    title="Share on Facebook" class="ico">
+                                    <i class="icon-facebook"></i>
+                                </a>
+                                <a href="https://twitter.com/share?url=URL&amp;text=TITLE"
+                                    title="Share on Twitter" class="ico">
+                                    <i class="icon-twitter"></i>
+                                </a>
+                                <a href="https://plus.google.com/share?url=URL"
+                                    title="Share on Google+" class="ico">
+                                    <i class="icon-googleplus"></i>
+                                </a>
+                                <a href="https://www.linkedin.com/cws/share?url=URL"
+                                    title="Share on LinkedIn" class="ico">
+                                    <i class="icon-linkedin"></i>
+                                </a>
+                                <a href="http://www.stumbleupon.com/submit?url=URL&amp;title=TITLE"
+                                    title="Share on StumbleUpon" class="ico">
+                                    <i class="icon-stumbleupon"></i>
+                                </a>
+                                <a href="http://digg.com/submit?phase=2&amp;url=URL&amp;title=TITLE"
+                                    title="Share on Digg" class="ico">
+                                    <i class="icon-digg"></i>
+                                </a>
+                                <a href="http://reddit.com/submit?url=URL&amp;title=TITLE"
+                                    title="Share on Reddit" class="ico">
+                                    <i class="icon-reddit"></i>
+                                </a>
+                                <a href="http://news.ycombinator.com/submitlink?u=URL&amp;t=TITLE"
+                                    title="Share on Hacker News" class="ico">
+                                    <i class="icon-hackernews"></i>
+                                </a>
+                            </div>
                         </header>
                         <div id="here-goes-menu" class="menu-off"></div>
                                                                             <a href="https://github.com/jcabi/jcabi-http">
@@ -245,9 +264,9 @@ function toggleDisplay(elementId) {
 //]]>
 </script>
 <div class="section">
-<h2>Surefire Report<a name="Surefire_Report"></a></h2></div>
+<h2><a name="Surefire_Report"></a>Surefire Report</h2></div>
 <div class="section">
-<h2>Summary<a name="Summary"></a></h2><a name="Summary"></a>
+<h2><a name="Summary"></a>Summary</h2><a name="Summary"></a>
 <p>[<a href="#Summary">Summary</a>] [<a href="#Package_List">Package List</a>] [<a href="#Test_Cases">Test Cases</a>]</p><br />
 <table border="1" class="bodyTable">
 <tr class="a">
@@ -258,15 +277,15 @@ function toggleDisplay(elementId) {
 <th>Success Rate</th>
 <th>Time</th></tr>
 <tr class="b">
-<td>81</td>
+<td>82</td>
 <td>0</td>
 <td>0</td>
 <td>0</td>
 <td>100%</td>
-<td>96.119</td></tr></table><br />
+<td>111.432</td></tr></table><br />
 <p>Note: failures are anticipated and checked for with assertions while errors are unanticipated.</p><br /></div>
 <div class="section">
-<h2>Package List<a name="Package_List"></a></h2><a name="Package_List"></a>
+<h2><a name="Package_List"></a>Package List</h2><a name="Package_List"></a>
 <p>[<a href="#Summary">Summary</a>] [<a href="#Package_List">Package List</a>] [<a href="#Test_Cases">Test Cases</a>]</p><br />
 <table border="1" class="bodyTable">
 <tr class="a">
@@ -284,7 +303,7 @@ function toggleDisplay(elementId) {
 <td>0</td>
 <td>0</td>
 <td>100%</td>
-<td>33.588</td></tr>
+<td>47.287</td></tr>
 <tr class="a">
 <td><a href="#com.jcabi.http.wire">com.jcabi.http.wire</a></td>
 <td>10</td>
@@ -292,15 +311,15 @@ function toggleDisplay(elementId) {
 <td>0</td>
 <td>0</td>
 <td>100%</td>
-<td>48.961</td></tr>
+<td>15.37</td></tr>
 <tr class="b">
 <td><a href="#com.jcabi.http.response">com.jcabi.http.response</a></td>
-<td>15</td>
+<td>16</td>
 <td>0</td>
 <td>0</td>
 <td>0</td>
 <td>100%</td>
-<td>1.653</td></tr>
+<td>15.754</td></tr>
 <tr class="a">
 <td><a href="#com.jcabi.http.request">com.jcabi.http.request</a></td>
 <td>9</td>
@@ -308,7 +327,7 @@ function toggleDisplay(elementId) {
 <td>0</td>
 <td>0</td>
 <td>100%</td>
-<td>0.235</td></tr>
+<td>3.387</td></tr>
 <tr class="b">
 <td><a href="#com.jcabi.http.mock">com.jcabi.http.mock</a></td>
 <td>12</td>
@@ -316,10 +335,10 @@ function toggleDisplay(elementId) {
 <td>0</td>
 <td>0</td>
 <td>100%</td>
-<td>11.682</td></tr></table><br />
+<td>29.634</td></tr></table><br />
 <p>Note: package statistics are not computed recursively, they only sum up all of its testsuites numbers.</p>
 <div class="section">
-<h3>com.jcabi.http<a name="com.jcabi.http"></a></h3><a name="com.jcabi.http"></a>
+<h3><a name="com.jcabi.http"></a>com.jcabi.http</h3><a name="com.jcabi.http"></a>
 <table border="1" class="bodyTable">
 <tr class="a">
 <th></th>
@@ -331,15 +350,6 @@ function toggleDisplay(elementId) {
 <th>Success Rate</th>
 <th>Time</th></tr>
 <tr class="b">
-<td><a href="#com.jcabi.httpRequestTest"><img src="images/icon_success_sml.gif" alt="" /></a></td>
-<td><a href="#com.jcabi.httpRequestTest">RequestTest</a></td>
-<td>34</td>
-<td>0</td>
-<td>0</td>
-<td>0</td>
-<td>100%</td>
-<td>33.586</td></tr>
-<tr class="a">
 <td><a href="#com.jcabi.httpImmutableHeaderTest"><img src="images/icon_success_sml.gif" alt="" /></a></td>
 <td><a href="#com.jcabi.httpImmutableHeaderTest">ImmutableHeaderTest</a></td>
 <td>1</td>
@@ -347,9 +357,18 @@ function toggleDisplay(elementId) {
 <td>0</td>
 <td>0</td>
 <td>100%</td>
-<td>0.002</td></tr></table></div>
+<td>0</td></tr>
+<tr class="a">
+<td><a href="#com.jcabi.httpRequestTest"><img src="images/icon_success_sml.gif" alt="" /></a></td>
+<td><a href="#com.jcabi.httpRequestTest">RequestTest</a></td>
+<td>34</td>
+<td>0</td>
+<td>0</td>
+<td>0</td>
+<td>100%</td>
+<td>47.287</td></tr></table></div>
 <div class="section">
-<h3>com.jcabi.http.wire<a name="com.jcabi.http.wire"></a></h3><a name="com.jcabi.http.wire"></a>
+<h3><a name="com.jcabi.http.wire"></a>com.jcabi.http.wire</h3><a name="com.jcabi.http.wire"></a>
 <table border="1" class="bodyTable">
 <tr class="a">
 <th></th>
@@ -361,14 +380,14 @@ function toggleDisplay(elementId) {
 <th>Success Rate</th>
 <th>Time</th></tr>
 <tr class="b">
-<td><a href="#com.jcabi.http.wireCookieOptimizingWireTest"><img src="images/icon_success_sml.gif" alt="" /></a></td>
-<td><a href="#com.jcabi.http.wireCookieOptimizingWireTest">CookieOptimizingWireTest</a></td>
-<td>2</td>
+<td><a href="#com.jcabi.http.wireCachingWireTest"><img src="images/icon_success_sml.gif" alt="" /></a></td>
+<td><a href="#com.jcabi.http.wireCachingWireTest">CachingWireTest</a></td>
+<td>3</td>
 <td>0</td>
 <td>0</td>
 <td>0</td>
 <td>100%</td>
-<td>2.069</td></tr>
+<td>3.958</td></tr>
 <tr class="a">
 <td><a href="#com.jcabi.http.wireRetryWireTest"><img src="images/icon_success_sml.gif" alt="" /></a></td>
 <td><a href="#com.jcabi.http.wireRetryWireTest">RetryWireTest</a></td>
@@ -377,25 +396,25 @@ function toggleDisplay(elementId) {
 <td>0</td>
 <td>0</td>
 <td>100%</td>
-<td>31.449</td></tr>
+<td>1.208</td></tr>
 <tr class="b">
-<td><a href="#com.jcabi.http.wireUserAgentWireTest"><img src="images/icon_success_sml.gif" alt="" /></a></td>
-<td><a href="#com.jcabi.http.wireUserAgentWireTest">UserAgentWireTest</a></td>
+<td><a href="#com.jcabi.http.wireVerboseWireTest"><img src="images/icon_success_sml.gif" alt="" /></a></td>
+<td><a href="#com.jcabi.http.wireVerboseWireTest">VerboseWireTest</a></td>
 <td>1</td>
 <td>0</td>
 <td>0</td>
 <td>0</td>
 <td>100%</td>
-<td>1.018</td></tr>
+<td>0.233</td></tr>
 <tr class="a">
-<td><a href="#com.jcabi.http.wireCachingWireTest"><img src="images/icon_success_sml.gif" alt="" /></a></td>
-<td><a href="#com.jcabi.http.wireCachingWireTest">CachingWireTest</a></td>
-<td>3</td>
+<td><a href="#com.jcabi.http.wireCookieOptimizingWireTest"><img src="images/icon_success_sml.gif" alt="" /></a></td>
+<td><a href="#com.jcabi.http.wireCookieOptimizingWireTest">CookieOptimizingWireTest</a></td>
+<td>2</td>
 <td>0</td>
 <td>0</td>
 <td>0</td>
 <td>100%</td>
-<td>5.222</td></tr>
+<td>2.593</td></tr>
 <tr class="b">
 <td><a href="#com.jcabi.http.wireAutoRedirectingWireTest"><img src="images/icon_success_sml.gif" alt="" /></a></td>
 <td><a href="#com.jcabi.http.wireAutoRedirectingWireTest">AutoRedirectingWireTest</a></td>
@@ -404,18 +423,18 @@ function toggleDisplay(elementId) {
 <td>0</td>
 <td>0</td>
 <td>100%</td>
-<td>8.156</td></tr>
+<td>6.319</td></tr>
 <tr class="a">
-<td><a href="#com.jcabi.http.wireVerboseWireTest"><img src="images/icon_success_sml.gif" alt="" /></a></td>
-<td><a href="#com.jcabi.http.wireVerboseWireTest">VerboseWireTest</a></td>
+<td><a href="#com.jcabi.http.wireUserAgentWireTest"><img src="images/icon_success_sml.gif" alt="" /></a></td>
+<td><a href="#com.jcabi.http.wireUserAgentWireTest">UserAgentWireTest</a></td>
 <td>1</td>
 <td>0</td>
 <td>0</td>
 <td>0</td>
 <td>100%</td>
-<td>1.047</td></tr></table></div>
+<td>1.059</td></tr></table></div>
 <div class="section">
-<h3>com.jcabi.http.response<a name="com.jcabi.http.response"></a></h3><a name="com.jcabi.http.response"></a>
+<h3><a name="com.jcabi.http.response"></a>com.jcabi.http.response</h3><a name="com.jcabi.http.response"></a>
 <table border="1" class="bodyTable">
 <tr class="a">
 <th></th>
@@ -427,14 +446,32 @@ function toggleDisplay(elementId) {
 <th>Success Rate</th>
 <th>Time</th></tr>
 <tr class="b">
-<td><a href="#com.jcabi.http.responseJsoupResponseTest"><img src="images/icon_success_sml.gif" alt="" /></a></td>
-<td><a href="#com.jcabi.http.responseJsoupResponseTest">JsoupResponseTest</a></td>
-<td>1</td>
+<td><a href="#com.jcabi.http.responseXmlResponseTest"><img src="images/icon_success_sml.gif" alt="" /></a></td>
+<td><a href="#com.jcabi.http.responseXmlResponseTest">XmlResponseTest</a></td>
+<td>5</td>
 <td>0</td>
 <td>0</td>
 <td>0</td>
 <td>100%</td>
-<td>0.228</td></tr>
+<td>10.436</td></tr>
+<tr class="a">
+<td><a href="#com.jcabi.http.responseJsonResponseTest"><img src="images/icon_success_sml.gif" alt="" /></a></td>
+<td><a href="#com.jcabi.http.responseJsonResponseTest">JsonResponseTest</a></td>
+<td>5</td>
+<td>0</td>
+<td>0</td>
+<td>0</td>
+<td>100%</td>
+<td>1.377</td></tr>
+<tr class="b">
+<td><a href="#com.jcabi.http.responseRestResponseTest"><img src="images/icon_success_sml.gif" alt="" /></a></td>
+<td><a href="#com.jcabi.http.responseRestResponseTest">RestResponseTest</a></td>
+<td>3</td>
+<td>0</td>
+<td>0</td>
+<td>0</td>
+<td>100%</td>
+<td>1.229</td></tr>
 <tr class="a">
 <td><a href="#com.jcabi.http.responseWebLinkingResponseTest"><img src="images/icon_success_sml.gif" alt="" /></a></td>
 <td><a href="#com.jcabi.http.responseWebLinkingResponseTest">WebLinkingResponseTest</a></td>
@@ -443,36 +480,18 @@ function toggleDisplay(elementId) {
 <td>0</td>
 <td>0</td>
 <td>100%</td>
-<td>0.045</td></tr>
+<td>0.09</td></tr>
 <tr class="b">
-<td><a href="#com.jcabi.http.responseJsonResponseTest"><img src="images/icon_success_sml.gif" alt="" /></a></td>
-<td><a href="#com.jcabi.http.responseJsonResponseTest">JsonResponseTest</a></td>
-<td>5</td>
+<td><a href="#com.jcabi.http.responseJsoupResponseTest"><img src="images/icon_success_sml.gif" alt="" /></a></td>
+<td><a href="#com.jcabi.http.responseJsoupResponseTest">JsoupResponseTest</a></td>
+<td>1</td>
 <td>0</td>
 <td>0</td>
 <td>0</td>
 <td>100%</td>
-<td>0.359</td></tr>
-<tr class="a">
-<td><a href="#com.jcabi.http.responseXmlResponseTest"><img src="images/icon_success_sml.gif" alt="" /></a></td>
-<td><a href="#com.jcabi.http.responseXmlResponseTest">XmlResponseTest</a></td>
-<td>5</td>
-<td>0</td>
-<td>0</td>
-<td>0</td>
-<td>100%</td>
-<td>0.315</td></tr>
-<tr class="b">
-<td><a href="#com.jcabi.http.responseRestResponseTest"><img src="images/icon_success_sml.gif" alt="" /></a></td>
-<td><a href="#com.jcabi.http.responseRestResponseTest">RestResponseTest</a></td>
-<td>2</td>
-<td>0</td>
-<td>0</td>
-<td>0</td>
-<td>100%</td>
-<td>0.706</td></tr></table></div>
+<td>2.622</td></tr></table></div>
 <div class="section">
-<h3>com.jcabi.http.request<a name="com.jcabi.http.request"></a></h3><a name="com.jcabi.http.request"></a>
+<h3><a name="com.jcabi.http.request"></a>com.jcabi.http.request</h3><a name="com.jcabi.http.request"></a>
 <table border="1" class="bodyTable">
 <tr class="a">
 <th></th>
@@ -483,24 +502,6 @@ function toggleDisplay(elementId) {
 <th>Skipped</th>
 <th>Success Rate</th>
 <th>Time</th></tr>
-<tr class="b">
-<td><a href="#com.jcabi.http.requestDefaultResponseTest"><img src="images/icon_success_sml.gif" alt="" /></a></td>
-<td><a href="#com.jcabi.http.requestDefaultResponseTest">DefaultResponseTest</a></td>
-<td>1</td>
-<td>0</td>
-<td>0</td>
-<td>0</td>
-<td>100%</td>
-<td>0.127</td></tr>
-<tr class="a">
-<td><a href="#com.jcabi.http.requestFakeRequestTest"><img src="images/icon_success_sml.gif" alt="" /></a></td>
-<td><a href="#com.jcabi.http.requestFakeRequestTest">FakeRequestTest</a></td>
-<td>5</td>
-<td>0</td>
-<td>0</td>
-<td>0</td>
-<td>100%</td>
-<td>0.038</td></tr>
 <tr class="b">
 <td><a href="#com.jcabi.http.requestBaseRequestTest"><img src="images/icon_success_sml.gif" alt="" /></a></td>
 <td><a href="#com.jcabi.http.requestBaseRequestTest">BaseRequestTest</a></td>
@@ -509,9 +510,27 @@ function toggleDisplay(elementId) {
 <td>0</td>
 <td>0</td>
 <td>100%</td>
-<td>0.07</td></tr></table></div>
+<td>1.766</td></tr>
+<tr class="a">
+<td><a href="#com.jcabi.http.requestFakeRequestTest"><img src="images/icon_success_sml.gif" alt="" /></a></td>
+<td><a href="#com.jcabi.http.requestFakeRequestTest">FakeRequestTest</a></td>
+<td>5</td>
+<td>0</td>
+<td>0</td>
+<td>0</td>
+<td>100%</td>
+<td>1.058</td></tr>
+<tr class="b">
+<td><a href="#com.jcabi.http.requestDefaultResponseTest"><img src="images/icon_success_sml.gif" alt="" /></a></td>
+<td><a href="#com.jcabi.http.requestDefaultResponseTest">DefaultResponseTest</a></td>
+<td>1</td>
+<td>0</td>
+<td>0</td>
+<td>0</td>
+<td>100%</td>
+<td>0.563</td></tr></table></div>
 <div class="section">
-<h3>com.jcabi.http.mock<a name="com.jcabi.http.mock"></a></h3><a name="com.jcabi.http.mock"></a>
+<h3><a name="com.jcabi.http.mock"></a>com.jcabi.http.mock</h3><a name="com.jcabi.http.mock"></a>
 <table border="1" class="bodyTable">
 <tr class="a">
 <th></th>
@@ -523,15 +542,6 @@ function toggleDisplay(elementId) {
 <th>Success Rate</th>
 <th>Time</th></tr>
 <tr class="b">
-<td><a href="#com.jcabi.http.mockMkQueryMatchersTest"><img src="images/icon_success_sml.gif" alt="" /></a></td>
-<td><a href="#com.jcabi.http.mockMkQueryMatchersTest">MkQueryMatchersTest</a></td>
-<td>2</td>
-<td>0</td>
-<td>0</td>
-<td>0</td>
-<td>100%</td>
-<td>0.028</td></tr>
-<tr class="a">
 <td><a href="#com.jcabi.http.mockMkAnswerMatchersTest"><img src="images/icon_success_sml.gif" alt="" /></a></td>
 <td><a href="#com.jcabi.http.mockMkAnswerMatchersTest">MkAnswerMatchersTest</a></td>
 <td>2</td>
@@ -539,7 +549,16 @@ function toggleDisplay(elementId) {
 <td>0</td>
 <td>0</td>
 <td>100%</td>
-<td>0.086</td></tr>
+<td>0.913</td></tr>
+<tr class="a">
+<td><a href="#com.jcabi.http.mockMkQueryMatchersTest"><img src="images/icon_success_sml.gif" alt="" /></a></td>
+<td><a href="#com.jcabi.http.mockMkQueryMatchersTest">MkQueryMatchersTest</a></td>
+<td>2</td>
+<td>0</td>
+<td>0</td>
+<td>0</td>
+<td>100%</td>
+<td>0.11</td></tr>
 <tr class="b">
 <td><a href="#com.jcabi.http.mockMkContainerTest"><img src="images/icon_success_sml.gif" alt="" /></a></td>
 <td><a href="#com.jcabi.http.mockMkContainerTest">MkContainerTest</a></td>
@@ -548,391 +567,395 @@ function toggleDisplay(elementId) {
 <td>0</td>
 <td>0</td>
 <td>100%</td>
-<td>11.568</td></tr></table></div><br /></div>
+<td>28.611</td></tr></table></div><br /></div>
 <div class="section">
-<h2>Test Cases<a name="Test_Cases"></a></h2><a name="Test_Cases"></a>
+<h2><a name="Test_Cases"></a>Test Cases</h2><a name="Test_Cases"></a>
 <p>[<a href="#Summary">Summary</a>] [<a href="#Package_List">Package List</a>] [<a href="#Test_Cases">Test Cases</a>]</p>
 <div class="section">
-<h3>CookieOptimizingWireTest<a name="CookieOptimizingWireTest"></a></h3><a name="com.jcabi.http.wireCookieOptimizingWireTest"></a>
-<table border="1" class="bodyTable">
-<tr class="a">
-<td><img src="images/icon_success_sml.gif" alt="" /></td>
-<td>avoidsTransferringOfEmptyCookiesOnFollow</td>
-<td>1.031</td></tr>
-<tr class="b">
-<td><img src="images/icon_success_sml.gif" alt="" /></td>
-<td>transfersCookiesOnFollow</td>
-<td>1.038</td></tr></table></div>
-<div class="section">
-<h3>RequestTest<a name="RequestTest"></a></h3><a name="com.jcabi.httpRequestTest"></a>
-<table border="1" class="bodyTable">
-<tr class="a">
-<td><img src="images/icon_success_sml.gif" alt="" /></td>
-<td>fetchThrowsExceptionWhenBodyIsNotEmpty[0]</td>
-<td>0.387</td></tr>
-<tr class="b">
-<td><img src="images/icon_success_sml.gif" alt="" /></td>
-<td>assertsHttpStatus[0]</td>
-<td>1.83</td></tr>
-<tr class="a">
-<td><img src="images/icon_success_sml.gif" alt="" /></td>
-<td>sendsHttpRequestAndProcessesHttpResponse[0]</td>
-<td>1.854</td></tr>
-<tr class="b">
-<td><img src="images/icon_success_sml.gif" alt="" /></td>
-<td>sendsTextWithPostRequestMatchBody[0]</td>
-<td>1.806</td></tr>
-<tr class="a">
-<td><img src="images/icon_success_sml.gif" alt="" /></td>
-<td>fetchThrowsExceptionWhenBodyIsNotEmpty[1]</td>
-<td>0.38</td></tr>
-<tr class="b">
-<td><img src="images/icon_success_sml.gif" alt="" /></td>
-<td>assertsHttpResponseBody[0]</td>
-<td>0.134</td></tr>
-<tr class="a">
-<td><img src="images/icon_success_sml.gif" alt="" /></td>
-<td>assertsResponseBodyWithXpathQuery[0]</td>
-<td>1.133</td></tr>
-<tr class="b">
-<td><img src="images/icon_success_sml.gif" alt="" /></td>
-<td>sendsBasicAuthenticationHeader[0]</td>
-<td>0.127</td></tr>
-<tr class="a">
-<td><img src="images/icon_success_sml.gif" alt="" /></td>
-<td>acceptsUnicodeInPlainText[0]</td>
-<td>0.128</td></tr>
-<tr class="b">
-<td><img src="images/icon_success_sml.gif" alt="" /></td>
-<td>mockedUrlIsInCorrectFormat[0]</td>
-<td>1.012</td></tr>
-<tr class="a">
-<td><img src="images/icon_success_sml.gif" alt="" /></td>
-<td>sendsRequestBodyAsInputStream[0]</td>
-<td>0.076</td></tr>
-<tr class="b">
-<td><img src="images/icon_success_sml.gif" alt="" /></td>
-<td>doesntRedirectWithoutRequest[0]</td>
-<td>1.043</td></tr>
-<tr class="a">
-<td><img src="images/icon_success_sml.gif" alt="" /></td>
-<td>assertsHttpHeaders[0]</td>
-<td>1.085</td></tr>
-<tr class="b">
-<td><img src="images/icon_success_sml.gif" alt="" /></td>
-<td>sendsTextWithGetParameters[0]</td>
-<td>1.125</td></tr>
-<tr class="a">
-<td><img src="images/icon_success_sml.gif" alt="" /></td>
-<td>sendsTextWithPostRequestMatchParam[0]</td>
-<td>1.094</td></tr>
-<tr class="b">
-<td><img src="images/icon_success_sml.gif" alt="" /></td>
-<td>acceptsUnicodeInXml[0]</td>
-<td>1.111</td></tr>
-<tr class="a">
-<td><img src="images/icon_success_sml.gif" alt="" /></td>
-<td>sendsHttpRequestWithHeaders[0]</td>
-<td>1.305</td></tr>
-<tr class="b">
-<td><img src="images/icon_success_sml.gif" alt="" /></td>
-<td>sendsHttpRequestAndProcessesHttpResponse[1]</td>
-<td>1.143</td></tr>
-<tr class="a">
-<td><img src="images/icon_success_sml.gif" alt="" /></td>
-<td>assertsHttpStatus[1]</td>
-<td>1.11</td></tr>
-<tr class="b">
-<td><img src="images/icon_success_sml.gif" alt="" /></td>
-<td>sendsIdenticalHttpRequestTwice[0]</td>
-<td>1.212</td></tr>
-<tr class="a">
-<td><img src="images/icon_success_sml.gif" alt="" /></td>
-<td>sendsTextWithPostRequestMatchBody[1]</td>
-<td>1.164</td></tr>
-<tr class="b">
-<td><img src="images/icon_success_sml.gif" alt="" /></td>
-<td>assertsHttpResponseBody[1]</td>
-<td>1.138</td></tr>
-<tr class="a">
-<td><img src="images/icon_success_sml.gif" alt="" /></td>
-<td>assertsResponseBodyWithXpathQuery[1]</td>
-<td>1.022</td></tr>
-<tr class="b">
-<td><img src="images/icon_success_sml.gif" alt="" /></td>
-<td>sendsBasicAuthenticationHeader[1]</td>
-<td>1.018</td></tr>
-<tr class="a">
-<td><img src="images/icon_success_sml.gif" alt="" /></td>
-<td>acceptsUnicodeInPlainText[1]</td>
-<td>1.015</td></tr>
-<tr class="b">
-<td><img src="images/icon_success_sml.gif" alt="" /></td>
-<td>mockedUrlIsInCorrectFormat[1]</td>
-<td>1.005</td></tr>
-<tr class="a">
-<td><img src="images/icon_success_sml.gif" alt="" /></td>
-<td>sendsRequestBodyAsInputStream[1]</td>
-<td>1.012</td></tr>
-<tr class="b">
-<td><img src="images/icon_success_sml.gif" alt="" /></td>
-<td>doesntRedirectWithoutRequest[1]</td>
-<td>1.014</td></tr>
-<tr class="a">
-<td><img src="images/icon_success_sml.gif" alt="" /></td>
-<td>sendsTextWithGetParameters[1]</td>
-<td>1.018</td></tr>
-<tr class="b">
-<td><img src="images/icon_success_sml.gif" alt="" /></td>
-<td>assertsHttpHeaders[1]</td>
-<td>1.015</td></tr>
-<tr class="a">
-<td><img src="images/icon_success_sml.gif" alt="" /></td>
-<td>sendsTextWithPostRequestMatchParam[1]</td>
-<td>1.013</td></tr>
-<tr class="b">
-<td><img src="images/icon_success_sml.gif" alt="" /></td>
-<td>acceptsUnicodeInXml[1]</td>
-<td>1.012</td></tr>
-<tr class="a">
-<td><img src="images/icon_success_sml.gif" alt="" /></td>
-<td>sendsHttpRequestWithHeaders[1]</td>
-<td>1.013</td></tr>
-<tr class="b">
-<td><img src="images/icon_success_sml.gif" alt="" /></td>
-<td>sendsIdenticalHttpRequestTwice[1]</td>
-<td>1.032</td></tr></table></div>
-<div class="section">
-<h3>MkQueryMatchersTest<a name="MkQueryMatchersTest"></a></h3><a name="com.jcabi.http.mockMkQueryMatchersTest"></a>
-<table border="1" class="bodyTable">
-<tr class="a">
-<td><img src="images/icon_success_sml.gif" alt="" /></td>
-<td>canMatchBody</td>
-<td>0.014</td></tr>
-<tr class="b">
-<td><img src="images/icon_success_sml.gif" alt="" /></td>
-<td>canMatchHeader</td>
-<td>0.014</td></tr></table></div>
-<div class="section">
-<h3>RetryWireTest<a name="RetryWireTest"></a></h3><a name="com.jcabi.http.wireRetryWireTest"></a>
-<table border="1" class="bodyTable">
-<tr class="a">
-<td><img src="images/icon_success_sml.gif" alt="" /></td>
-<td>makesMultipleRequests</td>
-<td>31.449</td></tr></table></div>
-<div class="section">
-<h3>MkAnswerMatchersTest<a name="MkAnswerMatchersTest"></a></h3><a name="com.jcabi.http.mockMkAnswerMatchersTest"></a>
-<table border="1" class="bodyTable">
-<tr class="a">
-<td><img src="images/icon_success_sml.gif" alt="" /></td>
-<td>canMatchHeader</td>
-<td>0.05</td></tr>
-<tr class="b">
-<td><img src="images/icon_success_sml.gif" alt="" /></td>
-<td>canMatchBody</td>
-<td>0.036</td></tr></table></div>
-<div class="section">
-<h3>MkContainerTest<a name="MkContainerTest"></a></h3><a name="com.jcabi.http.mockMkContainerTest"></a>
-<table border="1" class="bodyTable">
-<tr class="a">
-<td><img src="images/icon_success_sml.gif" alt="" /></td>
-<td>returnsErrorIfNoMatches</td>
-<td>1.702</td></tr>
-<tr class="b">
-<td><img src="images/icon_success_sml.gif" alt="" /></td>
-<td>takesMatchingQuery</td>
-<td>1.752</td></tr>
-<tr class="a">
-<td><img src="images/icon_success_sml.gif" alt="" /></td>
-<td>understandsDuplicateHeaders</td>
-<td>1.696</td></tr>
-<tr class="b">
-<td><img src="images/icon_success_sml.gif" alt="" /></td>
-<td>answersConditionally</td>
-<td>1.304</td></tr>
-<tr class="a">
-<td><img src="images/icon_success_sml.gif" alt="" /></td>
-<td>worksAsServletContainer</td>
-<td>1.297</td></tr>
-<tr class="b">
-<td><img src="images/icon_success_sml.gif" alt="" /></td>
-<td>takesAllMatchingQueries</td>
-<td>1.375</td></tr>
-<tr class="a">
-<td><img src="images/icon_success_sml.gif" alt="" /></td>
-<td>canAnswerMultipleTimes</td>
-<td>1.415</td></tr>
-<tr class="b">
-<td><img src="images/icon_success_sml.gif" alt="" /></td>
-<td>prioritizesMatchingAnswers</td>
-<td>1.027</td></tr></table></div>
-<div class="section">
-<h3>JsoupResponseTest<a name="JsoupResponseTest"></a></h3><a name="com.jcabi.http.responseJsoupResponseTest"></a>
-<table border="1" class="bodyTable">
-<tr class="a">
-<td><img src="images/icon_success_sml.gif" alt="" /></td>
-<td>normalizesHtml</td>
-<td>0.228</td></tr></table></div>
-<div class="section">
-<h3>DefaultResponseTest<a name="DefaultResponseTest"></a></h3><a name="com.jcabi.http.requestDefaultResponseTest"></a>
-<table border="1" class="bodyTable">
-<tr class="a">
-<td><img src="images/icon_success_sml.gif" alt="" /></td>
-<td>throwsWhenEntityIsNotAUnicodeString</td>
-<td>0.127</td></tr></table></div>
-<div class="section">
-<h3>UserAgentWireTest<a name="UserAgentWireTest"></a></h3><a name="com.jcabi.http.wireUserAgentWireTest"></a>
-<table border="1" class="bodyTable">
-<tr class="a">
-<td><img src="images/icon_success_sml.gif" alt="" /></td>
-<td>addsUserAgentHeader</td>
-<td>1.018</td></tr></table></div>
-<div class="section">
-<h3>ImmutableHeaderTest<a name="ImmutableHeaderTest"></a></h3><a name="com.jcabi.httpImmutableHeaderTest"></a>
-<table border="1" class="bodyTable">
-<tr class="a">
-<td><img src="images/icon_success_sml.gif" alt="" /></td>
-<td>normalizesHeaderKey</td>
-<td>0.002</td></tr></table></div>
-<div class="section">
-<h3>WebLinkingResponseTest<a name="WebLinkingResponseTest"></a></h3><a name="com.jcabi.http.responseWebLinkingResponseTest"></a>
-<table border="1" class="bodyTable">
-<tr class="a">
-<td><img src="images/icon_success_sml.gif" alt="" /></td>
-<td>followsLinksInHeaders</td>
-<td>0.03</td></tr>
-<tr class="b">
-<td><img src="images/icon_success_sml.gif" alt="" /></td>
-<td>parsesLinksInHeaders</td>
-<td>0.015</td></tr></table></div>
-<div class="section">
-<h3>CachingWireTest<a name="CachingWireTest"></a></h3><a name="com.jcabi.http.wireCachingWireTest"></a>
-<table border="1" class="bodyTable">
-<tr class="a">
-<td><img src="images/icon_success_sml.gif" alt="" /></td>
-<td>ignoresPutRequest</td>
-<td>1.729</td></tr>
-<tr class="b">
-<td><img src="images/icon_success_sml.gif" alt="" /></td>
-<td>cachesGetRequest</td>
-<td>1.703</td></tr>
-<tr class="a">
-<td><img src="images/icon_success_sml.gif" alt="" /></td>
-<td>flushesOnRegularExpressionMatch</td>
-<td>1.79</td></tr></table></div>
-<div class="section">
-<h3>FakeRequestTest<a name="FakeRequestTest"></a></h3><a name="com.jcabi.http.requestFakeRequestTest"></a>
-<table border="1" class="bodyTable">
-<tr class="a">
-<td><img src="images/icon_success_sml.gif" alt="" /></td>
-<td>changesUri</td>
-<td>0.001</td></tr>
-<tr class="b">
-<td><img src="images/icon_success_sml.gif" alt="" /></td>
-<td>fetchThrowsExceptionWhenBodyIsNotEmpty</td>
-<td>0.013</td></tr>
-<tr class="a">
-<td><img src="images/icon_success_sml.gif" alt="" /></td>
-<td>sendsHttpRequestAndProcessesHttpResponse</td>
-<td>0.011</td></tr>
-<tr class="b">
-<td><img src="images/icon_success_sml.gif" alt="" /></td>
-<td>changesUriInResponse</td>
-<td>0.008</td></tr>
-<tr class="a">
-<td><img src="images/icon_success_sml.gif" alt="" /></td>
-<td>fakeRequestReturnsResponseBody</td>
-<td>0.005</td></tr></table></div>
-<div class="section">
-<h3>JsonResponseTest<a name="JsonResponseTest"></a></h3><a name="com.jcabi.http.responseJsonResponseTest"></a>
-<table border="1" class="bodyTable">
-<tr class="a">
-<td><img src="images/icon_success_sml.gif" alt="" /></td>
-<td>logsForInvalidJsonObject</td>
-<td>0.081</td></tr>
-<tr class="b">
-<td><img src="images/icon_success_sml.gif" alt="" /></td>
-<td>logsForInvalidJsonArray</td>
-<td>0.082</td></tr>
-<tr class="a">
-<td><img src="images/icon_success_sml.gif" alt="" /></td>
-<td>logsForInvalidJson</td>
-<td>0.075</td></tr>
-<tr class="b">
-<td><img src="images/icon_success_sml.gif" alt="" /></td>
-<td>readsJsonDocument</td>
-<td>0.062</td></tr>
-<tr class="a">
-<td><img src="images/icon_success_sml.gif" alt="" /></td>
-<td>readsControlCharacters</td>
-<td>0.059</td></tr></table></div>
-<div class="section">
-<h3>BaseRequestTest<a name="BaseRequestTest"></a></h3><a name="com.jcabi.http.requestBaseRequestTest"></a>
-<table border="1" class="bodyTable">
-<tr class="a">
-<td><img src="images/icon_success_sml.gif" alt="" /></td>
-<td>includesPort</td>
-<td>0.015</td></tr>
-<tr class="b">
-<td><img src="images/icon_success_sml.gif" alt="" /></td>
-<td>buildsDestinationUri</td>
-<td>0.026</td></tr>
-<tr class="a">
-<td><img src="images/icon_success_sml.gif" alt="" /></td>
-<td>printsJsonInBody</td>
-<td>0.029</td></tr></table></div>
-<div class="section">
-<h3>AutoRedirectingWireTest<a name="AutoRedirectingWireTest"></a></h3><a name="com.jcabi.http.wireAutoRedirectingWireTest"></a>
-<table border="1" class="bodyTable">
-<tr class="a">
-<td><img src="images/icon_success_sml.gif" alt="" /></td>
-<td>retriesForHttpRedirectStatus</td>
-<td>3.74</td></tr>
-<tr class="b">
-<td><img src="images/icon_success_sml.gif" alt="" /></td>
-<td>returnsValidResponseAfterRetry</td>
-<td>4.416</td></tr></table></div>
-<div class="section">
-<h3>VerboseWireTest<a name="VerboseWireTest"></a></h3><a name="com.jcabi.http.wireVerboseWireTest"></a>
-<table border="1" class="bodyTable">
-<tr class="a">
-<td><img src="images/icon_success_sml.gif" alt="" /></td>
-<td>logsRequest</td>
-<td>1.047</td></tr></table></div>
-<div class="section">
-<h3>XmlResponseTest<a name="XmlResponseTest"></a></h3><a name="com.jcabi.http.responseXmlResponseTest"></a>
+<h3><a name="XmlResponseTest"></a>XmlResponseTest</h3><a name="com.jcabi.http.responseXmlResponseTest"></a>
 <table border="1" class="bodyTable">
 <tr class="a">
 <td><img src="images/icon_success_sml.gif" alt="" /></td>
 <td>assertsWithXpath</td>
-<td>0.052</td></tr>
+<td>2.786</td></tr>
 <tr class="b">
 <td><img src="images/icon_success_sml.gif" alt="" /></td>
 <td>assertsWithXpathWithCustomNamespace</td>
-<td>0.019</td></tr>
+<td>2.507</td></tr>
 <tr class="a">
 <td><img src="images/icon_success_sml.gif" alt="" /></td>
 <td>findsDocumentNodesWithXpathAndReturnsThem</td>
-<td>0.072</td></tr>
+<td>1.728</td></tr>
 <tr class="b">
 <td><img src="images/icon_success_sml.gif" alt="" /></td>
 <td>assertsWithXpathAndNamespaces</td>
-<td>0.105</td></tr>
+<td>1.759</td></tr>
 <tr class="a">
 <td><img src="images/icon_success_sml.gif" alt="" /></td>
 <td>findsDocumentNodesWithXpath</td>
-<td>0.067</td></tr></table></div>
+<td>1.656</td></tr></table></div>
 <div class="section">
-<h3>RestResponseTest<a name="RestResponseTest"></a></h3><a name="com.jcabi.http.responseRestResponseTest"></a>
+<h3><a name="CachingWireTest"></a>CachingWireTest</h3><a name="com.jcabi.http.wireCachingWireTest"></a>
+<table border="1" class="bodyTable">
+<tr class="a">
+<td><img src="images/icon_success_sml.gif" alt="" /></td>
+<td>flushesOnRegularExpressionMatch</td>
+<td>1.359</td></tr>
+<tr class="b">
+<td><img src="images/icon_success_sml.gif" alt="" /></td>
+<td>ignoresPutRequest</td>
+<td>1.209</td></tr>
+<tr class="a">
+<td><img src="images/icon_success_sml.gif" alt="" /></td>
+<td>cachesGetRequest</td>
+<td>1.39</td></tr></table></div>
+<div class="section">
+<h3><a name="RetryWireTest"></a>RetryWireTest</h3><a name="com.jcabi.http.wireRetryWireTest"></a>
+<table border="1" class="bodyTable">
+<tr class="a">
+<td><img src="images/icon_success_sml.gif" alt="" /></td>
+<td>makesMultipleRequests</td>
+<td>1.208</td></tr></table></div>
+<div class="section">
+<h3><a name="MkAnswerMatchersTest"></a>MkAnswerMatchersTest</h3><a name="com.jcabi.http.mockMkAnswerMatchersTest"></a>
+<table border="1" class="bodyTable">
+<tr class="a">
+<td><img src="images/icon_success_sml.gif" alt="" /></td>
+<td>canMatchHeader</td>
+<td>0.485</td></tr>
+<tr class="b">
+<td><img src="images/icon_success_sml.gif" alt="" /></td>
+<td>canMatchBody</td>
+<td>0.428</td></tr></table></div>
+<div class="section">
+<h3><a name="BaseRequestTest"></a>BaseRequestTest</h3><a name="com.jcabi.http.requestBaseRequestTest"></a>
+<table border="1" class="bodyTable">
+<tr class="a">
+<td><img src="images/icon_success_sml.gif" alt="" /></td>
+<td>printsJsonInBody</td>
+<td>0.666</td></tr>
+<tr class="b">
+<td><img src="images/icon_success_sml.gif" alt="" /></td>
+<td>buildsDestinationUri</td>
+<td>0.596</td></tr>
+<tr class="a">
+<td><img src="images/icon_success_sml.gif" alt="" /></td>
+<td>includesPort</td>
+<td>0.504</td></tr></table></div>
+<div class="section">
+<h3><a name="JsonResponseTest"></a>JsonResponseTest</h3><a name="com.jcabi.http.responseJsonResponseTest"></a>
+<table border="1" class="bodyTable">
+<tr class="a">
+<td><img src="images/icon_success_sml.gif" alt="" /></td>
+<td>logsForInvalidJsonArray</td>
+<td>0.913</td></tr>
+<tr class="b">
+<td><img src="images/icon_success_sml.gif" alt="" /></td>
+<td>logsForInvalidJsonObject</td>
+<td>0.177</td></tr>
+<tr class="a">
+<td><img src="images/icon_success_sml.gif" alt="" /></td>
+<td>logsForInvalidJson</td>
+<td>0.157</td></tr>
+<tr class="b">
+<td><img src="images/icon_success_sml.gif" alt="" /></td>
+<td>readsJsonDocument</td>
+<td>0.094</td></tr>
+<tr class="a">
+<td><img src="images/icon_success_sml.gif" alt="" /></td>
+<td>readsControlCharacters</td>
+<td>0.036</td></tr></table></div>
+<div class="section">
+<h3><a name="FakeRequestTest"></a>FakeRequestTest</h3><a name="com.jcabi.http.requestFakeRequestTest"></a>
+<table border="1" class="bodyTable">
+<tr class="a">
+<td><img src="images/icon_success_sml.gif" alt="" /></td>
+<td>changesUri</td>
+<td>0.994</td></tr>
+<tr class="b">
+<td><img src="images/icon_success_sml.gif" alt="" /></td>
+<td>fetchThrowsExceptionWhenBodyIsNotEmpty</td>
+<td>0.057</td></tr>
+<tr class="a">
+<td><img src="images/icon_success_sml.gif" alt="" /></td>
+<td>sendsHttpRequestAndProcessesHttpResponse</td>
+<td>0.006</td></tr>
+<tr class="b">
+<td><img src="images/icon_success_sml.gif" alt="" /></td>
+<td>changesUriInResponse</td>
+<td>0</td></tr>
+<tr class="a">
+<td><img src="images/icon_success_sml.gif" alt="" /></td>
+<td>fakeRequestReturnsResponseBody</td>
+<td>0.001</td></tr></table></div>
+<div class="section">
+<h3><a name="MkQueryMatchersTest"></a>MkQueryMatchersTest</h3><a name="com.jcabi.http.mockMkQueryMatchersTest"></a>
+<table border="1" class="bodyTable">
+<tr class="a">
+<td><img src="images/icon_success_sml.gif" alt="" /></td>
+<td>canMatchHeader</td>
+<td>0.067</td></tr>
+<tr class="b">
+<td><img src="images/icon_success_sml.gif" alt="" /></td>
+<td>canMatchBody</td>
+<td>0.043</td></tr></table></div>
+<div class="section">
+<h3><a name="VerboseWireTest"></a>VerboseWireTest</h3><a name="com.jcabi.http.wireVerboseWireTest"></a>
+<table border="1" class="bodyTable">
+<tr class="a">
+<td><img src="images/icon_success_sml.gif" alt="" /></td>
+<td>logsRequest</td>
+<td>0.233</td></tr></table></div>
+<div class="section">
+<h3><a name="RestResponseTest"></a>RestResponseTest</h3><a name="com.jcabi.http.responseRestResponseTest"></a>
 <table border="1" class="bodyTable">
 <tr class="a">
 <td><img src="images/icon_success_sml.gif" alt="" /></td>
 <td>retrievesCookieByName</td>
-<td>0.378</td></tr>
+<td>1.102</td></tr>
 <tr class="b">
 <td><img src="images/icon_success_sml.gif" alt="" /></td>
+<td>assertsHttpStatusCode</td>
+<td>0.126</td></tr>
+<tr class="a">
+<td><img src="images/icon_success_sml.gif" alt="" /></td>
 <td>jumpsToRelativeUrls</td>
-<td>0.328</td></tr></table></div><br /></div>
+<td>0.001</td></tr></table></div>
+<div class="section">
+<h3><a name="MkContainerTest"></a>MkContainerTest</h3><a name="com.jcabi.http.mockMkContainerTest"></a>
+<table border="1" class="bodyTable">
+<tr class="a">
+<td><img src="images/icon_success_sml.gif" alt="" /></td>
+<td>understandsDuplicateHeaders</td>
+<td>2.594</td></tr>
+<tr class="b">
+<td><img src="images/icon_success_sml.gif" alt="" /></td>
+<td>worksAsServletContainer</td>
+<td>3.636</td></tr>
+<tr class="a">
+<td><img src="images/icon_success_sml.gif" alt="" /></td>
+<td>returnsErrorIfNoMatches</td>
+<td>3.631</td></tr>
+<tr class="b">
+<td><img src="images/icon_success_sml.gif" alt="" /></td>
+<td>takesMatchingQuery</td>
+<td>3.865</td></tr>
+<tr class="a">
+<td><img src="images/icon_success_sml.gif" alt="" /></td>
+<td>answersConditionally</td>
+<td>3.653</td></tr>
+<tr class="b">
+<td><img src="images/icon_success_sml.gif" alt="" /></td>
+<td>takesAllMatchingQueries</td>
+<td>3.726</td></tr>
+<tr class="a">
+<td><img src="images/icon_success_sml.gif" alt="" /></td>
+<td>prioritizesMatchingAnswers</td>
+<td>3.77</td></tr>
+<tr class="b">
+<td><img src="images/icon_success_sml.gif" alt="" /></td>
+<td>canAnswerMultipleTimes</td>
+<td>3.736</td></tr></table></div>
+<div class="section">
+<h3><a name="CookieOptimizingWireTest"></a>CookieOptimizingWireTest</h3><a name="com.jcabi.http.wireCookieOptimizingWireTest"></a>
+<table border="1" class="bodyTable">
+<tr class="a">
+<td><img src="images/icon_success_sml.gif" alt="" /></td>
+<td>avoidsTransferringOfEmptyCookiesOnFollow</td>
+<td>1.239</td></tr>
+<tr class="b">
+<td><img src="images/icon_success_sml.gif" alt="" /></td>
+<td>transfersCookiesOnFollow</td>
+<td>1.354</td></tr></table></div>
+<div class="section">
+<h3><a name="WebLinkingResponseTest"></a>WebLinkingResponseTest</h3><a name="com.jcabi.http.responseWebLinkingResponseTest"></a>
+<table border="1" class="bodyTable">
+<tr class="a">
+<td><img src="images/icon_success_sml.gif" alt="" /></td>
+<td>followsLinksInHeaders</td>
+<td>0.04</td></tr>
+<tr class="b">
+<td><img src="images/icon_success_sml.gif" alt="" /></td>
+<td>parsesLinksInHeaders</td>
+<td>0.05</td></tr></table></div>
+<div class="section">
+<h3><a name="ImmutableHeaderTest"></a>ImmutableHeaderTest</h3><a name="com.jcabi.httpImmutableHeaderTest"></a>
+<table border="1" class="bodyTable">
+<tr class="a">
+<td><img src="images/icon_success_sml.gif" alt="" /></td>
+<td>normalizesHeaderKey</td>
+<td>0</td></tr></table></div>
+<div class="section">
+<h3><a name="DefaultResponseTest"></a>DefaultResponseTest</h3><a name="com.jcabi.http.requestDefaultResponseTest"></a>
+<table border="1" class="bodyTable">
+<tr class="a">
+<td><img src="images/icon_success_sml.gif" alt="" /></td>
+<td>throwsWhenEntityIsNotAUnicodeString</td>
+<td>0.563</td></tr></table></div>
+<div class="section">
+<h3><a name="AutoRedirectingWireTest"></a>AutoRedirectingWireTest</h3><a name="com.jcabi.http.wireAutoRedirectingWireTest"></a>
+<table border="1" class="bodyTable">
+<tr class="a">
+<td><img src="images/icon_success_sml.gif" alt="" /></td>
+<td>retriesForHttpRedirectStatus</td>
+<td>3.112</td></tr>
+<tr class="b">
+<td><img src="images/icon_success_sml.gif" alt="" /></td>
+<td>returnsValidResponseAfterRetry</td>
+<td>3.207</td></tr></table></div>
+<div class="section">
+<h3><a name="RequestTest"></a>RequestTest</h3><a name="com.jcabi.httpRequestTest"></a>
+<table border="1" class="bodyTable">
+<tr class="a">
+<td><img src="images/icon_success_sml.gif" alt="" /></td>
+<td>fetchThrowsExceptionWhenBodyIsNotEmpty[0]</td>
+<td>0.997</td></tr>
+<tr class="b">
+<td><img src="images/icon_success_sml.gif" alt="" /></td>
+<td>sendsHttpRequestAndProcessesHttpResponse[0]</td>
+<td>3.513</td></tr>
+<tr class="a">
+<td><img src="images/icon_success_sml.gif" alt="" /></td>
+<td>assertsHttpStatus[0]</td>
+<td>2.372</td></tr>
+<tr class="b">
+<td><img src="images/icon_success_sml.gif" alt="" /></td>
+<td>sendsTextWithPostRequestMatchBody[0]</td>
+<td>1.862</td></tr>
+<tr class="a">
+<td><img src="images/icon_success_sml.gif" alt="" /></td>
+<td>assertsHttpResponseBody[0]</td>
+<td>2.31</td></tr>
+<tr class="b">
+<td><img src="images/icon_success_sml.gif" alt="" /></td>
+<td>assertsResponseBodyWithXpathQuery[0]</td>
+<td>2.051</td></tr>
+<tr class="a">
+<td><img src="images/icon_success_sml.gif" alt="" /></td>
+<td>sendsBasicAuthenticationHeader[0]</td>
+<td>0.94</td></tr>
+<tr class="b">
+<td><img src="images/icon_success_sml.gif" alt="" /></td>
+<td>mockedUrlIsInCorrectFormat[0]</td>
+<td>1.227</td></tr>
+<tr class="a">
+<td><img src="images/icon_success_sml.gif" alt="" /></td>
+<td>acceptsUnicodeInPlainText[0]</td>
+<td>1.955</td></tr>
+<tr class="b">
+<td><img src="images/icon_success_sml.gif" alt="" /></td>
+<td>doesntRedirectWithoutRequest[0]</td>
+<td>1.938</td></tr>
+<tr class="a">
+<td><img src="images/icon_success_sml.gif" alt="" /></td>
+<td>sendsRequestBodyAsInputStream[0]</td>
+<td>1.758</td></tr>
+<tr class="b">
+<td><img src="images/icon_success_sml.gif" alt="" /></td>
+<td>sendsTextWithGetParameters[0]</td>
+<td>1.586</td></tr>
+<tr class="a">
+<td><img src="images/icon_success_sml.gif" alt="" /></td>
+<td>assertsHttpHeaders[0]</td>
+<td>1.384</td></tr>
+<tr class="b">
+<td><img src="images/icon_success_sml.gif" alt="" /></td>
+<td>sendsTextWithPostRequestMatchParam[0]</td>
+<td>1.408</td></tr>
+<tr class="a">
+<td><img src="images/icon_success_sml.gif" alt="" /></td>
+<td>acceptsUnicodeInXml[0]</td>
+<td>1.463</td></tr>
+<tr class="b">
+<td><img src="images/icon_success_sml.gif" alt="" /></td>
+<td>sendsIdenticalHttpRequestTwice[0]</td>
+<td>1.461</td></tr>
+<tr class="a">
+<td><img src="images/icon_success_sml.gif" alt="" /></td>
+<td>sendsHttpRequestWithHeaders[0]</td>
+<td>1.876</td></tr>
+<tr class="b">
+<td><img src="images/icon_success_sml.gif" alt="" /></td>
+<td>fetchThrowsExceptionWhenBodyIsNotEmpty[1]</td>
+<td>0.048</td></tr>
+<tr class="a">
+<td><img src="images/icon_success_sml.gif" alt="" /></td>
+<td>sendsHttpRequestAndProcessesHttpResponse[1]</td>
+<td>1.169</td></tr>
+<tr class="b">
+<td><img src="images/icon_success_sml.gif" alt="" /></td>
+<td>sendsTextWithPostRequestMatchBody[1]</td>
+<td>0.451</td></tr>
+<tr class="a">
+<td><img src="images/icon_success_sml.gif" alt="" /></td>
+<td>assertsHttpStatus[1]</td>
+<td>1.185</td></tr>
+<tr class="b">
+<td><img src="images/icon_success_sml.gif" alt="" /></td>
+<td>assertsHttpResponseBody[1]</td>
+<td>1.373</td></tr>
+<tr class="a">
+<td><img src="images/icon_success_sml.gif" alt="" /></td>
+<td>sendsBasicAuthenticationHeader[1]</td>
+<td>0.63</td></tr>
+<tr class="b">
+<td><img src="images/icon_success_sml.gif" alt="" /></td>
+<td>assertsResponseBodyWithXpathQuery[1]</td>
+<td>1.189</td></tr>
+<tr class="a">
+<td><img src="images/icon_success_sml.gif" alt="" /></td>
+<td>acceptsUnicodeInPlainText[1]</td>
+<td>1.597</td></tr>
+<tr class="b">
+<td><img src="images/icon_success_sml.gif" alt="" /></td>
+<td>sendsRequestBodyAsInputStream[1]</td>
+<td>1.612</td></tr>
+<tr class="a">
+<td><img src="images/icon_success_sml.gif" alt="" /></td>
+<td>doesntRedirectWithoutRequest[1]</td>
+<td>0.396</td></tr>
+<tr class="b">
+<td><img src="images/icon_success_sml.gif" alt="" /></td>
+<td>mockedUrlIsInCorrectFormat[1]</td>
+<td>1.279</td></tr>
+<tr class="a">
+<td><img src="images/icon_success_sml.gif" alt="" /></td>
+<td>sendsTextWithGetParameters[1]</td>
+<td>1.538</td></tr>
+<tr class="b">
+<td><img src="images/icon_success_sml.gif" alt="" /></td>
+<td>assertsHttpHeaders[1]</td>
+<td>1.296</td></tr>
+<tr class="a">
+<td><img src="images/icon_success_sml.gif" alt="" /></td>
+<td>sendsTextWithPostRequestMatchParam[1]</td>
+<td>1.422</td></tr>
+<tr class="b">
+<td><img src="images/icon_success_sml.gif" alt="" /></td>
+<td>acceptsUnicodeInXml[1]</td>
+<td>1.303</td></tr>
+<tr class="a">
+<td><img src="images/icon_success_sml.gif" alt="" /></td>
+<td>sendsHttpRequestWithHeaders[1]</td>
+<td>0.382</td></tr>
+<tr class="b">
+<td><img src="images/icon_success_sml.gif" alt="" /></td>
+<td>sendsIdenticalHttpRequestTwice[1]</td>
+<td>0.316</td></tr></table></div>
+<div class="section">
+<h3><a name="UserAgentWireTest"></a>UserAgentWireTest</h3><a name="com.jcabi.http.wireUserAgentWireTest"></a>
+<table border="1" class="bodyTable">
+<tr class="a">
+<td><img src="images/icon_success_sml.gif" alt="" /></td>
+<td>addsUserAgentHeader</td>
+<td>1.059</td></tr></table></div>
+<div class="section">
+<h3><a name="JsoupResponseTest"></a>JsoupResponseTest</h3><a name="com.jcabi.http.responseJsoupResponseTest"></a>
+<table border="1" class="bodyTable">
+<tr class="a">
+<td><img src="images/icon_success_sml.gif" alt="" /></td>
+<td>normalizesHtml</td>
+<td>2.622</td></tr></table></div><br /></div>
                         </article>
                     </div>
                 </main>
