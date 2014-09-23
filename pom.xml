@@ -71,12 +71,10 @@
         <dependency>
             <groupId>com.jcabi</groupId>
             <artifactId>jcabi-immutable</artifactId>
-            <version>1.2</version>
         </dependency>
         <dependency>
             <groupId>com.jcabi</groupId>
             <artifactId>jcabi-aspects</artifactId>
-            <version>0.17.1</version>
         </dependency>
         <dependency>
             <groupId>javax.validation</groupId>
@@ -91,13 +89,13 @@
             <artifactId>jcabi-manifests</artifactId>
         </dependency>
         <dependency>
+            <groupId>org.projectlombok</groupId>
+            <artifactId>lombok</artifactId>
+        </dependency>
+        <dependency>
             <groupId>org.apache.commons</groupId>
             <artifactId>commons-lang3</artifactId>
             <scope>test</scope>
-        </dependency>
-        <dependency>
-            <groupId>org.projectlombok</groupId>
-            <artifactId>lombok</artifactId>
         </dependency>
         <dependency>
             <groupId>org.cache2k</groupId>
