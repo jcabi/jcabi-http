@@ -82,7 +82,7 @@ public final class AutoRedirectingWire implements Wire {
     /**
      * Maximum number of retries to be made.
      */
-    private final transient long max;
+    private final transient int max;
 
     /**
      * Public ctor.
@@ -102,10 +102,7 @@ public final class AutoRedirectingWire implements Wire {
         this.max = retries;
     }
 
-    /**
-     * {@inheritDoc}
-     * @checkstyle ParameterNumber (8 lines)
-     */
+    // @checkstyle ParameterNumber (5 lines)
     @Override
     public Response send(final Request req, final String home,
         final String method,
@@ -114,7 +111,7 @@ public final class AutoRedirectingWire implements Wire {
         Response response = this.origin.send(
             req, home, method, headers, content
         );
-        long attempt = 1L;
+        int attempt = 1;
         final URI uri = URI.create(home);
         while (attempt < this.max) {
             if (response.status() < HttpURLConnection.HTTP_MULT_CHOICE
@@ -136,7 +133,7 @@ public final class AutoRedirectingWire implements Wire {
                 method, headers, content
             );
             try {
-                TimeUnit.SECONDS.sleep(attempt);
+                TimeUnit.SECONDS.sleep((long) attempt);
             } catch (final InterruptedException ex) {
                 throw new IOException(ex);
             }

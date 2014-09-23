@@ -81,10 +81,7 @@ public final class VerboseWire implements Wire {
         this.origin = wire;
     }
 
-    /**
-     * {@inheritDoc}
-     * @checkstyle ParameterNumber (7 lines)
-     */
+    // @checkstyle ParameterNumber (7 lines)
     @Override
     public Response send(final Request req, final String home,
         final String method,

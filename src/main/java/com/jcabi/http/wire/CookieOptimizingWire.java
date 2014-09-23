@@ -92,10 +92,7 @@ public final class CookieOptimizingWire implements Wire {
         this.origin = wire;
     }
 
-    /**
-     * {@inheritDoc}
-     * @checkstyle ParameterNumber (7 lines)
-     */
+    // @checkstyle ParameterNumber (7 lines)
     @Override
     public Response send(final Request req, final String home,
         final String method,
@@ -104,7 +101,7 @@ public final class CookieOptimizingWire implements Wire {
         final Collection<Map.Entry<String, String>> hdrs =
             new LinkedList<Map.Entry<String, String>>();
         final ConcurrentMap<String, String> cookies =
-            new ConcurrentHashMap<String, String>();
+            new ConcurrentHashMap<String, String>(0);
         for (final Map.Entry<String, String> header : headers) {
             if (header.getKey().equals(HttpHeaders.COOKIE)) {
                 final String cookie = header.getValue();

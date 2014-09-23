@@ -104,6 +104,7 @@ public final class CachingWire implements Wire {
 
     /**
      * Source, second.
+     * @checkstyle ConstantUsageCheck (3 lines)
      */
     private static final CacheSource<CachingWire.Query, Response> SECOND =
         new CacheSource<CachingWire.Query, Response>() {

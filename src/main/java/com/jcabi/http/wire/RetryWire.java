@@ -30,16 +30,16 @@
 package com.jcabi.http.wire;
 
 import com.jcabi.aspects.Immutable;
-import com.jcabi.aspects.RetryOnFailure;
 import com.jcabi.aspects.Tv;
 import com.jcabi.http.Request;
 import com.jcabi.http.Response;
 import com.jcabi.http.Wire;
+import com.jcabi.log.Logger;
 import java.io.IOException;
 import java.io.InputStream;
+import java.net.HttpURLConnection;
 import java.util.Collection;
 import java.util.Map;
-import java.util.concurrent.TimeUnit;
 import javax.validation.constraints.NotNull;
 import lombok.EqualsAndHashCode;
 import lombok.ToString;
@@ -55,6 +55,9 @@ import lombok.ToString;
  *   .header(HttpHeaders.ACCEPT, MediaType.TEXT_PLAIN)
  *   .fetch()
  *   .body();</pre>
+ *
+ * <p>Since version 1.9 this wire retries also if HTTP status code
+ * is between 500 and 599.
  *
  * <p>The class is immutable and thread-safe.
  *
@@ -81,21 +84,34 @@ public final class RetryWire implements Wire {
         this.origin = wire;
     }
 
-    /**
-     * {@inheritDoc}
-     * @checkstyle ParameterNumber (13 lines)
-     */
+    // @checkstyle ParameterNumber (13 lines)
     @Override
-    @RetryOnFailure(
-        attempts = Tv.FIVE,
-        delay = 1,
-        unit = TimeUnit.SECONDS,
-        verbose = false
-    )
     public Response send(final Request req, final String home,
         final String method,
         final Collection<Map.Entry<String, String>> headers,
         final InputStream content) throws IOException {
-        return this.origin.send(req, home, method, headers, content);
+        int attempt = 0;
+        while (true) {
+            if (attempt > Tv.THREE) {
+                throw new IOException(
+                    String.format("failed after %d attempts", attempt)
+                );
+            }
+            try {
+                final Response rsp = this.origin.send(
+                    req, home, method, headers, content
+                );
+                if (rsp.status() < HttpURLConnection.HTTP_INTERNAL_ERROR) {
+                    return rsp;
+                }
+                Logger.warn(this, "HTTP status code is %d", rsp.status());
+            } catch (final IOException ex) {
+                Logger.warn(
+                    this, "%s: %s",
+                    ex.getClass().getName(), ex.getLocalizedMessage()
+                );
+            }
+            ++attempt;
+        }
     }
 }

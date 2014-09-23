@@ -81,10 +81,7 @@ public final class OneMinuteWire implements Wire {
         this.origin = wire;
     }
 
-    /**
-     * {@inheritDoc}
-     * @checkstyle ParameterNumber (13 lines)
-     */
+    // @checkstyle ParameterNumber (5 lines)
     @Override
     @Timeable(limit = 1, unit = TimeUnit.MINUTES)
     public Response send(final Request req, final String home,

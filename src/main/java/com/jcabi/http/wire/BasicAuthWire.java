@@ -84,7 +84,8 @@ public final class BasicAuthWire implements Wire {
     /**
      * The Charset to use.
      */
-    private static final Charset CHARSET = Charset.forName(ENCODING);
+    private static final Charset CHARSET =
+        Charset.forName(BasicAuthWire.ENCODING);
 
     /**
      * Original wire.
@@ -100,10 +101,7 @@ public final class BasicAuthWire implements Wire {
         this.origin = wire;
     }
 
-    /**
-     * {@inheritDoc}
-     * @checkstyle ParameterNumber (7 lines)
-     */
+    // @checkstyle ParameterNumber (7 lines)
     @Override
     public Response send(final Request req, final String home,
         final String method,

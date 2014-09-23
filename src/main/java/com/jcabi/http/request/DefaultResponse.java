@@ -160,10 +160,7 @@ final class DefaultResponse implements Response {
     public byte[] binary() {
         return this.content.clone();
     }
-    /**
-     * {@inheritDoc}
-     * @checkstyle MethodName (4 lines)
-     */
+    // @checkstyle MethodName (4 lines)
     @Override
     @SuppressWarnings("PMD.ShortMethodName")
     public <T> T as(final Class<T> type) {

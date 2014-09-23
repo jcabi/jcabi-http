@@ -79,10 +79,7 @@ public final class JdkRequest implements Request {
      * @checkstyle AnonInnerLength (200 lines)
      */
     private static final Wire WIRE = new Wire() {
-        /**
-         * {@inheritDoc}
-         * @checkstyle ParameterNumber (6 lines)
-         */
+        // @checkstyle ParameterNumber (6 lines)
         @Override
         public Response send(final Request req, final String home,
             final String method,

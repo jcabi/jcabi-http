@@ -76,8 +76,6 @@ public interface MkAnswer {
 
     /**
      * Simple implementation.
-     *
-     * <p>The class is immutable and thread-safe.
      */
     @Immutable
     @EqualsAndHashCode(of = { "code", "hdrs", "content" })
@@ -108,6 +106,14 @@ public interface MkAnswer {
             this(HttpURLConnection.HTTP_OK, body);
         }
         /**
+         * Public ctor (with empty HTTP body).
+         * @param status HTTP status
+         * @since 1.9
+         */
+        public Simple(final int status) {
+            this(status, "");
+        }
+        /**
          * Public ctor.
          * @param status HTTP status
          * @param body Body of HTTP response
@@ -115,7 +121,7 @@ public interface MkAnswer {
         public Simple(final int status, final String body) {
             this(
                 status, new Array<Map.Entry<String, String>>(),
-                body.getBytes(Simple.CHARSET)
+                body.getBytes(MkAnswer.Simple.CHARSET)
             );
         }
         /**
@@ -139,7 +145,7 @@ public interface MkAnswer {
         @SuppressWarnings("PMD.AvoidInstantiatingObjectsInLoops")
         public Map<String, List<String>> headers() {
             final ConcurrentMap<String, List<String>> map =
-                new ConcurrentHashMap<String, List<String>>();
+                new ConcurrentHashMap<String, List<String>>(0);
             for (final Map.Entry<String, String> header : this.hdrs) {
                 map.putIfAbsent(header.getKey(), new LinkedList<String>());
                 map.get(header.getKey()).add(header.getValue());
@@ -148,7 +154,7 @@ public interface MkAnswer {
         }
         @Override
         public String body() {
-            return new String(this.content, Simple.CHARSET);
+            return new String(this.content, MkAnswer.Simple.CHARSET);
         }
         @Override
         public String toString() {
@@ -202,7 +208,7 @@ public interface MkAnswer {
             return new MkAnswer.Simple(
                 this.code,
                 this.hdrs,
-                body.getBytes(Simple.CHARSET)
+                body.getBytes(MkAnswer.Simple.CHARSET)
             );
         }
     }

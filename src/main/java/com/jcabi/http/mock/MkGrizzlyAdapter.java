@@ -256,14 +256,14 @@ final class MkGrizzlyAdapter extends GrizzlyAdapter {
         /**
          * The number of times the answer is expected to appear.
          */
-        private transient AtomicInteger count;
+        private final transient AtomicInteger count;
         /**
          * Ctor.
          * @param ans The answer.
          * @param matcher The matcher.
          * @param times Number of times the answer should appear.
          */
-        public Conditional(final MkAnswer ans, final Matcher<MkQuery> matcher,
+        Conditional(final MkAnswer ans, final Matcher<MkQuery> matcher,
             final int times) {
             this.answr = ans;
             this.condition = matcher;
@@ -317,7 +317,7 @@ final class MkGrizzlyAdapter extends GrizzlyAdapter {
          * @param qry The query
          * @param ans The answer
          */
-        public QueryWithAnswer(final MkQuery qry, final MkAnswer ans) {
+        QueryWithAnswer(final MkQuery qry, final MkAnswer ans) {
             this.answr = ans;
             this.que = qry;
         }

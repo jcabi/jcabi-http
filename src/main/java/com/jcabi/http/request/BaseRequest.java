@@ -81,8 +81,10 @@ final class BaseRequest implements Request {
 
     /**
      * The Charset to use.
+     * @checkstyle ConstantUsageCheck (3 lines)
      */
-    private static final Charset CHARSET = Charset.forName(ENCODING);
+    private static final Charset CHARSET =
+        Charset.forName(BaseRequest.ENCODING);
 
     /**
      * An empty immutable {@code byte} array.
@@ -334,7 +336,7 @@ final class BaseRequest implements Request {
          * @param req Request
          * @param uri The URI to start with
          */
-        public BaseURI(final BaseRequest req, final String uri) {
+        BaseURI(final BaseRequest req, final String uri) {
             this.owner = req;
             this.address = uri;
         }
@@ -439,7 +441,7 @@ final class BaseRequest implements Request {
          * @param req Request
          * @param body Text to encapsulate
          */
-        public BaseBody(final BaseRequest req, final byte[] body) {
+        BaseBody(final BaseRequest req, final byte[] body) {
             this.owner = req;
             this.text = body.clone();
         }
