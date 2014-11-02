@@ -6,7 +6,8 @@
 [![Build Status](https://travis-ci.org/jcabi/jcabi-http.svg?branch=master)](https://travis-ci.org/jcabi/jcabi-http)
 [![Maven Central](https://maven-badges.herokuapp.com/maven-central/com.jcabi/jcabi-http/badge.svg)](https://maven-badges.herokuapp.com/maven-central/com.jcabi/jcabi-http)
 
-More details are here: [http.jcabi.com](http://http.jcabi.com/index.html)
+More details are here: [http.jcabi.com](http://http.jcabi.com/index.html).
+Also, read this blog post: [Fluent Java HTTP Client](http://www.yegor256.com/2014/04/11/jcabi-http-intro.html).
 
 ```java
 import com.jcabi.http.Request;
