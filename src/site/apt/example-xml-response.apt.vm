@@ -1,9 +1,9 @@
 # Managing XML Responses
 
 When your HTTP
-{{{./apidocs-${project.version}/com/jcabi/http/Response.html}`Response`}}
+{{{./apidocs-${project.version}/com/jcabi/http/Response.html}<<<Response>>>}}
 contains an XML document, it is convenient to use
-{{{./apidocs-${project.version}/com/jcabi/http/response/XmlResponse.html}`XmlResponse`}}
+{{{./apidocs-${project.version}/com/jcabi/http/response/XmlResponse.html}<<<XmlResponse>>>}}
 decorator to manipulate it, for example:
 
 +--
@@ -15,9 +15,9 @@ String name = new JdkRequest("http://my.example.com")
   .xpath("/data/name/text()").get(0);
 +--
 
-Method {{{./apidocs-${project.version}/com/jcabi/http/response/XmlResponse.html}`XmlResponse#xml()`}}
+Method {{{./apidocs-${project.version}/com/jcabi/http/response/XmlResponse.html}<<<XmlResponse#xml()>>>}}
 converts HTTP body to an instance of class
-{{{http://xml.jcabi.com/apidocs-0.6/com/jcabi/xml/XML.html}`XML`}}
+{{{http://xml.jcabi.com/apidocs-0.6/com/jcabi/xml/XML.html}<<<XML>>>}}
 from {{{http://xml.jcabi.com}jcabi-xml}} project.
 
 Don't forget to add this dependency to your classpath:
@@ -31,5 +31,5 @@ Don't forget to add this dependency to your classpath:
 +--
 
 Read also about
-{{{./apidocs-${project.version}/com/jcabi/http/response/RestResponse.html}`RestResponse`}},
+{{{./apidocs-${project.version}/com/jcabi/http/response/RestResponse.html}<<<RestResponse>>>}},
 which helps you to manage default HTTP response concepts.

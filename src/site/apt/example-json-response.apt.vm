@@ -1,9 +1,9 @@
 # Managing JSON Responses
 
 When your HTTP
-{{{./apidocs-${project.version}/com/jcabi/http/Response.html}`Response`}}
+{{{./apidocs-${project.version}/com/jcabi/http/Response.html}<<<Response>>>}}
 contains a JSON document, it is convenient to use
-{{{./apidocs-${project.version}/com/jcabi/http/response/JsonResponse.html}`JsonResponse`}}
+{{{./apidocs-${project.version}/com/jcabi/http/response/JsonResponse.html}<<<JsonResponse>>>}}
 decorator to manipulate it, for example:
 
 +--
@@ -14,9 +14,9 @@ String name = new JdkRequest("http://my.example.com")
   .readJsonObject().getString("name");
 +--
 
-Method {{{./apidocs-${project.version}/com/jcabi/http/response/JsonResponse.html}`JsonResponse#json()`}}
+Method {{{./apidocs-${project.version}/com/jcabi/http/response/JsonResponse.html}<<<JsonResponse#json()>>>}}
 converts HTTP body to an instance of class
-{{{http://docs.oracle.com/javaee/7/api/javax/json/JsonReader.html}`JsonReader`}}.
+{{{http://docs.oracle.com/javaee/7/api/javax/json/JsonReader.html}<<<JsonReader>>>}}.
 
 Don't forget to add these two dependencies to your classpath:
 
@@ -36,5 +36,5 @@ Don't forget to add these two dependencies to your classpath:
 +--
 
 Read also about
-{{{./apidocs-${project.version}/com/jcabi/http/response/RestResponse.html}`RestResponse`}},
+{{{./apidocs-${project.version}/com/jcabi/http/response/RestResponse.html}<<<RestResponse>>>}},
 which helps you to manage default HTTP response concepts.
