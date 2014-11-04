@@ -1,10 +1,18 @@
-# HTTP Request that Retries on Failure
+  ---
+  HTTP Request that Retries on Failure
+  ---
+  Yegor Bugayenko
+  ---
+  2014-11-02
+  ---
 
-{{{./apidocs-${project.version}/com/jcabi/http/wire/RetryWire.html}<<<RetryWire>>>}}.
-is a decorator of
-{{{./apidocs-${project.version}/com/jcabi/http/Wire.html}<<<Wire>>>}}
-that retries to fetch a response a few times before giving up and
-throwing <<<IOException>>>, for example:
+HTTP Request that Retries on Failure
+
+  {{{./apidocs-${project.version}/com/jcabi/http/wire/RetryWire.html}<<<RetryWire>>>}}.
+  is a decorator of
+  {{{./apidocs-${project.version}/com/jcabi/http/Wire.html}<<<Wire>>>}}
+  that retries to fetch a response a few times before giving up and
+  throwing <<<IOException>>>, for example:
 
 +--
 String body = new JdkRequest("http://www.google.com")
@@ -13,5 +21,5 @@ String body = new JdkRequest("http://www.google.com")
   .body();
 +--
 
-If it recommended to use this decorator in production, to avoid
-accidental exceptions due to unstable connection.
+  If it recommended to use this decorator in production, to avoid
+  accidental exceptions due to unstable connection.

@@ -1,9 +1,17 @@
-# Web Linking Response
+  ---
+  Web Linking Response
+  ---
+  Yegor Bugayenko
+  ---
+  2014-11-02
+  ---
 
-{{{http://tools.ietf.org/html/rfc5988}RFC 5988 "Web Linking"}} recommends to use
-<<<Link>>> HTTP header for linking pages.
-{{{./apidocs-${project.version}/com/jcabi/http/response/WebLinkingResponse.html}<<<WebLinkingResponse>>>}}
-implements parsing of such header. This is how you can use it:
+Web Linking Response
+
+  {{{http://tools.ietf.org/html/rfc5988}RFC 5988 "Web Linking"}} recommends to use
+  <<<Link>>> HTTP header for linking pages.
+  {{{./apidocs-${project.version}/com/jcabi/http/response/WebLinkingResponse.html}<<<WebLinkingResponse>>>}}
+  implements parsing of such header. This is how you can use it:
 
 +--
 URI destination = new JdkRequest("http://my.example.com")

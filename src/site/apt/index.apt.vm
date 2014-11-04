@@ -1,6 +1,14 @@
-# Fluent HTTP Client
+  ---
+  Fluent HTTP Client
+  ---
+  Yegor Bugayenko
+  ---
+  2014-11-02
+  ---
 
-For example:
+Fluent HTTP Client
+
+  For example:
 
 +--
 import com.jcabi.http.Request;
@@ -19,17 +27,17 @@ public class Main {
 }
 +--
 
-{{{http://www.yegor256.com/2014/04/11/jcabi-http-intro.html}This blog post}}
-explains the
-benefits of this client comparing to Apache, Jersey, and others.
+  {{{http://www.yegor256.com/2014/04/11/jcabi-http-intro.html}This blog post}}
+  explains the
+  benefits of this client comparing to Apache, Jersey, and others.
 
-Check {{{./apidocs-${project.version}/index.html}JavaDoc}}
-for more details.
+  Check {{{./apidocs-${project.version}/index.html}JavaDoc}}
+  for more details.
 
-The main dependency that you need is
-(you can also download
-{{{http://repo1.maven.org/maven2/com/jcabi/jcabi-http/${project.version}/jcabi-http-${project.version}.jar}jcabi-http-${project.version}.jar}}
-and add it to the classpath):
+  The main dependency that you need is
+  (you can also download
+  {{{http://repo1.maven.org/maven2/com/jcabi/jcabi-http/${project.version}/jcabi-http-${project.version}.jar}jcabi-http-${project.version}.jar}}
+  and add it to the classpath):
 
 +--
 <dependency>
@@ -39,15 +47,14 @@ and add it to the classpath):
 </dependency>
 +--
 
-Other dependencies may be required in order to use all features of this library.
-See {{{./optional-dependencies.html}here}} for a full list of the dependencies
-that you may need.
+  Other dependencies may be required in order to use all features of this library.
+  See {{{./optional-dependencies.html}here}} for a full list of the dependencies
+  that you may need.
 
-Cutting Edge Version
------------------------
+* Cutting Edge Version
 
-If you want to use current version of the product, you can do it with
-this configuration in your <<<pom.xml>>>:
+  If you want to use current version of the product, you can do it with
+  this configuration in your <<<pom.xml>>>:
 
 +--
 <repositories>

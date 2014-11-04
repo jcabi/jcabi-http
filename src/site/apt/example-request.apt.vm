@@ -1,24 +1,32 @@
-# Making HTTP Request
+  ---
+  Making HTTP Request
+  ---
+  Yegor Bugayenko
+  ---
+  2014-11-02
+  ---
 
-There is one interface
-{{{./apidocs-${project.version}/com/jcabi/http/Request.html}<<<Request>>>}}
-that represents an HTTP request. There are a few implementations
-of the interface, and the most popular and easy to use is
-{{{./apidocs-${project.version}/com/jcabi/http/request/JdkRequest.html}<<<JdkRequest>>>}}.
-It makes a request using native JDK class
-{{{http://docs.oracle.com/javase/7/docs/api/java/net/HttpURLConnection.html}<<<java.net.HttpURLConnection>>>}}.
+Making HTTP Request
 
-First, make an instance of {{{./apidocs-${project.version}/com/jcabi/http/request/JdkRequest.html}<<<JdkRequest>>>}},
-providing target URI as the first and the only constructor argument
-(<<<String>>>, <<<URI>>>, and <<<URL>>> types are accepted):
+  There is one interface
+  {{{./apidocs-${project.version}/com/jcabi/http/Request.html}<<<Request>>>}}
+  that represents an HTTP request. There are a few implementations
+  of the interface, and the most popular and easy to use is
+  {{{./apidocs-${project.version}/com/jcabi/http/request/JdkRequest.html}<<<JdkRequest>>>}}.
+  It makes a request using native JDK class
+  {{{http://docs.oracle.com/javase/7/docs/api/java/net/HttpURLConnection.html}<<<java.net.HttpURLConnection>>>}}.
+
+  First, make an instance of {{{./apidocs-${project.version}/com/jcabi/http/request/JdkRequest.html}<<<JdkRequest>>>}},
+  providing target URI as the first and the only constructor argument
+  (<<<String>>>, <<<URI>>>, and <<<URL>>> types are accepted):
 
 +--
 Request request = new JdkRequest("http://my.example.com");
 +--
 
-The object is ready to make an HTTP request using the URI provided,
-<<<GET>>> HTTP method, no custom HTTP headers and no request body. To fire
-an HTTP request and obtain a response use method <<<fetch()>>>:
+  The object is ready to make an HTTP request using the URI provided,
+  <<<GET>>> HTTP method, no custom HTTP headers and no request body. To fire
+  an HTTP request and obtain a response use method <<<fetch()>>>:
 
 +--
 Response response = request.fetch();
@@ -26,20 +34,20 @@ int status = response.status();
 String body = response.body();
 +--
 
-{{{./apidocs-${project.version}/com/jcabi/http/Request.html}<<<Request>>>}}
-is a trully immutable class, which means that you
-can't change any of its properties. However,
-you can create new requests. For example, you want to make a similar
-request, but with a <<<POST>>> HTTP method:
+  {{{./apidocs-${project.version}/com/jcabi/http/Request.html}<<<Request>>>}}
+  is a trully immutable class, which means that you
+  can't change any of its properties. However,
+  you can create new requests. For example, you want to make a similar
+  request, but with a <<<POST>>> HTTP method:
 
 +--
 Request post = request.method(Request.POST);
 post.fetch();
 +--
 
-This is a bigger example of
-{{{./apidocs-${project.version}/com/jcabi/http/Request.html}<<<Request>>>}}
-usage:
+  This is a bigger example of
+  {{{./apidocs-${project.version}/com/jcabi/http/Request.html}<<<Request>>>}}
+  usage:
 
 +--
 Response response = new JdkRequest("http://my.example.com")
@@ -54,22 +62,22 @@ Response response = new JdkRequest("http://my.example.com")
   .fetch();
 +--
 
-This code will make a <<<POST>>> HTTP request to
-<<<http://my.example.com/users?id=456>>>. Request body
-will be set to <<<salary=55000&department=IT>>>. There will be
-two HTTP headers in the request: <<<Content-Type>>> and <<<User-Agent>>>.
+  This code will make a <<<POST>>> HTTP request to
+  <<<http://my.example.com/users?id=456>>>. Request body
+  will be set to <<<salary=55000&department=IT>>>. There will be
+  two HTTP headers in the request: <<<Content-Type>>> and <<<User-Agent>>>.
 
-{{{./apidocs-${project.version}/com/jcabi/http/Response.html}<<<Response>>>}}
-has a few methods that return its data, including <<<status()>>>,
-<<<reason()>>>, <<<headers()>>>, <<<body()>>>, and <<<binary()>>>. Besides that,
-there is a method <<<as(Class)>>>, which allows you to wrap an existing
-response with a new custom decorator, that implements more methods, suitable
-for a particular use case.
+  {{{./apidocs-${project.version}/com/jcabi/http/Response.html}<<<Response>>>}}
+  has a few methods that return its data, including <<<status()>>>,
+  <<<reason()>>>, <<<headers()>>>, <<<body()>>>, and <<<binary()>>>. Besides that,
+  there is a method <<<as(Class)>>>, which allows you to wrap an existing
+  response with a new custom decorator, that implements more methods, suitable
+  for a particular use case.
 
-The simpliest decorator is
-{{{./apidocs-${project.version}/com/jcabi/http/response/RestResponse.html}<<<RestResponse>>>}}.
-It helps you to make assertions on the response and follow redirects,
-for example:
+  The simpliest decorator is
+  {{{./apidocs-${project.version}/com/jcabi/http/response/RestResponse.html}<<<RestResponse>>>}}.
+  It helps you to make assertions on the response and follow redirects,
+  for example:
 
 +--
 String page = new JdkRequest("http://my.example.com")
@@ -83,8 +91,8 @@ String page = new JdkRequest("http://my.example.com")
   .body();
 +--
 
-{{{./apidocs-${project.version}/com/jcabi/http/response/RestResponse.html}<<<RestResponse>>>}}
-also helps you to retrieve cookies from a response:
+  {{{./apidocs-${project.version}/com/jcabi/http/response/RestResponse.html}<<<RestResponse>>>}}
+  also helps you to retrieve cookies from a response:
 
 +--
 String cookie = new JdkRequest("http://my.example.com")
@@ -93,6 +101,6 @@ String cookie = new JdkRequest("http://my.example.com")
   .cookie("SessionId");
 +--
 
-Read also about {{{./example-xml-response.html}<<<XmlResponse>>>}} and
-{{{./example-json-response.html}<<<JsonResponse>>>}}.
+  Read also about {{{./example-xml-response.html}<<<XmlResponse>>>}} and
+  {{{./example-json-response.html}<<<JsonResponse>>>}}.
 

@@ -1,16 +1,23 @@
-# Optional Dependencies
+  ---
+  Optional Dependencies
+  ---
+  Yegor Bugayenko
+  ---
+  2014-11-02
+  ---
 
-The project is structured in a manner that many dependencies are optional. This
-is done in order to keep the package small, as the diverse functionality
-provided by the various classes require many other libraries that may be
-non-trival or result in conflicts with your own project.
+Optional Dependencies
 
-The following is a list of dependencies that would be required to use all
-features of this library. You may incorporate them directly in your <<<pom.xml>>>.
+  The project is structured in a manner that many dependencies are optional. This
+  is done in order to keep the package small, as the diverse functionality
+  provided by the various classes require many other libraries that may be
+  non-trival or result in conflicts with your own project.
 
-The following dependencies are needed for using {{{./apidocs-${project.version}/com/jcabi/http/response/JsonResponse.html}<<<JsonResponse>>>}}
-and {{{./apidocs-${project.version}/com/jcabi/http/RequestBody.html}<<<RequestBody>>>}}
-:
+  The following is a list of dependencies that would be required to use all
+  features of this library. You may incorporate them directly in your <<<pom.xml>>>.
+
+  The following dependencies are needed for using {{{./apidocs-${project.version}/com/jcabi/http/response/JsonResponse.html}<<<JsonResponse>>>}}
+  and {{{./apidocs-${project.version}/com/jcabi/http/RequestBody.html}<<<RequestBody>>>}}:
 
 +--
 <dependency>
@@ -25,8 +32,8 @@ and {{{./apidocs-${project.version}/com/jcabi/http/RequestBody.html}<<<RequestBo
 </dependency>
 +--
 
-Use of {{{./apidocs-${project.version}/com/jcabi/http/response/XmlResponse.html}<<<XmlResponse>>>}}
-will require the following dependencies, as well as the Hamcrest dependencies below:
+  Use of {{{./apidocs-${project.version}/com/jcabi/http/response/XmlResponse.html}<<<XmlResponse>>>}}
+  will require the following dependencies, as well as the Hamcrest dependencies below:
 
 +--
 <dependency>
@@ -60,9 +67,10 @@ will require the following dependencies, as well as the Hamcrest dependencies be
     <version>9.1.0.8</version>
 </dependency>
 +--
-Use of the {{{./apidocs-${project.version}/com/jcabi/http/mock/package-summary.html}<<<com.jcabi.http.mock>>>}}
-classes will require the following dependencies, as well as the Hamcrest
-dependencies (see below):
+
+  Use of the {{{./apidocs-${project.version}/com/jcabi/http/mock/package-summary.html}<<<com.jcabi.http.mock>>>}}
+  classes will require the following dependencies, as well as the Hamcrest
+  dependencies (see below):
 
 +--
 <dependency>
@@ -87,11 +95,11 @@ dependencies (see below):
 </dependency>
 +--
 
-The Hamcrest dependencies are required if you need to use the
-{{{./apidocs-${project.version}/com/jcabi/http/mock/package-summary.html}<<<com.jcabi.http.mock>>>}}
-classes, the {{{./apidocs-${project.version}/com/jcabi/http/response/RestResponse.html}<<<RestResponse>>>}}
-class with its assertion mechanisms, or the {{{./apidocs-${project.version}/com/jcabi/http/response/XmlResponse.html}<<<XmlResponse>>>}}
-class:
+  The Hamcrest dependencies are required if you need to use the
+  {{{./apidocs-${project.version}/com/jcabi/http/mock/package-summary.html}<<<com.jcabi.http.mock>>>}}
+  classes, the {{{./apidocs-${project.version}/com/jcabi/http/response/RestResponse.html}<<<RestResponse>>>}}
+  class with its assertion mechanisms, or the {{{./apidocs-${project.version}/com/jcabi/http/response/XmlResponse.html}<<<XmlResponse>>>}}
+  class:
 
 +--
 <dependency>
@@ -106,8 +114,8 @@ class:
 </dependency>
 +--
 
-Usage of {{{./apidocs-${project.version}/com/jcabi/http/request/ApacheRequest.html}<<<ApacheRequest>>>}}
-will require the Apache HTTP Components dependencies:
+  Usage of {{{./apidocs-${project.version}/com/jcabi/http/request/ApacheRequest.html}<<<ApacheRequest>>>}}
+  will require the Apache HTTP Components dependencies:
 
 +--
 <dependency>
@@ -122,8 +130,8 @@ will require the Apache HTTP Components dependencies:
 </dependency>
 +--
 
-If you need to use {{{./apidocs-${project.version}/com/jcabi/http/response/JsoupResponse.html}<<<JsoupResponse>>>}}
-, you need to import the JSoup library:
+  If you need to use {{{./apidocs-${project.version}/com/jcabi/http/response/JsoupResponse.html}<<<JsoupResponse>>>}},
+  you need to import the JSoup library:
 
 +--
 <dependency>
