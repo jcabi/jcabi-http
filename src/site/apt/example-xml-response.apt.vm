@@ -1,0 +1,35 @@
+# Managing XML Responses
+
+When your HTTP
+{{{./apidocs-${project.version}/com/jcabi/http/Response.html}`Response`}}
+contains an XML document, it is convenient to use
+{{{./apidocs-${project.version}/com/jcabi/http/response/XmlResponse.html}`XmlResponse`}}
+decorator to manipulate it, for example:
+
+```java
+String name = new JdkRequest("http://my.example.com")
+  .fetch()
+  .as(XmlResponse.class)
+  .assertXPath("/data/name") // AssertionError if this XPath is absent
+  .xml() // convert HTTP body to com.jcabi.xml.XML
+  .xpath("/data/name/text()").get(0);
+```
+
+Method {{{./apidocs-${project.version}/com/jcabi/http/response/XmlResponse.html}`XmlResponse#xml()`}}
+converts HTTP body to an instance of class
+{{{http://xml.jcabi.com/apidocs-0.6/com/jcabi/xml/XML.html}`XML`}}
+from {{{http://xml.jcabi.com}jcabi-xml}} project.
+
+Don't forget to add this dependency to your classpath:
+
+```xml
+<dependency>
+  <groupId>com.jcabi</groupId>
+  <artifactId>jcabi-xml</artifactId>
+  <version>0.6</version>
+</dependency>
+```
+
+Read also about
+{{{./apidocs-${project.version}/com/jcabi/http/response/RestResponse.html}`RestResponse`}},
+which helps you to manage default HTTP response concepts.

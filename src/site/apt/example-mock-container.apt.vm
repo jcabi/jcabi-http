@@ -1,0 +1,124 @@
+# Mock Servlet Container
+
+{{{./apidocs-${project.version}/com/jcabi/http/mock/MkContainer.html}`MkContainer`}}
+is a simple lightweight Java servlet container that can act
+as a mock server-side of your application, in order to test your
+RESTful client, for example:
+
+```java
+public class ClientTest {
+  @Test
+  public void sendsHttpHeadersCorrectly() {
+    MkContainer container = new MkGrizzlyContainer();
+    container.next(
+      new MkAnswer.Simple("hello, world!")
+        .withHeader("Content-Type", "text/plain")
+        .withHeader("Server", "mock")
+    );
+    container.start();
+    new JdkRequest(container.home())
+      .through(VerboseWire.class)
+      .header("User-Agent", "My Super HTTP Client")
+      .fetch();
+    container.stop();
+    MkQuery query = container.take();
+    MatcherAssert.assertThat(
+      query.headers(),
+      Matchers.hasEntry(
+        Matchers.equalTo("User=Agent"),
+        Matchers.hasItem("My Super HTTP Client")
+      )
+    );
+  }
+}
+```
+
+Let's see what's happening here. First, a new instance of
+{{{./apidocs-${project.version}/com/jcabi/http/mock/MkContainer.html}`MkContainer`}}
+is created, with a Grizzly-based implementation
+{{{./apidocs-${project.version}/com/jcabi/http/mock/MkGrizzlyContainer.html}`MkGrizzlyContainer`}}:
+
+```java
+MkContainer container = new MkGrizzlyContainer();
+```
+
+The container is not yet started and doesn't know what to reply when
+a new HTTP request comes in. We should add at least one instance of
+{{{./apidocs-${project.version}/com/jcabi/http/mock/MkAnswer.html}`MkAnswer`}}
+to its queue of ready-to-be-dispached answers:
+
+```java
+container.next(
+  new MkAnswer.Simple("hello, world!")
+    .withHeader("Content-Type", "text/plain")
+    .withHeader("Server", "mock")
+);
+```
+
+It's possible to add more instances of
+{{{./apidocs-${project.version}/com/jcabi/http/mock/MkAnswer.html}`MkAnswer`}},
+using this method `next()`. They will be returned by a running container
+one by one in response to incoming HTTP "queries"
+(which will be recorded by the container as instances of
+{{{./apidocs-${project.version}/com/jcabi/http/mock/MkQuery.html}`MkQuery`}}
+and available later through method `take()`).
+
+Now it's time to start the container on a randomly allocated
+TCP port (you can also use a fixed port number, but random allocation
+is preferred):
+
+```java
+container.start();
+```
+
+Then, we're making a request to a running container, getting its
+main entry URI by `container.home()`
+({{{./apidocs-${project.version}/com/jcabi/http/wire/VerboseWire.html}`VerboseWire`}}
+is used in order to make HTTP request and response details visible in log):
+
+```java
+new JdkRequest(container.home())
+  .through(VerboseWire.class)
+  .header("User-Agent", "My Super HTTP Client")
+  .fetch();
+```
+
+Then, we stop the container:
+
+```java
+container.stop();
+```
+
+Now it's time to check what was received by the container before it
+was stopped. All "queries" received are recorded in the container in
+chronological order. They may be retrieved using `container.take()` method:
+
+```java
+MkQuery query = container.take();
+```
+
+Finally, we can make assertions about this query:
+
+```java
+MatcherAssert.assertThat(
+  query.headers(),
+  Matchers.hasEntry(
+    Matchers.equalTo("User=Agent"),
+    Matchers.hasItem("My Super HTTP Client")
+  )
+);
+```
+
+{{{./apidocs-${project.version}/com/jcabi/http/mock/MkGrizzlyContainer.html}`MkGrizzlyContainer`}}
+depends on
+{{{https://java.net/projects/grizzly-servlet-container}Grizzly Servlet Webserver}},
+and this dependency is required in your `pom.xml`:
+
+```
+<dependency>
+  <groupId>com.sun.grizzly</groupId>
+  <artifactId>grizzly-servlet-webserver</artifactId>
+  <version>1.9.10</version>
+  <scope>test</scope>
+</dependency>
+```

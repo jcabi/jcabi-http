@@ -1,0 +1,66 @@
+# Fluent HTTP Client
+
+For example:
+
+```java
+import com.jcabi.http.Request;
+import com.jcabi.http.request.ApacheRequest;
+public class Main {
+  public static void main(String[] args) {
+    String html = new ApacheRequest("https://www.google.com")
+      .uri().path("/users").queryParam("id", 333).back()
+      .method(Request.GET)
+      .header(HttpHeaders.ACCEPT, MediaType.TEXT_HTML)
+      .fetch()
+      .as(HttpResponse.class)
+      .assertStatus(HttpURLConnection.HTTP_OK)
+      .body();
+  }
+}
+```
+
+{{{http://www.yegor256.com/2014/04/11/jcabi-http-intro.html}This blog post}}
+explains the
+benefits of this client comparing to Apache, Jersey, and others.
+
+Check {{{./apidocs-${project.version}/index.html}JavaDoc}}
+for more details.
+
+The main dependency that you need is
+(you can also download
+{{{http://repo1.maven.org/maven2/com/jcabi/jcabi-http/${project.version}/jcabi-http-${project.version}.jar}jcabi-http-${project.version}.jar}}
+and add it to the classpath):
+
+```
+<dependency>
+  <groupId>com.jcabi</groupId>
+  <artifactId>jcabi-http</artifactId>
+  <version>${project.version}</version>
+</dependency>
+```
+
+Other dependencies may be required in order to use all features of this library.
+See {{{./optional-dependencies.html}here}} for a full list of the dependencies
+that you may need.
+
+Cutting Edge Version
+-----------------------
+
+If you want to use current version of the product, you can do it with
+this configuration in your `pom.xml`:
+
+```
+<repositories>
+  <repository>
+    <id>oss.sonatype.org</id>
+    <url>https://oss.sonatype.org/content/repositories/snapshots/</url>
+  </repository>
+</repositories>
+<dependencies>
+  <dependency>
+    <groupId>com.jcabi</groupId>
+    <artifactId>jcabi-http</artifactId>
+    <version>1.0-SNAPSHOT</version>
+  </dependency>
+</dependencies>
+```
