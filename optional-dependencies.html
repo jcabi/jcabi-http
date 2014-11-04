@@ -3,8 +3,10 @@
     <head>
         <meta charset="UTF-8"/>
         <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-        <title>jcabi-http - </title>
+        <title>jcabi-http &#x2013; Optional Dependencies</title>
         <link media="all" rel="stylesheet" type="text/css" href="./css/jcabi.css"/>
+        <link media="all" rel="stylesheet" type="text/css" href="./ico/ico.css"/>
+                    <meta name="author" content="Yegor Bugayenko" />
                             <script>
                 var _gaq = _gaq || [];
                 _gaq.push(['_setAccount', 'UA-1963507-23']);
@@ -19,24 +21,8 @@
 <link rel="shortcut icon" href="http://img.jcabi.com/favicon.ico"/>
                                                                                                                 
 <link rel="author" href="https://plus.google.com/u/0/114792568016408327418?rel=author"/>
-                                            <script src="//code.jquery.com/jquery-2.1.0.min.js"></script>
-        <script>
-            $(document).ready(
-                function() {
-                    $(".menu-button").click(
-                        function() {
-                            if ($("#here-goes-menu").attr("class") == "menu-off") {
-                                $("#menu").clone().attr("class", "mobile-menu").appendTo("#here-goes-menu");
-                                $("#here-goes-menu").attr("class", "menu-on");
-                            } else {
-                                $(".mobile-menu").hide();
-                                $("#here-goes-menu").attr("class", "menu-off");
-                            }
-                        }
-                    );
-                }
-            );
-        </script>
+                                            <script src="http://code.jquery.com/jquery-2.1.0.min.js"></script>
+        <script type="text/javascript" src="./js/jcabi.js"></script>
     </head>
     <body>
                 <section class="page" itemscope="" itemtype="http://schema.org/BlogPosting">
@@ -52,7 +38,7 @@
                                                                     </ul>
                                                     </li>
                                                                                                                         <li >
-                            <span>                        <a href="apidocs-1.8.2/index.html" title="API 1.8.2 (JavaDoc)">API 1.8.2 (JavaDoc)</a>
+                            <span>                        <a href="apidocs-1.9.1/index.html" title="API 1.9.1 (JavaDoc)">API 1.9.1 (JavaDoc)</a>
         </span>
                                                                                                                                                                 <ul>
                                                                     </ul>
@@ -166,28 +152,62 @@
                             </div>
                             <ul class="badges">
                                 <li>
-                                    <strong itemprop="version">1.8.2</strong>
+                                    <strong itemprop="version">1.9.1</strong>
                                 </li>
                                 <li>
                                     
-                                    <time itemprop="datePublished" datetime="2014-08-14T06:57:57Z">
+                                    <time itemprop="datePublished" datetime="2014-11-04T06:31:13Z">
                                         
-                                        14-Aug-2014
+                                        04-Nov-2014
                                     </time>
                                 </li>
                                 <li class="menu-button">menu</li>
                             </ul>
+                            <div class="social">
+                                <a href="http://www.facebook.com/sharer/sharer.php?u=URL"
+                                    title="Share on Facebook" class="ico">
+                                    <i class="icon-facebook"></i>
+                                </a>
+                                <a href="https://twitter.com/share?url=URL&amp;text=TITLE"
+                                    title="Share on Twitter" class="ico">
+                                    <i class="icon-twitter"></i>
+                                </a>
+                                <a href="https://plus.google.com/share?url=URL"
+                                    title="Share on Google+" class="ico">
+                                    <i class="icon-googleplus"></i>
+                                </a>
+                                <a href="https://www.linkedin.com/cws/share?url=URL"
+                                    title="Share on LinkedIn" class="ico">
+                                    <i class="icon-linkedin"></i>
+                                </a>
+                                <a href="http://www.stumbleupon.com/submit?url=URL&amp;title=TITLE"
+                                    title="Share on StumbleUpon" class="ico">
+                                    <i class="icon-stumbleupon"></i>
+                                </a>
+                                <a href="http://digg.com/submit?phase=2&amp;url=URL&amp;title=TITLE"
+                                    title="Share on Digg" class="ico">
+                                    <i class="icon-digg"></i>
+                                </a>
+                                <a href="http://reddit.com/submit?url=URL&amp;title=TITLE"
+                                    title="Share on Reddit" class="ico">
+                                    <i class="icon-reddit"></i>
+                                </a>
+                                <a href="http://news.ycombinator.com/submitlink?u=URL&amp;t=TITLE"
+                                    title="Share on Hacker News" class="ico">
+                                    <i class="icon-hackernews"></i>
+                                </a>
+                            </div>
                         </header>
                         <div id="here-goes-menu" class="menu-off"></div>
                                                                             <a href="https://github.com/jcabi/jcabi-http">
                                 <img src="http://img.jcabi.com/fork-me.svg" class="fork-me"/>
                             </a>
                                                 <article role="article" itemprop="articleBody">
-                            <h1>Optional Dependencies</h1>
+                            <div class="section">
+<h2><a name="Optional_Dependencies"></a>Optional Dependencies</h2>
 <p>The project is structured in a manner that many dependencies are optional. This is done in order to keep the package small, as the diverse functionality provided by the various classes require many other libraries that may be non-trival or result in conflicts with your own project.</p>
 <p>The following is a list of dependencies that would be required to use all features of this library. You may incorporate them directly in your <tt>pom.xml</tt>.</p>
-<p>The following dependencies are needed for using <a href="./apidocs-1.8.2/com/jcabi/http/response/JsonResponse.html"><tt>JsonResponse</tt></a> and <a href="./apidocs-1.8.2/com/jcabi/http/RequestBody.html"><tt>RequestBody</tt></a> :</p>
-
+<p>The following dependencies are needed for using <a href="./apidocs-1.9.1/com/jcabi/http/response/JsonResponse.html"><tt>JsonResponse</tt></a> and <a href="./apidocs-1.9.1/com/jcabi/http/RequestBody.html"><tt>RequestBody</tt></a>:</p>
 <div class="source">
 <pre>&lt;dependency&gt;
     &lt;groupId&gt;javax.json&lt;/groupId&gt;
@@ -198,10 +218,8 @@
     &lt;groupId&gt;org.glassfish&lt;/groupId&gt;
     &lt;artifactId&gt;javax.json&lt;/artifactId&gt;
     &lt;version&gt;1.0.4&lt;/version&gt;
-&lt;/dependency&gt;
-</pre></div>
-<p>Use of <a href="./apidocs-1.8.2/com/jcabi/http/response/XmlResponse.html"><tt>XmlResponse</tt></a> will require the following dependencies, as well as the Hamcrest dependencies below:</p>
-
+&lt;/dependency&gt;</pre></div>
+<p>Use of <a href="./apidocs-1.9.1/com/jcabi/http/response/XmlResponse.html"><tt>XmlResponse</tt></a> will require the following dependencies, as well as the Hamcrest dependencies below:</p>
 <div class="source">
 <pre>&lt;dependency&gt;
     &lt;groupId&gt;com.jcabi&lt;/groupId&gt;
@@ -232,10 +250,8 @@
     &lt;groupId&gt;net.sourceforge.saxon&lt;/groupId&gt;
     &lt;artifactId&gt;saxon&lt;/artifactId&gt;
     &lt;version&gt;9.1.0.8&lt;/version&gt;
-&lt;/dependency&gt;
-</pre></div>
-<p>Use of the <a href="./apidocs-1.8.2/com/jcabi/http/mock/package-summary.html"><tt>com.jcabi.http.mock</tt></a> classes will require the following dependencies, as well as the Hamcrest dependencies (see below):</p>
-
+&lt;/dependency&gt;</pre></div>
+<p>Use of the <a href="./apidocs-1.9.1/com/jcabi/http/mock/package-summary.html"><tt>com.jcabi.http.mock</tt></a> classes will require the following dependencies, as well as the Hamcrest dependencies (see below):</p>
 <div class="source">
 <pre>&lt;dependency&gt;
     &lt;groupId&gt;com.sun.grizzly&lt;/groupId&gt;
@@ -256,10 +272,8 @@
     &lt;groupId&gt;com.sun.jersey&lt;/groupId&gt;
     &lt;artifactId&gt;jersey-server&lt;/artifactId&gt;
     &lt;version&gt;1.18.1&lt;/version&gt;
-&lt;/dependency&gt;
-</pre></div>
-<p>The Hamcrest dependencies are required if you need to use the <a href="./apidocs-1.8.2/com/jcabi/http/mock/package-summary.html"><tt>com.jcabi.http.mock</tt></a> classes, the <a href="./apidocs-1.8.2/com/jcabi/http/response/RestResponse.html"><tt>RestResponse</tt></a> class with its assertion mechanisms, or the <a href="./apidocs-1.8.2/com/jcabi/http/response/XmlResponse.html"><tt>XmlResponse</tt></a> class:</p>
-
+&lt;/dependency&gt;</pre></div>
+<p>The Hamcrest dependencies are required if you need to use the <a href="./apidocs-1.9.1/com/jcabi/http/mock/package-summary.html"><tt>com.jcabi.http.mock</tt></a> classes, the <a href="./apidocs-1.9.1/com/jcabi/http/response/RestResponse.html"><tt>RestResponse</tt></a> class with its assertion mechanisms, or the <a href="./apidocs-1.9.1/com/jcabi/http/response/XmlResponse.html"><tt>XmlResponse</tt></a> class:</p>
 <div class="source">
 <pre>&lt;dependency&gt;
     &lt;groupId&gt;org.hamcrest&lt;/groupId&gt;
@@ -270,10 +284,8 @@
     &lt;groupId&gt;org.hamcrest&lt;/groupId&gt;
     &lt;artifactId&gt;hamcrest-core&lt;/artifactId&gt;
     &lt;version&gt;1.3&lt;/version&gt;
-&lt;/dependency&gt;
-</pre></div>
-<p>Usage of <a href="./apidocs-1.8.2/com/jcabi/http/request/ApacheRequest.html"><tt>ApacheRequest</tt></a> will require the Apache HTTP Components dependencies:</p>
-
+&lt;/dependency&gt;</pre></div>
+<p>Usage of <a href="./apidocs-1.9.1/com/jcabi/http/request/ApacheRequest.html"><tt>ApacheRequest</tt></a> will require the Apache HTTP Components dependencies:</p>
 <div class="source">
 <pre>&lt;dependency&gt;
     &lt;groupId&gt;org.apache.httpcomponents&lt;/groupId&gt;
@@ -284,17 +296,14 @@
     &lt;groupId&gt;org.apache.httpcomponents&lt;/groupId&gt;
     &lt;artifactId&gt;httpclient&lt;/artifactId&gt;
     &lt;version&gt;4.3&lt;/version&gt;
-&lt;/dependency&gt;
-</pre></div>
-<p>If you need to use <a href="./apidocs-1.8.2/com/jcabi/http/response/JsoupResponse.html"><tt>JsoupResponse</tt></a> , you need to import the JSoup library:</p>
-
+&lt;/dependency&gt;</pre></div>
+<p>If you need to use <a href="./apidocs-1.9.1/com/jcabi/http/response/JsoupResponse.html"><tt>JsoupResponse</tt></a>, you need to import the JSoup library:</p>
 <div class="source">
 <pre>&lt;dependency&gt;
     &lt;groupId&gt;org.jsoup&lt;/groupId&gt;
     &lt;artifactId&gt;jsoup&lt;/artifactId&gt;
     &lt;version&gt;1.7.3&lt;/version&gt;
-&lt;/dependency&gt;
-</pre></div>
+&lt;/dependency&gt;</pre></div></div>
                         </article>
                     </div>
                 </main>

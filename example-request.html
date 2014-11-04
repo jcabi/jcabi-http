@@ -3,8 +3,10 @@
     <head>
         <meta charset="UTF-8"/>
         <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-        <title>jcabi-http - </title>
+        <title>jcabi-http &#x2013; Making HTTP Request</title>
         <link media="all" rel="stylesheet" type="text/css" href="./css/jcabi.css"/>
+        <link media="all" rel="stylesheet" type="text/css" href="./ico/ico.css"/>
+                    <meta name="author" content="Yegor Bugayenko" />
                             <script>
                 var _gaq = _gaq || [];
                 _gaq.push(['_setAccount', 'UA-1963507-23']);
@@ -19,24 +21,8 @@
 <link rel="shortcut icon" href="http://img.jcabi.com/favicon.ico"/>
                                                                                                                 
 <link rel="author" href="https://plus.google.com/u/0/114792568016408327418?rel=author"/>
-                                            <script src="//code.jquery.com/jquery-2.1.0.min.js"></script>
-        <script>
-            $(document).ready(
-                function() {
-                    $(".menu-button").click(
-                        function() {
-                            if ($("#here-goes-menu").attr("class") == "menu-off") {
-                                $("#menu").clone().attr("class", "mobile-menu").appendTo("#here-goes-menu");
-                                $("#here-goes-menu").attr("class", "menu-on");
-                            } else {
-                                $(".mobile-menu").hide();
-                                $("#here-goes-menu").attr("class", "menu-off");
-                            }
-                        }
-                    );
-                }
-            );
-        </script>
+                                            <script src="http://code.jquery.com/jquery-2.1.0.min.js"></script>
+        <script type="text/javascript" src="./js/jcabi.js"></script>
     </head>
     <body>
                 <section class="page" itemscope="" itemtype="http://schema.org/BlogPosting">
@@ -52,7 +38,7 @@
                                                                     </ul>
                                                     </li>
                                                                                                                         <li >
-                            <span>                        <a href="apidocs-1.8.2/index.html" title="API 1.8.2 (JavaDoc)">API 1.8.2 (JavaDoc)</a>
+                            <span>                        <a href="apidocs-1.9.1/index.html" title="API 1.9.1 (JavaDoc)">API 1.9.1 (JavaDoc)</a>
         </span>
                                                                                                                                                                 <ul>
                                                                     </ul>
@@ -166,45 +152,73 @@
                             </div>
                             <ul class="badges">
                                 <li>
-                                    <strong itemprop="version">1.8.2</strong>
+                                    <strong itemprop="version">1.9.1</strong>
                                 </li>
                                 <li>
                                     
-                                    <time itemprop="datePublished" datetime="2014-08-14T06:57:57Z">
+                                    <time itemprop="datePublished" datetime="2014-11-04T06:31:13Z">
                                         
-                                        14-Aug-2014
+                                        04-Nov-2014
                                     </time>
                                 </li>
                                 <li class="menu-button">menu</li>
                             </ul>
+                            <div class="social">
+                                <a href="http://www.facebook.com/sharer/sharer.php?u=URL"
+                                    title="Share on Facebook" class="ico">
+                                    <i class="icon-facebook"></i>
+                                </a>
+                                <a href="https://twitter.com/share?url=URL&amp;text=TITLE"
+                                    title="Share on Twitter" class="ico">
+                                    <i class="icon-twitter"></i>
+                                </a>
+                                <a href="https://plus.google.com/share?url=URL"
+                                    title="Share on Google+" class="ico">
+                                    <i class="icon-googleplus"></i>
+                                </a>
+                                <a href="https://www.linkedin.com/cws/share?url=URL"
+                                    title="Share on LinkedIn" class="ico">
+                                    <i class="icon-linkedin"></i>
+                                </a>
+                                <a href="http://www.stumbleupon.com/submit?url=URL&amp;title=TITLE"
+                                    title="Share on StumbleUpon" class="ico">
+                                    <i class="icon-stumbleupon"></i>
+                                </a>
+                                <a href="http://digg.com/submit?phase=2&amp;url=URL&amp;title=TITLE"
+                                    title="Share on Digg" class="ico">
+                                    <i class="icon-digg"></i>
+                                </a>
+                                <a href="http://reddit.com/submit?url=URL&amp;title=TITLE"
+                                    title="Share on Reddit" class="ico">
+                                    <i class="icon-reddit"></i>
+                                </a>
+                                <a href="http://news.ycombinator.com/submitlink?u=URL&amp;t=TITLE"
+                                    title="Share on Hacker News" class="ico">
+                                    <i class="icon-hackernews"></i>
+                                </a>
+                            </div>
                         </header>
                         <div id="here-goes-menu" class="menu-off"></div>
                                                                             <a href="https://github.com/jcabi/jcabi-http">
                                 <img src="http://img.jcabi.com/fork-me.svg" class="fork-me"/>
                             </a>
                                                 <article role="article" itemprop="articleBody">
-                            <h1>Making HTTP Request</h1>
-<p>There is one interface <a href="./apidocs-1.8.2/com/jcabi/http/Request.html"><tt>Request</tt></a> that represents an HTTP request. There are a few implementations of the interface, and the most popular and easy to use is <a href="./apidocs-1.8.2/com/jcabi/http/request/JdkRequest.html"><tt>JdkRequest</tt></a>. It makes a request using native JDK class <a class="externalLink" href="http://docs.oracle.com/javase/7/docs/api/java/net/HttpURLConnection.html"><tt>java.net.HttpURLConnection</tt></a>.</p>
-<p>First, make an instance of <a href="./apidocs-1.8.2/com/jcabi/http/request/JdkRequest.html"><tt>JdkRequest</tt></a>, providing target URI as the first and the only constructor argument (<tt>String</tt>, <tt>URI</tt>, and <tt>URL</tt> types are accepted):</p>
-
+                            <div class="section">
+<h2><a name="Making_HTTP_Request"></a>Making HTTP Request</h2>
+<p>There is one interface <a href="./apidocs-1.9.1/com/jcabi/http/Request.html"><tt>Request</tt></a> that represents an HTTP request. There are a few implementations of the interface, and the most popular and easy to use is <a href="./apidocs-1.9.1/com/jcabi/http/request/JdkRequest.html"><tt>JdkRequest</tt></a>. It makes a request using native JDK class <a class="externalLink" href="http://docs.oracle.com/javase/7/docs/api/java/net/HttpURLConnection.html"><tt>java.net.HttpURLConnection</tt></a>.</p>
+<p>First, make an instance of <a href="./apidocs-1.9.1/com/jcabi/http/request/JdkRequest.html"><tt>JdkRequest</tt></a>, providing target URI as the first and the only constructor argument (<tt>String</tt>, <tt>URI</tt>, and <tt>URL</tt> types are accepted):</p>
 <div class="source">
-<pre>Request request = new JdkRequest(&quot;http://my.example.com&quot;);
-</pre></div>
+<pre>Request request = new JdkRequest(&quot;http://my.example.com&quot;);</pre></div>
 <p>The object is ready to make an HTTP request using the URI provided, <tt>GET</tt> HTTP method, no custom HTTP headers and no request body. To fire an HTTP request and obtain a response use method <tt>fetch()</tt>:</p>
-
 <div class="source">
 <pre>Response response = request.fetch();
 int status = response.status();
-String body = response.body();
-</pre></div>
-<p><a href="./apidocs-1.8.2/com/jcabi/http/Request.html"><tt>Request</tt></a> is a trully immutable class, which means that you can&#x2019;t change any of its properties. However, you can create new requests. For example, you want to make a similar request, but with a <tt>POST</tt> HTTP method:</p>
-
+String body = response.body();</pre></div>
+<p><a href="./apidocs-1.9.1/com/jcabi/http/Request.html"><tt>Request</tt></a> is a trully immutable class, which means that you can't change any of its properties. However, you can create new requests. For example, you want to make a similar request, but with a <tt>POST</tt> HTTP method:</p>
 <div class="source">
 <pre>Request post = request.method(Request.POST);
-post.fetch();
-</pre></div>
-<p>This is a bigger example of <a href="./apidocs-1.8.2/com/jcabi/http/Request.html"><tt>Request</tt></a> usage:</p>
-
+post.fetch();</pre></div>
+<p>This is a bigger example of <a href="./apidocs-1.9.1/com/jcabi/http/Request.html"><tt>Request</tt></a> usage:</p>
 <div class="source">
 <pre>Response response = new JdkRequest(&quot;http://my.example.com&quot;)
   .uri().path(&quot;/users&quot;).queryParam(&quot;id&quot;, &quot;456&quot;).back()
@@ -215,12 +229,10 @@ post.fetch();
   .back()
   .header(&quot;Content-Type&quot;, &quot;application/json&quot;)
   .header(&quot;User-Agent&quot;, &quot;My Custom App&quot;)
-  .fetch();
-</pre></div>
+  .fetch();</pre></div>
 <p>This code will make a <tt>POST</tt> HTTP request to <tt>http://my.example.com/users?id=456</tt>. Request body will be set to <tt>salary=55000&amp;department=IT</tt>. There will be two HTTP headers in the request: <tt>Content-Type</tt> and <tt>User-Agent</tt>.</p>
-<p><a href="./apidocs-1.8.2/com/jcabi/http/Response.html"><tt>Response</tt></a> has a few methods that return its data, including <tt>status()</tt>, <tt>reason()</tt>, <tt>headers()</tt>, <tt>body()</tt>, and <tt>binary()</tt>. Besides that, there is a method <tt>as(Class)</tt>, which allows you to wrap an existing response with a new custom decorator, that implements more methods, suitable for a particular use case.</p>
-<p>The simpliest decorator is <a href="./apidocs-1.8.2/com/jcabi/http/response/RestResponse.html"><tt>RestResponse</tt></a>. It helps you to make assertions on the response and follow redirects, for example:</p>
-
+<p><a href="./apidocs-1.9.1/com/jcabi/http/Response.html"><tt>Response</tt></a> has a few methods that return its data, including <tt>status()</tt>, <tt>reason()</tt>, <tt>headers()</tt>, <tt>body()</tt>, and <tt>binary()</tt>. Besides that, there is a method <tt>as(Class)</tt>, which allows you to wrap an existing response with a new custom decorator, that implements more methods, suitable for a particular use case.</p>
+<p>The simpliest decorator is <a href="./apidocs-1.9.1/com/jcabi/http/response/RestResponse.html"><tt>RestResponse</tt></a>. It helps you to make assertions on the response and follow redirects, for example:</p>
 <div class="source">
 <pre>String page = new JdkRequest(&quot;http://my.example.com&quot;)
   .fetch()
@@ -230,17 +242,14 @@ post.fetch();
   .fetch()
   .as(RestResponse.class)
   .assertStatus(200)
-  .body();
-</pre></div>
-<p><a href="./apidocs-1.8.2/com/jcabi/http/response/RestResponse.html"><tt>RestResponse</tt></a> also helps you to retrieve cookies from a response:</p>
-
+  .body();</pre></div>
+<p><a href="./apidocs-1.9.1/com/jcabi/http/response/RestResponse.html"><tt>RestResponse</tt></a> also helps you to retrieve cookies from a response:</p>
 <div class="source">
 <pre>String cookie = new JdkRequest(&quot;http://my.example.com&quot;)
   .fetch()
   .as(RestResponse.class)
-  .cookie(&quot;SessionId&quot;);
-</pre></div>
-<p>Read also about <a href="./example-xml-response.html"><tt>XmlResponse</tt></a> and <a href="./example-json-response.html"><tt>JsonResponse</tt></a>.</p>
+  .cookie(&quot;SessionId&quot;);</pre></div>
+<p>Read also about <a href="./example-xml-response.html"><tt>XmlResponse</tt></a> and <a href="./example-json-response.html"><tt>JsonResponse</tt></a>.</p></div>
                         </article>
                     </div>
                 </main>
