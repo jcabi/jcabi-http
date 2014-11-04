@@ -6,10 +6,10 @@ provided by the various classes require many other libraries that may be
 non-trival or result in conflicts with your own project.
 
 The following is a list of dependencies that would be required to use all
-features of this library. You may incorporate them directly in your `pom.xml`.
+features of this library. You may incorporate them directly in your <<<pom.xml>>>.
 
-The following dependencies are needed for using {{{./apidocs-${project.version}/com/jcabi/http/response/JsonResponse.html}`JsonResponse`}}
-and {{{./apidocs-${project.version}/com/jcabi/http/RequestBody.html}`RequestBody`}}
+The following dependencies are needed for using {{{./apidocs-${project.version}/com/jcabi/http/response/JsonResponse.html}<<<JsonResponse>>>}}
+and {{{./apidocs-${project.version}/com/jcabi/http/RequestBody.html}<<<RequestBody>>>}}
 :
 
 +--
@@ -25,7 +25,7 @@ and {{{./apidocs-${project.version}/com/jcabi/http/RequestBody.html}`RequestBody
 </dependency>
 +--
 
-Use of {{{./apidocs-${project.version}/com/jcabi/http/response/XmlResponse.html}`XmlResponse`}}
+Use of {{{./apidocs-${project.version}/com/jcabi/http/response/XmlResponse.html}<<<XmlResponse>>>}}
 will require the following dependencies, as well as the Hamcrest dependencies below:
 
 +--
@@ -60,7 +60,7 @@ will require the following dependencies, as well as the Hamcrest dependencies be
     <version>9.1.0.8</version>
 </dependency>
 +--
-Use of the {{{./apidocs-${project.version}/com/jcabi/http/mock/package-summary.html}`com.jcabi.http.mock`}}
+Use of the {{{./apidocs-${project.version}/com/jcabi/http/mock/package-summary.html}<<<com.jcabi.http.mock>>>}}
 classes will require the following dependencies, as well as the Hamcrest
 dependencies (see below):
 
@@ -88,9 +88,9 @@ dependencies (see below):
 +--
 
 The Hamcrest dependencies are required if you need to use the
-{{{./apidocs-${project.version}/com/jcabi/http/mock/package-summary.html}`com.jcabi.http.mock`}}
-classes, the {{{./apidocs-${project.version}/com/jcabi/http/response/RestResponse.html}`RestResponse`}}
-class with its assertion mechanisms, or the {{{./apidocs-${project.version}/com/jcabi/http/response/XmlResponse.html}`XmlResponse`}}
+{{{./apidocs-${project.version}/com/jcabi/http/mock/package-summary.html}<<<com.jcabi.http.mock>>>}}
+classes, the {{{./apidocs-${project.version}/com/jcabi/http/response/RestResponse.html}<<<RestResponse>>>}}
+class with its assertion mechanisms, or the {{{./apidocs-${project.version}/com/jcabi/http/response/XmlResponse.html}<<<XmlResponse>>>}}
 class:
 
 +--
@@ -106,7 +106,7 @@ class:
 </dependency>
 +--
 
-Usage of {{{./apidocs-${project.version}/com/jcabi/http/request/ApacheRequest.html}`ApacheRequest`}}
+Usage of {{{./apidocs-${project.version}/com/jcabi/http/request/ApacheRequest.html}<<<ApacheRequest>>>}}
 will require the Apache HTTP Components dependencies:
 
 +--
@@ -122,7 +122,7 @@ will require the Apache HTTP Components dependencies:
 </dependency>
 +--
 
-If you need to use {{{./apidocs-${project.version}/com/jcabi/http/response/JsoupResponse.html}`JsoupResponse`}}
+If you need to use {{{./apidocs-${project.version}/com/jcabi/http/response/JsoupResponse.html}<<<JsoupResponse>>>}}
 , you need to import the JSoup library:
 
 +--
