@@ -2,7 +2,7 @@
 
 For example:
 
-```java
++--
 import com.jcabi.http.Request;
 import com.jcabi.http.request.ApacheRequest;
 public class Main {
@@ -17,7 +17,7 @@ public class Main {
       .body();
   }
 }
-```
++--
 
 {{{http://www.yegor256.com/2014/04/11/jcabi-http-intro.html}This blog post}}
 explains the
@@ -31,13 +31,13 @@ The main dependency that you need is
 {{{http://repo1.maven.org/maven2/com/jcabi/jcabi-http/${project.version}/jcabi-http-${project.version}.jar}jcabi-http-${project.version}.jar}}
 and add it to the classpath):
 
-```
++--
 <dependency>
   <groupId>com.jcabi</groupId>
   <artifactId>jcabi-http</artifactId>
   <version>${project.version}</version>
 </dependency>
-```
++--
 
 Other dependencies may be required in order to use all features of this library.
 See {{{./optional-dependencies.html}here}} for a full list of the dependencies
@@ -49,7 +49,7 @@ Cutting Edge Version
 If you want to use current version of the product, you can do it with
 this configuration in your `pom.xml`:
 
-```
++--
 <repositories>
   <repository>
     <id>oss.sonatype.org</id>
@@ -63,4 +63,4 @@ this configuration in your `pom.xml`:
     <version>1.0-SNAPSHOT</version>
   </dependency>
 </dependencies>
-```
++--

@@ -7,20 +7,20 @@ is a decorator of
 that retries when an HTTP Response code between 300 and 399 is received
 (e.g. `HTTP 302 Moved Temporarily`):
 
-```java
++--
 String body = new JdkRequest("http://www.google.com")
   .through(AutoRedirectingWire.class);
   .fetch()
   .body();
-```
++--
 
  By default, it will retry up to 5 times. If the retry limit is exceeded, the
  last response to be received will be returned. You may specify the number of
  retries with an optional parameter:
 
-```java
++--
 String body = new JdkRequest("http://www.google.com")
   .through(AutoRedirectingWire.class, 10) // Retry up to 10 times
   .fetch()
   .body();
-```
++--

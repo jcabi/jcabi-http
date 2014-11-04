@@ -5,11 +5,11 @@
 {{{./apidocs-${project.version}/com/jcabi/http/response/WebLinkingResponse.html}`WebLinkingResponse`}}
 implements parsing of such header. This is how you can use it:
 
-```java
++--
 URI destination = new JdkRequest("http://my.example.com")
   .fetch()
   .as(WebLinkingResponse.class)
   .link("next") // IOException here if such a link doesn't exist
   .uri();
-```
++--
 

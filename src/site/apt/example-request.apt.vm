@@ -12,19 +12,19 @@ First, make an instance of {{{./apidocs-${project.version}/com/jcabi/http/reques
 providing target URI as the first and the only constructor argument
 (`String`, `URI`, and `URL` types are accepted):
 
-```java
++--
 Request request = new JdkRequest("http://my.example.com");
-```
++--
 
 The object is ready to make an HTTP request using the URI provided,
 `GET` HTTP method, no custom HTTP headers and no request body. To fire
 an HTTP request and obtain a response use method `fetch()`:
 
-```java
++--
 Response response = request.fetch();
 int status = response.status();
 String body = response.body();
-```
++--
 
 {{{./apidocs-${project.version}/com/jcabi/http/Request.html}`Request`}}
 is a trully immutable class, which means that you
@@ -32,16 +32,16 @@ can't change any of its properties. However,
 you can create new requests. For example, you want to make a similar
 request, but with a `POST` HTTP method:
 
-```java
++--
 Request post = request.method(Request.POST);
 post.fetch();
-```
++--
 
 This is a bigger example of
 {{{./apidocs-${project.version}/com/jcabi/http/Request.html}`Request`}}
 usage:
 
-```java
++--
 Response response = new JdkRequest("http://my.example.com")
   .uri().path("/users").queryParam("id", "456").back()
   .method(Request.POST)
@@ -52,7 +52,7 @@ Response response = new JdkRequest("http://my.example.com")
   .header("Content-Type", "application/json")
   .header("User-Agent", "My Custom App")
   .fetch();
-```
++--
 
 This code will make a `POST` HTTP request to
 `http://my.example.com/users?id=456`. Request body
@@ -71,7 +71,7 @@ The simpliest decorator is
 It helps you to make assertions on the response and follow redirects,
 for example:
 
-```java
++--
 String page = new JdkRequest("http://my.example.com")
   .fetch()
   .as(RestResponse.class)
@@ -81,17 +81,17 @@ String page = new JdkRequest("http://my.example.com")
   .as(RestResponse.class)
   .assertStatus(200)
   .body();
-```
++--
 
 {{{./apidocs-${project.version}/com/jcabi/http/response/RestResponse.html}`RestResponse`}}
 also helps you to retrieve cookies from a response:
 
-```java
++--
 String cookie = new JdkRequest("http://my.example.com")
   .fetch()
   .as(RestResponse.class)
   .cookie("SessionId");
-```
++--
 
 Read also about {{{./example-xml-response.html}`XmlResponse`}} and
 {{{./example-json-response.html}`JsonResponse`}}.

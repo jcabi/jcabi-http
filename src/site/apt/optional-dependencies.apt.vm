@@ -12,7 +12,7 @@ The following dependencies are needed for using {{{./apidocs-${project.version}/
 and {{{./apidocs-${project.version}/com/jcabi/http/RequestBody.html}`RequestBody`}}
 :
 
-```
++--
 <dependency>
     <groupId>javax.json</groupId>
     <artifactId>javax.json-api</artifactId>
@@ -23,12 +23,12 @@ and {{{./apidocs-${project.version}/com/jcabi/http/RequestBody.html}`RequestBody
     <artifactId>javax.json</artifactId>
     <version>1.0.4</version>
 </dependency>
-```
++--
 
 Use of {{{./apidocs-${project.version}/com/jcabi/http/response/XmlResponse.html}`XmlResponse`}}
 will require the following dependencies, as well as the Hamcrest dependencies below:
 
-```
++--
 <dependency>
     <groupId>com.jcabi</groupId>
     <artifactId>jcabi-matchers</artifactId>
@@ -59,12 +59,12 @@ will require the following dependencies, as well as the Hamcrest dependencies be
     <artifactId>saxon</artifactId>
     <version>9.1.0.8</version>
 </dependency>
-```
++--
 Use of the {{{./apidocs-${project.version}/com/jcabi/http/mock/package-summary.html}`com.jcabi.http.mock`}}
 classes will require the following dependencies, as well as the Hamcrest
 dependencies (see below):
 
-```
++--
 <dependency>
     <groupId>com.sun.grizzly</groupId>
     <artifactId>grizzly-servlet-webserver</artifactId>
@@ -85,7 +85,7 @@ dependencies (see below):
     <artifactId>jersey-server</artifactId>
     <version>1.18.1</version>
 </dependency>
-```
++--
 
 The Hamcrest dependencies are required if you need to use the
 {{{./apidocs-${project.version}/com/jcabi/http/mock/package-summary.html}`com.jcabi.http.mock`}}
@@ -93,7 +93,7 @@ classes, the {{{./apidocs-${project.version}/com/jcabi/http/response/RestRespons
 class with its assertion mechanisms, or the {{{./apidocs-${project.version}/com/jcabi/http/response/XmlResponse.html}`XmlResponse`}}
 class:
 
-```
++--
 <dependency>
     <groupId>org.hamcrest</groupId>
     <artifactId>hamcrest-library</artifactId>
@@ -104,12 +104,12 @@ class:
     <artifactId>hamcrest-core</artifactId>
     <version>1.3</version>
 </dependency>
-```
++--
 
 Usage of {{{./apidocs-${project.version}/com/jcabi/http/request/ApacheRequest.html}`ApacheRequest`}}
 will require the Apache HTTP Components dependencies:
 
-```
++--
 <dependency>
     <groupId>org.apache.httpcomponents</groupId>
     <artifactId>httpcore</artifactId>
@@ -120,15 +120,15 @@ will require the Apache HTTP Components dependencies:
     <artifactId>httpclient</artifactId>
     <version>4.3</version>
 </dependency>
-```
++--
 
 If you need to use {{{./apidocs-${project.version}/com/jcabi/http/response/JsoupResponse.html}`JsoupResponse`}}
 , you need to import the JSoup library:
 
-```
++--
 <dependency>
     <groupId>org.jsoup</groupId>
     <artifactId>jsoup</artifactId>
     <version>1.7.3</version>
 </dependency>
-```
++--
