@@ -16,19 +16,33 @@ Optional Dependencies
   The following is a list of dependencies that would be required to use all
   features of this library. You may incorporate them directly in your <<<pom.xml>>>.
 
+  {{{https://jersey.java.net/}Jersey}} (RI of JAX-RS)
+  is required for manipulating URIs (when <<<uri()>>> method is used):
+
++--
+<dependency>
+  <groupId>com.sun.jersey</groupId>
+  <artifactId>jersey-core</artifactId>
+  <version>1.18.1</version>
+</dependency>
++--
+
+  Of course, you can use any other JAX-RS implementation,
+  like {{{http://resteasy.jboss.org/}RESTEasy}}, for example.
+
   The following dependencies are needed for using {{{./apidocs-${project.version}/com/jcabi/http/response/JsonResponse.html}<<<JsonResponse>>>}}
   and {{{./apidocs-${project.version}/com/jcabi/http/RequestBody.html}<<<RequestBody>>>}}:
 
 +--
 <dependency>
-    <groupId>javax.json</groupId>
-    <artifactId>javax.json-api</artifactId>
-    <version>1.0</version>
+  <groupId>javax.json</groupId>
+  <artifactId>javax.json-api</artifactId>
+  <version>1.0</version>
 </dependency>
 <dependency>
-    <groupId>org.glassfish</groupId>
-    <artifactId>javax.json</artifactId>
-    <version>1.0.4</version>
+  <groupId>org.glassfish</groupId>
+  <artifactId>javax.json</artifactId>
+  <version>1.0.4</version>
 </dependency>
 +--
 
@@ -37,34 +51,34 @@ Optional Dependencies
 
 +--
 <dependency>
-    <groupId>com.jcabi</groupId>
-    <artifactId>jcabi-matchers</artifactId>
-    <version>1.1</version>
+  <groupId>com.jcabi</groupId>
+  <artifactId>jcabi-matchers</artifactId>
+  <version>1.1</version>
 </dependency>
 <dependency>
-    <groupId>com.jcabi</groupId>
-    <artifactId>jcabi-xml</artifactId>
-    <version>0.7.8</version>
+  <groupId>com.jcabi</groupId>
+  <artifactId>jcabi-xml</artifactId>
+  <version>0.7.8</version>
 </dependency>
 <dependency>
-    <groupId>javax.xml.bind</groupId>
-    <artifactId>jaxb-api</artifactId>
-    <version>2.2.11</version>
+  <groupId>javax.xml.bind</groupId>
+  <artifactId>jaxb-api</artifactId>
+  <version>2.2.11</version>
 </dependency>
 <dependency>
-    <groupId>javax.xml.bind</groupId>
-    <artifactId>jsr173_api</artifactId>
-    <version>1.0</version>
+  <groupId>javax.xml.bind</groupId>
+  <artifactId>jsr173_api</artifactId>
+  <version>1.0</version>
 </dependency>
 <dependency>
-    <groupId>net.sourceforge.saxon</groupId>
-    <artifactId>saxon</artifactId>
-    <version>9.1.0.8</version>
+  <groupId>net.sourceforge.saxon</groupId>
+  <artifactId>saxon</artifactId>
+  <version>9.1.0.8</version>
 </dependency>
 <dependency>
-    <groupId>net.sourceforge.saxon</groupId>
-    <artifactId>saxon</artifactId>
-    <version>9.1.0.8</version>
+  <groupId>net.sourceforge.saxon</groupId>
+  <artifactId>saxon</artifactId>
+  <version>9.1.0.8</version>
 </dependency>
 +--
 
@@ -74,24 +88,24 @@ Optional Dependencies
 
 +--
 <dependency>
-    <groupId>com.sun.grizzly</groupId>
-    <artifactId>grizzly-servlet-webserver</artifactId>
-    <version>1.9.59</version>
+  <groupId>com.sun.grizzly</groupId>
+  <artifactId>grizzly-servlet-webserver</artifactId>
+  <version>1.9.59</version>
 </dependency>
 <dependency>
-    <groupId>com.sun.jersey</groupId>
-    <artifactId>jersey-client</artifactId>
-    <version>1.18.1</version>
+  <groupId>com.sun.jersey</groupId>
+  <artifactId>jersey-client</artifactId>
+  <version>1.18.1</version>
 </dependency>
 <dependency>
-    <groupId>com.sun.jersey</groupId>
-    <artifactId>jersey-core</artifactId>
-    <version>1.18.1</version>
+  <groupId>com.sun.jersey</groupId>
+  <artifactId>jersey-core</artifactId>
+  <version>1.18.1</version>
 </dependency>
 <dependency>
-    <groupId>com.sun.jersey</groupId>
-    <artifactId>jersey-server</artifactId>
-    <version>1.18.1</version>
+  <groupId>com.sun.jersey</groupId>
+  <artifactId>jersey-server</artifactId>
+  <version>1.18.1</version>
 </dependency>
 +--
 
@@ -103,14 +117,14 @@ Optional Dependencies
 
 +--
 <dependency>
-    <groupId>org.hamcrest</groupId>
-    <artifactId>hamcrest-library</artifactId>
-    <version>1.3</version>
+  <groupId>org.hamcrest</groupId>
+  <artifactId>hamcrest-library</artifactId>
+  <version>1.3</version>
 </dependency>
 <dependency>
-    <groupId>org.hamcrest</groupId>
-    <artifactId>hamcrest-core</artifactId>
-    <version>1.3</version>
+  <groupId>org.hamcrest</groupId>
+  <artifactId>hamcrest-core</artifactId>
+  <version>1.3</version>
 </dependency>
 +--
 
@@ -119,14 +133,14 @@ Optional Dependencies
 
 +--
 <dependency>
-    <groupId>org.apache.httpcomponents</groupId>
-    <artifactId>httpcore</artifactId>
-    <version>4.3</version>
+  <groupId>org.apache.httpcomponents</groupId>
+  <artifactId>httpcore</artifactId>
+  <version>4.3</version>
 </dependency>
 <dependency>
-    <groupId>org.apache.httpcomponents</groupId>
-    <artifactId>httpclient</artifactId>
-    <version>4.3</version>
+  <groupId>org.apache.httpcomponents</groupId>
+  <artifactId>httpclient</artifactId>
+  <version>4.3</version>
 </dependency>
 +--
 
@@ -135,8 +149,8 @@ Optional Dependencies
 
 +--
 <dependency>
-    <groupId>org.jsoup</groupId>
-    <artifactId>jsoup</artifactId>
-    <version>1.7.3</version>
+  <groupId>org.jsoup</groupId>
+  <artifactId>jsoup</artifactId>
+  <version>1.7.3</version>
 </dependency>
 +--
