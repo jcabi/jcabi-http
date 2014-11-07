@@ -38,13 +38,7 @@
                                                                     </ul>
                                                     </li>
                                                                                                                         <li >
-                            <span>                        <a href="apidocs-1.9.1/index.html" title="API 1.9.1 (JavaDoc)">API 1.9.1 (JavaDoc)</a>
-        </span>
-                                                                                                                                                                <ul>
-                                                                    </ul>
-                                                    </li>
-                                                                                                                        <li >
-                            <span>                        <a href="optional-dependencies.html" title="Optional Dependencies">Optional Dependencies</a>
+                            <span>                        <a href="apidocs-1.9.2/index.html" title="JavaDoc 1.9.2">JavaDoc 1.9.2</a>
         </span>
                                                                                                                                                                 <ul>
                                                                     </ul>
@@ -57,6 +51,17 @@
                                                     </li>
                                                                                                                         <li >
                             <span>                        <a href="https://github.com/jcabi/jcabi-http/releases" title="Release History">Release History</a>
+        </span>
+                                                                                                                                                                <ul>
+                                                                    </ul>
+                                                    </li>
+                                                                                        </ul>
+                                                    </li>
+                                            <li>
+                            <span>Best Practices</span>
+                                                            <ul>
+                                                                                                    <li >
+                            <span>                        <a href="optional-dependencies.html" title="Optional Dependencies">Optional Dependencies</a>
         </span>
                                                                                                                                                                 <ul>
                                                                     </ul>
@@ -152,13 +157,13 @@
                             </div>
                             <ul class="badges">
                                 <li>
-                                    <strong itemprop="version">1.9.1</strong>
+                                    <strong itemprop="version">1.9.2</strong>
                                 </li>
                                 <li>
                                     
-                                    <time itemprop="datePublished" datetime="2014-11-04T06:31:13Z">
+                                    <time itemprop="datePublished" datetime="2014-11-07T11:26:32Z">
                                         
-                                        04-Nov-2014
+                                        07-Nov-2014
                                     </time>
                                 </li>
                                 <li class="menu-button">menu</li>
@@ -205,7 +210,7 @@
                                                 <article role="article" itemprop="articleBody">
                             <div class="section">
 <h2><a name="Mock_Servlet_Container"></a>Mock Servlet Container</h2>
-<p><a href="./apidocs-1.9.1/com/jcabi/http/mock/MkContainer.html"><tt>MkContainer</tt></a> is a simple lightweight Java servlet container that can act as a mock server-side of your application, in order to test your RESTful client, for example:</p>
+<p><a href="./apidocs-1.9.2/com/jcabi/http/mock/MkContainer.html"><tt>MkContainer</tt></a> is a simple lightweight Java servlet container that can act as a mock server-side of your application, in order to test your RESTful client, for example:</p>
 <div class="source">
 <pre>public class ClientTest {
   @Test
@@ -232,21 +237,21 @@
     );
   }
 }</pre></div>
-<p>Let's see what's happening here. First, a new instance of <a href="./apidocs-1.9.1/com/jcabi/http/mock/MkContainer.html"><tt>MkContainer</tt></a> is created, with a Grizzly-based implementation <a href="./apidocs-1.9.1/com/jcabi/http/mock/MkGrizzlyContainer.html"><tt>MkGrizzlyContainer</tt></a>:</p>
+<p>Let's see what's happening here. First, a new instance of <a href="./apidocs-1.9.2/com/jcabi/http/mock/MkContainer.html"><tt>MkContainer</tt></a> is created, with a Grizzly-based implementation <a href="./apidocs-1.9.2/com/jcabi/http/mock/MkGrizzlyContainer.html"><tt>MkGrizzlyContainer</tt></a>:</p>
 <div class="source">
 <pre>MkContainer container = new MkGrizzlyContainer();</pre></div>
-<p>The container is not yet started and doesn't know what to reply when a new HTTP request comes in. We should add at least one instance of <a href="./apidocs-1.9.1/com/jcabi/http/mock/MkAnswer.html"><tt>MkAnswer</tt></a> to its queue of ready-to-be-dispached answers:</p>
+<p>The container is not yet started and doesn't know what to reply when a new HTTP request comes in. We should add at least one instance of <a href="./apidocs-1.9.2/com/jcabi/http/mock/MkAnswer.html"><tt>MkAnswer</tt></a> to its queue of ready-to-be-dispached answers:</p>
 <div class="source">
 <pre>container.next(
   new MkAnswer.Simple(&quot;hello, world!&quot;)
     .withHeader(&quot;Content-Type&quot;, &quot;text/plain&quot;)
     .withHeader(&quot;Server&quot;, &quot;mock&quot;)
 );</pre></div>
-<p>It's possible to add more instances of <a href="./apidocs-1.9.1/com/jcabi/http/mock/MkAnswer.html"><tt>MkAnswer</tt></a>, using this method <tt>next()</tt>. They will be returned by a running container one by one in response to incoming HTTP &quot;queries&quot; (which will be recorded by the container as instances of <a href="./apidocs-1.9.1/com/jcabi/http/mock/MkQuery.html"><tt>MkQuery</tt></a> and available later through method <tt>take()</tt>).</p>
+<p>It's possible to add more instances of <a href="./apidocs-1.9.2/com/jcabi/http/mock/MkAnswer.html"><tt>MkAnswer</tt></a>, using this method <tt>next()</tt>. They will be returned by a running container one by one in response to incoming HTTP &quot;queries&quot; (which will be recorded by the container as instances of <a href="./apidocs-1.9.2/com/jcabi/http/mock/MkQuery.html"><tt>MkQuery</tt></a> and available later through method <tt>take()</tt>).</p>
 <p>Now it's time to start the container on a randomly allocated TCP port (you can also use a fixed port number, but random allocation is preferred):</p>
 <div class="source">
 <pre>container.start();</pre></div>
-<p>Then, we're making a request to a running container, getting its main entry URI by <tt>container.home()</tt> (<a href="./apidocs-1.9.1/com/jcabi/http/wire/VerboseWire.html"><tt>VerboseWire</tt></a> is used in order to make HTTP request and response details visible in log):</p>
+<p>Then, we're making a request to a running container, getting its main entry URI by <tt>container.home()</tt> (<a href="./apidocs-1.9.2/com/jcabi/http/wire/VerboseWire.html"><tt>VerboseWire</tt></a> is used in order to make HTTP request and response details visible in log):</p>
 <div class="source">
 <pre>new JdkRequest(container.home())
   .through(VerboseWire.class)
@@ -267,7 +272,7 @@
     Matchers.hasItem(&quot;My Super HTTP Client&quot;)
   )
 );</pre></div>
-<p><a href="./apidocs-1.9.1/com/jcabi/http/mock/MkGrizzlyContainer.html"><tt>MkGrizzlyContainer</tt></a> depends on <a class="externalLink" href="https://java.net/projects/grizzly-servlet-container">Grizzly Servlet Webserver</a>, and this dependency is required in your <tt>pom.xml</tt>:</p>
+<p><a href="./apidocs-1.9.2/com/jcabi/http/mock/MkGrizzlyContainer.html"><tt>MkGrizzlyContainer</tt></a> depends on <a class="externalLink" href="https://java.net/projects/grizzly-servlet-container">Grizzly Servlet Webserver</a>, and this dependency is required in your <tt>pom.xml</tt>:</p>
 <div class="source">
 <pre>&lt;dependency&gt;
   &lt;groupId&gt;com.sun.grizzly&lt;/groupId&gt;
