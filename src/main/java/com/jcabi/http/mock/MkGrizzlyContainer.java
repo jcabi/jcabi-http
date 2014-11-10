@@ -47,7 +47,6 @@ import org.hamcrest.core.IsAnything;
  * @version $Id$
  * @since 0.10
  * @see MkContainer
- * @see <a href="http://www.rexsl.com/rexsl-test/example-mock-servlet.html">Examples</a>
  * @checkstyle TooManyMethods (200 lines)
  */
 @SuppressWarnings("PMD.TooManyMethods")
