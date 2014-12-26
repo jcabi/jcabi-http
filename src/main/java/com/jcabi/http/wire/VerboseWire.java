@@ -36,6 +36,7 @@ import com.jcabi.http.RequestBody;
 import com.jcabi.http.Response;
 import com.jcabi.http.Wire;
 import com.jcabi.log.Logger;
+import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
@@ -88,8 +89,16 @@ public final class VerboseWire implements Wire {
         final String method,
         final Collection<Map.Entry<String, String>> headers,
         final InputStream content) throws IOException {
+        final ByteArrayOutputStream output = new ByteArrayOutputStream();
+        final byte[] buffer = new byte[Tv.THOUSAND];
+        for (int bytes = content.read(buffer); bytes != -1;
+             bytes = content.read(buffer)) {
+            output.write(buffer, 0, bytes);
+        }
+        output.flush();
         final Response response = this.origin.send(
-            req, home, method, headers, content
+            req, home, method, headers,
+            new ByteArrayInputStream(output.toByteArray())
         );
         final StringBuilder text = new StringBuilder(0);
         for (final Map.Entry<String, String> header : headers) {
@@ -98,13 +107,6 @@ public final class VerboseWire implements Wire {
                 .append(header.getValue())
                 .append('\n');
         }
-        final ByteArrayOutputStream output = new ByteArrayOutputStream();
-        final byte[] buffer = new byte[Tv.THOUSAND];
-        for (int bytes = content.read(buffer); bytes != -1;
-            bytes = content.read(buffer)) {
-            output.write(buffer, 0, bytes);
-        }
-        output.flush();
         text.append('\n').append(
             new RequestBody.Printable(output.toByteArray()).toString()
         );
