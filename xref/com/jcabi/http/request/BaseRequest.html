@@ -291,7 +291,7 @@
 <a class="jxr_linenumber" name="L283" href="#L283">283</a>             );
 <a class="jxr_linenumber" name="L284" href="#L284">284</a>         }
 <a class="jxr_linenumber" name="L285" href="#L285">285</a>         <strong class="jxr_keyword">return</strong> text.append('\n')
-<a class="jxr_linenumber" name="L286" href="#L286">286</a>             .append(RequestBody.Printable.toString(<strong class="jxr_keyword">this</strong>.content))
+<a class="jxr_linenumber" name="L286" href="#L286">286</a>             .append(<strong class="jxr_keyword">new</strong> RequestBody.Printable(<strong class="jxr_keyword">this</strong>.content).toString())
 <a class="jxr_linenumber" name="L287" href="#L287">287</a>             .toString();
 <a class="jxr_linenumber" name="L288" href="#L288">288</a>     }
 <a class="jxr_linenumber" name="L289" href="#L289">289</a> 
@@ -455,7 +455,7 @@
 <a class="jxr_linenumber" name="L447" href="#L447">447</a>         }
 <a class="jxr_linenumber" name="L448" href="#L448">448</a>         @Override
 <a class="jxr_linenumber" name="L449" href="#L449">449</a>         <strong class="jxr_keyword">public</strong> String toString() {
-<a class="jxr_linenumber" name="L450" href="#L450">450</a>             <strong class="jxr_keyword">return</strong> RequestBody.Printable.toString(<strong class="jxr_keyword">this</strong>.text);
+<a class="jxr_linenumber" name="L450" href="#L450">450</a>             <strong class="jxr_keyword">return</strong> <strong class="jxr_keyword">new</strong> RequestBody.Printable(<strong class="jxr_keyword">this</strong>.text).toString();
 <a class="jxr_linenumber" name="L451" href="#L451">451</a>         }
 <a class="jxr_linenumber" name="L452" href="#L452">452</a>         @Override
 <a class="jxr_linenumber" name="L453" href="#L453">453</a>         <strong class="jxr_keyword">public</strong> <a href="../../../../com/jcabi/http/Request.html">Request</a> back() {
