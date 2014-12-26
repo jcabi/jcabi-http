@@ -58,6 +58,7 @@
         </menu>
         <menu name="Best Practices">
             <item name="Optional Dependencies" href="./optional-dependencies.html"/>
+            <item name="Suppress PKIX Validator" href="./pkix-validator.html"/>
         </menu>
         <menu name="Examples">
             <item name="Make HTTP Request" href="./example-request.html"/>

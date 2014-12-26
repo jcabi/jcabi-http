@@ -1,0 +1,39 @@
+  ---
+  PKIX Validator Failure
+  ---
+  Yegor Bugayenko
+  ---
+  2014-12-26
+  ---
+
+How to Solve PKIX Validator Failure
+
+  This is the exception you may get if the SSL certificate
+  is not a good one:
+
++--
+sun.security.validator.ValidatorException: PKIX path building failed: sun.security.provider.certpath.SunCertPathBuilderException: unable to find valid certification path to requested target
+  at sun.security.validator.PKIXValidator.doBuild(PKIXValidator.java:385)
+  at sun.security.validator.PKIXValidator.engineValidate(PKIXValidator.java:292)
+  at sun.security.validator.Validator.validate(Validator.java:260)
+  at sun.security.ssl.X509TrustManagerImpl.validate(X509TrustManagerImpl.java:326)
+  at sun.security.ssl.X509TrustManagerImpl.checkTrusted(X509TrustManagerImpl.java:231)
+  at sun.security.ssl.X509TrustManagerImpl.checkServerTrusted(X509TrustManagerImpl.java:126)
+  at sun.security.ssl.ClientHandshaker.serverCertificate(ClientHandshaker.java:1323)
+  ... 42 more
+Caused by: sun.security.provider.certpath.SunCertPathBuilderException: unable to find valid certification path to requested target
+  at sun.security.provider.certpath.SunCertPathBuilder.engineBuild(SunCertPathBuilder.java:196)
+  at java.security.cert.CertPathBuilder.build(CertPathBuilder.java:268)
+  at sun.security.validator.PKIXValidator.doBuild(PKIXValidator.java:380)
+  ... 48 more
++--
+
+  Just use {{{./apidocs-${project.version}/com/jcabi/http/wire/TrustedWire.html}<<<TrustedWire>>>}}
+  and the problem is solved:
+
++--
+String html = new JdkRequest("https://www.google.com")
+  .method(Request.GET)
+  .through(TrustedWire.class)
+  .fetch();
++--
