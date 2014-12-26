@@ -46,7 +46,6 @@ import javax.net.ssl.SSLContext;
 import javax.net.ssl.SSLSocketFactory;
 import javax.net.ssl.TrustManager;
 import javax.net.ssl.X509TrustManager;
-import javax.validation.constraints.NotNull;
 import lombok.EqualsAndHashCode;
 import lombok.ToString;
 
@@ -72,12 +71,6 @@ import lombok.ToString;
 public final class TrustedWire implements Wire {
 
     /**
-     * Context.
-     */
-    private static final SSLSocketFactory FACTORY =
-        TrustedWire.context().getSocketFactory();
-
-    /**
      * Trust manager.
      */
     private static final TrustManager MANAGER = new X509TrustManager() {
@@ -86,14 +79,12 @@ public final class TrustedWire implements Wire {
             return new X509Certificate[0];
         }
         @Override
-        public void checkClientTrusted(
-            final X509Certificate[] certs,
+        public void checkClientTrusted(final X509Certificate[] certs,
             final String type) {
             // nothing to check here
         }
         @Override
-        public void checkServerTrusted(
-            final X509Certificate[] certs,
+        public void checkServerTrusted(final X509Certificate[] certs,
             final String types) {
             // nothing to check here
         }
@@ -108,8 +99,7 @@ public final class TrustedWire implements Wire {
      * Public ctor.
      * @param wire Original wire
      */
-    public TrustedWire(@NotNull(message = "wire can't be NULL")
-    final Wire wire) {
+    public TrustedWire(final Wire wire) {
         this.origin = wire;
     }
 
@@ -124,7 +114,7 @@ public final class TrustedWire implements Wire {
                 HttpsURLConnection.getDefaultSSLSocketFactory();
             try {
                 HttpsURLConnection.setDefaultSSLSocketFactory(
-                    TrustedWire.FACTORY
+                    TrustedWire.context().getSocketFactory()
                 );
                 return this.origin.send(req, home, method, headers, content);
             } finally {
