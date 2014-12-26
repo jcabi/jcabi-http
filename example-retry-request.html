@@ -38,7 +38,7 @@
                                                                     </ul>
                                                     </li>
                                                                                                                         <li >
-                            <span>                        <a href="apidocs-1.9.3/index.html" title="JavaDoc 1.9.3">JavaDoc 1.9.3</a>
+                            <span>                        <a href="apidocs-1.10/index.html" title="JavaDoc 1.10">JavaDoc 1.10</a>
         </span>
                                                                                                                                                                 <ul>
                                                                     </ul>
@@ -62,6 +62,12 @@
                                                             <ul>
                                                                                                     <li >
                             <span>                        <a href="optional-dependencies.html" title="Optional Dependencies">Optional Dependencies</a>
+        </span>
+                                                                                                                                                                <ul>
+                                                                    </ul>
+                                                    </li>
+                                                                                                                        <li >
+                            <span>                        <a href="pkix-validator.html" title="Suppress PKIX Validator">Suppress PKIX Validator</a>
         </span>
                                                                                                                                                                 <ul>
                                                                     </ul>
@@ -157,11 +163,11 @@
                             </div>
                             <ul class="badges">
                                 <li>
-                                    <strong itemprop="version">1.9.3</strong>
+                                    <strong itemprop="version">1.10</strong>
                                 </li>
                                 <li>
                                     
-                                    <time itemprop="datePublished" datetime="2014-12-26T10:46:39Z">
+                                    <time itemprop="datePublished" datetime="2014-12-26T11:34:31Z">
                                         
                                         26-Dec-2014
                                     </time>
@@ -210,7 +216,7 @@
                                                 <article role="article" itemprop="articleBody">
                             <div class="section">
 <h2><a name="HTTP_Request_that_Retries_on_Failure"></a>HTTP Request that Retries on Failure</h2>
-<p><a href="./apidocs-1.9.3/com/jcabi/http/wire/RetryWire.html"><tt>RetryWire</tt></a>. is a decorator of <a href="./apidocs-1.9.3/com/jcabi/http/Wire.html"><tt>Wire</tt></a> that retries to fetch a response a few times before giving up and throwing <tt>IOException</tt>, for example:</p>
+<p><a href="./apidocs-1.10/com/jcabi/http/wire/RetryWire.html"><tt>RetryWire</tt></a>. is a decorator of <a href="./apidocs-1.10/com/jcabi/http/Wire.html"><tt>Wire</tt></a> that retries to fetch a response a few times before giving up and throwing <tt>IOException</tt>, for example:</p>
 <div class="source">
 <pre>String body = new JdkRequest(&quot;http://www.google.com&quot;)
   .through(RetryWire.class);
