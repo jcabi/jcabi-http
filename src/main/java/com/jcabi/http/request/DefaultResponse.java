@@ -196,7 +196,7 @@ final class DefaultResponse implements Response {
             );
         }
         return text.append('\n')
-            .append(RequestBody.Printable.toString(this.content))
+            .append(new RequestBody.Printable(this.content))
             .toString();
     }
 

@@ -283,7 +283,7 @@ final class BaseRequest implements Request {
             );
         }
         return text.append('\n')
-            .append(RequestBody.Printable.toString(this.content))
+            .append(new RequestBody.Printable(this.content).toString())
             .toString();
     }
 
@@ -447,7 +447,7 @@ final class BaseRequest implements Request {
         }
         @Override
         public String toString() {
-            return RequestBody.Printable.toString(this.text);
+            return new RequestBody.Printable(this.text).toString();
         }
         @Override
         public Request back() {

@@ -29,13 +29,17 @@
  */
 package com.jcabi.http.wire;
 
+import com.jcabi.http.Request;
 import com.jcabi.http.mock.MkAnswer;
 import com.jcabi.http.mock.MkContainer;
 import com.jcabi.http.mock.MkGrizzlyContainer;
+import com.jcabi.http.mock.MkQuery;
 import com.jcabi.http.request.JdkRequest;
 import com.jcabi.http.response.RestResponse;
 import java.net.HttpURLConnection;
 import javax.ws.rs.core.HttpHeaders;
+import org.hamcrest.MatcherAssert;
+import org.hamcrest.Matchers;
 import org.junit.Test;
 
 /**
@@ -61,6 +65,33 @@ public final class VerboseWireTest {
             .as(RestResponse.class)
             .assertStatus(HttpURLConnection.HTTP_OK);
         container.stop();
+    }
+
+    /**
+     * VerboseWire can log request body.
+     * @throws Exception If something goes wrong inside
+     */
+    @Test
+    public void logsRequestBody() throws Exception {
+        final MkContainer container = new MkGrizzlyContainer().next(
+            new MkAnswer.Simple("")
+        ).start();
+        try {
+            new JdkRequest(container.home())
+                .through(VerboseWire.class)
+                .method(Request.POST)
+                .body().set("hello, world!").back()
+                .fetch()
+                .as(RestResponse.class)
+                .assertStatus(HttpURLConnection.HTTP_OK);
+            final MkQuery query = container.take();
+            MatcherAssert.assertThat(
+                query.body(),
+                Matchers.startsWith("hello,")
+            );
+        } finally {
+            container.stop();
+        }
     }
 
 }

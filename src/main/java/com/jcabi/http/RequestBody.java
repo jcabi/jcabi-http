@@ -133,20 +133,23 @@ public interface RequestBody {
          */
         private static final Charset CHARSET = Charset.forName("UTF-8");
         /**
-         * Utility class.
+         * Byte array.
          */
-        private Printable() {
-            // intentionally empty
-        }
+        @Immutable.Array
+        private final transient byte[] array;
         /**
-         * Safely print byte array.
-         * @param bytes Bytes to print
-         * @return Text, with ASCII symbols only
+         * Ctor.
+         * @param bytes Bytes to encapsulate
          */
-        public static String toString(final byte[] bytes) {
+        public Printable(final byte[] bytes) {
+            this.array = bytes;
+        }
+        @Override
+        public String toString() {
             final StringBuilder text = new StringBuilder(0);
-            final char[] chrs =
-                new String(bytes, Printable.CHARSET).toCharArray();
+            final char[] chrs = new String(
+                this.array, RequestBody.Printable.CHARSET
+            ).toCharArray();
             if (chrs.length > 0) {
                 for (final char chr : chrs) {
                     // @checkstyle MagicNumber (1 line)

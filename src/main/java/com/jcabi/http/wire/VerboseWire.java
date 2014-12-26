@@ -30,6 +30,7 @@
 package com.jcabi.http.wire;
 
 import com.jcabi.aspects.Immutable;
+import com.jcabi.aspects.Tv;
 import com.jcabi.http.Request;
 import com.jcabi.http.RequestBody;
 import com.jcabi.http.Response;
@@ -98,15 +99,14 @@ public final class VerboseWire implements Wire {
                 .append('\n');
         }
         final ByteArrayOutputStream output = new ByteArrayOutputStream();
-        // @checkstyle MagicNumber (1 line)
-        final byte[] buffer = new byte[8192];
+        final byte[] buffer = new byte[Tv.THOUSAND];
         for (int bytes = content.read(buffer); bytes != -1;
             bytes = content.read(buffer)) {
             output.write(buffer, 0, bytes);
         }
         output.flush();
         text.append('\n').append(
-            RequestBody.Printable.toString(output.toByteArray())
+            new RequestBody.Printable(output.toByteArray()).toString()
         );
         Logger.info(
             this,
