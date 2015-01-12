@@ -163,7 +163,7 @@ final class DefaultResponse implements Response {
     // @checkstyle MethodName (4 lines)
     @Override
     @SuppressWarnings("PMD.ShortMethodName")
-    public <T> T as(final Class<T> type) {
+    public <T extends Response> T as(final Class<T> type) {
         try {
             return type.getDeclaredConstructor(Response.class)
                 .newInstance(this);

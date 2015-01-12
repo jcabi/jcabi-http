@@ -112,6 +112,6 @@ public interface Response {
      * @checkstyle MethodName (3 lines)
      */
     @SuppressWarnings("PMD.ShortMethodName")
-    <T> T as(Class<T> type);
+    <T extends Response> T as(Class<T> type);
 
 }
