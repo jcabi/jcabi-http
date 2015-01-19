@@ -101,7 +101,7 @@ abstract class AbstractResponse implements Response {
      */
     @Override
     @SuppressWarnings("PMD.ShortMethodName")
-    public final <T> T as(final Class<T> type) {
+    public final <T extends Response> T as(final Class<T> type) {
         return this.response.as(type);
     }
 
