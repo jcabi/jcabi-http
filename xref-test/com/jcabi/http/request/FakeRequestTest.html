@@ -140,9 +140,29 @@
 <a class="jxr_linenumber" name="L132" href="#L132">132</a>             );
 <a class="jxr_linenumber" name="L133" href="#L133">133</a>     }
 <a class="jxr_linenumber" name="L134" href="#L134">134</a> 
-<a class="jxr_linenumber" name="L135" href="#L135">135</a> }
+<a class="jxr_linenumber" name="L135" href="#L135">135</a>     <em class="jxr_javadoccomment">/**</em>
+<a class="jxr_linenumber" name="L136" href="#L136">136</a> <em class="jxr_javadoccomment">     * FakeRequest can identify itself uniquely.</em>
+<a class="jxr_linenumber" name="L137" href="#L137">137</a> <em class="jxr_javadoccomment">     * @throws Exception If something goes wrong inside.</em>
+<a class="jxr_linenumber" name="L138" href="#L138">138</a> <em class="jxr_javadoccomment">     */</em>
+<a class="jxr_linenumber" name="L139" href="#L139">139</a>     @Test
+<a class="jxr_linenumber" name="L140" href="#L140">140</a>     <strong class="jxr_keyword">public</strong> <strong class="jxr_keyword">void</strong> identifiesUniquely() <strong class="jxr_keyword">throws</strong> Exception {
+<a class="jxr_linenumber" name="L141" href="#L141">141</a>         MatcherAssert.assertThat(
+<a class="jxr_linenumber" name="L142" href="#L142">142</a>             <strong class="jxr_keyword">new</strong> FakeRequest().header(<span class="jxr_string">"header-1"</span>, <span class="jxr_string">"value-1"</span>),
+<a class="jxr_linenumber" name="L143" href="#L143">143</a>             Matchers.not(
+<a class="jxr_linenumber" name="L144" href="#L144">144</a>                 Matchers.equalTo(
+<a class="jxr_linenumber" name="L145" href="#L145">145</a>                     <strong class="jxr_keyword">new</strong> FakeRequest().header(<span class="jxr_string">"header-2"</span>, <span class="jxr_string">"value-2"</span>)
+<a class="jxr_linenumber" name="L146" href="#L146">146</a>                 )
+<a class="jxr_linenumber" name="L147" href="#L147">147</a>             )
+<a class="jxr_linenumber" name="L148" href="#L148">148</a>         );
+<a class="jxr_linenumber" name="L149" href="#L149">149</a>         MatcherAssert.assertThat(
+<a class="jxr_linenumber" name="L150" href="#L150">150</a>             <strong class="jxr_keyword">new</strong> FakeRequest(),
+<a class="jxr_linenumber" name="L151" href="#L151">151</a>             Matchers.equalTo(<strong class="jxr_keyword">new</strong> FakeRequest())
+<a class="jxr_linenumber" name="L152" href="#L152">152</a>         );
+<a class="jxr_linenumber" name="L153" href="#L153">153</a>     }
+<a class="jxr_linenumber" name="L154" href="#L154">154</a> 
+<a class="jxr_linenumber" name="L155" href="#L155">155</a> }
 </pre>
 <hr/>
-<div id="footer">Copyright &#169; 2012&#x2013;2014 <a href="http://www.jcabi.com">jcabi.com</a>. All rights reserved.</div>
+<div id="footer">Copyright &#169; 2012&#x2013;2015 <a href="http://www.jcabi.com">jcabi.com</a>. All rights reserved.</div>
 </body>
 </html>

@@ -38,7 +38,7 @@
                                                                     </ul>
                                                     </li>
                                                                                                                         <li >
-                            <span>                        <a href="apidocs-1.10.1/index.html" title="JavaDoc 1.10.1">JavaDoc 1.10.1</a>
+                            <span>                        <a href="apidocs-1.10.2/index.html" title="JavaDoc 1.10.2">JavaDoc 1.10.2</a>
         </span>
                                                                                                                                                                 <ul>
                                                                     </ul>
@@ -163,13 +163,13 @@
                             </div>
                             <ul class="badges">
                                 <li>
-                                    <strong itemprop="version">1.10.1</strong>
+                                    <strong itemprop="version">1.10.2</strong>
                                 </li>
                                 <li>
                                     
-                                    <time itemprop="datePublished" datetime="2014-12-26T09:51:10Z">
+                                    <time itemprop="datePublished" datetime="2015-01-23T11:57:31Z">
                                         
-                                        26-Dec-2014
+                                        23-Jan-2015
                                     </time>
                                 </li>
                                 <li class="menu-button">menu</li>
@@ -216,8 +216,8 @@
                                                 <article role="article" itemprop="articleBody">
                             <div class="section">
 <h2><a name="Making_HTTP_Request"></a>Making HTTP Request</h2>
-<p>There is one interface <a href="./apidocs-1.10.1/com/jcabi/http/Request.html"><tt>Request</tt></a> that represents an HTTP request. There are a few implementations of the interface, and the most popular and easy to use is <a href="./apidocs-1.10.1/com/jcabi/http/request/JdkRequest.html"><tt>JdkRequest</tt></a>. It makes a request using native JDK class <a class="externalLink" href="http://docs.oracle.com/javase/7/docs/api/java/net/HttpURLConnection.html"><tt>java.net.HttpURLConnection</tt></a>.</p>
-<p>First, make an instance of <a href="./apidocs-1.10.1/com/jcabi/http/request/JdkRequest.html"><tt>JdkRequest</tt></a>, providing target URI as the first and the only constructor argument (<tt>String</tt>, <tt>URI</tt>, and <tt>URL</tt> types are accepted):</p>
+<p>There is one interface <a href="./apidocs-1.10.2/com/jcabi/http/Request.html"><tt>Request</tt></a> that represents an HTTP request. There are a few implementations of the interface, and the most popular and easy to use is <a href="./apidocs-1.10.2/com/jcabi/http/request/JdkRequest.html"><tt>JdkRequest</tt></a>. It makes a request using native JDK class <a class="externalLink" href="http://docs.oracle.com/javase/7/docs/api/java/net/HttpURLConnection.html"><tt>java.net.HttpURLConnection</tt></a>.</p>
+<p>First, make an instance of <a href="./apidocs-1.10.2/com/jcabi/http/request/JdkRequest.html"><tt>JdkRequest</tt></a>, providing target URI as the first and the only constructor argument (<tt>String</tt>, <tt>URI</tt>, and <tt>URL</tt> types are accepted):</p>
 <div class="source">
 <pre>Request request = new JdkRequest(&quot;http://my.example.com&quot;);</pre></div>
 <p>The object is ready to make an HTTP request using the URI provided, <tt>GET</tt> HTTP method, no custom HTTP headers and no request body. To fire an HTTP request and obtain a response use method <tt>fetch()</tt>:</p>
@@ -225,11 +225,11 @@
 <pre>Response response = request.fetch();
 int status = response.status();
 String body = response.body();</pre></div>
-<p><a href="./apidocs-1.10.1/com/jcabi/http/Request.html"><tt>Request</tt></a> is a trully immutable class, which means that you can't change any of its properties. However, you can create new requests. For example, you want to make a similar request, but with a <tt>POST</tt> HTTP method:</p>
+<p><a href="./apidocs-1.10.2/com/jcabi/http/Request.html"><tt>Request</tt></a> is a trully immutable class, which means that you can't change any of its properties. However, you can create new requests. For example, you want to make a similar request, but with a <tt>POST</tt> HTTP method:</p>
 <div class="source">
 <pre>Request post = request.method(Request.POST);
 post.fetch();</pre></div>
-<p>This is a bigger example of <a href="./apidocs-1.10.1/com/jcabi/http/Request.html"><tt>Request</tt></a> usage:</p>
+<p>This is a bigger example of <a href="./apidocs-1.10.2/com/jcabi/http/Request.html"><tt>Request</tt></a> usage:</p>
 <div class="source">
 <pre>Response response = new JdkRequest(&quot;http://my.example.com&quot;)
   .uri().path(&quot;/users&quot;).queryParam(&quot;id&quot;, &quot;456&quot;).back()
@@ -242,8 +242,8 @@ post.fetch();</pre></div>
   .header(&quot;User-Agent&quot;, &quot;My Custom App&quot;)
   .fetch();</pre></div>
 <p>This code will make a <tt>POST</tt> HTTP request to <tt>http://my.example.com/users?id=456</tt>. Request body will be set to <tt>salary=55000&amp;department=IT</tt>. There will be two HTTP headers in the request: <tt>Content-Type</tt> and <tt>User-Agent</tt>.</p>
-<p><a href="./apidocs-1.10.1/com/jcabi/http/Response.html"><tt>Response</tt></a> has a few methods that return its data, including <tt>status()</tt>, <tt>reason()</tt>, <tt>headers()</tt>, <tt>body()</tt>, and <tt>binary()</tt>. Besides that, there is a method <tt>as(Class)</tt>, which allows you to wrap an existing response with a new custom decorator, that implements more methods, suitable for a particular use case.</p>
-<p>The simpliest decorator is <a href="./apidocs-1.10.1/com/jcabi/http/response/RestResponse.html"><tt>RestResponse</tt></a>. It helps you to make assertions on the response and follow redirects, for example:</p>
+<p><a href="./apidocs-1.10.2/com/jcabi/http/Response.html"><tt>Response</tt></a> has a few methods that return its data, including <tt>status()</tt>, <tt>reason()</tt>, <tt>headers()</tt>, <tt>body()</tt>, and <tt>binary()</tt>. Besides that, there is a method <tt>as(Class)</tt>, which allows you to wrap an existing response with a new custom decorator, that implements more methods, suitable for a particular use case.</p>
+<p>The simpliest decorator is <a href="./apidocs-1.10.2/com/jcabi/http/response/RestResponse.html"><tt>RestResponse</tt></a>. It helps you to make assertions on the response and follow redirects, for example:</p>
 <div class="source">
 <pre>String page = new JdkRequest(&quot;http://my.example.com&quot;)
   .fetch()
@@ -254,7 +254,7 @@ post.fetch();</pre></div>
   .as(RestResponse.class)
   .assertStatus(200)
   .body();</pre></div>
-<p><a href="./apidocs-1.10.1/com/jcabi/http/response/RestResponse.html"><tt>RestResponse</tt></a> also helps you to retrieve cookies from a response:</p>
+<p><a href="./apidocs-1.10.2/com/jcabi/http/response/RestResponse.html"><tt>RestResponse</tt></a> also helps you to retrieve cookies from a response:</p>
 <div class="source">
 <pre>String cookie = new JdkRequest(&quot;http://my.example.com&quot;)
   .fetch()
@@ -267,7 +267,7 @@ post.fetch();</pre></div>
                 <footer class="legal-notes">
                     <div>
                         Copyright &#169;
-                                                                            2012-2014
+                                                                            2012-2015
                                             </div>
                     <div>jcabi.com, All Rights Reserved.</div>
                     <div><a href="http://maven.apache.org/privacy-policy.html">Privacy Policy</a>.</div>
