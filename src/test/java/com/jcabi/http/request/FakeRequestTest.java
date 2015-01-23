@@ -132,4 +132,20 @@ public final class FakeRequestTest {
             );
     }
 
+    /**
+     * FakeRequest can identify itself uniquely.
+     * @throws Exception If something goes wrong inside.
+     */
+    @Test
+    public void identifiesUniquely() throws Exception {
+        MatcherAssert.assertThat(
+            new FakeRequest().header("header-1", "value-1"),
+            Matchers.not(
+                Matchers.equalTo(
+                    new FakeRequest().header("header-2", "value-2")
+                )
+            )
+        );
+    }
+
 }

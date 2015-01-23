@@ -92,4 +92,22 @@ public final class BaseRequestTest {
             Matchers.hasToString("http://localhost:8080/")
         );
     }
+
+    /**
+     * FakeRequest can identify itself uniquely.
+     * @throws Exception If something goes wrong inside.
+     */
+    @Test
+    public void identifiesUniquely() throws Exception {
+        final Wire wire = Mockito.mock(Wire.class);
+        MatcherAssert.assertThat(
+            new BaseRequest(wire, "").header("header-1", "value-1"),
+            Matchers.not(
+                Matchers.equalTo(
+                    new BaseRequest(wire, "").header("header-2", "value-2")
+                )
+            )
+        );
+    }
+
 }
