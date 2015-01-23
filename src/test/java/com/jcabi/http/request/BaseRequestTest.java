@@ -108,6 +108,10 @@ public final class BaseRequestTest {
                 )
             )
         );
+        MatcherAssert.assertThat(
+            new BaseRequest(wire, ""),
+            Matchers.equalTo(new BaseRequest(wire, ""))
+        );
     }
 
 }

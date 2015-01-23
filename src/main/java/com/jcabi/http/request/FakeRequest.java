@@ -60,7 +60,7 @@ import lombok.EqualsAndHashCode;
  * @checkstyle ClassDataAbstractionCoupling (500 lines)
  */
 @Immutable
-@EqualsAndHashCode(of = "base")
+@EqualsAndHashCode(of = { "base", "code", "phrase", "hdrs", "content" })
 @Loggable(Loggable.DEBUG)
 @SuppressWarnings("PMD.TooManyMethods")
 public final class FakeRequest implements Request {

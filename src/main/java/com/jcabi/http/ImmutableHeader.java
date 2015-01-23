@@ -45,7 +45,7 @@ import lombok.ToString;
  */
 @Immutable
 @ToString
-@EqualsAndHashCode
+@EqualsAndHashCode(of = { "left", "right" })
 public final class ImmutableHeader implements Map.Entry<String, String> {
 
     /**

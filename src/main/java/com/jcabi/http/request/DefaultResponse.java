@@ -53,7 +53,7 @@ import lombok.EqualsAndHashCode;
  * @version $Id$
  */
 @Immutable
-@EqualsAndHashCode(of = "req")
+@EqualsAndHashCode(of = { "req", "code", "phrase", "hdrs", "content" })
 @Loggable(Loggable.DEBUG)
 final class DefaultResponse implements Response {
 

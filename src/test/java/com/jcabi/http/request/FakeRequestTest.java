@@ -146,6 +146,10 @@ public final class FakeRequestTest {
                 )
             )
         );
+        MatcherAssert.assertThat(
+            new FakeRequest(),
+            Matchers.equalTo(new FakeRequest())
+        );
     }
 
 }
