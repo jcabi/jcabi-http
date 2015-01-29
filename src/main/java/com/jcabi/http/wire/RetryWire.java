@@ -105,8 +105,8 @@ public final class RetryWire implements Wire {
                     return rsp;
                 }
                 Logger.warn(
-                    this, "%s %s returns %d status",
-                    method, home, rsp.status()
+                    this, "%s %s returns %d status (attempt #%d)",
+                    method, home, rsp.status(), attempt + 1
                 );
             } catch (final IOException ex) {
                 Logger.warn(
