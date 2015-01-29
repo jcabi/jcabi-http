@@ -112,17 +112,20 @@
 <a class="jxr_linenumber" name="L104" href="#L104">104</a>                 <strong class="jxr_keyword">if</strong> (rsp.status() &lt; HttpURLConnection.HTTP_INTERNAL_ERROR) {
 <a class="jxr_linenumber" name="L105" href="#L105">105</a>                     <strong class="jxr_keyword">return</strong> rsp;
 <a class="jxr_linenumber" name="L106" href="#L106">106</a>                 }
-<a class="jxr_linenumber" name="L107" href="#L107">107</a>                 Logger.warn(<strong class="jxr_keyword">this</strong>, <span class="jxr_string">"HTTP status code is %d"</span>, rsp.status());
-<a class="jxr_linenumber" name="L108" href="#L108">108</a>             } <strong class="jxr_keyword">catch</strong> (<strong class="jxr_keyword">final</strong> IOException ex) {
-<a class="jxr_linenumber" name="L109" href="#L109">109</a>                 Logger.warn(
-<a class="jxr_linenumber" name="L110" href="#L110">110</a>                     <strong class="jxr_keyword">this</strong>, <span class="jxr_string">"%s: %s"</span>,
-<a class="jxr_linenumber" name="L111" href="#L111">111</a>                     ex.getClass().getName(), ex.getLocalizedMessage()
-<a class="jxr_linenumber" name="L112" href="#L112">112</a>                 );
-<a class="jxr_linenumber" name="L113" href="#L113">113</a>             }
-<a class="jxr_linenumber" name="L114" href="#L114">114</a>             ++attempt;
-<a class="jxr_linenumber" name="L115" href="#L115">115</a>         }
-<a class="jxr_linenumber" name="L116" href="#L116">116</a>     }
-<a class="jxr_linenumber" name="L117" href="#L117">117</a> }
+<a class="jxr_linenumber" name="L107" href="#L107">107</a>                 Logger.warn(
+<a class="jxr_linenumber" name="L108" href="#L108">108</a>                     <strong class="jxr_keyword">this</strong>, <span class="jxr_string">"%s %s returns %d status"</span>,
+<a class="jxr_linenumber" name="L109" href="#L109">109</a>                     method, home, rsp.status()
+<a class="jxr_linenumber" name="L110" href="#L110">110</a>                 );
+<a class="jxr_linenumber" name="L111" href="#L111">111</a>             } <strong class="jxr_keyword">catch</strong> (<strong class="jxr_keyword">final</strong> IOException ex) {
+<a class="jxr_linenumber" name="L112" href="#L112">112</a>                 Logger.warn(
+<a class="jxr_linenumber" name="L113" href="#L113">113</a>                     <strong class="jxr_keyword">this</strong>, <span class="jxr_string">"%s: %s"</span>,
+<a class="jxr_linenumber" name="L114" href="#L114">114</a>                     ex.getClass().getName(), ex.getLocalizedMessage()
+<a class="jxr_linenumber" name="L115" href="#L115">115</a>                 );
+<a class="jxr_linenumber" name="L116" href="#L116">116</a>             }
+<a class="jxr_linenumber" name="L117" href="#L117">117</a>             ++attempt;
+<a class="jxr_linenumber" name="L118" href="#L118">118</a>         }
+<a class="jxr_linenumber" name="L119" href="#L119">119</a>     }
+<a class="jxr_linenumber" name="L120" href="#L120">120</a> }
 </pre>
 <hr/>
 <div id="footer">Copyright &#169; 2012&#x2013;2015 <a href="http://www.jcabi.com">jcabi.com</a>. All rights reserved.</div>

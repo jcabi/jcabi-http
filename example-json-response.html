@@ -38,7 +38,7 @@
                                                                     </ul>
                                                     </li>
                                                                                                                         <li >
-                            <span>                        <a href="apidocs-1.10.2/index.html" title="JavaDoc 1.10.2">JavaDoc 1.10.2</a>
+                            <span>                        <a href="apidocs-1.10.3/index.html" title="JavaDoc 1.10.3">JavaDoc 1.10.3</a>
         </span>
                                                                                                                                                                 <ul>
                                                                     </ul>
@@ -163,13 +163,13 @@
                             </div>
                             <ul class="badges">
                                 <li>
-                                    <strong itemprop="version">1.10.2</strong>
+                                    <strong itemprop="version">1.10.3</strong>
                                 </li>
                                 <li>
                                     
-                                    <time itemprop="datePublished" datetime="2015-01-23T11:57:31Z">
+                                    <time itemprop="datePublished" datetime="2015-01-29T01:52:38Z">
                                         
-                                        23-Jan-2015
+                                        29-Jan-2015
                                     </time>
                                 </li>
                                 <li class="menu-button">menu</li>
@@ -216,14 +216,14 @@
                                                 <article role="article" itemprop="articleBody">
                             <div class="section">
 <h2><a name="Managing_JSON_Responses"></a>Managing JSON Responses</h2>
-<p>When your HTTP <a href="./apidocs-1.10.2/com/jcabi/http/Response.html"><tt>Response</tt></a> contains a JSON document, it is convenient to use <a href="./apidocs-1.10.2/com/jcabi/http/response/JsonResponse.html"><tt>JsonResponse</tt></a> decorator to manipulate it, for example:</p>
+<p>When your HTTP <a href="./apidocs-1.10.3/com/jcabi/http/Response.html"><tt>Response</tt></a> contains a JSON document, it is convenient to use <a href="./apidocs-1.10.3/com/jcabi/http/response/JsonResponse.html"><tt>JsonResponse</tt></a> decorator to manipulate it, for example:</p>
 <div class="source">
 <pre>String name = new JdkRequest(&quot;http://my.example.com&quot;)
   .fetch()
   .as(JsonResponse.class)
   .json() // convert HTTP body to javax.json.JsonReader
   .readJsonObject().getString(&quot;name&quot;);</pre></div>
-<p>Method <a href="./apidocs-1.10.2/com/jcabi/http/response/JsonResponse.html"><tt>JsonResponse#json()</tt></a> converts HTTP body to an instance of class <a class="externalLink" href="http://docs.oracle.com/javaee/7/api/javax/json/JsonReader.html"><tt>JsonReader</tt></a>.</p>
+<p>Method <a href="./apidocs-1.10.3/com/jcabi/http/response/JsonResponse.html"><tt>JsonResponse#json()</tt></a> converts HTTP body to an instance of class <a class="externalLink" href="http://docs.oracle.com/javaee/7/api/javax/json/JsonReader.html"><tt>JsonReader</tt></a>.</p>
 <p>Don't forget to add these two dependencies to your classpath:</p>
 <div class="source">
 <pre>&lt;dependency&gt;
@@ -238,7 +238,7 @@
   &lt;version&gt;1.0.3&lt;/version&gt;
   &lt;scope&gt;runtime&lt;/scope&gt;
 &lt;/dependency&gt;</pre></div>
-<p>Read also about <a href="./apidocs-1.10.2/com/jcabi/http/response/RestResponse.html"><tt>RestResponse</tt></a>, which helps you to manage default HTTP response concepts.</p></div>
+<p>Read also about <a href="./apidocs-1.10.3/com/jcabi/http/response/RestResponse.html"><tt>RestResponse</tt></a>, which helps you to manage default HTTP response concepts.</p></div>
                         </article>
                     </div>
                 </main>
