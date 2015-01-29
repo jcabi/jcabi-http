@@ -104,7 +104,10 @@ public final class RetryWire implements Wire {
                 if (rsp.status() < HttpURLConnection.HTTP_INTERNAL_ERROR) {
                     return rsp;
                 }
-                Logger.warn(this, "HTTP status code is %d", rsp.status());
+                Logger.warn(
+                    this, "%s %s returns %d status",
+                    method, home, rsp.status()
+                );
             } catch (final IOException ex) {
                 Logger.warn(
                     this, "%s: %s",
