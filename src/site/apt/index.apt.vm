@@ -20,7 +20,7 @@ public class Main {
       .method(Request.GET)
       .header(HttpHeaders.ACCEPT, MediaType.TEXT_HTML)
       .fetch()
-      .as(HttpResponse.class)
+      .as(RestResponse.class)
       .assertStatus(HttpURLConnection.HTTP_OK)
       .body();
   }

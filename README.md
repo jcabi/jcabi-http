@@ -13,7 +13,7 @@ Also, read this blog post: [Fluent Java HTTP Client](http://www.yegor256.com/201
 ```java
 import com.jcabi.http.Request;
 import com.jcabi.http.request.JdkRequest;
-import com.jcabi.http.response.HttpResponse;
+import com.jcabi.http.response.RestResponse;
 public class Main {
   public static void main(String[] args) {
     String html = new JdkRequest("https://www.google.com")
@@ -21,7 +21,7 @@ public class Main {
       .method(Request.GET)
       .header(HttpHeaders.ACCEPT, MediaType.TEXT_HTML)
       .fetch()
-      .as(HttpResponse.class)
+      .as(RestResponse.class)
       .assertStatus(HttpURLConnection.HTTP_OK)
       .body();
   }

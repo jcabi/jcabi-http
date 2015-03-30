@@ -44,7 +44,7 @@ import javax.validation.constraints.NotNull;
  *   .method(Request.GET)
  *   .header(HttpHeaders.ACCEPT, MediaType.TEXT_XML)
  *   .fetch()
- *   .as(HttpResponse.class)
+ *   .as(RestResponse.class)
  *   .assertStatus(HttpURLConnection.HTTP_OK)
  *   .as(XmlResponse.class)
  *   .assertXPath("/page/links/link[@rel='see']")
