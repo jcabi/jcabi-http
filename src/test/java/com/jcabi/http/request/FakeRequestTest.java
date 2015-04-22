@@ -152,4 +152,28 @@ public final class FakeRequestTest {
         );
     }
 
+    /**
+     * FakeRequest returns the Response Body
+     *  if the matching Request Body is set.
+     * @throws Exception If something goes wrong inside.
+     */
+    @Test
+    public void fakeRequestReturnsMatchingResponseBody() throws Exception {
+        final String[] responses = {"the response 1", "the response 2"};
+        final String[] urls = {"^/first.*", "^/second.*"};
+        final String request = "the request";
+        final Request req =  new FakeRequest()
+            .withBody(urls[0], responses[0])
+            .withBody(urls[1], responses[1]);
+        req.uri().set(new URI("/first/path")).back()
+            .body().set(request).back()
+            .fetch()
+            .as(RestResponse.class)
+            .assertBody(Matchers.is(responses[0]));
+        req.uri().set(new URI("/second/path")).back()
+            .body().set(request).back()
+            .fetch()
+            .as(RestResponse.class)
+            .assertBody(Matchers.is(responses[1]));
+    }
 }
