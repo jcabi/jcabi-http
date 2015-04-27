@@ -58,8 +58,8 @@ import lombok.EqualsAndHashCode;
  *
  * @author Yegor Bugayenko (yegor@tpc2.com)
  * @version $Id$
- * @checkstyle ClassDataAbstractionCoupling (500 lines)
  * @since 0.9
+ * @checkstyle ClassDataAbstractionCoupling (500 lines)
  */
 @Immutable
 @EqualsAndHashCode(of = { "base", "code", "phrase", "hdrs", "content" })
@@ -169,7 +169,8 @@ public final class FakeRequest implements Request {
         this.code = status;
         this.phrase = reason;
         this.hdrs = new Array<Map.Entry<String, String>>(headers);
-        this.content = bodies;
+        this.content = new ConcurrentHashMap<Pattern, byte[]>(bodies.size());
+        this.content.putAll(bodies);
     }
 
     @Override
@@ -334,7 +335,7 @@ public final class FakeRequest implements Request {
         byte[] res = FakeRequest.EMPTY_BYTE_ARRAY;
         for (final Map.Entry<Pattern, byte[]> entry : this.content.entrySet()) {
             if (entry.getKey().matcher(url).matches()) {
-                res =  entry.getValue();
+                res = entry.getValue();
                 break;
             }
         }

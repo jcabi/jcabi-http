@@ -153,12 +153,11 @@ public final class FakeRequestTest {
     }
 
     /**
-     * FakeRequest returns the Response Body
-     *  if the matching Request Body is set.
+     * FakeRequest can return matching Response body
      * @throws Exception If something goes wrong inside.
      */
     @Test
-    public void fakeRequestReturnsMatchingResponseBody() throws Exception {
+    public void returnsMatchingResponseBody() throws Exception {
         final String[] responses = {"the response 1", "the response 2"};
         final String[] urls = {"^/first.*", "^/second.*"};
         final String request = "the request";
