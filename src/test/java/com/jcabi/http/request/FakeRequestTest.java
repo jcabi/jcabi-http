@@ -153,7 +153,7 @@ public final class FakeRequestTest {
     }
 
     /**
-     * FakeRequest can return matching Response body
+     * FakeRequest can return matching Response body.
      * @throws Exception If something goes wrong inside.
      */
     @Test
