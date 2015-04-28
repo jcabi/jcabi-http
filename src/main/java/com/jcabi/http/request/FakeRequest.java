@@ -38,6 +38,7 @@ import com.jcabi.http.RequestURI;
 import com.jcabi.http.Response;
 import com.jcabi.http.Wire;
 import com.jcabi.immutable.Array;
+import com.jcabi.immutable.ArrayMap;
 import java.io.IOException;
 import java.io.InputStream;
 import java.net.HttpURLConnection;
@@ -118,7 +119,7 @@ public final class FakeRequest implements Request {
     /**
      * Content received.
      */
-    private final transient Map<Pattern, byte[]> content;
+    private final transient ArrayMap<Pattern, byte[]> content;
 
     /**
      * Public ctor.
@@ -169,8 +170,7 @@ public final class FakeRequest implements Request {
         this.code = status;
         this.phrase = reason;
         this.hdrs = new Array<Map.Entry<String, String>>(headers);
-        this.content = new ConcurrentHashMap<Pattern, byte[]>(bodies.size());
-        this.content.putAll(bodies);
+        this.content = new ArrayMap<Pattern, byte[]>(bodies);
     }
 
     @Override
