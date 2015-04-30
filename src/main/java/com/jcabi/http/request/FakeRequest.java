@@ -38,6 +38,7 @@ import com.jcabi.http.RequestURI;
 import com.jcabi.http.Response;
 import com.jcabi.http.Wire;
 import com.jcabi.immutable.Array;
+import com.jcabi.immutable.ArrayMap;
 import java.io.IOException;
 import java.io.InputStream;
 import java.net.HttpURLConnection;
@@ -45,6 +46,8 @@ import java.nio.charset.Charset;
 import java.util.Collection;
 import java.util.Collections;
 import java.util.Map;
+import java.util.concurrent.ConcurrentHashMap;
+import java.util.regex.Pattern;
 import javax.validation.constraints.NotNull;
 import lombok.EqualsAndHashCode;
 
@@ -91,7 +94,7 @@ public final class FakeRequest implements Request {
                     FakeRequest.this.code,
                     FakeRequest.this.phrase,
                     FakeRequest.this.hdrs,
-                    FakeRequest.this.content
+                    FakeRequest.this.bodyForHome(home)
                 );
             }
         },
@@ -116,8 +119,7 @@ public final class FakeRequest implements Request {
     /**
      * Content received.
      */
-    @Immutable.Array
-    private final transient byte[] content;
+    private final transient ArrayMap<Pattern, byte[]> content;
 
     /**
      * Public ctor.
@@ -127,7 +129,7 @@ public final class FakeRequest implements Request {
             HttpURLConnection.HTTP_OK,
             "OK",
             Collections.<Map.Entry<String, String>>emptyList(),
-            FakeRequest.EMPTY_BYTE_ARRAY
+            Collections.<Pattern, byte[]>emptyMap()
         );
     }
 
@@ -144,10 +146,31 @@ public final class FakeRequest implements Request {
         @NotNull(message = "list of headers can't be NULL")
         final Collection<Map.Entry<String, String>> headers,
         @NotNull(message = "body can't be NULL") final byte[] body) {
+        this(
+            status,
+            reason,
+            headers,
+            Collections.singletonMap(Pattern.compile(".*"), body.clone())
+        );
+    }
+
+    /**
+     * Public ctor.
+     * @param status HTTP status code to return
+     * @param reason HTTP reason
+     * @param headers HTTP headers
+     * @param bodies HTTP bodies to return
+     * @checkstyle ParameterNumber (10 lines)
+     */
+    public FakeRequest(final int status,
+        @NotNull(message = "HTTP reason can't be NULL") final String reason,
+        @NotNull(message = "list of headers can't be NULL")
+        final Collection<Map.Entry<String, String>> headers,
+        final Map<Pattern, byte[]> bodies) {
         this.code = status;
         this.phrase = reason;
         this.hdrs = new Array<Map.Entry<String, String>>(headers);
-        this.content = body.clone();
+        this.content = new ArrayMap<Pattern, byte[]>(bodies);
     }
 
     @Override
@@ -192,7 +215,7 @@ public final class FakeRequest implements Request {
 
     @Override
     public Response fetch(final InputStream stream) throws IOException {
-        if (this.content.length > 0) {
+        if (this.content.size() > 0) {
             throw new IllegalStateException(
                 "Request Body is not empty, use fetch() instead"
             );
@@ -272,4 +295,50 @@ public final class FakeRequest implements Request {
         );
     }
 
+    /**
+     * Make a similar request, which returns the provided body
+     *  if the url matching regexp.
+     * @param regexp Url regexp
+     * @param text Body
+     * @return New request
+     */
+    public FakeRequest withBody(final String regexp, final String text) {
+        return this.withBody(regexp, text.getBytes(FakeRequest.CHARSET));
+    }
+
+    /**
+     * Make a similar request, which returns the provided body
+     *  if the url matching regexp.
+     * @param regexp Url regexp
+     * @param body Body
+     * @return New request
+     */
+    public FakeRequest withBody(final String regexp, final byte[] body) {
+        final ConcurrentHashMap<Pattern, byte[]> map =
+            new ConcurrentHashMap<Pattern, byte[]>(this.content.size() + 1);
+        map.putAll(this.content);
+        map.put(Pattern.compile(regexp), body);
+        return new FakeRequest(
+            this.code,
+            this.phrase,
+            this.hdrs,
+            map
+        );
+    }
+
+    /**
+     * Looking for matching home.
+     * @param url Url
+     * @return Body
+     */
+    private byte[] bodyForHome(final String url) {
+        byte[] res = FakeRequest.EMPTY_BYTE_ARRAY;
+        for (final Map.Entry<Pattern, byte[]> entry : this.content.entrySet()) {
+            if (entry.getKey().matcher(url).matches()) {
+                res = entry.getValue();
+                break;
+            }
+        }
+        return res;
+    }
 }
