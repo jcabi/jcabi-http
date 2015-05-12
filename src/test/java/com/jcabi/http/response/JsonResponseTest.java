@@ -72,11 +72,11 @@ public final class JsonResponseTest {
     @Test
     public void readsControlCharacters() throws Exception {
         final Response resp = new FakeRequest()
-            .withBody("{\"test\":\n\"\u001Fblah\u0001cwhoa\u0000!\"}").fetch();
+            .withBody("{\"test\":\n\"\u001Fblah\uFFFDcwhoa\u0000!\"}").fetch();
         final JsonResponse response = new JsonResponse(resp);
         MatcherAssert.assertThat(
             response.json().readObject().getString("test"),
-            Matchers.is("\u001Fblah\u0001cwhoa\u0000!")
+            Matchers.is("\u001Fblah\uFFFDcwhoa\u0000!")
         );
     }
 
