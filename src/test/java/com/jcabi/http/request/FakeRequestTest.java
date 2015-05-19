@@ -66,6 +66,25 @@ public final class FakeRequestTest {
             .assertHeader(HttpHeaders.CONTENT_TYPE, MediaType.TEXT_PLAIN)
             .assertBody(Matchers.containsString("are you?"));
     }
+    
+    /**
+     * FakeRequest can fetch a fake response.
+     * @throws Exception If something goes wrong inside
+     */
+    @Test
+    public void sendsHttpRequestAndProcessesHttpBinaryResponse() throws Exception {
+    	new FakeRequest()
+    	.withStatus(HttpURLConnection.HTTP_OK)
+    	.withReason("OK")
+    	.withHeader(HttpHeaders.CONTENT_TYPE, MediaType.TEXT_PLAIN)
+    	.withBody("how are you?".getBytes())
+    	.uri().path("/helloall").back()
+    	.method(Request.POST)
+    	.fetch().as(RestResponse.class)
+    	.assertStatus(HttpURLConnection.HTTP_OK)
+    	.assertHeader(HttpHeaders.CONTENT_TYPE, MediaType.TEXT_PLAIN)
+    	.assertBinary(Matchers.equalTo("how are you?".getBytes()));
+    }
 
     /**
      * FakeRequest can change URI.

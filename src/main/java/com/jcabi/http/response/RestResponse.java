@@ -166,6 +166,26 @@ public final class RestResponse extends AbstractResponse {
     }
 
     /**
+     * Verifies HTTP response body content against provided matcher,
+     * and throws {@link AssertionError} in case of mismatch.
+     * @param matcher The matcher to use
+     * @return This object
+     */
+    @NotNull(message = "REST response is never NULL")
+    public RestResponse assertBinary(
+    		@NotNull(message = "body matcher can't be NULL")
+    		final Matcher<byte[]> matcher) {
+    	MatcherAssert.assertThat(
+    			String.format(
+    					"HTTP response binary content is not valid:%n%s",
+    					this
+    					),
+    					this.binary(), matcher
+    			);
+    	return this;
+    }
+
+    /**
      * Verifies HTTP header against provided matcher, and throws
      * {@link AssertionError} in case of mismatch.
      *
