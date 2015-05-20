@@ -49,6 +49,21 @@ import org.junit.Test;
 public final class FakeRequestTest {
 
     /**
+     * Reason phrase.
+     */
+    private static final String REASON_OK = "OK";
+
+    /**
+     * Body message: how are you?
+     */
+    private static final String BODY_HOW_ARE_YOU = "how are you?";
+
+    /**
+     * Path of hello all request.
+     */
+    private static final String PATH_HELLO_ALL = "/helloall";
+
+    /**
      * FakeRequest can fetch a fake response.
      * @throws Exception If something goes wrong inside
      */
@@ -56,34 +71,35 @@ public final class FakeRequestTest {
     public void sendsHttpRequestAndProcessesHttpResponse() throws Exception {
         new FakeRequest()
             .withStatus(HttpURLConnection.HTTP_OK)
-            .withReason("OK")
+            .withReason(REASON_OK)
             .withHeader(HttpHeaders.CONTENT_TYPE, MediaType.TEXT_PLAIN)
-            .withBody("how are you?")
-            .uri().path("/helloall").back()
+            .withBody(BODY_HOW_ARE_YOU)
+            .uri().path(PATH_HELLO_ALL).back()
             .method(Request.POST)
             .fetch().as(RestResponse.class)
             .assertStatus(HttpURLConnection.HTTP_OK)
             .assertHeader(HttpHeaders.CONTENT_TYPE, MediaType.TEXT_PLAIN)
             .assertBody(Matchers.containsString("are you?"));
     }
-    
+
     /**
      * FakeRequest can fetch a fake response.
      * @throws Exception If something goes wrong inside
      */
     @Test
-    public void sendsHttpRequestAndProcessesHttpBinaryResponse() throws Exception {
-    	new FakeRequest()
-    	.withStatus(HttpURLConnection.HTTP_OK)
-    	.withReason("OK")
-    	.withHeader(HttpHeaders.CONTENT_TYPE, MediaType.TEXT_PLAIN)
-    	.withBody("how are you?".getBytes())
-    	.uri().path("/helloall").back()
-    	.method(Request.POST)
-    	.fetch().as(RestResponse.class)
-    	.assertStatus(HttpURLConnection.HTTP_OK)
-    	.assertHeader(HttpHeaders.CONTENT_TYPE, MediaType.TEXT_PLAIN)
-    	.assertBinary(Matchers.equalTo("how are you?".getBytes()));
+    public void sendsHttpRequestAndProcessesHttpBinaryResponse()
+        throws Exception {
+        new FakeRequest()
+            .withStatus(HttpURLConnection.HTTP_OK)
+            .withReason(REASON_OK)
+            .withHeader(HttpHeaders.CONTENT_TYPE, MediaType.TEXT_PLAIN)
+            .withBody(BODY_HOW_ARE_YOU.getBytes())
+            .uri().path(PATH_HELLO_ALL).back()
+            .method(Request.POST)
+            .fetch().as(RestResponse.class)
+            .assertStatus(HttpURLConnection.HTTP_OK)
+            .assertHeader(HttpHeaders.CONTENT_TYPE, MediaType.TEXT_PLAIN)
+            .assertBinary(Matchers.equalTo(BODY_HOW_ARE_YOU.getBytes()));
     }
 
     /**

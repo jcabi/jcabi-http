@@ -173,16 +173,16 @@ public final class RestResponse extends AbstractResponse {
      */
     @NotNull(message = "REST response is never NULL")
     public RestResponse assertBinary(
-    		@NotNull(message = "body matcher can't be NULL")
-    		final Matcher<byte[]> matcher) {
-    	MatcherAssert.assertThat(
-    			String.format(
-    					"HTTP response binary content is not valid:%n%s",
-    					this
-    					),
-    					this.binary(), matcher
-    			);
-    	return this;
+        @NotNull(message = "body matcher can't be NULL")
+        final Matcher<byte[]> matcher) {
+        MatcherAssert.assertThat(
+            String.format(
+                "HTTP response binary content is not valid:%n%s",
+                this
+            ), this.binary(),
+            matcher
+        );
+        return this;
     }
 
     /**
