@@ -39,6 +39,7 @@ import javax.ws.rs.core.MediaType;
 import org.apache.commons.lang3.CharEncoding;
 import org.hamcrest.MatcherAssert;
 import org.hamcrest.Matchers;
+import org.junit.Ignore;
 import org.junit.Test;
 
 /**
@@ -49,32 +50,14 @@ import org.junit.Test;
 public final class FakeRequestTest {
 
     /**
-     * Reason phrase.
-     */
-    private static final String REASON_OK = "OK";
-
-    /**
-     * Body message: how are you?
-     */
-    private static final String BODY_HOW_ARE_YOU = "how are you?";
-
-    /**
-     * Path of hello all request.
-     */
-    private static final String PATH_HELLO_ALL = "/helloall";
-
-    /**
      * FakeRequest can fetch a fake response.
      * @throws Exception If something goes wrong inside
      */
     @Test
     public void sendsHttpRequestAndProcessesHttpResponse() throws Exception {
-        new FakeRequest()
-            .withStatus(HttpURLConnection.HTTP_OK)
-            .withReason(REASON_OK)
-            .withHeader(HttpHeaders.CONTENT_TYPE, MediaType.TEXT_PLAIN)
-            .withBody(BODY_HOW_ARE_YOU)
-            .uri().path(PATH_HELLO_ALL).back()
+        this.generateMainRequest()
+            .withBody("how are you?")
+            .uri().path("/helloall").back()
             .method(Request.POST)
             .fetch().as(RestResponse.class)
             .assertStatus(HttpURLConnection.HTTP_OK)
@@ -83,23 +66,21 @@ public final class FakeRequestTest {
     }
 
     /**
-     * FakeRequest can fetch a fake response.
-     * @throws Exception If something goes wrong inside
+     * FakeRequest can fetch a fake response with binary response.
+     * @throws Exception If something goes wrong inside.
      */
     @Test
     public void sendsHttpRequestAndProcessesHttpBinaryResponse()
         throws Exception {
-        new FakeRequest()
-            .withStatus(HttpURLConnection.HTTP_OK)
-            .withReason(REASON_OK)
-            .withHeader(HttpHeaders.CONTENT_TYPE, MediaType.TEXT_PLAIN)
-            .withBody(BODY_HOW_ARE_YOU.getBytes())
-            .uri().path(PATH_HELLO_ALL).back()
+        final byte[] content = "Binary body content".getBytes();
+        this.generateMainRequest()
+            .withBody(content)
+            .uri().path("/binContent").back()
             .method(Request.POST)
             .fetch().as(RestResponse.class)
             .assertStatus(HttpURLConnection.HTTP_OK)
             .assertHeader(HttpHeaders.CONTENT_TYPE, MediaType.TEXT_PLAIN)
-            .assertBinary(Matchers.equalTo(BODY_HOW_ARE_YOU.getBytes()));
+            .assertBinary(Matchers.equalTo(content));
     }
 
     /**
@@ -185,6 +166,19 @@ public final class FakeRequestTest {
             new FakeRequest(),
             Matchers.equalTo(new FakeRequest())
         );
+    }
+
+    /**
+     * Helper method that generates a FakeRequest.
+     * @return An instance of FakeRequest.
+     * @throws Exception If something goes wrong inside.
+     */
+    @Ignore
+    private FakeRequest generateMainRequest() throws Exception {
+        return new FakeRequest()
+            .withStatus(HttpURLConnection.HTTP_OK)
+            .withReason("OK")
+            .withHeader(HttpHeaders.CONTENT_TYPE, MediaType.TEXT_PLAIN);
     }
 
 }
