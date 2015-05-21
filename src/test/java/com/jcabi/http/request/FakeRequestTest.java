@@ -39,6 +39,7 @@ import javax.ws.rs.core.MediaType;
 import org.apache.commons.lang3.CharEncoding;
 import org.hamcrest.MatcherAssert;
 import org.hamcrest.Matchers;
+import org.junit.Ignore;
 import org.junit.Test;
 
 /**
@@ -54,10 +55,7 @@ public final class FakeRequestTest {
      */
     @Test
     public void sendsHttpRequestAndProcessesHttpResponse() throws Exception {
-        new FakeRequest()
-            .withStatus(HttpURLConnection.HTTP_OK)
-            .withReason("OK")
-            .withHeader(HttpHeaders.CONTENT_TYPE, MediaType.TEXT_PLAIN)
+        this.generateMainRequest()
             .withBody("how are you?")
             .uri().path("/helloall").back()
             .method(Request.POST)
@@ -65,6 +63,24 @@ public final class FakeRequestTest {
             .assertStatus(HttpURLConnection.HTTP_OK)
             .assertHeader(HttpHeaders.CONTENT_TYPE, MediaType.TEXT_PLAIN)
             .assertBody(Matchers.containsString("are you?"));
+    }
+
+    /**
+     * FakeRequest can fetch a fake response with binary response.
+     * @throws Exception If something goes wrong inside.
+     */
+    @Test
+    public void sendsHttpRequestAndProcessesHttpBinaryResponse()
+        throws Exception {
+        final byte[] content = "Binary body content".getBytes();
+        this.generateMainRequest()
+            .withBody(content)
+            .uri().path("/binContent").back()
+            .method(Request.POST)
+            .fetch().as(RestResponse.class)
+            .assertStatus(HttpURLConnection.HTTP_OK)
+            .assertHeader(HttpHeaders.CONTENT_TYPE, MediaType.TEXT_PLAIN)
+            .assertBinary(Matchers.equalTo(content));
     }
 
     /**
@@ -150,6 +166,19 @@ public final class FakeRequestTest {
             new FakeRequest(),
             Matchers.equalTo(new FakeRequest())
         );
+    }
+
+    /**
+     * Helper method that generates a FakeRequest.
+     * @return An instance of FakeRequest.
+     * @throws Exception If something goes wrong inside.
+     */
+    @Ignore
+    private FakeRequest generateMainRequest() throws Exception {
+        return new FakeRequest()
+            .withStatus(HttpURLConnection.HTTP_OK)
+            .withReason("OK")
+            .withHeader(HttpHeaders.CONTENT_TYPE, MediaType.TEXT_PLAIN);
     }
 
 }
