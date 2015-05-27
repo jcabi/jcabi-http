@@ -82,9 +82,10 @@ public final class JdkRequest implements Request {
         // @checkstyle ParameterNumber (6 lines)
         @Override
         public Response send(final Request req, final String home,
-            final String method,
-            final Collection<Map.Entry<String, String>> headers,
-            final InputStream content) throws IOException {
+							 final String method,
+							 final Collection<Map.Entry<String, String>> headers,
+							 final InputStream content,
+							 final int connectTimeout, final int readTimeout) throws IOException {
             final URLConnection raw = new URL(home).openConnection();
             if (!(raw instanceof HttpURLConnection)) {
                 throw new IOException(
@@ -96,6 +97,8 @@ public final class JdkRequest implements Request {
             }
             final HttpURLConnection conn = HttpURLConnection.class.cast(raw);
             try {
+				conn.setConnectTimeout(connectTimeout);
+				conn.setReadTimeout(readTimeout);
                 conn.setRequestMethod(method);
                 conn.setUseCaches(false);
                 conn.setInstanceFollowRedirects(false);
@@ -261,7 +264,12 @@ public final class JdkRequest implements Request {
         return this.base.method(method);
     }
 
-    @Override
+	@Override
+	public Request timeout(int connect, int read) {
+		return this.base.timeout(connect, read);
+	}
+
+	@Override
     public Response fetch() throws IOException {
         return this.base.fetch();
     }

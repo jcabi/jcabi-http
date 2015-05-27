@@ -29,17 +29,20 @@
  */
 package com.jcabi.http.wire;
 
-import com.jcabi.aspects.Immutable;
-import com.jcabi.aspects.Timeable;
-import com.jcabi.http.Request;
-import com.jcabi.http.Response;
-import com.jcabi.http.Wire;
 import java.io.IOException;
 import java.io.InputStream;
 import java.util.Collection;
 import java.util.Map;
 import java.util.concurrent.TimeUnit;
+
 import javax.validation.constraints.NotNull;
+
+import com.jcabi.aspects.Immutable;
+import com.jcabi.aspects.Timeable;
+import com.jcabi.http.Request;
+import com.jcabi.http.Response;
+import com.jcabi.http.Wire;
+
 import lombok.EqualsAndHashCode;
 import lombok.ToString;
 
@@ -85,9 +88,11 @@ public final class OneMinuteWire implements Wire {
     @Override
     @Timeable(limit = 1, unit = TimeUnit.MINUTES)
     public Response send(final Request req, final String home,
-        final String method,
-        final Collection<Map.Entry<String, String>> headers,
-        final InputStream content) throws IOException {
-        return this.origin.send(req, home, method, headers, content);
+						 final String method,
+						 final Collection<Map.Entry<String, String>> headers,
+						 final InputStream content,
+						 final int connectTimeout, final int readTimeout) throws IOException {
+        return this.origin.send(req, home, method, headers, content,
+				connectTimeout, readTimeout);
     }
 }

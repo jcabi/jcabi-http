@@ -29,6 +29,16 @@
  */
 package com.jcabi.http.request;
 
+import java.io.IOException;
+import java.io.InputStream;
+import java.net.HttpURLConnection;
+import java.nio.charset.Charset;
+import java.util.Collection;
+import java.util.Collections;
+import java.util.Map;
+
+import javax.validation.constraints.NotNull;
+
 import com.jcabi.aspects.Immutable;
 import com.jcabi.aspects.Loggable;
 import com.jcabi.http.ImmutableHeader;
@@ -38,14 +48,7 @@ import com.jcabi.http.RequestURI;
 import com.jcabi.http.Response;
 import com.jcabi.http.Wire;
 import com.jcabi.immutable.Array;
-import java.io.IOException;
-import java.io.InputStream;
-import java.net.HttpURLConnection;
-import java.nio.charset.Charset;
-import java.util.Collection;
-import java.util.Collections;
-import java.util.Map;
-import javax.validation.constraints.NotNull;
+
 import lombok.EqualsAndHashCode;
 
 /**
@@ -83,9 +86,9 @@ public final class FakeRequest implements Request {
         new Wire() {
             @Override
             public Response send(final Request req, final String home,
-                final String method,
-                final Collection<Map.Entry<String, String>> headers,
-                final InputStream text) throws IOException {
+								 final String method,
+								 final Collection<Map.Entry<String, String>> headers,
+								 final InputStream text, int connectTimeout, int readTimeout) throws IOException {
                 return new DefaultResponse(
                     req,
                     FakeRequest.this.code,
@@ -185,7 +188,12 @@ public final class FakeRequest implements Request {
         return this.base.method(method);
     }
 
-    @Override
+	@Override
+	public Request timeout(int connect, int read) {
+		return this.base.timeout(connect, read);
+	}
+
+	@Override
     public Response fetch() throws IOException {
         return this.base.fetch();
     }

@@ -29,16 +29,6 @@
  */
 package com.jcabi.http.request;
 
-import com.jcabi.aspects.Immutable;
-import com.jcabi.aspects.Loggable;
-import com.jcabi.http.ImmutableHeader;
-import com.jcabi.http.Request;
-import com.jcabi.http.RequestBody;
-import com.jcabi.http.RequestURI;
-import com.jcabi.http.Response;
-import com.jcabi.http.Wire;
-import com.jcabi.immutable.Array;
-import com.jcabi.log.Logger;
 import java.io.ByteArrayInputStream;
 import java.io.IOException;
 import java.io.InputStream;
@@ -52,10 +42,23 @@ import java.nio.charset.Charset;
 import java.util.Collection;
 import java.util.LinkedList;
 import java.util.Map;
+
 import javax.json.Json;
 import javax.json.JsonStructure;
 import javax.validation.constraints.NotNull;
 import javax.ws.rs.core.UriBuilder;
+
+import com.jcabi.aspects.Immutable;
+import com.jcabi.aspects.Loggable;
+import com.jcabi.http.ImmutableHeader;
+import com.jcabi.http.Request;
+import com.jcabi.http.RequestBody;
+import com.jcabi.http.RequestURI;
+import com.jcabi.http.Response;
+import com.jcabi.http.Wire;
+import com.jcabi.immutable.Array;
+import com.jcabi.log.Logger;
+
 import lombok.EqualsAndHashCode;
 
 /**
@@ -106,6 +109,16 @@ final class BaseRequest implements Request {
      */
     private final transient String mtd;
 
+	/**
+	 * Socket timeout to use
+	 */
+	private final transient int connectTimeout;
+
+	/**
+	 * Read timeout to use
+	 */
+	private final transient int readTimeout;
+
     /**
      * Headers.
      */
@@ -130,6 +143,22 @@ final class BaseRequest implements Request {
         );
     }
 
+
+	/**
+	 * Public ctor.
+	 * @param wre Wire
+	 * @param uri The resource to work with
+	 * @param headers Headers
+	 * @param method HTTP method
+	 * @param body HTTP request body
+	 * @checkstyle ParameterNumber (5 lines)
+	 */
+	BaseRequest(final Wire wre, final String uri,
+				final Iterable<Map.Entry<String, String>> headers,
+				final String method, final byte[] body) {
+		this(wre, uri, headers, method, body, 0, 0);
+	}
+
     /**
      * Public ctor.
      * @param wre Wire
@@ -141,7 +170,8 @@ final class BaseRequest implements Request {
      */
     BaseRequest(final Wire wre, final String uri,
         final Iterable<Map.Entry<String, String>> headers,
-        final String method, final byte[] body) {
+        final String method, final byte[] body,
+		final int connectTimeout, final int readTimeout) {
         this.wire = wre;
         URI addr = URI.create(uri);
         if (addr.getPath().isEmpty()) {
@@ -151,6 +181,8 @@ final class BaseRequest implements Request {
         this.hdrs = new Array<Map.Entry<String, String>>(headers);
         this.mtd = method;
         this.content = body.clone();
+		this.connectTimeout = connectTimeout;
+		this.readTimeout = readTimeout;
     }
 
     @Override
@@ -209,7 +241,20 @@ final class BaseRequest implements Request {
         );
     }
 
-    @Override
+	@Override
+	public Request timeout(int connect, int read) {
+		return new BaseRequest(
+			this.wire,
+			this.home,
+			this.hdrs,
+			this.mtd,
+			this.content,
+				connect,
+				read
+		);
+	}
+
+	@Override
     public Response fetch() throws IOException {
         return this.fetchResponse(new ByteArrayInputStream(this.content));
     }
@@ -297,9 +342,9 @@ final class BaseRequest implements Request {
         throws IOException {
         final long start = System.currentTimeMillis();
         final Response response = this.wire.send(
-            this, this.home, this.mtd,
-            this.hdrs, stream
-        );
+				this, this.home, this.mtd,
+				this.hdrs, stream, this.connectTimeout,
+				this.readTimeout);
         final URI uri = URI.create(this.home);
         Logger.info(
             this,

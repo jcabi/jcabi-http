@@ -29,19 +29,22 @@
  */
 package com.jcabi.http.wire;
 
+import java.io.IOException;
+import java.io.InputStream;
+import java.util.Collection;
+import java.util.LinkedList;
+import java.util.Map;
+
+import javax.validation.constraints.NotNull;
+import javax.ws.rs.core.HttpHeaders;
+
 import com.jcabi.aspects.Immutable;
 import com.jcabi.http.ImmutableHeader;
 import com.jcabi.http.Request;
 import com.jcabi.http.Response;
 import com.jcabi.http.Wire;
 import com.jcabi.manifests.Manifests;
-import java.io.IOException;
-import java.io.InputStream;
-import java.util.Collection;
-import java.util.LinkedList;
-import java.util.Map;
-import javax.validation.constraints.NotNull;
-import javax.ws.rs.core.HttpHeaders;
+
 import lombok.EqualsAndHashCode;
 import lombok.ToString;
 
@@ -101,9 +104,10 @@ public final class UserAgentWire implements Wire {
     // @checkstyle ParameterNumber (7 lines)
     @Override
     public Response send(final Request req, final String home,
-        final String method,
-        final Collection<Map.Entry<String, String>> headers,
-        final InputStream content) throws IOException {
+						 final String method,
+						 final Collection<Map.Entry<String, String>> headers,
+						 final InputStream content,
+						 final int connectTimeout, final int readTimeout) throws IOException {
         final Collection<Map.Entry<String, String>> hdrs =
             new LinkedList<Map.Entry<String, String>>();
         boolean absent = true;
@@ -121,6 +125,7 @@ public final class UserAgentWire implements Wire {
                 )
             );
         }
-        return this.origin.send(req, home, method, hdrs, content);
+        return this.origin.send(req, home, method, hdrs, content,
+				connectTimeout, readTimeout);
     }
 }

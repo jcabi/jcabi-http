@@ -29,6 +29,15 @@
  */
 package com.jcabi.http.wire;
 
+import java.io.ByteArrayInputStream;
+import java.io.ByteArrayOutputStream;
+import java.io.IOException;
+import java.io.InputStream;
+import java.util.Collection;
+import java.util.Map;
+
+import javax.validation.constraints.NotNull;
+
 import com.jcabi.aspects.Immutable;
 import com.jcabi.aspects.Tv;
 import com.jcabi.http.Request;
@@ -36,13 +45,7 @@ import com.jcabi.http.RequestBody;
 import com.jcabi.http.Response;
 import com.jcabi.http.Wire;
 import com.jcabi.log.Logger;
-import java.io.ByteArrayInputStream;
-import java.io.ByteArrayOutputStream;
-import java.io.IOException;
-import java.io.InputStream;
-import java.util.Collection;
-import java.util.Map;
-import javax.validation.constraints.NotNull;
+
 import lombok.EqualsAndHashCode;
 import lombok.ToString;
 
@@ -86,9 +89,10 @@ public final class VerboseWire implements Wire {
     // @checkstyle ParameterNumber (7 lines)
     @Override
     public Response send(final Request req, final String home,
-        final String method,
-        final Collection<Map.Entry<String, String>> headers,
-        final InputStream content) throws IOException {
+						 final String method,
+						 final Collection<Map.Entry<String, String>> headers,
+						 final InputStream content,
+						 final int connectTimeout, final int readTimeout) throws IOException {
         final ByteArrayOutputStream output = new ByteArrayOutputStream();
         final byte[] buffer = new byte[Tv.THOUSAND];
         for (int bytes = content.read(buffer); bytes != -1;
@@ -98,8 +102,8 @@ public final class VerboseWire implements Wire {
         output.flush();
         final Response response = this.origin.send(
             req, home, method, headers,
-            new ByteArrayInputStream(output.toByteArray())
-        );
+            new ByteArrayInputStream(output.toByteArray()),
+				connectTimeout, readTimeout);
         final StringBuilder text = new StringBuilder(0);
         for (final Map.Entry<String, String> header : headers) {
             text.append(header.getKey())

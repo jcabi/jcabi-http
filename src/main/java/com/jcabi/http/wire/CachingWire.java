@@ -29,6 +29,16 @@
  */
 package com.jcabi.http.wire;
 
+import java.io.IOException;
+import java.io.InputStream;
+import java.net.URI;
+import java.util.Collection;
+import java.util.Map;
+import java.util.concurrent.ExecutionException;
+import java.util.concurrent.TimeUnit;
+
+import javax.validation.constraints.NotNull;
+
 import com.google.common.cache.CacheBuilder;
 import com.google.common.cache.CacheLoader;
 import com.google.common.cache.LoadingCache;
@@ -37,14 +47,7 @@ import com.jcabi.aspects.Tv;
 import com.jcabi.http.Request;
 import com.jcabi.http.Response;
 import com.jcabi.http.Wire;
-import java.io.IOException;
-import java.io.InputStream;
-import java.net.URI;
-import java.util.Collection;
-import java.util.Map;
-import java.util.concurrent.ExecutionException;
-import java.util.concurrent.TimeUnit;
-import javax.validation.constraints.NotNull;
+
 import lombok.EqualsAndHashCode;
 import lombok.ToString;
 
@@ -148,9 +151,10 @@ public final class CachingWire implements Wire {
     // @checkstyle ParameterNumber (5 lines)
     @Override
     public Response send(final Request req, final String home,
-        final String method,
-        final Collection<Map.Entry<String, String>> headers,
-        final InputStream content) throws IOException {
+						 final String method,
+						 final Collection<Map.Entry<String, String>> headers,
+						 final InputStream content,
+						 final int connectTimeout, final int readTimeout) throws IOException {
         final URI uri = req.uri().get();
         final StringBuilder label = new StringBuilder(Tv.HUNDRED)
             .append(method).append(' ').append(uri.getPath());
@@ -169,14 +173,16 @@ public final class CachingWire implements Wire {
             try {
                 rsp = CachingWire.CACHE.get(this).get(
                     new CachingWire.Query(
-                        this.origin, req, home, headers, content
+                        this.origin, req, home, headers, content,
+							connectTimeout, readTimeout
                     )
                 );
             } catch (final ExecutionException ex) {
                 throw new IOException(ex);
             }
         } else {
-            rsp = this.origin.send(req, home, method, headers, content);
+            rsp = this.origin.send(req, home, method, headers, content,
+					connectTimeout, readTimeout);
         }
         return rsp;
     }
@@ -207,6 +213,15 @@ public final class CachingWire implements Wire {
          * Body.
          */
         private final transient InputStream body;
+		/**
+		 * Connect timeout
+		 */
+		private final transient int connectTimeout;
+		/**
+		 * Read timeout
+		 */
+		private final transient int readTimeout;
+
         /**
          * Ctor.
          * @param wire Original wire
@@ -218,12 +233,15 @@ public final class CachingWire implements Wire {
          */
         Query(final Wire wire, final Request req, final String home,
             final Collection<Map.Entry<String, String>> hdrs,
-            final InputStream input) {
+            final InputStream input, final int connectTimeout,
+			final int readTimeout) {
             this.origin = wire;
             this.request = req;
             this.uri = home;
             this.headers = hdrs;
             this.body = input;
+			this.connectTimeout = connectTimeout;
+			this.readTimeout = readTimeout;
         }
         /**
          * Fetch.
@@ -232,8 +250,8 @@ public final class CachingWire implements Wire {
          */
         public Response fetch() throws IOException {
             return this.origin.send(
-                this.request, this.uri, Request.GET, this.headers, this.body
-            );
+                this.request, this.uri, Request.GET, this.headers, this.body,
+					this.connectTimeout, this.readTimeout);
         }
     }
 
