@@ -29,6 +29,16 @@
  */
 package com.jcabi.http.request;
 
+import com.jcabi.aspects.Immutable;
+import com.jcabi.aspects.Loggable;
+import com.jcabi.http.ImmutableHeader;
+import com.jcabi.http.Request;
+import com.jcabi.http.RequestBody;
+import com.jcabi.http.RequestURI;
+import com.jcabi.http.Response;
+import com.jcabi.http.Wire;
+import com.jcabi.immutable.Array;
+import com.jcabi.log.Logger;
 import java.io.ByteArrayInputStream;
 import java.io.IOException;
 import java.io.InputStream;
@@ -42,23 +52,10 @@ import java.nio.charset.Charset;
 import java.util.Collection;
 import java.util.LinkedList;
 import java.util.Map;
-
 import javax.json.Json;
 import javax.json.JsonStructure;
 import javax.validation.constraints.NotNull;
 import javax.ws.rs.core.UriBuilder;
-
-import com.jcabi.aspects.Immutable;
-import com.jcabi.aspects.Loggable;
-import com.jcabi.http.ImmutableHeader;
-import com.jcabi.http.Request;
-import com.jcabi.http.RequestBody;
-import com.jcabi.http.RequestURI;
-import com.jcabi.http.Response;
-import com.jcabi.http.Wire;
-import com.jcabi.immutable.Array;
-import com.jcabi.log.Logger;
-
 import lombok.EqualsAndHashCode;
 
 /**
@@ -249,9 +246,9 @@ final class BaseRequest implements Request {
 			this.hdrs,
 			this.mtd,
 			this.content,
-				connect,
-				read
-		);
+            connect,
+            read
+        );
 	}
 
 	@Override
@@ -305,7 +302,9 @@ final class BaseRequest implements Request {
             this.home,
             this.hdrs,
             this.mtd,
-            this.content
+            this.content,
+            this.connectTimeout,
+            this.readTimeout
         );
     }
 
