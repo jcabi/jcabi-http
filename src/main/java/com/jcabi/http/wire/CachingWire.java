@@ -34,6 +34,7 @@ import com.google.common.cache.CacheLoader;
 import com.google.common.cache.LoadingCache;
 import com.jcabi.aspects.Immutable;
 import com.jcabi.aspects.Tv;
+import com.jcabi.http.JcabiHttp;
 import com.jcabi.http.Request;
 import com.jcabi.http.Response;
 import com.jcabi.http.Wire;
@@ -165,7 +166,7 @@ public final class CachingWire implements Wire {
             }
         }
         final Response rsp;
-        if (method.equals(Request.GET)) {
+        if (method.equals(JcabiHttp.GET)) {
             try {
                 rsp = CachingWire.CACHE.get(this).get(
                     new CachingWire.Query(
@@ -232,7 +233,7 @@ public final class CachingWire implements Wire {
          */
         public Response fetch() throws IOException {
             return this.origin.send(
-                this.request, this.uri, Request.GET, this.headers, this.body
+                this.request, this.uri, JcabiHttp.GET, this.headers, this.body
             );
         }
     }

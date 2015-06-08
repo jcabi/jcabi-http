@@ -31,13 +31,13 @@ package com.jcabi.http.mock;
 
 import com.jcabi.aspects.Immutable;
 import com.jcabi.http.ImmutableHeader;
+import com.jcabi.http.JcabiHttp;
 import com.jcabi.immutable.ArrayMap;
 import com.sun.grizzly.tcp.http11.GrizzlyRequest;
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.net.URI;
-import java.nio.charset.Charset;
 import java.util.Collections;
 import java.util.Enumeration;
 import java.util.LinkedList;
@@ -55,16 +55,6 @@ import java.util.concurrent.ConcurrentMap;
  */
 @Immutable
 final class GrizzlyQuery implements MkQuery {
-
-    /**
-     * The encoding to use.
-     */
-    private static final String ENCODING = "UTF-8";
-
-    /**
-     * The Charset to use.
-     */
-    private static final Charset CHARSET = Charset.forName(ENCODING);
 
     /**
      * HTTP request method.
@@ -93,7 +83,7 @@ final class GrizzlyQuery implements MkQuery {
      * @throws IOException If fails
      */
     GrizzlyQuery(final GrizzlyRequest request) throws IOException {
-        request.setCharacterEncoding(GrizzlyQuery.ENCODING);
+        request.setCharacterEncoding(JcabiHttp.ENCODING);
         this.home = GrizzlyQuery.uri(request);
         this.mtd = request.getMethod();
         this.hdrs = GrizzlyQuery.headers(request);
@@ -125,7 +115,7 @@ final class GrizzlyQuery implements MkQuery {
 
     @Override
     public String body() {
-        return new String(this.content, GrizzlyQuery.CHARSET);
+        return new String(this.content, JcabiHttp.CHARSET);
     }
 
     /**

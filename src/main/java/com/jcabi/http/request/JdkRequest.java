@@ -32,6 +32,7 @@ package com.jcabi.http.request;
 import com.jcabi.aspects.Immutable;
 import com.jcabi.aspects.Loggable;
 import com.jcabi.http.ImmutableHeader;
+import com.jcabi.http.JcabiHttp;
 import com.jcabi.http.Request;
 import com.jcabi.http.RequestBody;
 import com.jcabi.http.RequestURI;
@@ -102,8 +103,9 @@ public final class JdkRequest implements Request {
                 for (final Map.Entry<String, String> header : headers) {
                     conn.addRequestProperty(header.getKey(), header.getValue());
                 }
-                if (method.equals(Request.POST) || method.equals(Request.PUT)
-                    || method.equals(Request.PATCH)) {
+                // @checkstyle LineLength (1 line)
+                if (method.equals(JcabiHttp.POST) || method.equals(JcabiHttp.PUT)
+                    || method.equals(JcabiHttp.PATCH)) {
                     conn.setDoOutput(true);
                     final OutputStream output = conn.getOutputStream();
                     try {

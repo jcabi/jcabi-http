@@ -49,7 +49,6 @@ import java.util.Collection;
 import javax.ws.rs.core.HttpHeaders;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.UriBuilder;
-import org.apache.commons.lang3.CharEncoding;
 import org.hamcrest.MatcherAssert;
 import org.hamcrest.Matchers;
 import org.junit.Test;
@@ -101,7 +100,7 @@ public final class RequestTest {
         ).start();
         this.request(container.home())
             .uri().path("/helloall").back()
-            .method(Request.GET)
+            .method(JcabiHttp.GET)
             .fetch().as(RestResponse.class)
             .assertBody(Matchers.containsString("\u20ac!"))
             .assertBody(Matchers.containsString("hello!"))
@@ -113,7 +112,7 @@ public final class RequestTest {
         );
         MatcherAssert.assertThat(
             query.method(),
-            Matchers.equalTo(Request.GET)
+            Matchers.equalTo(JcabiHttp.GET)
         );
         container.stop();
     }
@@ -130,7 +129,7 @@ public final class RequestTest {
         this.request(container.home())
             .through(UserAgentWire.class)
             .uri().path("/foo1").back()
-            .method(Request.GET)
+            .method(JcabiHttp.GET)
             .header(HttpHeaders.ACCEPT, "*/*")
             .fetch().as(RestResponse.class)
             .assertStatus(HttpURLConnection.HTTP_OK);
@@ -163,13 +162,13 @@ public final class RequestTest {
         final String value = "some value of this param &^%*;'\"\u20ac\"";
         this.request(container.home())
             .uri().queryParam("q", value).back()
-            .method(Request.GET)
+            .method(JcabiHttp.GET)
             .header(HttpHeaders.ACCEPT, MediaType.TEXT_XML)
             .fetch().as(RestResponse.class)
             .assertStatus(HttpURLConnection.HTTP_OK);
         final MkQuery query = container.take();
         MatcherAssert.assertThat(
-            URLDecoder.decode(query.uri().toString(), CharEncoding.UTF_8),
+            URLDecoder.decode(query.uri().toString(), JcabiHttp.ENCODING),
             Matchers.endsWith("\"€\"")
         );
         container.stop();
@@ -186,7 +185,7 @@ public final class RequestTest {
         ).start();
         final String value = "some random value of \u20ac param \"&^%*;'\"";
         this.request(container.home())
-            .method(Request.POST)
+            .method(JcabiHttp.POST)
             .body().formParam("p", value).back()
             .header(
                 HttpHeaders.CONTENT_TYPE,
@@ -196,7 +195,7 @@ public final class RequestTest {
             .assertStatus(HttpURLConnection.HTTP_OK);
         final MkQuery query = container.take();
         MatcherAssert.assertThat(
-            URLDecoder.decode(query.body(), CharEncoding.UTF_8),
+            URLDecoder.decode(query.body(), JcabiHttp.ENCODING),
             Matchers.containsString(value)
         );
         container.stop();
@@ -213,17 +212,17 @@ public final class RequestTest {
         ).start();
         final String value = "\u20ac some body value with \"&^%*;'\"";
         this.request(container.home())
-            .method(Request.POST)
+            .method(JcabiHttp.POST)
             .header(
                 HttpHeaders.CONTENT_TYPE,
                 MediaType.APPLICATION_FORM_URLENCODED
             )
-            .body().set(URLEncoder.encode(value, CharEncoding.UTF_8)).back()
+            .body().set(URLEncoder.encode(value, JcabiHttp.ENCODING)).back()
             .fetch().as(RestResponse.class)
             .assertStatus(HttpURLConnection.HTTP_OK);
         final MkQuery query = container.take();
         MatcherAssert.assertThat(
-            URLDecoder.decode(query.body(), CharEncoding.UTF_8),
+            URLDecoder.decode(query.body(), JcabiHttp.ENCODING),
             Matchers.containsString(value)
         );
         container.stop();
@@ -239,7 +238,7 @@ public final class RequestTest {
             new MkAnswer.Simple(HttpURLConnection.HTTP_NOT_FOUND, "")
         ).start();
         this.request(container.home())
-            .method(Request.GET)
+            .method(JcabiHttp.GET)
             .fetch().as(RestResponse.class)
             .assertStatus(HttpURLConnection.HTTP_NOT_FOUND)
             .assertStatus(
@@ -258,7 +257,7 @@ public final class RequestTest {
             new MkAnswer.Simple("some text \u20ac")
         ).start();
         this.request(container.home())
-            .method(Request.GET)
+            .method(JcabiHttp.GET)
             .fetch().as(RestResponse.class)
             .assertBody(Matchers.containsString("text \u20ac"))
             .assertStatus(HttpURLConnection.HTTP_OK);
@@ -277,7 +276,7 @@ public final class RequestTest {
             )
         ).start();
         this.request(container.home())
-            .method(Request.GET)
+            .method(JcabiHttp.GET)
             .fetch().as(RestResponse.class)
             .assertStatus(HttpURLConnection.HTTP_OK)
             .assertHeader(
@@ -303,7 +302,7 @@ public final class RequestTest {
             new MkAnswer.Simple("<root><a>\u0443\u0440\u0430!</a></root>")
         ).start();
         this.request(container.home())
-            .method(Request.GET)
+            .method(JcabiHttp.GET)
             .fetch().as(RestResponse.class)
             .assertStatus(HttpURLConnection.HTTP_OK)
             .as(XmlResponse.class)
@@ -340,7 +339,7 @@ public final class RequestTest {
             )
         ).start();
         this.request(container.home())
-            .method(Request.GET)
+            .method(JcabiHttp.GET)
             .uri().path("/abcdefff").back()
             .fetch().as(RestResponse.class)
             .assertBody(Matchers.containsString("\u0443\u0440\u0430"))
@@ -360,7 +359,7 @@ public final class RequestTest {
             )
         ).start();
         this.request(container.home())
-            .method(Request.GET)
+            .method(JcabiHttp.GET)
             .uri().path("/barbar").back()
             .fetch().as(XmlResponse.class)
             .assertXPath("/text[contains(.,'\u0443\u0440\u0430')]");
@@ -380,7 +379,7 @@ public final class RequestTest {
             .userInfo("user:\u20ac\u20ac").build();
         this.request(uri)
             .through(BasicAuthWire.class)
-            .method(Request.GET)
+            .method(JcabiHttp.GET)
             .uri().path("/abcde").back()
             .fetch().as(RestResponse.class)
             .assertStatus(HttpURLConnection.HTTP_OK);
@@ -409,11 +408,11 @@ public final class RequestTest {
         final Request req = this.request(container.home())
             .uri().path("/foo-X").back()
             .header(HttpHeaders.CONTENT_TYPE, MediaType.TEXT_XML);
-        req.method(Request.GET).fetch().as(RestResponse.class)
+        req.method(JcabiHttp.GET).fetch().as(RestResponse.class)
             .assertStatus(HttpURLConnection.HTTP_OK);
-        req.method(Request.POST).fetch().as(RestResponse.class)
+        req.method(JcabiHttp.POST).fetch().as(RestResponse.class)
             .assertStatus(HttpURLConnection.HTTP_OK);
-        req.method(Request.GET).fetch().as(RestResponse.class)
+        req.method(JcabiHttp.GET).fetch().as(RestResponse.class)
             .assertStatus(HttpURLConnection.HTTP_OK);
         container.stop();
         MatcherAssert.assertThat(
@@ -451,9 +450,9 @@ public final class RequestTest {
         ).start();
         final String value = "\u20ac body as stream \"&^%*;'\"";
         final ByteArrayInputStream stream =
-            new ByteArrayInputStream(value.getBytes(CharEncoding.UTF_8));
+            new ByteArrayInputStream(value.getBytes(JcabiHttp.CHARSET));
         this.request(container.home())
-            .method(Request.POST)
+            .method(JcabiHttp.POST)
             .header(
                 HttpHeaders.CONTENT_TYPE,
                 MediaType.APPLICATION_FORM_URLENCODED
@@ -476,9 +475,9 @@ public final class RequestTest {
     @Test(expected = IllegalStateException.class)
     public void fetchThrowsExceptionWhenBodyIsNotEmpty() throws Exception {
         this.request(new URI("http://localhost:78787"))
-            .method(Request.GET)
+            .method(JcabiHttp.GET)
             .body().set("already set").back()
-            .fetch(new ByteArrayInputStream("ba".getBytes(CharEncoding.UTF_8)));
+            .fetch(new ByteArrayInputStream("ba".getBytes(JcabiHttp.CHARSET)));
     }
 
     /**

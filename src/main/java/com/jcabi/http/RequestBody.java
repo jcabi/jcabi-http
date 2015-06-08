@@ -30,7 +30,6 @@
 package com.jcabi.http;
 
 import com.jcabi.aspects.Immutable;
-import java.nio.charset.Charset;
 import java.util.Map;
 import javax.json.JsonStructure;
 import javax.validation.constraints.NotNull;
@@ -129,10 +128,6 @@ public interface RequestBody {
     @Immutable
     final class Printable {
         /**
-         * The Charset to use.
-         */
-        private static final Charset CHARSET = Charset.forName("UTF-8");
-        /**
          * Byte array.
          */
         @Immutable.Array
@@ -148,7 +143,7 @@ public interface RequestBody {
         public String toString() {
             final StringBuilder text = new StringBuilder(0);
             final char[] chrs = new String(
-                this.array, RequestBody.Printable.CHARSET
+                this.array, JcabiHttp.CHARSET
             ).toCharArray();
             if (chrs.length > 0) {
                 for (final char chr : chrs) {

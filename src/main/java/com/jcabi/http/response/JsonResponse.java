@@ -30,9 +30,9 @@
 package com.jcabi.http.response;
 
 import com.jcabi.aspects.Immutable;
+import com.jcabi.http.JcabiHttp;
 import com.jcabi.http.Response;
 import java.io.StringReader;
-import java.io.UnsupportedEncodingException;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 import javax.json.Json;
@@ -107,12 +107,7 @@ public final class JsonResponse extends AbstractResponse {
     @NotNull(message = "JSON reader is never NULL")
     public JsonReader json() {
         final byte[] body = this.binary();
-        final String json;
-        try {
-            json = new String(body, "UTF-8");
-        } catch (final UnsupportedEncodingException ex) {
-            throw new IllegalStateException(ex);
-        }
+        final String json = new String(body, JcabiHttp.CHARSET);
         return new JsonResponse.VerboseReader(
             Json.createReader(
                 new StringReader(
