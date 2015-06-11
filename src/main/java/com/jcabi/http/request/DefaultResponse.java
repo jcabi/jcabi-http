@@ -31,7 +31,7 @@ package com.jcabi.http.request;
 
 import com.jcabi.aspects.Immutable;
 import com.jcabi.aspects.Loggable;
-import com.jcabi.http.JcabiHttp;
+import com.jcabi.http.Constants;
 import com.jcabi.http.Request;
 import com.jcabi.http.RequestBody;
 import com.jcabi.http.Response;
@@ -132,8 +132,8 @@ final class DefaultResponse implements Response {
 
     @Override
     public String body() {
-        final String body = new String(this.content, JcabiHttp.CHARSET);
-        if (body.contains(JcabiHttp.ERR)) {
+        final String body = new String(this.content, Constants.CHARSET);
+        if (body.contains(Constants.ERR)) {
             throw new IllegalStateException(
                 Logger.format(
                     "broken Unicode text at line #%d in '%[text]s' (%d bytes)",

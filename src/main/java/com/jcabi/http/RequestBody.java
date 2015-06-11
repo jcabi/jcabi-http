@@ -143,7 +143,7 @@ public interface RequestBody {
         public String toString() {
             final StringBuilder text = new StringBuilder(0);
             final char[] chrs = new String(
-                this.array, JcabiHttp.CHARSET
+                this.array, Constants.CHARSET
             ).toCharArray();
             if (chrs.length > 0) {
                 for (final char chr : chrs) {

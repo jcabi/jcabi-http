@@ -29,7 +29,7 @@
  */
 package com.jcabi.http.mock;
 
-import com.jcabi.http.JcabiHttp;
+import com.jcabi.http.Constants;
 import com.jcabi.http.Request;
 import com.jcabi.http.request.JdkRequest;
 import com.jcabi.http.response.RestResponse;
@@ -67,7 +67,7 @@ public final class MkContainerTest {
         final MkQuery query = container.take();
         MatcherAssert.assertThat(
             query.method(),
-            Matchers.equalTo(JcabiHttp.GET)
+            Matchers.equalTo(Constants.GET)
         );
     }
 

@@ -31,8 +31,8 @@ package com.jcabi.http.mock;
 
 import com.jcabi.aspects.Immutable;
 import com.jcabi.aspects.Loggable;
+import com.jcabi.http.Constants;
 import com.jcabi.http.ImmutableHeader;
-import com.jcabi.http.JcabiHttp;
 import com.jcabi.http.RequestBody;
 import com.jcabi.immutable.Array;
 import com.jcabi.log.Logger;
@@ -117,7 +117,7 @@ public interface MkAnswer {
         public Simple(final int status, final String body) {
             this(
                 status, new Array<Map.Entry<String, String>>(),
-                body.getBytes(JcabiHttp.CHARSET)
+                body.getBytes(Constants.CHARSET)
             );
         }
         /**
@@ -150,7 +150,7 @@ public interface MkAnswer {
         }
         @Override
         public String body() {
-            return new String(this.content, JcabiHttp.CHARSET);
+            return new String(this.content, Constants.CHARSET);
         }
         @Override
         public String toString() {
@@ -204,7 +204,7 @@ public interface MkAnswer {
             return new MkAnswer.Simple(
                 this.code,
                 this.hdrs,
-                body.getBytes(JcabiHttp.CHARSET)
+                body.getBytes(Constants.CHARSET)
             );
         }
     }

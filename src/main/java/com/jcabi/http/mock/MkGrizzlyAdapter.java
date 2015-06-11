@@ -29,7 +29,7 @@
  */
 package com.jcabi.http.mock;
 
-import com.jcabi.http.JcabiHttp;
+import com.jcabi.http.Constants;
 import com.jcabi.log.Logger;
 import com.sun.grizzly.tcp.http11.GrizzlyAdapter;
 import com.sun.grizzly.tcp.http11.GrizzlyRequest;
@@ -107,7 +107,7 @@ final class MkGrizzlyAdapter extends GrizzlyAdapter {
                     );
                     response.setStatus(answer.status());
                     final byte[] body =
-                        answer.body().getBytes(JcabiHttp.CHARSET);
+                        answer.body().getBytes(Constants.CHARSET);
                     response.getStream().write(body);
                     response.setContentLength(body.length);
                     if (cond.decrement() == 0) {
@@ -212,7 +212,7 @@ final class MkGrizzlyAdapter extends GrizzlyAdapter {
         final Throwable failure) {
         response.setStatus(HttpURLConnection.HTTP_INTERNAL_ERROR);
         final PrintWriter writer = new PrintWriter(
-            new OutputStreamWriter(response.getStream(), JcabiHttp.CHARSET)
+            new OutputStreamWriter(response.getStream(), Constants.CHARSET)
         );
         try {
             writer.print(Logger.format("%[exception]s", failure));

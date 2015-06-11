@@ -30,8 +30,8 @@
 package com.jcabi.http.mock;
 
 import com.jcabi.aspects.Immutable;
+import com.jcabi.http.Constants;
 import com.jcabi.http.ImmutableHeader;
-import com.jcabi.http.JcabiHttp;
 import com.jcabi.immutable.ArrayMap;
 import com.sun.grizzly.tcp.http11.GrizzlyRequest;
 import java.io.ByteArrayOutputStream;
@@ -83,7 +83,7 @@ final class GrizzlyQuery implements MkQuery {
      * @throws IOException If fails
      */
     GrizzlyQuery(final GrizzlyRequest request) throws IOException {
-        request.setCharacterEncoding(JcabiHttp.ENCODING);
+        request.setCharacterEncoding(Constants.ENCODING);
         this.home = GrizzlyQuery.uri(request);
         this.mtd = request.getMethod();
         this.hdrs = GrizzlyQuery.headers(request);
@@ -115,7 +115,7 @@ final class GrizzlyQuery implements MkQuery {
 
     @Override
     public String body() {
-        return new String(this.content, JcabiHttp.CHARSET);
+        return new String(this.content, Constants.CHARSET);
     }
 
     /**

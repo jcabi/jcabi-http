@@ -30,7 +30,7 @@
 package com.jcabi.http.wire;
 
 import com.jcabi.aspects.Tv;
-import com.jcabi.http.JcabiHttp;
+import com.jcabi.http.Constants;
 import com.jcabi.http.Request;
 import com.jcabi.http.mock.MkAnswer;
 import com.jcabi.http.mock.MkContainer;
@@ -80,7 +80,7 @@ public final class CachingWireTest {
             .next(new MkAnswer.Simple(""))
             .start();
         final Request req = new JdkRequest(container.home())
-            .through(CachingWire.class).method(JcabiHttp.PUT);
+            .through(CachingWire.class).method(Constants.PUT);
         for (int idx = 0; idx < 2; ++idx) {
             req.fetch().as(RestResponse.class)
                 .assertStatus(HttpURLConnection.HTTP_OK);
@@ -108,7 +108,7 @@ public final class CachingWireTest {
         req.fetch()
             .as(RestResponse.class)
             .assertBody(Matchers.containsString("first re"));
-        req.method(JcabiHttp.POST).uri().path("flush")
+        req.method(Constants.POST).uri().path("flush")
             .queryParam("a", "1").back().fetch();
         req.fetch()
             .as(RestResponse.class)

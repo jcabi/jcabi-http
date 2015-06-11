@@ -30,7 +30,7 @@
 package com.jcabi.http.response;
 
 import com.jcabi.aspects.Immutable;
-import com.jcabi.http.JcabiHttp;
+import com.jcabi.http.Constants;
 import com.jcabi.http.Response;
 import java.io.StringReader;
 import java.util.regex.Matcher;
@@ -107,7 +107,7 @@ public final class JsonResponse extends AbstractResponse {
     @NotNull(message = "JSON reader is never NULL")
     public JsonReader json() {
         final byte[] body = this.binary();
-        final String json = new String(body, JcabiHttp.CHARSET);
+        final String json = new String(body, Constants.CHARSET);
         return new JsonResponse.VerboseReader(
             Json.createReader(
                 new StringReader(

@@ -31,8 +31,8 @@ package com.jcabi.http.request;
 
 import com.jcabi.aspects.Immutable;
 import com.jcabi.aspects.Loggable;
+import com.jcabi.http.Constants;
 import com.jcabi.http.ImmutableHeader;
-import com.jcabi.http.JcabiHttp;
 import com.jcabi.http.Request;
 import com.jcabi.http.RequestBody;
 import com.jcabi.http.RequestURI;
@@ -117,7 +117,7 @@ public final class FakeRequest implements Request {
             HttpURLConnection.HTTP_OK,
             "OK",
             Collections.<Map.Entry<String, String>>emptyList(),
-            JcabiHttp.EMPTY_BYTE_ARRAY
+            Constants.EMPTY_BYTE_ARRAY
         );
     }
 
@@ -245,7 +245,7 @@ public final class FakeRequest implements Request {
      * @return New request
      */
     public FakeRequest withBody(final String text) {
-        return this.withBody(text.getBytes(JcabiHttp.CHARSET));
+        return this.withBody(text.getBytes(Constants.CHARSET));
     }
 
     /**

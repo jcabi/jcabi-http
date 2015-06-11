@@ -41,7 +41,7 @@ import javax.validation.constraints.NotNull;
  *
  * <pre> String name = new ApacheRequest("https://www.example.com:8080")
  *   .uri().path("/users").queryParam("id", 333).back()
- *   .method(JcabiHttp.GET)
+ *   .method(Constants.GET)
  *   .header(HttpHeaders.ACCEPT, MediaType.TEXT_XML)
  *   .fetch()
  *   .as(RestResponse.class)

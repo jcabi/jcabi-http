@@ -31,8 +31,8 @@ package com.jcabi.http.request;
 
 import com.jcabi.aspects.Immutable;
 import com.jcabi.aspects.Loggable;
+import com.jcabi.http.Constants;
 import com.jcabi.http.ImmutableHeader;
-import com.jcabi.http.JcabiHttp;
 import com.jcabi.http.Request;
 import com.jcabi.http.RequestBody;
 import com.jcabi.http.RequestURI;
@@ -109,7 +109,7 @@ final class BaseRequest implements Request {
         this(
             wre, uri,
             new Array<Map.Entry<String, String>>(),
-            JcabiHttp.GET, JcabiHttp.EMPTY_BYTE_ARRAY
+            Constants.GET, Constants.EMPTY_BYTE_ARRAY
         );
     }
 
@@ -444,12 +444,12 @@ final class BaseRequest implements Request {
         }
         @Override
         public String get() {
-            return new String(this.text, JcabiHttp.CHARSET);
+            return new String(this.text, Constants.CHARSET);
         }
         @Override
         public RequestBody set(@NotNull(message = "content can't be NULL")
             final String txt) {
-            return this.set(txt.getBytes(JcabiHttp.CHARSET));
+            return this.set(txt.getBytes(Constants.CHARSET));
         }
         @Override
         public RequestBody set(@NotNull(message = "JSON can't be NULL")
@@ -476,12 +476,12 @@ final class BaseRequest implements Request {
                         .append(
                             URLEncoder.encode(
                                 value.toString(),
-                                JcabiHttp.ENCODING
+                                Constants.ENCODING
                             )
                         )
                         .append('&')
                         .toString()
-                        .getBytes(JcabiHttp.CHARSET)
+                        .getBytes(Constants.CHARSET)
                 );
             } catch (final UnsupportedEncodingException ex) {
                 throw new IllegalStateException(ex);

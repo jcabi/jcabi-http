@@ -30,8 +30,8 @@
 package com.jcabi.http.wire;
 
 import com.jcabi.aspects.Immutable;
+import com.jcabi.http.Constants;
 import com.jcabi.http.ImmutableHeader;
-import com.jcabi.http.JcabiHttp;
 import com.jcabi.http.Request;
 import com.jcabi.http.Response;
 import com.jcabi.http.Wire;
@@ -116,12 +116,12 @@ public final class BasicAuthWire implements Wire {
                             Logger.format(
                                 "%s:%s",
                                 URLEncoder.encode(
-                                    parts[0], JcabiHttp.ENCODING
+                                    parts[0], Constants.ENCODING
                                 ),
                                 URLEncoder.encode(
-                                    parts[1], JcabiHttp.ENCODING
+                                    parts[1], Constants.ENCODING
                                 )
-                            ).getBytes(JcabiHttp.CHARSET)
+                            ).getBytes(Constants.CHARSET)
                         )
                     )
                 )

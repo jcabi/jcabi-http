@@ -30,8 +30,8 @@
 package com.jcabi.http.wire;
 
 import com.jcabi.aspects.Immutable;
+import com.jcabi.http.Constants;
 import com.jcabi.http.ImmutableHeader;
-import com.jcabi.http.JcabiHttp;
 import com.jcabi.http.Request;
 import com.jcabi.http.Response;
 import com.jcabi.http.Wire;
@@ -107,7 +107,7 @@ public final class UserAgentWire implements Wire {
             hdrs.add(
                 new ImmutableHeader(
                     HttpHeaders.USER_AGENT,
-                    JcabiHttp.AGENT
+                    Constants.AGENT
                 )
             );
         }

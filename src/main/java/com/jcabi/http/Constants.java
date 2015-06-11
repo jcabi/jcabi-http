@@ -40,12 +40,18 @@ import java.nio.charset.StandardCharsets;
  * available on every implementation of the Java platform @since 1.7
  * @see <a href="Charset#standard">Standard Charsets</a>
  *
+ * To enable this project's backward compatibility of {@link Charset Charsets}
+ * with older versions of the Java platform, you <em>ONLY</em> need to swap
+ * {@code java.nio.charset.StandardCharsets.UTF_8} with either
+ * {@code org.apache.commons.io.Charsets.UTF_8} or
+ * {@code com.google.common.base.Charsets.UTF_8}
+ *
  * @author Simon Njenga (simtuje@gmail.com)
  * @version $Id$
- * @since 0.10
+ * @since 0.11
  * @see <a href="http://http.jcabi.com">http://http.jcabi.com/</a>
  */
-public final class JcabiHttp {
+public final class Constants {
 
     /**
      * An empty immutable {@code byte} array.
@@ -115,7 +121,7 @@ public final class JcabiHttp {
     /**
      * Private constructor.
      */
-    private JcabiHttp() {
+    private Constants() {
         throw new IllegalStateException("Utility class - cannot instantiate!");
     }
 }

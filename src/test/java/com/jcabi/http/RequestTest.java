@@ -100,7 +100,7 @@ public final class RequestTest {
         ).start();
         this.request(container.home())
             .uri().path("/helloall").back()
-            .method(JcabiHttp.GET)
+            .method(Constants.GET)
             .fetch().as(RestResponse.class)
             .assertBody(Matchers.containsString("\u20ac!"))
             .assertBody(Matchers.containsString("hello!"))
@@ -112,7 +112,7 @@ public final class RequestTest {
         );
         MatcherAssert.assertThat(
             query.method(),
-            Matchers.equalTo(JcabiHttp.GET)
+            Matchers.equalTo(Constants.GET)
         );
         container.stop();
     }
@@ -129,7 +129,7 @@ public final class RequestTest {
         this.request(container.home())
             .through(UserAgentWire.class)
             .uri().path("/foo1").back()
-            .method(JcabiHttp.GET)
+            .method(Constants.GET)
             .header(HttpHeaders.ACCEPT, "*/*")
             .fetch().as(RestResponse.class)
             .assertStatus(HttpURLConnection.HTTP_OK);
@@ -162,13 +162,13 @@ public final class RequestTest {
         final String value = "some value of this param &^%*;'\"\u20ac\"";
         this.request(container.home())
             .uri().queryParam("q", value).back()
-            .method(JcabiHttp.GET)
+            .method(Constants.GET)
             .header(HttpHeaders.ACCEPT, MediaType.TEXT_XML)
             .fetch().as(RestResponse.class)
             .assertStatus(HttpURLConnection.HTTP_OK);
         final MkQuery query = container.take();
         MatcherAssert.assertThat(
-            URLDecoder.decode(query.uri().toString(), JcabiHttp.ENCODING),
+            URLDecoder.decode(query.uri().toString(), Constants.ENCODING),
             Matchers.endsWith("\"€\"")
         );
         container.stop();
@@ -185,7 +185,7 @@ public final class RequestTest {
         ).start();
         final String value = "some random value of \u20ac param \"&^%*;'\"";
         this.request(container.home())
-            .method(JcabiHttp.POST)
+            .method(Constants.POST)
             .body().formParam("p", value).back()
             .header(
                 HttpHeaders.CONTENT_TYPE,
@@ -195,7 +195,7 @@ public final class RequestTest {
             .assertStatus(HttpURLConnection.HTTP_OK);
         final MkQuery query = container.take();
         MatcherAssert.assertThat(
-            URLDecoder.decode(query.body(), JcabiHttp.ENCODING),
+            URLDecoder.decode(query.body(), Constants.ENCODING),
             Matchers.containsString(value)
         );
         container.stop();
@@ -212,17 +212,17 @@ public final class RequestTest {
         ).start();
         final String value = "\u20ac some body value with \"&^%*;'\"";
         this.request(container.home())
-            .method(JcabiHttp.POST)
+            .method(Constants.POST)
             .header(
                 HttpHeaders.CONTENT_TYPE,
                 MediaType.APPLICATION_FORM_URLENCODED
             )
-            .body().set(URLEncoder.encode(value, JcabiHttp.ENCODING)).back()
+            .body().set(URLEncoder.encode(value, Constants.ENCODING)).back()
             .fetch().as(RestResponse.class)
             .assertStatus(HttpURLConnection.HTTP_OK);
         final MkQuery query = container.take();
         MatcherAssert.assertThat(
-            URLDecoder.decode(query.body(), JcabiHttp.ENCODING),
+            URLDecoder.decode(query.body(), Constants.ENCODING),
             Matchers.containsString(value)
         );
         container.stop();
@@ -238,7 +238,7 @@ public final class RequestTest {
             new MkAnswer.Simple(HttpURLConnection.HTTP_NOT_FOUND, "")
         ).start();
         this.request(container.home())
-            .method(JcabiHttp.GET)
+            .method(Constants.GET)
             .fetch().as(RestResponse.class)
             .assertStatus(HttpURLConnection.HTTP_NOT_FOUND)
             .assertStatus(
@@ -257,7 +257,7 @@ public final class RequestTest {
             new MkAnswer.Simple("some text \u20ac")
         ).start();
         this.request(container.home())
-            .method(JcabiHttp.GET)
+            .method(Constants.GET)
             .fetch().as(RestResponse.class)
             .assertBody(Matchers.containsString("text \u20ac"))
             .assertStatus(HttpURLConnection.HTTP_OK);
@@ -276,7 +276,7 @@ public final class RequestTest {
             )
         ).start();
         this.request(container.home())
-            .method(JcabiHttp.GET)
+            .method(Constants.GET)
             .fetch().as(RestResponse.class)
             .assertStatus(HttpURLConnection.HTTP_OK)
             .assertHeader(
@@ -302,7 +302,7 @@ public final class RequestTest {
             new MkAnswer.Simple("<root><a>\u0443\u0440\u0430!</a></root>")
         ).start();
         this.request(container.home())
-            .method(JcabiHttp.GET)
+            .method(Constants.GET)
             .fetch().as(RestResponse.class)
             .assertStatus(HttpURLConnection.HTTP_OK)
             .as(XmlResponse.class)
@@ -339,7 +339,7 @@ public final class RequestTest {
             )
         ).start();
         this.request(container.home())
-            .method(JcabiHttp.GET)
+            .method(Constants.GET)
             .uri().path("/abcdefff").back()
             .fetch().as(RestResponse.class)
             .assertBody(Matchers.containsString("\u0443\u0440\u0430"))
@@ -359,7 +359,7 @@ public final class RequestTest {
             )
         ).start();
         this.request(container.home())
-            .method(JcabiHttp.GET)
+            .method(Constants.GET)
             .uri().path("/barbar").back()
             .fetch().as(XmlResponse.class)
             .assertXPath("/text[contains(.,'\u0443\u0440\u0430')]");
@@ -379,7 +379,7 @@ public final class RequestTest {
             .userInfo("user:\u20ac\u20ac").build();
         this.request(uri)
             .through(BasicAuthWire.class)
-            .method(JcabiHttp.GET)
+            .method(Constants.GET)
             .uri().path("/abcde").back()
             .fetch().as(RestResponse.class)
             .assertStatus(HttpURLConnection.HTTP_OK);
@@ -408,11 +408,11 @@ public final class RequestTest {
         final Request req = this.request(container.home())
             .uri().path("/foo-X").back()
             .header(HttpHeaders.CONTENT_TYPE, MediaType.TEXT_XML);
-        req.method(JcabiHttp.GET).fetch().as(RestResponse.class)
+        req.method(Constants.GET).fetch().as(RestResponse.class)
             .assertStatus(HttpURLConnection.HTTP_OK);
-        req.method(JcabiHttp.POST).fetch().as(RestResponse.class)
+        req.method(Constants.POST).fetch().as(RestResponse.class)
             .assertStatus(HttpURLConnection.HTTP_OK);
-        req.method(JcabiHttp.GET).fetch().as(RestResponse.class)
+        req.method(Constants.GET).fetch().as(RestResponse.class)
             .assertStatus(HttpURLConnection.HTTP_OK);
         container.stop();
         MatcherAssert.assertThat(
@@ -450,9 +450,9 @@ public final class RequestTest {
         ).start();
         final String value = "\u20ac body as stream \"&^%*;'\"";
         final ByteArrayInputStream stream =
-            new ByteArrayInputStream(value.getBytes(JcabiHttp.CHARSET));
+            new ByteArrayInputStream(value.getBytes(Constants.CHARSET));
         this.request(container.home())
-            .method(JcabiHttp.POST)
+            .method(Constants.POST)
             .header(
                 HttpHeaders.CONTENT_TYPE,
                 MediaType.APPLICATION_FORM_URLENCODED
@@ -475,9 +475,9 @@ public final class RequestTest {
     @Test(expected = IllegalStateException.class)
     public void fetchThrowsExceptionWhenBodyIsNotEmpty() throws Exception {
         this.request(new URI("http://localhost:78787"))
-            .method(JcabiHttp.GET)
+            .method(Constants.GET)
             .body().set("already set").back()
-            .fetch(new ByteArrayInputStream("ba".getBytes(JcabiHttp.CHARSET)));
+            .fetch(new ByteArrayInputStream("ba".getBytes(Constants.CHARSET)));
     }
 
     /**
