@@ -35,14 +35,17 @@ import com.jcabi.http.Request;
 import com.jcabi.http.Response;
 import com.jcabi.http.Wire;
 import com.jcabi.log.Logger;
+import lombok.EqualsAndHashCode;
+import lombok.ToString;
+
+import javax.validation.constraints.NotNull;
 import java.io.IOException;
 import java.io.InputStream;
 import java.net.HttpURLConnection;
 import java.util.Collection;
 import java.util.Map;
-import javax.validation.constraints.NotNull;
-import lombok.EqualsAndHashCode;
-import lombok.ToString;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 /**
  * Wire that retries a few times before giving up and throwing exception.
@@ -69,6 +72,16 @@ import lombok.ToString;
 @ToString
 @EqualsAndHashCode(of = "origin")
 public final class RetryWire implements Wire {
+
+    /**
+     * Pattern used to hide basic auth when logging URL
+     *
+     * eg. http://user:pass@localhost/context will product three groups
+     *     1. http://
+     *     2. user:pass@
+     *     3. localhost:80/context
+     */
+    private static final Pattern GROUP_SCHEMA_BASIC_AUTH_HOST_CONTEXT_PATH = Pattern.compile("(.+://)(.+:.+@)(.*)");
 
     /**
      * Original wire.
@@ -106,7 +119,7 @@ public final class RetryWire implements Wire {
                 }
                 Logger.warn(
                     this, "%s %s returns %d status (attempt #%d)",
-                    method, home, rsp.status(), attempt + 1
+                    method, hideAnyBasicAuth(home), rsp.status(), attempt + 1
                 );
             } catch (final IOException ex) {
                 Logger.warn(
@@ -115,6 +128,16 @@ public final class RetryWire implements Wire {
                 );
             }
             ++attempt;
+        }
+    }
+
+    private String hideAnyBasicAuth(final String home) {
+        final Matcher m = GROUP_SCHEMA_BASIC_AUTH_HOST_CONTEXT_PATH.matcher(home);
+
+        if(m.find() && m.groupCount() == 3) {
+            return String.format("%s****:****@%s", m.group(1), m.group(3));
+        } else {
+            return home;
         }
     }
 }
