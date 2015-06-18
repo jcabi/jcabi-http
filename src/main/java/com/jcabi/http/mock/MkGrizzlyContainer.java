@@ -32,13 +32,14 @@ package com.jcabi.http.mock;
 import com.jcabi.aspects.Loggable;
 import com.jcabi.log.Logger;
 import com.sun.grizzly.http.embed.GrizzlyWebServer;
+import lombok.EqualsAndHashCode;
+import org.hamcrest.Matcher;
+import org.hamcrest.core.IsAnything;
+
 import java.io.IOException;
 import java.net.ServerSocket;
 import java.net.URI;
 import java.util.Collection;
-import lombok.EqualsAndHashCode;
-import org.hamcrest.Matcher;
-import org.hamcrest.core.IsAnything;
 
 /**
  * Implementation of {@link MkContainer} based on Grizzly Server.
@@ -52,7 +53,7 @@ import org.hamcrest.core.IsAnything;
 @SuppressWarnings("PMD.TooManyMethods")
 @EqualsAndHashCode(of = { "adapter", "gws", "port" })
 @Loggable(Loggable.DEBUG)
-public final class MkGrizzlyContainer implements MkContainer {
+public class MkGrizzlyContainer implements MkContainer {
 
     /**
      * Grizzly adapter.
@@ -145,6 +146,10 @@ public final class MkGrizzlyContainer implements MkContainer {
         return URI.create(
             String.format("http://localhost:%d/", this.port)
         );
+    }
+
+    protected int getPort() {
+        return this.port;
     }
 
     /**
