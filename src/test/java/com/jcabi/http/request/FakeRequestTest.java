@@ -29,7 +29,7 @@
  */
 package com.jcabi.http.request;
 
-import com.jcabi.http.Request;
+import com.jcabi.http.Constants;
 import com.jcabi.http.response.RestResponse;
 import java.io.ByteArrayInputStream;
 import java.net.HttpURLConnection;
@@ -58,7 +58,7 @@ public final class FakeRequestTest {
         this.generateMainRequest()
             .withBody("how are you?")
             .uri().path("/helloall").back()
-            .method(Request.POST)
+            .method(Constants.POST)
             .fetch().as(RestResponse.class)
             .assertStatus(HttpURLConnection.HTTP_OK)
             .assertHeader(HttpHeaders.CONTENT_TYPE, MediaType.TEXT_PLAIN)
@@ -76,7 +76,7 @@ public final class FakeRequestTest {
         this.generateMainRequest()
             .withBody(content)
             .uri().path("/binContent").back()
-            .method(Request.POST)
+            .method(Constants.POST)
             .fetch().as(RestResponse.class)
             .assertStatus(HttpURLConnection.HTTP_OK)
             .assertHeader(HttpHeaders.CONTENT_TYPE, MediaType.TEXT_PLAIN)

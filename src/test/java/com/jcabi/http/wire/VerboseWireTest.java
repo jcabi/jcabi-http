@@ -29,7 +29,7 @@
  */
 package com.jcabi.http.wire;
 
-import com.jcabi.http.Request;
+import com.jcabi.http.Constants;
 import com.jcabi.http.mock.MkAnswer;
 import com.jcabi.http.mock.MkContainer;
 import com.jcabi.http.mock.MkGrizzlyContainer;
@@ -79,7 +79,7 @@ public final class VerboseWireTest {
         try {
             new JdkRequest(container.home())
                 .through(VerboseWire.class)
-                .method(Request.POST)
+                .method(Constants.POST)
                 .body().set("hello, world!").back()
                 .fetch()
                 .as(RestResponse.class)

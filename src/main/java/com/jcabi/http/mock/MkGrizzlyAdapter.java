@@ -29,15 +29,14 @@
  */
 package com.jcabi.http.mock;
 
+import com.jcabi.http.Constants;
 import com.jcabi.log.Logger;
 import com.sun.grizzly.tcp.http11.GrizzlyAdapter;
 import com.sun.grizzly.tcp.http11.GrizzlyRequest;
 import com.sun.grizzly.tcp.http11.GrizzlyResponse;
 import java.io.OutputStreamWriter;
 import java.io.PrintWriter;
-import java.io.UnsupportedEncodingException;
 import java.net.HttpURLConnection;
-import java.nio.charset.Charset;
 import java.util.Collection;
 import java.util.Iterator;
 import java.util.LinkedList;
@@ -58,16 +57,6 @@ import org.hamcrest.Matcher;
  */
 @SuppressWarnings("PMD.TooManyMethods")
 final class MkGrizzlyAdapter extends GrizzlyAdapter {
-
-    /**
-     * The encoding to use.
-     */
-    private static final String ENCODING = "UTF-8";
-
-    /**
-     * The Charset to use.
-     */
-    private static final Charset CHARSET = Charset.forName(ENCODING);
 
     /**
      * Queries received.
@@ -118,7 +107,7 @@ final class MkGrizzlyAdapter extends GrizzlyAdapter {
                     );
                     response.setStatus(answer.status());
                     final byte[] body =
-                        answer.body().getBytes(MkGrizzlyAdapter.CHARSET);
+                        answer.body().getBytes(Constants.CHARSET);
                     response.getStream().write(body);
                     response.setContentLength(body.length);
                     if (cond.decrement() == 0) {
@@ -222,17 +211,9 @@ final class MkGrizzlyAdapter extends GrizzlyAdapter {
     private static void fail(final GrizzlyResponse<?> response,
         final Throwable failure) {
         response.setStatus(HttpURLConnection.HTTP_INTERNAL_ERROR);
-        final PrintWriter writer;
-        try {
-            writer = new PrintWriter(
-                new OutputStreamWriter(
-                    response.getStream(),
-                    MkGrizzlyAdapter.ENCODING
-                )
-            );
-        } catch (final UnsupportedEncodingException ex) {
-            throw new IllegalStateException(ex);
-        }
+        final PrintWriter writer = new PrintWriter(
+            new OutputStreamWriter(response.getStream(), Constants.CHARSET)
+        );
         try {
             writer.print(Logger.format("%[exception]s", failure));
         } finally {

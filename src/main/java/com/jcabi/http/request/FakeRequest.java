@@ -31,6 +31,7 @@ package com.jcabi.http.request;
 
 import com.jcabi.aspects.Immutable;
 import com.jcabi.aspects.Loggable;
+import com.jcabi.http.Constants;
 import com.jcabi.http.ImmutableHeader;
 import com.jcabi.http.Request;
 import com.jcabi.http.RequestBody;
@@ -41,7 +42,6 @@ import com.jcabi.immutable.Array;
 import java.io.IOException;
 import java.io.InputStream;
 import java.net.HttpURLConnection;
-import java.nio.charset.Charset;
 import java.util.Collection;
 import java.util.Collections;
 import java.util.Map;
@@ -64,16 +64,6 @@ import lombok.EqualsAndHashCode;
 @Loggable(Loggable.DEBUG)
 @SuppressWarnings("PMD.TooManyMethods")
 public final class FakeRequest implements Request {
-
-    /**
-     * An empty immutable {@code byte} array.
-     */
-    private static final byte[] EMPTY_BYTE_ARRAY = new byte[0];
-
-    /**
-     * The Charset to use.
-     */
-    private static final Charset CHARSET = Charset.forName("UTF-8");
 
     /**
      * Base request.
@@ -127,7 +117,7 @@ public final class FakeRequest implements Request {
             HttpURLConnection.HTTP_OK,
             "OK",
             Collections.<Map.Entry<String, String>>emptyList(),
-            FakeRequest.EMPTY_BYTE_ARRAY
+            Constants.EMPTY_BYTE_ARRAY
         );
     }
 
@@ -255,7 +245,7 @@ public final class FakeRequest implements Request {
      * @return New request
      */
     public FakeRequest withBody(final String text) {
-        return this.withBody(text.getBytes(FakeRequest.CHARSET));
+        return this.withBody(text.getBytes(Constants.CHARSET));
     }
 
     /**

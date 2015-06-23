@@ -30,11 +30,11 @@
 package com.jcabi.http.wire;
 
 import com.jcabi.aspects.Immutable;
+import com.jcabi.http.Constants;
 import com.jcabi.http.ImmutableHeader;
 import com.jcabi.http.Request;
 import com.jcabi.http.Response;
 import com.jcabi.http.Wire;
-import com.jcabi.manifests.Manifests;
 import java.io.IOException;
 import java.io.InputStream;
 import java.util.Collection;
@@ -75,16 +75,6 @@ import lombok.ToString;
 public final class UserAgentWire implements Wire {
 
     /**
-     * Default user agent.
-     */
-    private static final String AGENT = String.format(
-        "jcabi-%s/%s Java/%s",
-        Manifests.read("JCabi-Version"),
-        Manifests.read("JCabi-Build"),
-        System.getProperty("java.version")
-    );
-
-    /**
      * Original wire.
      */
     private final transient Wire origin;
@@ -117,7 +107,7 @@ public final class UserAgentWire implements Wire {
             hdrs.add(
                 new ImmutableHeader(
                     HttpHeaders.USER_AGENT,
-                    UserAgentWire.AGENT
+                    Constants.AGENT
                 )
             );
         }

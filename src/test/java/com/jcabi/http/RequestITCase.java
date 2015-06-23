@@ -106,7 +106,7 @@ public final class RequestITCase {
     @Test(expected = IOException.class)
     public void continuesOnConnectionError() throws Exception {
         this.request(new URI("http://localhost:6868/"))
-            .method(Request.GET)
+            .method(Constants.GET)
             .fetch();
     }
 

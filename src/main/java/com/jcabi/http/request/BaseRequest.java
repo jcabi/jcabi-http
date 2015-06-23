@@ -31,6 +31,7 @@ package com.jcabi.http.request;
 
 import com.jcabi.aspects.Immutable;
 import com.jcabi.aspects.Loggable;
+import com.jcabi.http.Constants;
 import com.jcabi.http.ImmutableHeader;
 import com.jcabi.http.Request;
 import com.jcabi.http.RequestBody;
@@ -48,7 +49,6 @@ import java.lang.reflect.Constructor;
 import java.lang.reflect.InvocationTargetException;
 import java.net.URI;
 import java.net.URLEncoder;
-import java.nio.charset.Charset;
 import java.util.Collection;
 import java.util.LinkedList;
 import java.util.Map;
@@ -73,23 +73,6 @@ import lombok.EqualsAndHashCode;
 @Loggable(Loggable.DEBUG)
 @SuppressWarnings("PMD.TooManyMethods")
 final class BaseRequest implements Request {
-
-    /**
-     * The encoding to use.
-     */
-    private static final String ENCODING = "UTF-8";
-
-    /**
-     * The Charset to use.
-     * @checkstyle ConstantUsageCheck (3 lines)
-     */
-    private static final Charset CHARSET =
-        Charset.forName(BaseRequest.ENCODING);
-
-    /**
-     * An empty immutable {@code byte} array.
-     */
-    private static final byte[] EMPTY_BYTE_ARRAY = new byte[0];
 
     /**
      * Wire to use.
@@ -126,7 +109,7 @@ final class BaseRequest implements Request {
         this(
             wre, uri,
             new Array<Map.Entry<String, String>>(),
-            Request.GET, BaseRequest.EMPTY_BYTE_ARRAY
+            Constants.GET, Constants.EMPTY_BYTE_ARRAY
         );
     }
 
@@ -461,12 +444,12 @@ final class BaseRequest implements Request {
         }
         @Override
         public String get() {
-            return new String(this.text, BaseRequest.CHARSET);
+            return new String(this.text, Constants.CHARSET);
         }
         @Override
         public RequestBody set(@NotNull(message = "content can't be NULL")
             final String txt) {
-            return this.set(txt.getBytes(BaseRequest.CHARSET));
+            return this.set(txt.getBytes(Constants.CHARSET));
         }
         @Override
         public RequestBody set(@NotNull(message = "JSON can't be NULL")
@@ -493,12 +476,12 @@ final class BaseRequest implements Request {
                         .append(
                             URLEncoder.encode(
                                 value.toString(),
-                                BaseRequest.ENCODING
+                                Constants.ENCODING
                             )
                         )
                         .append('&')
                         .toString()
-                        .getBytes(BaseRequest.CHARSET)
+                        .getBytes(Constants.CHARSET)
                 );
             } catch (final UnsupportedEncodingException ex) {
                 throw new IllegalStateException(ex);

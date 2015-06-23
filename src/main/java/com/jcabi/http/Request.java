@@ -41,7 +41,7 @@ import javax.validation.constraints.NotNull;
  *
  * <pre> String name = new ApacheRequest("https://www.example.com:8080")
  *   .uri().path("/users").queryParam("id", 333).back()
- *   .method(Request.GET)
+ *   .method(Constants.GET)
  *   .header(HttpHeaders.ACCEPT, MediaType.TEXT_XML)
  *   .fetch()
  *   .as(RestResponse.class)
@@ -74,41 +74,6 @@ import javax.validation.constraints.NotNull;
  */
 @Immutable
 public interface Request {
-
-    /**
-     * GET method name.
-     */
-    String GET = "GET";
-
-    /**
-     * POST method name.
-     */
-    String POST = "POST";
-
-    /**
-     * PUT method name.
-     */
-    String PUT = "PUT";
-
-    /**
-     * HEAD method name.
-     */
-    String HEAD = "HEAD";
-
-    /**
-     * DELETE method name.
-     */
-    String DELETE = "DELETE";
-
-    /**
-     * OPTIONS method name.
-     */
-    String OPTIONS = "OPTIONS";
-
-    /**
-     * PATCH method name.
-     */
-    String PATCH = "PATCH";
 
     /**
      * Get destination URI.
