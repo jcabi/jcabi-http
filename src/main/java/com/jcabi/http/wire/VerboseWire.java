@@ -114,13 +114,13 @@ public final class VerboseWire implements Wire {
             new RequestBody.Printable(output.toByteArray()).toString()
         );
         Logger.info(
-                this,
-                "#send(%s %s):\nHTTP Request (%s):\n%s\nHTTP Response (%s):\n%s",
-                method, home,
-                req.getClass().getName(),
-                VerboseWire.indent(text.toString()),
-                response.getClass().getName(),
-                VerboseWire.indent(response.toString())
+            this,
+            "#send(%s %s):\nHTTP Request (%s):\n%s\nHTTP Response (%s):\n%s",
+            method, home,
+            req.getClass().getName(),
+            VerboseWire.indent(text.toString()),
+            response.getClass().getName(),
+            VerboseWire.indent(response.toString())
         );
         return response;
     }
