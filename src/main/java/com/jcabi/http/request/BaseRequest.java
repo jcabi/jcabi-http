@@ -240,15 +240,15 @@ final class BaseRequest implements Request {
     }
 
     @Override
-    public Request timeout(final int connect, final int read) {
+    public Request timeout(final int cnct, final int rdd) {
         return new BaseRequest(
             this.wire,
             this.home,
             this.hdrs,
             this.mtd,
             this.content,
-            connect,
-            read
+            cnct,
+            rdd
         );
     }
 
