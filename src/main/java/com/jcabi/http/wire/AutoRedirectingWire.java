@@ -108,10 +108,10 @@ public final class AutoRedirectingWire implements Wire {
         final String method,
         final Collection<Map.Entry<String, String>> headers,
         final InputStream content,
-        final int connectTimeout,
-        final int readTimeout) throws IOException {
+        final int connect,
+        final int read) throws IOException {
         Response response = this.origin.send(
-            req, home, method, headers, content, connectTimeout, readTimeout
+            req, home, method, headers, content, connect, read
         );
         int attempt = 1;
         final URI uri = URI.create(home);
@@ -132,7 +132,7 @@ public final class AutoRedirectingWire implements Wire {
             }
             response = this.origin.send(
                 req, location.toString(),
-                method, headers, content, connectTimeout, readTimeout
+                method, headers, content, connect, read
             );
             try {
                 TimeUnit.SECONDS.sleep((long) attempt);

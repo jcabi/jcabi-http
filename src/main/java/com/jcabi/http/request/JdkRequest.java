@@ -85,8 +85,8 @@ public final class JdkRequest implements Request {
             final String method,
             final Collection<Map.Entry<String, String>> headers,
             final InputStream content,
-            final int connectTimeout,
-            final int readTimeout) throws IOException {
+            final int connect,
+            final int read) throws IOException {
             final URLConnection raw = new URL(home).openConnection();
             if (!(raw instanceof HttpURLConnection)) {
                 throw new IOException(
@@ -98,8 +98,8 @@ public final class JdkRequest implements Request {
             }
             final HttpURLConnection conn = HttpURLConnection.class.cast(raw);
             try {
-                conn.setConnectTimeout(connectTimeout);
-                conn.setReadTimeout(readTimeout);
+                conn.setConnectTimeout(connect);
+                conn.setReadTimeout(read);
                 conn.setRequestMethod(method);
                 conn.setUseCaches(false);
                 conn.setInstanceFollowRedirects(false);

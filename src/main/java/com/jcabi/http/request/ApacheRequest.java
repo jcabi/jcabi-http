@@ -88,13 +88,13 @@ public final class ApacheRequest implements Request {
             final String method,
             final Collection<Map.Entry<String, String>> headers,
             final InputStream content,
-            final int connectTimeout,
-            final int readTimeout) throws IOException {
+            final int connect,
+            final int read) throws IOException {
             final CloseableHttpResponse response =
                 HttpClients.createSystem().execute(
                     this.httpRequest(
                         home, method, headers, content,
-                        connectTimeout, readTimeout
+                            connect, read
                     )
                 );
             try {
@@ -111,6 +111,12 @@ public final class ApacheRequest implements Request {
         }
         /**
          * Create request.
+         * @param home Home URI
+         * @param method Method to use
+         * @param headers HTTP Headers to use
+         * @param content Content to send
+         * @param connect Connect timeout
+         * @param read Read timeout
          * @return Request
          * @throws IOException If an IO Exception occurs
          * @checkstyle ParameterNumber (6 lines)
@@ -119,8 +125,8 @@ public final class ApacheRequest implements Request {
             final String method,
             final Collection<Map.Entry<String, String>> headers,
             final InputStream content,
-            final int connectTimeout,
-            final int readTimeout) throws IOException {
+            final int connect,
+            final int read) throws IOException {
             final HttpEntityEnclosingRequestBase req =
                 new HttpEntityEnclosingRequestBase() {
                     @Override
@@ -130,12 +136,12 @@ public final class ApacheRequest implements Request {
                 };
             final URI uri = URI.create(home);
             req.setConfig(
-                    RequestConfig.custom()
-                            .setCircularRedirectsAllowed(false)
-                            .setRedirectsEnabled(false)
-                            .setConnectTimeout(connectTimeout)
-                            .setSocketTimeout(readTimeout)
-                            .build()
+                RequestConfig.custom()
+                        .setCircularRedirectsAllowed(false)
+                        .setRedirectsEnabled(false)
+                        .setConnectTimeout(connect)
+                        .setSocketTimeout(read)
+                        .build()
             );
             req.setURI(uri);
             req.setEntity(

@@ -109,12 +109,12 @@ final class BaseRequest implements Request {
     /**
      * Socket timeout to use.
      */
-    private final transient int connectTimeout;
+    private final transient int connect;
 
     /**
      * Read timeout to use.
      */
-    private final transient int readTimeout;
+    private final transient int read;
 
     /**
      * Headers.
@@ -150,8 +150,8 @@ final class BaseRequest implements Request {
      * @checkstyle ParameterNumber (5 lines)
      */
     BaseRequest(final Wire wre, final String uri,
-                final Iterable<Map.Entry<String, String>> headers,
-                final String method, final byte[] body) {
+        final Iterable<Map.Entry<String, String>> headers,
+        final String method, final byte[] body) {
         this(wre, uri, headers, method, body, 0, 0);
     }
 
@@ -162,14 +162,14 @@ final class BaseRequest implements Request {
      * @param headers Headers
      * @param method HTTP method
      * @param body HTTP request body
-     * @param cnnctTimeout Connect timeout for http connection
-     * @param rdTimeout Read timeout for http connection
+     * @param cnct Connect timeout for http connection
+     * @param rdd Read timeout for http connection
      * @checkstyle ParameterNumber (5 lines)
      */
     BaseRequest(final Wire wre, final String uri,
         final Iterable<Map.Entry<String, String>> headers,
         final String method, final byte[] body,
-        final int cnnctTimeout, final int rdTimeout) {
+        final int cnct, final int rdd) {
         this.wire = wre;
         URI addr = URI.create(uri);
         if (addr.getPath().isEmpty()) {
@@ -179,8 +179,8 @@ final class BaseRequest implements Request {
         this.hdrs = new Array<Map.Entry<String, String>>(headers);
         this.mtd = method;
         this.content = body.clone();
-        this.connectTimeout = cnnctTimeout;
-        this.readTimeout = rdTimeout;
+        this.connect = cnct;
+        this.read = rdd;
     }
 
     @Override
@@ -304,8 +304,8 @@ final class BaseRequest implements Request {
             this.hdrs,
             this.mtd,
             this.content,
-            this.connectTimeout,
-            this.readTimeout
+            this.connect,
+            this.read
         );
     }
 
@@ -321,9 +321,9 @@ final class BaseRequest implements Request {
         for (final Map.Entry<String, String> header : this.hdrs) {
             text.append(
                 Logger.format(
-                    "%s: %s\n",
-                    header.getKey(),
-                    header.getValue()
+                        "%s: %s\n",
+                        header.getKey(),
+                        header.getValue()
                 )
             );
         }
@@ -342,9 +342,9 @@ final class BaseRequest implements Request {
         throws IOException {
         final long start = System.currentTimeMillis();
         final Response response = this.wire.send(
-                this, this.home, this.mtd,
-                this.hdrs, stream, this.connectTimeout,
-                this.readTimeout
+            this, this.home, this.mtd,
+            this.hdrs, stream, this.connect,
+            this.read
         );
         final URI uri = URI.create(this.home);
         Logger.info(

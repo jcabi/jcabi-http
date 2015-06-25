@@ -90,7 +90,7 @@ public final class RetryWire implements Wire {
         final String method,
         final Collection<Map.Entry<String, String>> headers,
         final InputStream content,
-        final int connectTimeout, final int readTimeout) throws IOException {
+        final int connect, final int read) throws IOException {
         int attempt = 0;
         while (true) {
             if (attempt > Tv.THREE) {
@@ -101,7 +101,7 @@ public final class RetryWire implements Wire {
             try {
                 final Response rsp = this.origin.send(
                     req, home, method, headers, content,
-                        connectTimeout, readTimeout
+                    connect, read
                 );
                 if (rsp.status() < HttpURLConnection.HTTP_INTERNAL_ERROR) {
                     return rsp;

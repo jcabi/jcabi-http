@@ -86,8 +86,8 @@ public final class FakeRequest implements Request {
                 final String method,
                 final Collection<Map.Entry<String, String>> headers,
                 final InputStream text,
-                final int connectTimeout,
-                final int readTimeout) throws IOException {
+                final int connect,
+                final int read) throws IOException {
                 return new DefaultResponse(
                     req,
                     FakeRequest.this.code,

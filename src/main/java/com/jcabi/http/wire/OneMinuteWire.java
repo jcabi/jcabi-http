@@ -88,10 +88,10 @@ public final class OneMinuteWire implements Wire {
         final String method,
         final Collection<Map.Entry<String, String>> headers,
         final InputStream content,
-        final int connectTimeout,
-        final int readTimeout) throws IOException {
+        final int connect,
+        final int read) throws IOException {
         return this.origin.send(
-                req, home, method, headers, content, connectTimeout, readTimeout
+            req, home, method, headers, content, connect, read
         );
     }
 }

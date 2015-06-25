@@ -89,8 +89,8 @@ public final class VerboseWire implements Wire {
         final String method,
         final Collection<Map.Entry<String, String>> headers,
         final InputStream content,
-        final int connectTimeout,
-        final int readTimeout) throws IOException {
+        final int connect,
+        final int read) throws IOException {
         final ByteArrayOutputStream output = new ByteArrayOutputStream();
         final byte[] buffer = new byte[Tv.THOUSAND];
         for (int bytes = content.read(buffer); bytes != -1;
@@ -101,7 +101,7 @@ public final class VerboseWire implements Wire {
         final Response response = this.origin.send(
             req, home, method, headers,
             new ByteArrayInputStream(output.toByteArray()),
-            connectTimeout, readTimeout
+                connect, read
         );
         final StringBuilder text = new StringBuilder(0);
         for (final Map.Entry<String, String> header : headers) {
@@ -114,13 +114,13 @@ public final class VerboseWire implements Wire {
             new RequestBody.Printable(output.toByteArray()).toString()
         );
         Logger.info(
-            this,
-            "#send(%s %s):\nHTTP Request (%s):\n%s\nHTTP Response (%s):\n%s",
-            method, home,
-            req.getClass().getName(),
-            VerboseWire.indent(text.toString()),
-            response.getClass().getName(),
-            VerboseWire.indent(response.toString())
+                this,
+                "#send(%s %s):\nHTTP Request (%s):\n%s\nHTTP Response (%s):\n%s",
+                method, home,
+                req.getClass().getName(),
+                VerboseWire.indent(text.toString()),
+                response.getClass().getName(),
+                VerboseWire.indent(response.toString())
         );
         return response;
     }

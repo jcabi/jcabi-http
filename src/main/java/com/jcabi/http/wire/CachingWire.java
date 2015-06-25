@@ -151,8 +151,8 @@ public final class CachingWire implements Wire {
         final String method,
         final Collection<Map.Entry<String, String>> headers,
         final InputStream content,
-        final int connectTimeout,
-        final int readTimeout) throws IOException {
+        final int connect,
+        final int read) throws IOException {
         final URI uri = req.uri().get();
         final StringBuilder label = new StringBuilder(Tv.HUNDRED)
             .append(method).append(' ').append(uri.getPath());
@@ -172,7 +172,7 @@ public final class CachingWire implements Wire {
                 rsp = CachingWire.CACHE.get(this).get(
                     new CachingWire.Query(
                         this.origin, req, home, headers, content,
-                            connectTimeout, readTimeout
+                        connect, read
                     )
                 );
             } catch (final ExecutionException ex) {
@@ -180,8 +180,8 @@ public final class CachingWire implements Wire {
             }
         } else {
             rsp = this.origin.send(
-                    req, home, method, headers, content,
-                    connectTimeout, readTimeout
+                req, home, method, headers, content,
+                connect, read
             );
         }
         return rsp;
@@ -216,11 +216,11 @@ public final class CachingWire implements Wire {
         /**
          * Connect timeout.
          */
-        private final transient int connectTimeout;
+        private final transient int connect;
         /**
          * Read timeout.
          */
-        private final transient int readTimeout;
+        private final transient int read;
 
         /**
          * Ctor.
@@ -229,21 +229,21 @@ public final class CachingWire implements Wire {
          * @param home URI to fetch
          * @param hdrs Headers
          * @param input Input body
-         * @param cnnctTimeout Connect timeout
-         * @param rdTimeout Read timeout
+         * @param cnct Connect timeout
+         * @param rdd Read timeout
          * @checkstyle ParameterNumberCheck (5 lines)
          */
         Query(final Wire wire, final Request req, final String home,
             final Collection<Map.Entry<String, String>> hdrs,
-            final InputStream input, final int cnnctTimeout,
-            final int rdTimeout) {
+            final InputStream input, final int cnct,
+            final int rdd) {
             this.origin = wire;
             this.request = req;
             this.uri = home;
             this.headers = hdrs;
             this.body = input;
-            this.connectTimeout = cnnctTimeout;
-            this.readTimeout = rdTimeout;
+            this.connect = cnct;
+            this.read = rdd;
         }
         /**
          * Fetch.
@@ -253,7 +253,7 @@ public final class CachingWire implements Wire {
         public Response fetch() throws IOException {
             return this.origin.send(
                 this.request, this.uri, Request.GET, this.headers, this.body,
-                    this.connectTimeout, this.readTimeout
+                this.connect, this.read
             );
         }
     }
