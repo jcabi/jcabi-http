@@ -29,26 +29,6 @@
  */
 package com.jcabi.http.request;
 
-import java.io.IOException;
-import java.io.InputStream;
-import java.net.URI;
-import java.net.URL;
-import java.util.Collection;
-import java.util.LinkedList;
-import java.util.Map;
-
-import javax.validation.constraints.NotNull;
-
-import org.apache.http.Header;
-import org.apache.http.HttpEntity;
-import org.apache.http.client.config.RequestConfig;
-import org.apache.http.client.methods.CloseableHttpResponse;
-import org.apache.http.client.methods.HttpEntityEnclosingRequestBase;
-import org.apache.http.entity.BufferedHttpEntity;
-import org.apache.http.entity.InputStreamEntity;
-import org.apache.http.impl.client.HttpClients;
-import org.apache.http.util.EntityUtils;
-
 import com.jcabi.aspects.Immutable;
 import com.jcabi.aspects.Loggable;
 import com.jcabi.http.ImmutableHeader;
@@ -58,8 +38,24 @@ import com.jcabi.http.RequestURI;
 import com.jcabi.http.Response;
 import com.jcabi.http.Wire;
 import com.jcabi.immutable.Array;
-
+import java.io.IOException;
+import java.io.InputStream;
+import java.net.URI;
+import java.net.URL;
+import java.util.Collection;
+import java.util.LinkedList;
+import java.util.Map;
+import javax.validation.constraints.NotNull;
 import lombok.EqualsAndHashCode;
+import org.apache.http.Header;
+import org.apache.http.HttpEntity;
+import org.apache.http.client.config.RequestConfig;
+import org.apache.http.client.methods.CloseableHttpResponse;
+import org.apache.http.client.methods.HttpEntityEnclosingRequestBase;
+import org.apache.http.entity.BufferedHttpEntity;
+import org.apache.http.entity.InputStreamEntity;
+import org.apache.http.impl.client.HttpClients;
+import org.apache.http.util.EntityUtils;
 
 /**
  * Implementation of {@link Request},
@@ -89,13 +85,17 @@ public final class ApacheRequest implements Request {
          */
         @Override
         public Response send(final Request req, final String home,
-							 final String method,
-							 final Collection<Map.Entry<String, String>> headers,
-							 final InputStream content,
-							 final int connectTimeout, final int readTimeout) throws IOException {
+            final String method,
+            final Collection<Map.Entry<String, String>> headers,
+            final InputStream content,
+            final int connectTimeout,
+            final int readTimeout) throws IOException {
             final CloseableHttpResponse response =
                 HttpClients.createSystem().execute(
-                    this.httpRequest(home, method, headers, content, connectTimeout, readTimeout)
+                    this.httpRequest(
+                        home, method, headers, content,
+                        connectTimeout, readTimeout
+                    )
                 );
             try {
                 return new DefaultResponse(
@@ -116,10 +116,11 @@ public final class ApacheRequest implements Request {
          * @checkstyle ParameterNumber (6 lines)
          */
         public HttpEntityEnclosingRequestBase httpRequest(final String home,
-														  final String method,
-														  final Collection<Map.Entry<String, String>> headers,
-														  final InputStream content,
-														  final int connectTimeout, final int readTimeout) throws IOException {
+            final String method,
+            final Collection<Map.Entry<String, String>> headers,
+            final InputStream content,
+            final int connectTimeout,
+            final int readTimeout) throws IOException {
             final HttpEntityEnclosingRequestBase req =
                 new HttpEntityEnclosingRequestBase() {
                     @Override
@@ -129,13 +130,13 @@ public final class ApacheRequest implements Request {
                 };
             final URI uri = URI.create(home);
             req.setConfig(
-					RequestConfig.custom()
-							.setCircularRedirectsAllowed(false)
-							.setRedirectsEnabled(false)
-							.setConnectTimeout(connectTimeout)
-							.setSocketTimeout(readTimeout)
-							.build()
-			);
+                    RequestConfig.custom()
+                            .setCircularRedirectsAllowed(false)
+                            .setRedirectsEnabled(false)
+                            .setConnectTimeout(connectTimeout)
+                            .setSocketTimeout(readTimeout)
+                            .build()
+            );
             req.setURI(uri);
             req.setEntity(
                 new BufferedHttpEntity(new InputStreamEntity(content))
@@ -243,12 +244,12 @@ public final class ApacheRequest implements Request {
         return this.base.method(method);
     }
 
-	@Override
-	public Request timeout(int connect, int read) {
-		return this.base.timeout(connect, read);
-	}
+    @Override
+    public Request timeout(final int connect, final int read) {
+        return this.base.timeout(connect, read);
+    }
 
-	@Override
+    @Override
     public Response fetch() throws IOException {
         return this.base.fetch();
     }

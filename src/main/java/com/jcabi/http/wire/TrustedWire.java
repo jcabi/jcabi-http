@@ -29,6 +29,10 @@
  */
 package com.jcabi.http.wire;
 
+import com.jcabi.aspects.Immutable;
+import com.jcabi.http.Request;
+import com.jcabi.http.Response;
+import com.jcabi.http.Wire;
 import java.io.IOException;
 import java.io.InputStream;
 import java.security.KeyManagementException;
@@ -37,18 +41,11 @@ import java.security.SecureRandom;
 import java.security.cert.X509Certificate;
 import java.util.Collection;
 import java.util.Map;
-
 import javax.net.ssl.HttpsURLConnection;
 import javax.net.ssl.SSLContext;
 import javax.net.ssl.SSLSocketFactory;
 import javax.net.ssl.TrustManager;
 import javax.net.ssl.X509TrustManager;
-
-import com.jcabi.aspects.Immutable;
-import com.jcabi.http.Request;
-import com.jcabi.http.Response;
-import com.jcabi.http.Wire;
-
 import lombok.EqualsAndHashCode;
 import lombok.ToString;
 
@@ -109,10 +106,10 @@ public final class TrustedWire implements Wire {
     // @checkstyle ParameterNumber (13 lines)
     @Override
     public Response send(final Request req, final String home,
-						 final String method,
-						 final Collection<Map.Entry<String, String>> headers,
-						 final InputStream content,
-						 final int connectTimeout, final int readTimeout) throws IOException {
+        final String method,
+        final Collection<Map.Entry<String, String>> headers,
+        final InputStream content,
+        final int connectTimeout, final int readTimeout) throws IOException {
         synchronized (TrustedWire.class) {
             final SSLSocketFactory def =
                 HttpsURLConnection.getDefaultSSLSocketFactory();
@@ -120,8 +117,10 @@ public final class TrustedWire implements Wire {
                 HttpsURLConnection.setDefaultSSLSocketFactory(
                     TrustedWire.context().getSocketFactory()
                 );
-                return this.origin.send(req, home, method, headers, content,
-						connectTimeout, readTimeout);
+                return this.origin.send(
+                        req, home, method, headers, content,
+                        connectTimeout, readTimeout
+                );
             } finally {
                 HttpsURLConnection.setDefaultSSLSocketFactory(def);
             }

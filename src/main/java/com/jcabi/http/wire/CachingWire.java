@@ -29,16 +29,6 @@
  */
 package com.jcabi.http.wire;
 
-import java.io.IOException;
-import java.io.InputStream;
-import java.net.URI;
-import java.util.Collection;
-import java.util.Map;
-import java.util.concurrent.ExecutionException;
-import java.util.concurrent.TimeUnit;
-
-import javax.validation.constraints.NotNull;
-
 import com.google.common.cache.CacheBuilder;
 import com.google.common.cache.CacheLoader;
 import com.google.common.cache.LoadingCache;
@@ -47,7 +37,14 @@ import com.jcabi.aspects.Tv;
 import com.jcabi.http.Request;
 import com.jcabi.http.Response;
 import com.jcabi.http.Wire;
-
+import java.io.IOException;
+import java.io.InputStream;
+import java.net.URI;
+import java.util.Collection;
+import java.util.Map;
+import java.util.concurrent.ExecutionException;
+import java.util.concurrent.TimeUnit;
+import javax.validation.constraints.NotNull;
 import lombok.EqualsAndHashCode;
 import lombok.ToString;
 
@@ -151,10 +148,11 @@ public final class CachingWire implements Wire {
     // @checkstyle ParameterNumber (5 lines)
     @Override
     public Response send(final Request req, final String home,
-						 final String method,
-						 final Collection<Map.Entry<String, String>> headers,
-						 final InputStream content,
-						 final int connectTimeout, final int readTimeout) throws IOException {
+        final String method,
+        final Collection<Map.Entry<String, String>> headers,
+        final InputStream content,
+        final int connectTimeout,
+        final int readTimeout) throws IOException {
         final URI uri = req.uri().get();
         final StringBuilder label = new StringBuilder(Tv.HUNDRED)
             .append(method).append(' ').append(uri.getPath());
@@ -174,15 +172,17 @@ public final class CachingWire implements Wire {
                 rsp = CachingWire.CACHE.get(this).get(
                     new CachingWire.Query(
                         this.origin, req, home, headers, content,
-							connectTimeout, readTimeout
+                            connectTimeout, readTimeout
                     )
                 );
             } catch (final ExecutionException ex) {
                 throw new IOException(ex);
             }
         } else {
-            rsp = this.origin.send(req, home, method, headers, content,
-					connectTimeout, readTimeout);
+            rsp = this.origin.send(
+                    req, home, method, headers, content,
+                    connectTimeout, readTimeout
+            );
         }
         return rsp;
     }
@@ -213,14 +213,14 @@ public final class CachingWire implements Wire {
          * Body.
          */
         private final transient InputStream body;
-		/**
-		 * Connect timeout
-		 */
-		private final transient int connectTimeout;
-		/**
-		 * Read timeout
-		 */
-		private final transient int readTimeout;
+        /**
+         * Connect timeout.
+         */
+        private final transient int connectTimeout;
+        /**
+         * Read timeout.
+         */
+        private final transient int readTimeout;
 
         /**
          * Ctor.
@@ -229,19 +229,21 @@ public final class CachingWire implements Wire {
          * @param home URI to fetch
          * @param hdrs Headers
          * @param input Input body
+         * @param cnnctTimeout Connect timeout
+         * @param rdTimeout Read timeout
          * @checkstyle ParameterNumberCheck (5 lines)
          */
         Query(final Wire wire, final Request req, final String home,
             final Collection<Map.Entry<String, String>> hdrs,
-            final InputStream input, final int connectTimeout,
-			final int readTimeout) {
+            final InputStream input, final int cnnctTimeout,
+            final int rdTimeout) {
             this.origin = wire;
             this.request = req;
             this.uri = home;
             this.headers = hdrs;
             this.body = input;
-			this.connectTimeout = connectTimeout;
-			this.readTimeout = readTimeout;
+            this.connectTimeout = cnnctTimeout;
+            this.readTimeout = rdTimeout;
         }
         /**
          * Fetch.
@@ -251,7 +253,8 @@ public final class CachingWire implements Wire {
         public Response fetch() throws IOException {
             return this.origin.send(
                 this.request, this.uri, Request.GET, this.headers, this.body,
-					this.connectTimeout, this.readTimeout);
+                    this.connectTimeout, this.readTimeout
+            );
         }
     }
 

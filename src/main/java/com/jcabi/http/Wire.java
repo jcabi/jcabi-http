@@ -66,13 +66,15 @@ public interface Wire {
      * @param method HTTP method
      * @param headers Headers
      * @param content HTTP body
-     * @param connectTimeout
-	 *@param readTimeout @return Response obtained
+     * @param connectTimeout The connect timeout
+     * @param readTimeout The read timeout
+     * @return Response obtained
      * @throws IOException if fails
      * @checkstyle ParameterNumber (6 lines)
      */
     Response send(Request req, String home, String method,
-				  Collection<Map.Entry<String, String>> headers, InputStream content, int connectTimeout, int readTimeout)
+        Collection<Map.Entry<String, String>> headers, InputStream content,
+        int connectTimeout, int readTimeout)
         throws IOException;
 
 }

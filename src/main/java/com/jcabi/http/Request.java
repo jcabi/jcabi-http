@@ -29,12 +29,10 @@
  */
 package com.jcabi.http;
 
+import com.jcabi.aspects.Immutable;
 import java.io.IOException;
 import java.io.InputStream;
-
 import javax.validation.constraints.NotNull;
-
-import com.jcabi.aspects.Immutable;
 
 /**
  * RESTful request.
@@ -154,14 +152,14 @@ public interface Request {
     @NotNull(message = "request is never NULL")
     Request method(@NotNull(message = "method can't be NULL") String method);
 
-	/**
-	 * Use this timeout values.
-	 * @param connect The connect timeout to use in ms
-	 * @param read    The read timeout to use in ms
-	 * @return New alternated request
-	 */
-	@NotNull(message = "request is never NULL")
-	Request timeout(int connect, int read);
+    /**
+     * Use this timeout values.
+     * @param connect The connect timeout to use in ms
+     * @param read The read timeout to use in ms
+     * @return New alternated request
+     */
+    @NotNull(message = "request is never NULL")
+    Request timeout(int connect, int read);
 
     /**
      * Execute it with a specified HTTP method.

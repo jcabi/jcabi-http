@@ -106,15 +106,15 @@ final class BaseRequest implements Request {
      */
     private final transient String mtd;
 
-	/**
-	 * Socket timeout to use
-	 */
-	private final transient int connectTimeout;
+    /**
+     * Socket timeout to use.
+     */
+    private final transient int connectTimeout;
 
-	/**
-	 * Read timeout to use
-	 */
-	private final transient int readTimeout;
+    /**
+     * Read timeout to use.
+     */
+    private final transient int readTimeout;
 
     /**
      * Headers.
@@ -140,22 +140,6 @@ final class BaseRequest implements Request {
         );
     }
 
-
-	/**
-	 * Public ctor.
-	 * @param wre Wire
-	 * @param uri The resource to work with
-	 * @param headers Headers
-	 * @param method HTTP method
-	 * @param body HTTP request body
-	 * @checkstyle ParameterNumber (5 lines)
-	 */
-	BaseRequest(final Wire wre, final String uri,
-				final Iterable<Map.Entry<String, String>> headers,
-				final String method, final byte[] body) {
-		this(wre, uri, headers, method, body, 0, 0);
-	}
-
     /**
      * Public ctor.
      * @param wre Wire
@@ -166,9 +150,26 @@ final class BaseRequest implements Request {
      * @checkstyle ParameterNumber (5 lines)
      */
     BaseRequest(final Wire wre, final String uri,
+                final Iterable<Map.Entry<String, String>> headers,
+                final String method, final byte[] body) {
+        this(wre, uri, headers, method, body, 0, 0);
+    }
+
+    /**
+     * Public ctor.
+     * @param wre Wire
+     * @param uri The resource to work with
+     * @param headers Headers
+     * @param method HTTP method
+     * @param body HTTP request body
+     * @param cnnctTimeout Connect timeout for http connection
+     * @param rdTimeout Read timeout for http connection
+     * @checkstyle ParameterNumber (5 lines)
+     */
+    BaseRequest(final Wire wre, final String uri,
         final Iterable<Map.Entry<String, String>> headers,
         final String method, final byte[] body,
-		final int connectTimeout, final int readTimeout) {
+        final int cnnctTimeout, final int rdTimeout) {
         this.wire = wre;
         URI addr = URI.create(uri);
         if (addr.getPath().isEmpty()) {
@@ -178,8 +179,8 @@ final class BaseRequest implements Request {
         this.hdrs = new Array<Map.Entry<String, String>>(headers);
         this.mtd = method;
         this.content = body.clone();
-		this.connectTimeout = connectTimeout;
-		this.readTimeout = readTimeout;
+        this.connectTimeout = cnnctTimeout;
+        this.readTimeout = rdTimeout;
     }
 
     @Override
@@ -238,20 +239,20 @@ final class BaseRequest implements Request {
         );
     }
 
-	@Override
-	public Request timeout(int connect, int read) {
-		return new BaseRequest(
-			this.wire,
-			this.home,
-			this.hdrs,
-			this.mtd,
-			this.content,
+    @Override
+    public Request timeout(final int connect, final int read) {
+        return new BaseRequest(
+            this.wire,
+            this.home,
+            this.hdrs,
+            this.mtd,
+            this.content,
             connect,
             read
         );
-	}
+    }
 
-	@Override
+    @Override
     public Response fetch() throws IOException {
         return this.fetchResponse(new ByteArrayInputStream(this.content));
     }
@@ -341,9 +342,10 @@ final class BaseRequest implements Request {
         throws IOException {
         final long start = System.currentTimeMillis();
         final Response response = this.wire.send(
-				this, this.home, this.mtd,
-				this.hdrs, stream, this.connectTimeout,
-				this.readTimeout);
+                this, this.home, this.mtd,
+                this.hdrs, stream, this.connectTimeout,
+                this.readTimeout
+        );
         final URI uri = URI.create(this.home);
         Logger.info(
             this,

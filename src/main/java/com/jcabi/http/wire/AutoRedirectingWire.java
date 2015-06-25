@@ -29,6 +29,11 @@
  */
 package com.jcabi.http.wire;
 
+import com.jcabi.aspects.Immutable;
+import com.jcabi.aspects.Tv;
+import com.jcabi.http.Request;
+import com.jcabi.http.Response;
+import com.jcabi.http.Wire;
 import java.io.IOException;
 import java.io.InputStream;
 import java.net.HttpURLConnection;
@@ -37,15 +42,7 @@ import java.util.Collection;
 import java.util.List;
 import java.util.Map;
 import java.util.concurrent.TimeUnit;
-
 import javax.ws.rs.core.HttpHeaders;
-
-import com.jcabi.aspects.Immutable;
-import com.jcabi.aspects.Tv;
-import com.jcabi.http.Request;
-import com.jcabi.http.Response;
-import com.jcabi.http.Wire;
-
 import lombok.EqualsAndHashCode;
 import lombok.ToString;
 
@@ -108,12 +105,14 @@ public final class AutoRedirectingWire implements Wire {
     // @checkstyle ParameterNumber (5 lines)
     @Override
     public Response send(final Request req, final String home,
-						 final String method,
-						 final Collection<Map.Entry<String, String>> headers,
-						 final InputStream content,
-						 final int connectTimeout, final int readTimeout) throws IOException {
+        final String method,
+        final Collection<Map.Entry<String, String>> headers,
+        final InputStream content,
+        final int connectTimeout,
+        final int readTimeout) throws IOException {
         Response response = this.origin.send(
-            req, home, method, headers, content, connectTimeout, readTimeout);
+            req, home, method, headers, content, connectTimeout, readTimeout
+        );
         int attempt = 1;
         final URI uri = URI.create(home);
         while (attempt < this.max) {
@@ -133,7 +132,8 @@ public final class AutoRedirectingWire implements Wire {
             }
             response = this.origin.send(
                 req, location.toString(),
-                method, headers, content, connectTimeout, readTimeout);
+                method, headers, content, connectTimeout, readTimeout
+            );
             try {
                 TimeUnit.SECONDS.sleep((long) attempt);
             } catch (final InterruptedException ex) {
