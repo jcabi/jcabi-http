@@ -94,7 +94,7 @@ public final class ApacheRequest implements Request {
                 HttpClients.createSystem().execute(
                     this.httpRequest(
                         home, method, headers, content,
-                            connect, read
+                        connect, read
                     )
                 );
             try {
@@ -137,11 +137,11 @@ public final class ApacheRequest implements Request {
             final URI uri = URI.create(home);
             req.setConfig(
                 RequestConfig.custom()
-                        .setCircularRedirectsAllowed(false)
-                        .setRedirectsEnabled(false)
-                        .setConnectTimeout(connect)
-                        .setSocketTimeout(read)
-                        .build()
+                    .setCircularRedirectsAllowed(false)
+                    .setRedirectsEnabled(false)
+                    .setConnectTimeout(connect)
+                    .setSocketTimeout(read)
+                    .build()
             );
             req.setURI(uri);
             req.setEntity(

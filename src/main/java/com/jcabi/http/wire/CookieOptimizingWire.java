@@ -140,7 +140,7 @@ public final class CookieOptimizingWire implements Wire {
             );
         }
         return this.origin.send(
-                req, home, method, hdrs, content, connect, read
+            req, home, method, hdrs, content, connect, read
         );
     }
 }

@@ -321,9 +321,9 @@ final class BaseRequest implements Request {
         for (final Map.Entry<String, String> header : this.hdrs) {
             text.append(
                 Logger.format(
-                        "%s: %s\n",
-                        header.getKey(),
-                        header.getValue()
+                    "%s: %s\n",
+                    header.getKey(),
+                    header.getValue()
                 )
             );
         }
