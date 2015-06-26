@@ -111,6 +111,11 @@ public interface Request {
     String PATCH = "PATCH";
 
     /**
+     * Message for the not null constraints.
+     */
+    String NOTNULL = "request is never NULL";
+
+    /**
      * Get destination URI.
      * @return The destination it is currently pointing to
      */
@@ -121,7 +126,7 @@ public interface Request {
      * Get request body.
      * @return New alternated request
      */
-    @NotNull(message = "request is never NULL")
+    @NotNull(message = Request.NOTNULL)
     RequestBody body();
 
     /**
@@ -130,7 +135,7 @@ public interface Request {
      * @param value Value of the header to set
      * @return New alternated request
      */
-    @NotNull(message = "request is never NULL")
+    @NotNull(message = Request.NOTNULL)
     Request header(
         @NotNull(message = "header name can't be NULL") String name,
         @NotNull(message = "header value can't be NULL") Object value);
@@ -149,7 +154,7 @@ public interface Request {
      * @param method The method to use
      * @return New alternated request
      */
-    @NotNull(message = "request is never NULL")
+    @NotNull(message = Request.NOTNULL)
     Request method(@NotNull(message = "method can't be NULL") String method);
 
     /**
@@ -158,7 +163,7 @@ public interface Request {
      * @param read The read timeout to use in ms
      * @return New alternated request
      */
-    @NotNull(message = "request is never NULL")
+    @NotNull(message = Request.NOTNULL)
     Request timeout(int connect, int read);
 
     /**
