@@ -87,10 +87,15 @@ public final class ApacheRequest implements Request {
         public Response send(final Request req, final String home,
             final String method,
             final Collection<Map.Entry<String, String>> headers,
-            final InputStream content) throws IOException {
+            final InputStream content,
+            final int connect,
+            final int read) throws IOException {
             final CloseableHttpResponse response =
                 HttpClients.createSystem().execute(
-                    this.httpRequest(home, method, headers, content)
+                    this.httpRequest(
+                        home, method, headers, content,
+                        connect, read
+                    )
                 );
             try {
                 return new DefaultResponse(
@@ -106,6 +111,12 @@ public final class ApacheRequest implements Request {
         }
         /**
          * Create request.
+         * @param home Home URI
+         * @param method Method to use
+         * @param headers HTTP Headers to use
+         * @param content Content to send
+         * @param connect Connect timeout
+         * @param read Read timeout
          * @return Request
          * @throws IOException If an IO Exception occurs
          * @checkstyle ParameterNumber (6 lines)
@@ -113,7 +124,9 @@ public final class ApacheRequest implements Request {
         public HttpEntityEnclosingRequestBase httpRequest(final String home,
             final String method,
             final Collection<Map.Entry<String, String>> headers,
-            final InputStream content) throws IOException {
+            final InputStream content,
+            final int connect,
+            final int read) throws IOException {
             final HttpEntityEnclosingRequestBase req =
                 new HttpEntityEnclosingRequestBase() {
                     @Override
@@ -126,6 +139,8 @@ public final class ApacheRequest implements Request {
                 RequestConfig.custom()
                     .setCircularRedirectsAllowed(false)
                     .setRedirectsEnabled(false)
+                    .setConnectTimeout(connect)
+                    .setSocketTimeout(read)
                     .build()
             );
             req.setURI(uri);
@@ -233,6 +248,11 @@ public final class ApacheRequest implements Request {
     public Request method(
         @NotNull(message = "method can't be NULL") final String method) {
         return this.base.method(method);
+    }
+
+    @Override
+    public Request timeout(final int connect, final int read) {
+        return this.base.timeout(connect, read);
     }
 
     @Override

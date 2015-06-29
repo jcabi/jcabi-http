@@ -150,7 +150,9 @@ public final class CachingWire implements Wire {
     public Response send(final Request req, final String home,
         final String method,
         final Collection<Map.Entry<String, String>> headers,
-        final InputStream content) throws IOException {
+        final InputStream content,
+        final int connect,
+        final int read) throws IOException {
         final URI uri = req.uri().get();
         final StringBuilder label = new StringBuilder(Tv.HUNDRED)
             .append(method).append(' ').append(uri.getPath());
@@ -169,14 +171,18 @@ public final class CachingWire implements Wire {
             try {
                 rsp = CachingWire.CACHE.get(this).get(
                     new CachingWire.Query(
-                        this.origin, req, home, headers, content
+                        this.origin, req, home, headers, content,
+                        connect, read
                     )
                 );
             } catch (final ExecutionException ex) {
                 throw new IOException(ex);
             }
         } else {
-            rsp = this.origin.send(req, home, method, headers, content);
+            rsp = this.origin.send(
+                req, home, method, headers, content,
+                connect, read
+            );
         }
         return rsp;
     }
@@ -208,22 +214,36 @@ public final class CachingWire implements Wire {
          */
         private final transient InputStream body;
         /**
+         * Connect timeout.
+         */
+        private final transient int connect;
+        /**
+         * Read timeout.
+         */
+        private final transient int read;
+
+        /**
          * Ctor.
          * @param wire Original wire
          * @param req Request
          * @param home URI to fetch
          * @param hdrs Headers
          * @param input Input body
+         * @param cnct Connect timeout
+         * @param rdd Read timeout
          * @checkstyle ParameterNumberCheck (5 lines)
          */
         Query(final Wire wire, final Request req, final String home,
             final Collection<Map.Entry<String, String>> hdrs,
-            final InputStream input) {
+            final InputStream input, final int cnct,
+            final int rdd) {
             this.origin = wire;
             this.request = req;
             this.uri = home;
             this.headers = hdrs;
             this.body = input;
+            this.connect = cnct;
+            this.read = rdd;
         }
         /**
          * Fetch.
@@ -232,7 +252,8 @@ public final class CachingWire implements Wire {
          */
         public Response fetch() throws IOException {
             return this.origin.send(
-                this.request, this.uri, Request.GET, this.headers, this.body
+                this.request, this.uri, Request.GET, this.headers, this.body,
+                this.connect, this.read
             );
         }
     }

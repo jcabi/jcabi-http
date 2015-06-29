@@ -84,7 +84,9 @@ public final class JdkRequest implements Request {
         public Response send(final Request req, final String home,
             final String method,
             final Collection<Map.Entry<String, String>> headers,
-            final InputStream content) throws IOException {
+            final InputStream content,
+            final int connect,
+            final int read) throws IOException {
             final URLConnection raw = new URL(home).openConnection();
             if (!(raw instanceof HttpURLConnection)) {
                 throw new IOException(
@@ -96,6 +98,8 @@ public final class JdkRequest implements Request {
             }
             final HttpURLConnection conn = HttpURLConnection.class.cast(raw);
             try {
+                conn.setConnectTimeout(connect);
+                conn.setReadTimeout(read);
                 conn.setRequestMethod(method);
                 conn.setUseCaches(false);
                 conn.setInstanceFollowRedirects(false);
@@ -259,6 +263,11 @@ public final class JdkRequest implements Request {
     public Request method(
         @NotNull(message = "method can't be NULL") final String method) {
         return this.base.method(method);
+    }
+
+    @Override
+    public Request timeout(final int connect, final int read) {
+        return this.base.timeout(connect, read);
     }
 
     @Override

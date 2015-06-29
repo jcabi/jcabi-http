@@ -73,6 +73,7 @@ import javax.validation.constraints.NotNull;
  * @see com.jcabi.http.request.ApacheRequest
  */
 @Immutable
+@SuppressWarnings("PMD.AvoidDuplicateLiterals")
 public interface Request {
 
     /**
@@ -151,6 +152,15 @@ public interface Request {
      */
     @NotNull(message = "request is never NULL")
     Request method(@NotNull(message = "method can't be NULL") String method);
+
+    /**
+     * Use this timeout values.
+     * @param connect The connect timeout to use in ms
+     * @param read The read timeout to use in ms
+     * @return New alternated request
+     */
+    @NotNull(message = "request is never NULL")
+    Request timeout(int connect, int read);
 
     /**
      * Execute it with a specified HTTP method.

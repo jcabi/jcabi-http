@@ -103,7 +103,9 @@ public final class UserAgentWire implements Wire {
     public Response send(final Request req, final String home,
         final String method,
         final Collection<Map.Entry<String, String>> headers,
-        final InputStream content) throws IOException {
+        final InputStream content,
+        final int connect,
+        final int read) throws IOException {
         final Collection<Map.Entry<String, String>> hdrs =
             new LinkedList<Map.Entry<String, String>>();
         boolean absent = true;
@@ -121,6 +123,8 @@ public final class UserAgentWire implements Wire {
                 )
             );
         }
-        return this.origin.send(req, home, method, hdrs, content);
+        return this.origin.send(
+            req, home, method, hdrs, content, connect, read
+        );
     }
 }

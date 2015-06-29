@@ -108,7 +108,8 @@ public final class TrustedWire implements Wire {
     public Response send(final Request req, final String home,
         final String method,
         final Collection<Map.Entry<String, String>> headers,
-        final InputStream content) throws IOException {
+        final InputStream content,
+        final int connect, final int read) throws IOException {
         synchronized (TrustedWire.class) {
             final SSLSocketFactory def =
                 HttpsURLConnection.getDefaultSSLSocketFactory();
@@ -116,7 +117,10 @@ public final class TrustedWire implements Wire {
                 HttpsURLConnection.setDefaultSSLSocketFactory(
                     TrustedWire.context().getSocketFactory()
                 );
-                return this.origin.send(req, home, method, headers, content);
+                return this.origin.send(
+                    req, home, method, headers, content,
+                    connect, read
+                );
             } finally {
                 HttpsURLConnection.setDefaultSSLSocketFactory(def);
             }

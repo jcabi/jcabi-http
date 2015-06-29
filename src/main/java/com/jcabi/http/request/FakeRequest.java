@@ -85,7 +85,9 @@ public final class FakeRequest implements Request {
             public Response send(final Request req, final String home,
                 final String method,
                 final Collection<Map.Entry<String, String>> headers,
-                final InputStream text) throws IOException {
+                final InputStream text,
+                final int connect,
+                final int read) throws IOException {
                 return new DefaultResponse(
                     req,
                     FakeRequest.this.code,
@@ -183,6 +185,11 @@ public final class FakeRequest implements Request {
     public Request method(
         @NotNull(message = "method can't be NULL") final String method) {
         return this.base.method(method);
+    }
+
+    @Override
+    public Request timeout(final int connect, final int read) {
+        return this.base.timeout(connect, read);
     }
 
     @Override
