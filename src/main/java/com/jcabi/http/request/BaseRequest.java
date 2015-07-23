@@ -107,6 +107,16 @@ final class BaseRequest implements Request {
     private final transient String mtd;
 
     /**
+     * Socket timeout to use.
+     */
+    private final transient int connect;
+
+    /**
+     * Read timeout to use.
+     */
+    private final transient int read;
+
+    /**
      * Headers.
      */
     private final transient Array<Map.Entry<String, String>> hdrs;
@@ -142,6 +152,24 @@ final class BaseRequest implements Request {
     BaseRequest(final Wire wre, final String uri,
         final Iterable<Map.Entry<String, String>> headers,
         final String method, final byte[] body) {
+        this(wre, uri, headers, method, body, 0, 0);
+    }
+
+    /**
+     * Public ctor.
+     * @param wre Wire
+     * @param uri The resource to work with
+     * @param headers Headers
+     * @param method HTTP method
+     * @param body HTTP request body
+     * @param cnct Connect timeout for http connection
+     * @param rdd Read timeout for http connection
+     * @checkstyle ParameterNumber (5 lines)
+     */
+    BaseRequest(final Wire wre, final String uri,
+        final Iterable<Map.Entry<String, String>> headers,
+        final String method, final byte[] body,
+        final int cnct, final int rdd) {
         this.wire = wre;
         URI addr = URI.create(uri);
         if (addr.getPath().isEmpty()) {
@@ -151,6 +179,8 @@ final class BaseRequest implements Request {
         this.hdrs = new Array<Map.Entry<String, String>>(headers);
         this.mtd = method;
         this.content = body.clone();
+        this.connect = cnct;
+        this.read = rdd;
     }
 
     @Override
@@ -210,6 +240,19 @@ final class BaseRequest implements Request {
     }
 
     @Override
+    public Request timeout(final int cnct, final int rdd) {
+        return new BaseRequest(
+            this.wire,
+            this.home,
+            this.hdrs,
+            this.mtd,
+            this.content,
+            cnct,
+            rdd
+        );
+    }
+
+    @Override
     public Response fetch() throws IOException {
         return this.fetchResponse(new ByteArrayInputStream(this.content));
     }
@@ -260,7 +303,9 @@ final class BaseRequest implements Request {
             this.home,
             this.hdrs,
             this.mtd,
-            this.content
+            this.content,
+            this.connect,
+            this.read
         );
     }
 
@@ -298,7 +343,8 @@ final class BaseRequest implements Request {
         final long start = System.currentTimeMillis();
         final Response response = this.wire.send(
             this, this.home, this.mtd,
-            this.hdrs, stream
+            this.hdrs, stream, this.connect,
+            this.read
         );
         final URI uri = URI.create(this.home);
         Logger.info(
@@ -451,12 +497,16 @@ final class BaseRequest implements Request {
         }
         @Override
         public Request back() {
+            final StringBuilder parameter = new StringBuilder(this.get());
+            if ('&' == parameter.charAt(parameter.length() - 1)) {
+                parameter.deleteCharAt(parameter.length() - 1);
+            }
             return new BaseRequest(
-                this.owner.wire,
-                this.owner.home,
-                this.owner.hdrs,
-                this.owner.mtd,
-                this.text
+                    this.owner.wire,
+                    this.owner.home,
+                    this.owner.hdrs,
+                    this.owner.mtd,
+                    parameter.toString().getBytes(BaseRequest.CHARSET)
             );
         }
         @Override
@@ -515,5 +565,4 @@ final class BaseRequest implements Request {
             return body;
         }
     }
-
 }
