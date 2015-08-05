@@ -114,4 +114,13 @@ public final class BaseRequestTest {
         );
     }
 
+    /**
+     * BaseRequest should not contains extra "&" at at the last name value pair.
+     * @throws Exception If something goes wrong inside
+     */
+    @Test
+    public void notContainsExtraChar() throws Exception {
+        final Wire wire = Mockito.mock(Wire.class);
+    }
+
 }
