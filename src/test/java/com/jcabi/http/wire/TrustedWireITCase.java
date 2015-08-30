@@ -32,6 +32,8 @@ package com.jcabi.http.wire;
 import com.jcabi.http.request.JdkRequest;
 import com.jcabi.http.response.RestResponse;
 import java.net.HttpURLConnection;
+import javax.ws.rs.core.HttpHeaders;
+import javax.ws.rs.core.MediaType;
 import org.junit.Test;
 
 /**
@@ -49,6 +51,8 @@ public final class TrustedWireITCase {
     @Test
     public void ignoresPkixErrors() throws Exception {
         new JdkRequest("https://api.travis-ci.org/test")
+            .header(HttpHeaders.CONTENT_TYPE, MediaType.APPLICATION_JSON)
+            .header(HttpHeaders.ACCEPT, MediaType.APPLICATION_JSON)
             .through(TrustedWire.class)
             .fetch()
             .as(RestResponse.class)
