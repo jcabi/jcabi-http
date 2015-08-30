@@ -81,7 +81,7 @@ public final class RequestITCase {
      */
     @Test
     public void sendsHttpRequestAndProcessesHttpResponse() throws Exception {
-        this.request(new URI("http://www.rexsl.com"))
+        this.request(new URI("http://http.jcabi.com"))
             .fetch().as(RestResponse.class)
             .assertStatus(HttpURLConnection.HTTP_OK)
             .as(XmlResponse.class)
@@ -94,7 +94,7 @@ public final class RequestITCase {
      */
     @Test
     public void processesNotOkHttpResponse() throws Exception {
-        this.request(new URI("http://www.rexsl.com/file-not-found.txt"))
+        this.request(new URI("http://http.jcabi.com/file-not-found.txt"))
             .fetch().as(RestResponse.class)
             .assertStatus(HttpURLConnection.HTTP_NOT_FOUND);
     }
