@@ -203,7 +203,7 @@ public final class RequestTest {
     }
 
     /**
-     * BaseRequest can fetch body with HTTP POST request with params
+     * BaseRequest can fetch body with HTTP POST request with params.
      * @throws Exception If something goes wrong inside
      */
     @Test
