@@ -197,11 +197,43 @@ public final class RequestTest {
         final MkQuery query = container.take();
         MatcherAssert.assertThat(
             URLDecoder.decode(query.body(), CharEncoding.UTF_8),
-            Matchers.containsString(value)
+            Matchers.is(String.format("p=%s", value))
         );
         container.stop();
     }
 
+    /**
+     * BaseRequest can fetch body with HTTP POST request with params.
+     * @throws Exception If something goes wrong inside
+     */
+    @Test
+    public void sendsTextWithPostRequestMatchMultipleParams() throws Exception {
+        final MkContainer container = new MkGrizzlyContainer().next(
+            new MkAnswer.Simple("")
+        ).start();
+        final String value = "some value of \u20ac param \"&^%*;'\"";
+        final String follow = "other value of \u20ac param \"&^%*;'\"";
+        this.request(container.home())
+            .method(Request.POST)
+            .body()
+            .formParam("a", value)
+            .formParam("b", follow)
+            .back()
+            .header(
+                HttpHeaders.CONTENT_TYPE,
+                MediaType.APPLICATION_FORM_URLENCODED
+            )
+            .fetch().as(RestResponse.class)
+            .assertStatus(HttpURLConnection.HTTP_OK);
+        final MkQuery query = container.take();
+        MatcherAssert.assertThat(
+            URLDecoder.decode(query.body(), CharEncoding.UTF_8),
+            Matchers.is(
+                String.format("a=%s&b=%s", value, follow)
+            )
+        );
+        container.stop();
+    }
     /**
      * BaseRequest can fetch body with HTTP POST request.
      * @throws Exception If something goes wrong inside

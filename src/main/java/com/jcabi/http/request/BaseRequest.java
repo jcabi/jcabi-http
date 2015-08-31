@@ -483,13 +483,27 @@ final class BaseRequest implements Request {
          */
         private final transient BaseRequest owner;
         /**
+         * URL form character to prepend.
+         */
+        private final transient String prepend;
+        /**
          * Public ctor.
          * @param req Request
          * @param body Text to encapsulate
          */
         BaseBody(final BaseRequest req, final byte[] body) {
+            this(req, body, "");
+        }
+        /**
+         * Public ctor.
+         * @param req Request
+         * @param body Text to encapsulate
+         * @param pre Character to prepend
+         */
+        BaseBody(final BaseRequest req, final byte[] body, final String pre) {
             this.owner = req;
             this.text = body.clone();
+            this.prepend = pre;
         }
         @Override
         public String toString() {
@@ -534,6 +548,7 @@ final class BaseRequest implements Request {
                 return new BaseRequest.BaseBody(
                     this.owner,
                     new StringBuilder(this.get())
+                        .append(this.prepend)
                         .append(name)
                         .append('=')
                         .append(
@@ -542,9 +557,9 @@ final class BaseRequest implements Request {
                                 BaseRequest.ENCODING
                             )
                         )
-                        .append('&')
                         .toString()
-                        .getBytes(BaseRequest.CHARSET)
+                        .getBytes(BaseRequest.CHARSET),
+                    "&"
                 );
             } catch (final UnsupportedEncodingException ex) {
                 throw new IllegalStateException(ex);
