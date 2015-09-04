@@ -34,6 +34,7 @@ import com.jcabi.http.request.FakeRequest;
 import java.net.HttpURLConnection;
 import java.net.URI;
 import javax.ws.rs.core.HttpHeaders;
+import org.hamcrest.Matcher;
 import org.hamcrest.MatcherAssert;
 import org.hamcrest.Matchers;
 import org.junit.Test;
@@ -61,12 +62,21 @@ public final class RestResponseTest {
      * @throws Exception If something goes wrong inside
      */
     @Test
+    @SuppressWarnings("unchecked")
     public void assertsHttpHeaders() throws Exception {
         final String name = "Abc";
         final String value = "t66";
         final Response rsp = new FakeRequest().withHeader(name, value).fetch();
         new RestResponse(rsp).assertHeader(
-            name, Matchers.hasItems(value)
+            name,
+            Matchers.allOf(
+                Matchers.hasItems(value),
+                Matcher.class.cast(Matchers.hasSize(1))
+            )
+        );
+        new RestResponse(rsp).assertHeader(
+            "Something-Else-Which-Is-Absent",
+            Matcher.class.cast(Matchers.empty())
         );
     }
 
