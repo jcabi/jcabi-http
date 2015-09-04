@@ -29,6 +29,7 @@
  */
 package com.jcabi.http.response;
 
+import com.jcabi.http.Response;
 import com.jcabi.http.request.FakeRequest;
 import java.net.HttpURLConnection;
 import java.net.URI;
@@ -53,6 +54,19 @@ public final class RestResponseTest {
         new RestResponse(
             new FakeRequest().withStatus(HttpURLConnection.HTTP_OK).fetch()
         ).assertStatus(HttpURLConnection.HTTP_NOT_FOUND);
+    }
+
+    /**
+     * RestResponse can assert HTTP header.
+     * @throws Exception If something goes wrong inside
+     */
+    @Test(expected = AssertionError.class)
+    public void assertsHttpHeaders() throws Exception {
+        final String value = "t66";
+        final Response rsp = new FakeRequest().withHeader("Abc", value).fetch();
+        new RestResponse(rsp).assertHeader(
+            "abc", Matchers.hasItems(value)
+        );
     }
 
     /**
