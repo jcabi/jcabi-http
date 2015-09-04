@@ -60,12 +60,13 @@ public final class RestResponseTest {
      * RestResponse can assert HTTP header.
      * @throws Exception If something goes wrong inside
      */
-    @Test(expected = AssertionError.class)
+    @Test
     public void assertsHttpHeaders() throws Exception {
+        final String name = "Abc";
         final String value = "t66";
-        final Response rsp = new FakeRequest().withHeader("Abc", value).fetch();
+        final Response rsp = new FakeRequest().withHeader(name, value).fetch();
         new RestResponse(rsp).assertHeader(
-            "abc", Matchers.hasItems(value)
+            name, Matchers.hasItems(value)
         );
     }
 
