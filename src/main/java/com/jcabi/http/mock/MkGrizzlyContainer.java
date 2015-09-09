@@ -147,20 +147,21 @@ public final class MkGrizzlyContainer implements MkContainer {
         );
     }
 
+    @Override
+    public void close() {
+        this.stop();
+    }
+
     /**
      * Reserve port.
      * @return Reserved TCP port
      * @throws IOException If fails
      */
     private static int reserve() throws IOException {
-        int reserved;
-        final ServerSocket socket = new ServerSocket(0);
-        try {
+        final int reserved;
+        try (final ServerSocket socket = new ServerSocket(0)) {
             reserved = socket.getLocalPort();
-        } finally {
-            socket.close();
         }
         return reserved;
     }
-
 }

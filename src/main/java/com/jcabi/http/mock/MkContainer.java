@@ -29,6 +29,7 @@
  */
 package com.jcabi.http.mock;
 
+import java.io.Closeable;
 import java.io.IOException;
 import java.net.URI;
 import java.util.Collection;
@@ -58,6 +59,9 @@ import org.hamcrest.Matcher;
  * and works until JVM is shut down. The only way to stop it is to call
  * {@link #stop()}.
  *
+ * <p>Since version 0.11 container implements {@link Closeable} and can be
+ * used in try-with-resource block.
+ *
  * @author Yegor Bugayenko (yegor@tpc2.com)
  * @version $Id$
  * @since 0.10
@@ -65,7 +69,7 @@ import org.hamcrest.Matcher;
  * @checkstyle TooManyMethods (200 lines)
  */
 @SuppressWarnings("PMD.TooManyMethods")
-public interface MkContainer {
+public interface MkContainer extends Closeable {
 
     /**
      * Give this answer on the next request.

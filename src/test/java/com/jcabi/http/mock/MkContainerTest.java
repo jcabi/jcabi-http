@@ -55,19 +55,20 @@ public final class MkContainerTest {
      */
     @Test
     public void worksAsServletContainer() throws Exception {
-        final MkContainer container = new MkGrizzlyContainer()
-            .next(new MkAnswer.Simple(HttpURLConnection.HTTP_OK, "works fine!"))
-            .start();
-        new JdkRequest(container.home())
-            .fetch().as(RestResponse.class)
-            .assertStatus(HttpURLConnection.HTTP_OK)
-            .assertBody(Matchers.startsWith("works"));
-        container.stop();
-        final MkQuery query = container.take();
-        MatcherAssert.assertThat(
-            query.method(),
-            Matchers.equalTo(Request.GET)
-        );
+        try (final MkContainer container = new MkGrizzlyContainer()) {
+            container.next(
+                new MkAnswer.Simple(HttpURLConnection.HTTP_OK, "works fine!")
+            ).start();
+            new JdkRequest(container.home())
+                .fetch().as(RestResponse.class)
+                .assertStatus(HttpURLConnection.HTTP_OK)
+                .assertBody(Matchers.startsWith("works"));
+            final MkQuery query = container.take();
+            MatcherAssert.assertThat(
+                query.method(),
+                Matchers.equalTo(Request.GET)
+            );
+        }
     }
 
     /**
@@ -76,22 +77,21 @@ public final class MkContainerTest {
      */
     @Test
     public void understandsDuplicateHeaders() throws Exception {
-        final MkContainer container = new MkGrizzlyContainer()
-            .next(new MkAnswer.Simple(""))
-            .start();
-        final String header = "X-Something";
-        new JdkRequest(container.home())
-            .through(VerboseWire.class)
-            .header(header, MediaType.TEXT_HTML)
-            .header(header, MediaType.TEXT_XML)
-            .fetch().as(RestResponse.class)
-            .assertStatus(HttpURLConnection.HTTP_OK);
-        container.stop();
-        final MkQuery query = container.take();
-        MatcherAssert.assertThat(
-            query.headers().get(header),
-            Matchers.hasSize(2)
-        );
+        try (final MkContainer container = new MkGrizzlyContainer()) {
+            container.next(new MkAnswer.Simple("")).start();
+            final String header = "X-Something";
+            new JdkRequest(container.home())
+                .through(VerboseWire.class)
+                .header(header, MediaType.TEXT_HTML)
+                .header(header, MediaType.TEXT_XML)
+                .fetch().as(RestResponse.class)
+                .assertStatus(HttpURLConnection.HTTP_OK);
+            final MkQuery query = container.take();
+            MatcherAssert.assertThat(
+                query.headers().get(header),
+                Matchers.hasSize(2)
+            );
+        }
     }
 
     /**
@@ -102,21 +102,23 @@ public final class MkContainerTest {
     public void answersConditionally() throws Exception {
         final String match = "matching";
         final String mismatch = "not matching";
-        final MkContainer container = new MkGrizzlyContainer().next(
-            new MkAnswer.Simple(mismatch),
-            Matchers.not(new IsAnything<MkQuery>())
-        ).next(new MkAnswer.Simple(match), new IsAnything<MkQuery>()).start();
-        new JdkRequest(container.home())
-            .through(VerboseWire.class)
-            .fetch().as(RestResponse.class)
-            .assertStatus(HttpURLConnection.HTTP_OK)
-            .assertBody(
-                Matchers.allOf(
-                    Matchers.is(match),
-                    Matchers.not(mismatch)
-                )
-            );
-        container.stop();
+        try (final MkContainer container = new MkGrizzlyContainer()) {
+            container.next(
+                new MkAnswer.Simple(mismatch),
+                Matchers.not(new IsAnything<MkQuery>())
+            ).next(new MkAnswer.Simple(match), new IsAnything<MkQuery>())
+                .start();
+            new JdkRequest(container.home())
+                .through(VerboseWire.class)
+                .fetch().as(RestResponse.class)
+                .assertStatus(HttpURLConnection.HTTP_OK)
+                .assertBody(
+                    Matchers.allOf(
+                        Matchers.is(match),
+                        Matchers.not(mismatch)
+                    )
+                );
+        }
     }
 
     /**
@@ -125,16 +127,17 @@ public final class MkContainerTest {
      */
     @Test(expected = NoSuchElementException.class)
     public void returnsErrorIfNoMatches() throws Exception {
-        final MkContainer container = new MkGrizzlyContainer().next(
-            new MkAnswer.Simple("not supposed to match"),
-            Matchers.not(new IsAnything<MkQuery>())
-        ).start();
-        new JdkRequest(container.home())
-            .through(VerboseWire.class)
-            .fetch().as(RestResponse.class)
-            .assertStatus(HttpURLConnection.HTTP_INTERNAL_ERROR);
-        container.stop();
-        container.take();
+        try (final MkContainer container = new MkGrizzlyContainer()) {
+            container.next(
+                new MkAnswer.Simple("not supposed to match"),
+                Matchers.not(new IsAnything<MkQuery>())
+            ).start();
+            new JdkRequest(container.home())
+                .through(VerboseWire.class)
+                .fetch().as(RestResponse.class)
+                .assertStatus(HttpURLConnection.HTTP_INTERNAL_ERROR);
+            container.take();
+        }
     }
 
     /**
@@ -145,19 +148,20 @@ public final class MkContainerTest {
     public void canAnswerMultipleTimes() throws Exception {
         final String body = "multiple";
         final int times = 5;
-        final MkContainer container = new MkGrizzlyContainer().next(
-            new MkAnswer.Simple(body),
-            new IsAnything<MkQuery>(),
-            times
-        ).start();
-        final Request req = new JdkRequest(container.home())
-            .through(VerboseWire.class);
-        for (int idx = 0; idx < times; idx += 1) {
-            req.fetch().as(RestResponse.class)
-                .assertStatus(HttpURLConnection.HTTP_OK)
-                .assertBody(Matchers.is(body));
+        try (final MkContainer container = new MkGrizzlyContainer()) {
+            container.next(
+                new MkAnswer.Simple(body),
+                new IsAnything<MkQuery>(),
+                times
+            ).start();
+            final Request req = new JdkRequest(container.home())
+                .through(VerboseWire.class);
+            for (int idx = 0; idx < times; idx += 1) {
+                req.fetch().as(RestResponse.class)
+                    .assertStatus(HttpURLConnection.HTTP_OK)
+                    .assertBody(Matchers.is(body));
+            }
         }
-        container.stop();
     }
 
     /**
@@ -169,21 +173,22 @@ public final class MkContainerTest {
     public void prioritizesMatchingAnswers() throws Exception {
         final String first = "first";
         final String second = "second";
-        final MkContainer container = new MkGrizzlyContainer()
-            .next(new MkAnswer.Simple(first), new IsAnything<MkQuery>())
-            .next(new MkAnswer.Simple(second), new IsAnything<MkQuery>())
-            .start();
-        new JdkRequest(container.home())
-            .through(VerboseWire.class)
-            .fetch().as(RestResponse.class)
-            .assertStatus(HttpURLConnection.HTTP_OK)
-            .assertBody(
-                Matchers.allOf(
-                    Matchers.is(first),
-                    Matchers.not(second)
-                )
-            );
-        container.stop();
+        try (final MkContainer container = new MkGrizzlyContainer()) {
+            container
+                .next(new MkAnswer.Simple(first), new IsAnything<MkQuery>())
+                .next(new MkAnswer.Simple(second), new IsAnything<MkQuery>())
+                .start();
+            new JdkRequest(container.home())
+                .through(VerboseWire.class)
+                .fetch().as(RestResponse.class)
+                .assertStatus(HttpURLConnection.HTTP_OK)
+                .assertBody(
+                    Matchers.allOf(
+                        Matchers.is(first),
+                        Matchers.not(second)
+                    )
+                );
+        }
     }
 
     /**
@@ -194,27 +199,28 @@ public final class MkContainerTest {
     public void takesMatchingQuery() throws Exception {
         final String request = "reqBodyMatches";
         final String response = "respBodyMatches";
-        final MkContainer container = new MkGrizzlyContainer()
-            .next(new MkAnswer.Simple(response))
-            .next(new MkAnswer.Simple("bleh"))
-            .start();
-        new JdkRequest(container.home())
-            .through(VerboseWire.class)
-            .method(HttpMethod.POST)
-            .body().set(request).back()
-            .fetch().as(RestResponse.class)
-            .assertStatus(HttpURLConnection.HTTP_OK);
-        new JdkRequest(container.home())
-            .through(VerboseWire.class)
-            .method(HttpMethod.POST)
-            .body().set("reqBodyMismatches").back()
-            .fetch().as(RestResponse.class)
-            .assertStatus(HttpURLConnection.HTTP_OK);
-        MatcherAssert.assertThat(
-            container.take(MkAnswerMatchers.hasBody(Matchers.is(response))),
-            MkQueryMatchers.hasBody(Matchers.is(request))
-        );
-        container.stop();
+        try (final MkContainer container = new MkGrizzlyContainer()) {
+            container
+                .next(new MkAnswer.Simple(response))
+                .next(new MkAnswer.Simple("bleh"))
+                .start();
+            new JdkRequest(container.home())
+                .through(VerboseWire.class)
+                .method(HttpMethod.POST)
+                .body().set(request).back()
+                .fetch().as(RestResponse.class)
+                .assertStatus(HttpURLConnection.HTTP_OK);
+            new JdkRequest(container.home())
+                .through(VerboseWire.class)
+                .method(HttpMethod.POST)
+                .body().set("reqBodyMismatches").back()
+                .fetch().as(RestResponse.class)
+                .assertStatus(HttpURLConnection.HTTP_OK);
+            MatcherAssert.assertThat(
+                container.take(MkAnswerMatchers.hasBody(Matchers.is(response))),
+                MkQueryMatchers.hasBody(Matchers.is(request))
+            );
+        }
     }
 
     /**
@@ -227,40 +233,43 @@ public final class MkContainerTest {
         final String match = "multipleRequestMatches";
         final String mismatch = "multipleRequestNotMatching";
         final String response = "multipleResponseMatches";
-        final MkContainer container = new MkGrizzlyContainer().next(
-            new MkAnswer.Simple(response),
-            MkQueryMatchers.hasBody(Matchers.is(match)),
-            2
-        ).next(new MkAnswer.Simple("blaa")).start();
-        new JdkRequest(container.home())
-            .through(VerboseWire.class)
-            .method(HttpMethod.POST)
-            .body().set(match).back()
-            .fetch().as(RestResponse.class)
-            .assertStatus(HttpURLConnection.HTTP_OK)
-            .back()
-            .fetch().as(RestResponse.class)
-            .assertStatus(HttpURLConnection.HTTP_OK);
-        new JdkRequest(container.home())
-            .through(VerboseWire.class)
-            .method(HttpMethod.POST)
-            .body().set(mismatch).back()
-            .fetch().as(RestResponse.class)
-            .assertStatus(HttpURLConnection.HTTP_OK);
-        MatcherAssert.assertThat(
-            container.takeAll(MkAnswerMatchers.hasBody(Matchers.is(response))),
-            Matchers.allOf(
-                Matchers.<MkQuery>iterableWithSize(2),
-                Matchers.hasItems(
-                    MkQueryMatchers.hasBody(Matchers.is(match))
+        try (final MkContainer container = new MkGrizzlyContainer()) {
+            container.next(
+                new MkAnswer.Simple(response),
+                MkQueryMatchers.hasBody(Matchers.is(match)),
+                2
+            ).next(new MkAnswer.Simple("blaa")).start();
+            new JdkRequest(container.home())
+                .through(VerboseWire.class)
+                .method(HttpMethod.POST)
+                .body().set(match).back()
+                .fetch().as(RestResponse.class)
+                .assertStatus(HttpURLConnection.HTTP_OK)
+                .back()
+                .fetch().as(RestResponse.class)
+                .assertStatus(HttpURLConnection.HTTP_OK);
+            new JdkRequest(container.home())
+                .through(VerboseWire.class)
+                .method(HttpMethod.POST)
+                .body().set(mismatch).back()
+                .fetch().as(RestResponse.class)
+                .assertStatus(HttpURLConnection.HTTP_OK);
+            MatcherAssert.assertThat(
+                container.takeAll(
+                    MkAnswerMatchers.hasBody(Matchers.is(response))
                 ),
-                Matchers.not(
+                Matchers.allOf(
+                    Matchers.<MkQuery>iterableWithSize(2),
                     Matchers.hasItems(
-                        MkQueryMatchers.hasBody(Matchers.is(mismatch))
+                        MkQueryMatchers.hasBody(Matchers.is(match))
+                    ),
+                    Matchers.not(
+                        Matchers.hasItems(
+                            MkQueryMatchers.hasBody(Matchers.is(mismatch))
+                        )
                     )
                 )
-            )
-        );
-        container.stop();
+            );
+        }
     }
 }
