@@ -17,7 +17,7 @@ import com.jcabi.http.request.JdkRequest;
 import com.jcabi.http.response.RestResponse;
 public class Main {
   public static void main(String[] args) {
-    String html = new JdkRequest("https://www.google.com")
+    String html = new JdkRequest("https://www.google.com/test")
       .uri().path("/users").queryParam("id", 333).back()
       .method(Request.GET)
       .header(HttpHeaders.ACCEPT, MediaType.TEXT_HTML)
