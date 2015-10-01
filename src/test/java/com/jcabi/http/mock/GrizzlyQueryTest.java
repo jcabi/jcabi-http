@@ -62,8 +62,10 @@ public final class GrizzlyQueryTest {
         Mockito.when(request.getInputStream()).thenReturn(
             new GrizzlyQueryTest.MkGrizzlyInputStream(body)
         );
-        final MkQuery query = new GrizzlyQuery(request);
-        MatcherAssert.assertThat(query.binary(), Matchers.is(body));
+        MatcherAssert.assertThat(
+            new GrizzlyQuery(request).binary(),
+            Matchers.is(body)
+        );
     }
 
     /**
