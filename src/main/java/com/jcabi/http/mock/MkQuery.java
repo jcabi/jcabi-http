@@ -63,9 +63,15 @@ public interface MkQuery {
     Map<String, List<String>> headers();
 
     /**
-     * HTTP request body.
+     * HTTP request body as String.
      * @return Body
      */
     String body();
 
+    /**
+     * HTTP request body as byte array.
+     * @return Body
+     * @since 1.13
+     */
+    byte[] binary();
 }
