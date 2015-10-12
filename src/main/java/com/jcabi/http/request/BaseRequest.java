@@ -310,6 +310,7 @@ final class BaseRequest implements Request {
     }
 
     @Override
+    @SuppressWarnings("PMD.ConsecutiveLiteralAppends")
     public String toString() {
         final URI uri = URI.create(this.home);
         final StringBuilder text = new StringBuilder("HTTP/1.1 ")

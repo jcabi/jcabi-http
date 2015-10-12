@@ -83,13 +83,14 @@ final class MkGrizzlyAdapter extends GrizzlyAdapter {
 
     // @checkstyle ExecutableStatementCount (55 lines)
     @Override
-    @SuppressWarnings(
-        {
-            "PMD.AvoidCatchingThrowable",
-            "PMD.AvoidInstantiatingObjectsInLoops",
-            "rawtypes"
-        }
-    )
+    @SuppressWarnings
+        (
+            {
+                "PMD.AvoidCatchingThrowable",
+                "PMD.AvoidInstantiatingObjectsInLoops",
+                "rawtypes"
+            }
+        )
     public void service(final GrizzlyRequest request,
         final GrizzlyResponse response) {
         try {

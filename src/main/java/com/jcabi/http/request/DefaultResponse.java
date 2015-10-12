@@ -179,6 +179,7 @@ final class DefaultResponse implements Response {
     }
 
     @Override
+    @SuppressWarnings("PMD.ConsecutiveLiteralAppends")
     public String toString() {
         final StringBuilder text = new StringBuilder(0)
             .append(this.code).append(' ')
