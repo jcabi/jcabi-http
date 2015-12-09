@@ -1,6 +1,6 @@
 ## Puzzles
 
-There are 0 active puzzles (6 total), updated on 2015-12-09T11:15:02Z:
+There are 0 active puzzles (6 total), updated on 2015-12-09T13:58:53Z:
 
 unknown ?
 &nbsp;1-40eeff88 src/test/java/com/jcabi/http/mock/MkContainerTest.java:73-74
