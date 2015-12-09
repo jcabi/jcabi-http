@@ -61,11 +61,6 @@
             <url>http://http.jcabi.com/</url>
         </site>
     </distributionManagement>
-    <properties>
-        <jersey.version>1.19</jersey.version>
-        <jetty.version>8.0.2.v20111006</jetty.version>
-        <saxon.version>9.1.0.8</saxon.version>
-    </properties>
     <dependencies>
         <dependency>
             <groupId>com.jcabi</groupId>
@@ -176,14 +171,14 @@
         <dependency>
             <groupId>net.sourceforge.saxon</groupId>
             <artifactId>saxon</artifactId>
-            <version>${saxon.version}</version>
+            <version>9.1.0.8</version>
             <scope>provided</scope>
             <optional>true</optional>
         </dependency>
         <dependency>
             <groupId>net.sourceforge.saxon</groupId>
             <artifactId>saxon</artifactId>
-            <version>${saxon.version}</version>
+            <version>9.1.0.8</version>
             <scope>provided</scope>
             <classifier>dom</classifier>
             <optional>true</optional>
@@ -191,14 +186,14 @@
         <dependency>
             <groupId>com.sun.jersey</groupId>
             <artifactId>jersey-client</artifactId>
-            <version>${jersey.version}</version>
+            <version>1.19</version>
             <scope>provided</scope>
             <optional>true</optional>
         </dependency>
         <dependency>
             <groupId>com.sun.jersey</groupId>
             <artifactId>jersey-core</artifactId>
-            <version>${jersey.version}</version>
+            <version>1.19</version>
             <scope>provided</scope>
             <optional>true</optional>
             <exclusions>
@@ -231,7 +226,7 @@
         <dependency>
             <groupId>com.sun.jersey</groupId>
             <artifactId>jersey-server</artifactId>
-            <version>${jersey.version}</version>
+            <version>1.19</version>
             <scope>test</scope>
             <optional>true</optional>
         </dependency>
