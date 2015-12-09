@@ -53,7 +53,7 @@
 <a class="jxr_linenumber" name="L45" href="#L45">45</a>  <em class="jxr_javadoccomment">/**</em>
 <a class="jxr_linenumber" name="L46" href="#L46">46</a>  <em class="jxr_javadoccomment"> * Integration case for {@link com.jcabi.http.request.ApacheRequest}.</em>
 <a class="jxr_linenumber" name="L47" href="#L47">47</a>  <em class="jxr_javadoccomment"> * @author Yegor Bugayenko (yegor@tpc2.com)</em>
-<a class="jxr_linenumber" name="L48" href="#L48">48</a>  <em class="jxr_javadoccomment"> * @version $Id$</em>
+<a class="jxr_linenumber" name="L48" href="#L48">48</a>  <em class="jxr_javadoccomment"> * @version $Id: e15eec083244b2c1752b1cc1bfe8776974be94bc $</em>
 <a class="jxr_linenumber" name="L49" href="#L49">49</a>  <em class="jxr_javadoccomment"> */</em>
 <a class="jxr_linenumber" name="L50" href="#L50">50</a>  @RunWith(Parameterized.<strong class="jxr_keyword">class</strong>)
 <a class="jxr_linenumber" name="L51" href="#L51">51</a>  <strong class="jxr_keyword">public</strong> <strong class="jxr_keyword">final</strong> <strong class="jxr_keyword">class</strong> <a href="../../../com/jcabi/http/RequestITCase.html">RequestITCase</a> {
@@ -89,7 +89,7 @@
 <a class="jxr_linenumber" name="L81" href="#L81">81</a>  <em class="jxr_javadoccomment">     */</em>
 <a class="jxr_linenumber" name="L82" href="#L82">82</a>      @Test
 <a class="jxr_linenumber" name="L83" href="#L83">83</a>      <strong class="jxr_keyword">public</strong> <strong class="jxr_keyword">void</strong> sendsHttpRequestAndProcessesHttpResponse() <strong class="jxr_keyword">throws</strong> Exception {
-<a class="jxr_linenumber" name="L84" href="#L84">84</a>          <strong class="jxr_keyword">this</strong>.request(<strong class="jxr_keyword">new</strong> URI(<span class="jxr_string">"http://www.rexsl.com"</span>))
+<a class="jxr_linenumber" name="L84" href="#L84">84</a>          <strong class="jxr_keyword">this</strong>.request(<strong class="jxr_keyword">new</strong> URI(<span class="jxr_string">"http://http.jcabi.com"</span>))
 <a class="jxr_linenumber" name="L85" href="#L85">85</a>              .fetch().as(RestResponse.<strong class="jxr_keyword">class</strong>)
 <a class="jxr_linenumber" name="L86" href="#L86">86</a>              .assertStatus(HttpURLConnection.HTTP_OK)
 <a class="jxr_linenumber" name="L87" href="#L87">87</a>              .as(XmlResponse.<strong class="jxr_keyword">class</strong>)
@@ -102,7 +102,7 @@
 <a class="jxr_linenumber" name="L94" href="#L94">94</a>  <em class="jxr_javadoccomment">     */</em>
 <a class="jxr_linenumber" name="L95" href="#L95">95</a>      @Test
 <a class="jxr_linenumber" name="L96" href="#L96">96</a>      <strong class="jxr_keyword">public</strong> <strong class="jxr_keyword">void</strong> processesNotOkHttpResponse() <strong class="jxr_keyword">throws</strong> Exception {
-<a class="jxr_linenumber" name="L97" href="#L97">97</a>          <strong class="jxr_keyword">this</strong>.request(<strong class="jxr_keyword">new</strong> URI(<span class="jxr_string">"http://www.rexsl.com/file-not-found.txt"</span>))
+<a class="jxr_linenumber" name="L97" href="#L97">97</a>          <strong class="jxr_keyword">this</strong>.request(<strong class="jxr_keyword">new</strong> URI(<span class="jxr_string">"http://http.jcabi.com/file-not-found.txt"</span>))
 <a class="jxr_linenumber" name="L98" href="#L98">98</a>              .fetch().as(RestResponse.<strong class="jxr_keyword">class</strong>)
 <a class="jxr_linenumber" name="L99" href="#L99">99</a>              .assertStatus(HttpURLConnection.HTTP_NOT_FOUND);
 <a class="jxr_linenumber" name="L100" href="#L100">100</a>     }

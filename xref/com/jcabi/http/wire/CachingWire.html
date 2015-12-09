@@ -83,7 +83,7 @@
 <a class="jxr_linenumber" name="L75" href="#L75">75</a>  <em class="jxr_javadoccomment"> * &lt;p&gt;The class is immutable and thread-safe.</em>
 <a class="jxr_linenumber" name="L76" href="#L76">76</a>  <em class="jxr_javadoccomment"> *</em>
 <a class="jxr_linenumber" name="L77" href="#L77">77</a>  <em class="jxr_javadoccomment"> * @author Yegor Bugayenko (yegor@tpc2.com)</em>
-<a class="jxr_linenumber" name="L78" href="#L78">78</a>  <em class="jxr_javadoccomment"> * @version $Id$</em>
+<a class="jxr_linenumber" name="L78" href="#L78">78</a>  <em class="jxr_javadoccomment"> * @version $Id: 5091e31b2e8fd9bb78489fb8f83e460a01ed260e $</em>
 <a class="jxr_linenumber" name="L79" href="#L79">79</a>  <em class="jxr_javadoccomment"> * @since 1.0</em>
 <a class="jxr_linenumber" name="L80" href="#L80">80</a>  <em class="jxr_javadoccomment"> */</em>
 <a class="jxr_linenumber" name="L81" href="#L81">81</a>  @Immutable
@@ -158,94 +158,115 @@
 <a class="jxr_linenumber" name="L150" href="#L150">150</a>     <strong class="jxr_keyword">public</strong> <a href="../../../../com/jcabi/http/Response.html">Response</a> send(<strong class="jxr_keyword">final</strong> <a href="../../../../com/jcabi/http/Request.html">Request</a> req, <strong class="jxr_keyword">final</strong> String home,
 <a class="jxr_linenumber" name="L151" href="#L151">151</a>         <strong class="jxr_keyword">final</strong> String method,
 <a class="jxr_linenumber" name="L152" href="#L152">152</a>         <strong class="jxr_keyword">final</strong> Collection&lt;Map.Entry&lt;String, String&gt;&gt; headers,
-<a class="jxr_linenumber" name="L153" href="#L153">153</a>         <strong class="jxr_keyword">final</strong> InputStream content) <strong class="jxr_keyword">throws</strong> IOException {
-<a class="jxr_linenumber" name="L154" href="#L154">154</a>         <strong class="jxr_keyword">final</strong> URI uri = req.uri().get();
-<a class="jxr_linenumber" name="L155" href="#L155">155</a>         <strong class="jxr_keyword">final</strong> StringBuilder label = <strong class="jxr_keyword">new</strong> StringBuilder(Tv.HUNDRED)
-<a class="jxr_linenumber" name="L156" href="#L156">156</a>             .append(method).append(' ').append(uri.getPath());
-<a class="jxr_linenumber" name="L157" href="#L157">157</a>         <strong class="jxr_keyword">if</strong> (uri.getQuery() != <strong class="jxr_keyword">null</strong>) {
-<a class="jxr_linenumber" name="L158" href="#L158">158</a>             label.append('?').append(uri.getQuery());
-<a class="jxr_linenumber" name="L159" href="#L159">159</a>         }
-<a class="jxr_linenumber" name="L160" href="#L160">160</a>         <strong class="jxr_keyword">if</strong> (label.toString().matches(<strong class="jxr_keyword">this</strong>.regex)) {
-<a class="jxr_linenumber" name="L161" href="#L161">161</a>             <strong class="jxr_keyword">try</strong> {
-<a class="jxr_linenumber" name="L162" href="#L162">162</a>                 CachingWire.CACHE.get(<strong class="jxr_keyword">this</strong>).invalidateAll();
-<a class="jxr_linenumber" name="L163" href="#L163">163</a>             } <strong class="jxr_keyword">catch</strong> (<strong class="jxr_keyword">final</strong> ExecutionException ex) {
-<a class="jxr_linenumber" name="L164" href="#L164">164</a>                 <strong class="jxr_keyword">throw</strong> <strong class="jxr_keyword">new</strong> IllegalStateException(ex);
-<a class="jxr_linenumber" name="L165" href="#L165">165</a>             }
-<a class="jxr_linenumber" name="L166" href="#L166">166</a>         }
-<a class="jxr_linenumber" name="L167" href="#L167">167</a>         <strong class="jxr_keyword">final</strong> <a href="../../../../com/jcabi/http/Response.html">Response</a> rsp;
-<a class="jxr_linenumber" name="L168" href="#L168">168</a>         <strong class="jxr_keyword">if</strong> (method.equals(Request.GET)) {
-<a class="jxr_linenumber" name="L169" href="#L169">169</a>             <strong class="jxr_keyword">try</strong> {
-<a class="jxr_linenumber" name="L170" href="#L170">170</a>                 rsp = CachingWire.CACHE.get(<strong class="jxr_keyword">this</strong>).get(
-<a class="jxr_linenumber" name="L171" href="#L171">171</a>                     <strong class="jxr_keyword">new</strong> CachingWire.Query(
-<a class="jxr_linenumber" name="L172" href="#L172">172</a>                         <strong class="jxr_keyword">this</strong>.origin, req, home, headers, content
-<a class="jxr_linenumber" name="L173" href="#L173">173</a>                     )
-<a class="jxr_linenumber" name="L174" href="#L174">174</a>                 );
-<a class="jxr_linenumber" name="L175" href="#L175">175</a>             } <strong class="jxr_keyword">catch</strong> (<strong class="jxr_keyword">final</strong> ExecutionException ex) {
-<a class="jxr_linenumber" name="L176" href="#L176">176</a>                 <strong class="jxr_keyword">throw</strong> <strong class="jxr_keyword">new</strong> IOException(ex);
-<a class="jxr_linenumber" name="L177" href="#L177">177</a>             }
-<a class="jxr_linenumber" name="L178" href="#L178">178</a>         } <strong class="jxr_keyword">else</strong> {
-<a class="jxr_linenumber" name="L179" href="#L179">179</a>             rsp = <strong class="jxr_keyword">this</strong>.origin.send(req, home, method, headers, content);
-<a class="jxr_linenumber" name="L180" href="#L180">180</a>         }
-<a class="jxr_linenumber" name="L181" href="#L181">181</a>         <strong class="jxr_keyword">return</strong> rsp;
-<a class="jxr_linenumber" name="L182" href="#L182">182</a>     }
-<a class="jxr_linenumber" name="L183" href="#L183">183</a> 
-<a class="jxr_linenumber" name="L184" href="#L184">184</a>     <em class="jxr_javadoccomment">/**</em>
-<a class="jxr_linenumber" name="L185" href="#L185">185</a> <em class="jxr_javadoccomment">     * Query.</em>
-<a class="jxr_linenumber" name="L186" href="#L186">186</a> <em class="jxr_javadoccomment">     */</em>
-<a class="jxr_linenumber" name="L187" href="#L187">187</a>     @ToString
-<a class="jxr_linenumber" name="L188" href="#L188">188</a>     @EqualsAndHashCode(of = { <span class="jxr_string">"origin"</span>, <span class="jxr_string">"request"</span>, <span class="jxr_string">"uri"</span>, <span class="jxr_string">"headers"</span> })
-<a class="jxr_linenumber" name="L189" href="#L189">189</a>     <strong class="jxr_keyword">private</strong> <strong class="jxr_keyword">static</strong> <strong class="jxr_keyword">final</strong> <strong class="jxr_keyword">class</strong> <a href="../../../../com/jcabi/http/wire/CachingWire.html">Query</a> {
-<a class="jxr_linenumber" name="L190" href="#L190">190</a>         <em class="jxr_javadoccomment">/**</em>
-<a class="jxr_linenumber" name="L191" href="#L191">191</a> <em class="jxr_javadoccomment">         * Origin wire.</em>
-<a class="jxr_linenumber" name="L192" href="#L192">192</a> <em class="jxr_javadoccomment">         */</em>
-<a class="jxr_linenumber" name="L193" href="#L193">193</a>         <strong class="jxr_keyword">private</strong> <strong class="jxr_keyword">final</strong> <strong class="jxr_keyword">transient</strong> <a href="../../../../com/jcabi/http/Wire.html">Wire</a> origin;
-<a class="jxr_linenumber" name="L194" href="#L194">194</a>         <em class="jxr_javadoccomment">/**</em>
-<a class="jxr_linenumber" name="L195" href="#L195">195</a> <em class="jxr_javadoccomment">         * Request.</em>
-<a class="jxr_linenumber" name="L196" href="#L196">196</a> <em class="jxr_javadoccomment">         */</em>
-<a class="jxr_linenumber" name="L197" href="#L197">197</a>         <strong class="jxr_keyword">private</strong> <strong class="jxr_keyword">final</strong> <strong class="jxr_keyword">transient</strong> <a href="../../../../com/jcabi/http/Request.html">Request</a> request;
-<a class="jxr_linenumber" name="L198" href="#L198">198</a>         <em class="jxr_javadoccomment">/**</em>
-<a class="jxr_linenumber" name="L199" href="#L199">199</a> <em class="jxr_javadoccomment">         * URI.</em>
-<a class="jxr_linenumber" name="L200" href="#L200">200</a> <em class="jxr_javadoccomment">         */</em>
-<a class="jxr_linenumber" name="L201" href="#L201">201</a>         <strong class="jxr_keyword">private</strong> <strong class="jxr_keyword">final</strong> <strong class="jxr_keyword">transient</strong> String uri;
-<a class="jxr_linenumber" name="L202" href="#L202">202</a>         <em class="jxr_javadoccomment">/**</em>
-<a class="jxr_linenumber" name="L203" href="#L203">203</a> <em class="jxr_javadoccomment">         * Headers.</em>
-<a class="jxr_linenumber" name="L204" href="#L204">204</a> <em class="jxr_javadoccomment">         */</em>
-<a class="jxr_linenumber" name="L205" href="#L205">205</a>         <strong class="jxr_keyword">private</strong> <strong class="jxr_keyword">final</strong> <strong class="jxr_keyword">transient</strong> Collection&lt;Map.Entry&lt;String, String&gt;&gt; headers;
-<a class="jxr_linenumber" name="L206" href="#L206">206</a>         <em class="jxr_javadoccomment">/**</em>
-<a class="jxr_linenumber" name="L207" href="#L207">207</a> <em class="jxr_javadoccomment">         * Body.</em>
-<a class="jxr_linenumber" name="L208" href="#L208">208</a> <em class="jxr_javadoccomment">         */</em>
-<a class="jxr_linenumber" name="L209" href="#L209">209</a>         <strong class="jxr_keyword">private</strong> <strong class="jxr_keyword">final</strong> <strong class="jxr_keyword">transient</strong> InputStream body;
-<a class="jxr_linenumber" name="L210" href="#L210">210</a>         <em class="jxr_javadoccomment">/**</em>
-<a class="jxr_linenumber" name="L211" href="#L211">211</a> <em class="jxr_javadoccomment">         * Ctor.</em>
-<a class="jxr_linenumber" name="L212" href="#L212">212</a> <em class="jxr_javadoccomment">         * @param wire Original wire</em>
-<a class="jxr_linenumber" name="L213" href="#L213">213</a> <em class="jxr_javadoccomment">         * @param req Request</em>
-<a class="jxr_linenumber" name="L214" href="#L214">214</a> <em class="jxr_javadoccomment">         * @param home URI to fetch</em>
-<a class="jxr_linenumber" name="L215" href="#L215">215</a> <em class="jxr_javadoccomment">         * @param hdrs Headers</em>
-<a class="jxr_linenumber" name="L216" href="#L216">216</a> <em class="jxr_javadoccomment">         * @param input Input body</em>
-<a class="jxr_linenumber" name="L217" href="#L217">217</a> <em class="jxr_javadoccomment">         * @checkstyle ParameterNumberCheck (5 lines)</em>
+<a class="jxr_linenumber" name="L153" href="#L153">153</a>         <strong class="jxr_keyword">final</strong> InputStream content,
+<a class="jxr_linenumber" name="L154" href="#L154">154</a>         <strong class="jxr_keyword">final</strong> <strong class="jxr_keyword">int</strong> connect,
+<a class="jxr_linenumber" name="L155" href="#L155">155</a>         <strong class="jxr_keyword">final</strong> <strong class="jxr_keyword">int</strong> read) <strong class="jxr_keyword">throws</strong> IOException {
+<a class="jxr_linenumber" name="L156" href="#L156">156</a>         <strong class="jxr_keyword">final</strong> URI uri = req.uri().get();
+<a class="jxr_linenumber" name="L157" href="#L157">157</a>         <strong class="jxr_keyword">final</strong> StringBuilder label = <strong class="jxr_keyword">new</strong> StringBuilder(Tv.HUNDRED)
+<a class="jxr_linenumber" name="L158" href="#L158">158</a>             .append(method).append(' ').append(uri.getPath());
+<a class="jxr_linenumber" name="L159" href="#L159">159</a>         <strong class="jxr_keyword">if</strong> (uri.getQuery() != <strong class="jxr_keyword">null</strong>) {
+<a class="jxr_linenumber" name="L160" href="#L160">160</a>             label.append('?').append(uri.getQuery());
+<a class="jxr_linenumber" name="L161" href="#L161">161</a>         }
+<a class="jxr_linenumber" name="L162" href="#L162">162</a>         <strong class="jxr_keyword">if</strong> (label.toString().matches(<strong class="jxr_keyword">this</strong>.regex)) {
+<a class="jxr_linenumber" name="L163" href="#L163">163</a>             <strong class="jxr_keyword">try</strong> {
+<a class="jxr_linenumber" name="L164" href="#L164">164</a>                 CachingWire.CACHE.get(<strong class="jxr_keyword">this</strong>).invalidateAll();
+<a class="jxr_linenumber" name="L165" href="#L165">165</a>             } <strong class="jxr_keyword">catch</strong> (<strong class="jxr_keyword">final</strong> ExecutionException ex) {
+<a class="jxr_linenumber" name="L166" href="#L166">166</a>                 <strong class="jxr_keyword">throw</strong> <strong class="jxr_keyword">new</strong> IllegalStateException(ex);
+<a class="jxr_linenumber" name="L167" href="#L167">167</a>             }
+<a class="jxr_linenumber" name="L168" href="#L168">168</a>         }
+<a class="jxr_linenumber" name="L169" href="#L169">169</a>         <strong class="jxr_keyword">final</strong> <a href="../../../../com/jcabi/http/Response.html">Response</a> rsp;
+<a class="jxr_linenumber" name="L170" href="#L170">170</a>         <strong class="jxr_keyword">if</strong> (method.equals(Request.GET)) {
+<a class="jxr_linenumber" name="L171" href="#L171">171</a>             <strong class="jxr_keyword">try</strong> {
+<a class="jxr_linenumber" name="L172" href="#L172">172</a>                 rsp = CachingWire.CACHE.get(<strong class="jxr_keyword">this</strong>).get(
+<a class="jxr_linenumber" name="L173" href="#L173">173</a>                     <strong class="jxr_keyword">new</strong> CachingWire.Query(
+<a class="jxr_linenumber" name="L174" href="#L174">174</a>                         <strong class="jxr_keyword">this</strong>.origin, req, home, headers, content,
+<a class="jxr_linenumber" name="L175" href="#L175">175</a>                         connect, read
+<a class="jxr_linenumber" name="L176" href="#L176">176</a>                     )
+<a class="jxr_linenumber" name="L177" href="#L177">177</a>                 );
+<a class="jxr_linenumber" name="L178" href="#L178">178</a>             } <strong class="jxr_keyword">catch</strong> (<strong class="jxr_keyword">final</strong> ExecutionException ex) {
+<a class="jxr_linenumber" name="L179" href="#L179">179</a>                 <strong class="jxr_keyword">throw</strong> <strong class="jxr_keyword">new</strong> IOException(ex);
+<a class="jxr_linenumber" name="L180" href="#L180">180</a>             }
+<a class="jxr_linenumber" name="L181" href="#L181">181</a>         } <strong class="jxr_keyword">else</strong> {
+<a class="jxr_linenumber" name="L182" href="#L182">182</a>             rsp = <strong class="jxr_keyword">this</strong>.origin.send(
+<a class="jxr_linenumber" name="L183" href="#L183">183</a>                 req, home, method, headers, content,
+<a class="jxr_linenumber" name="L184" href="#L184">184</a>                 connect, read
+<a class="jxr_linenumber" name="L185" href="#L185">185</a>             );
+<a class="jxr_linenumber" name="L186" href="#L186">186</a>         }
+<a class="jxr_linenumber" name="L187" href="#L187">187</a>         <strong class="jxr_keyword">return</strong> rsp;
+<a class="jxr_linenumber" name="L188" href="#L188">188</a>     }
+<a class="jxr_linenumber" name="L189" href="#L189">189</a> 
+<a class="jxr_linenumber" name="L190" href="#L190">190</a>     <em class="jxr_javadoccomment">/**</em>
+<a class="jxr_linenumber" name="L191" href="#L191">191</a> <em class="jxr_javadoccomment">     * Query.</em>
+<a class="jxr_linenumber" name="L192" href="#L192">192</a> <em class="jxr_javadoccomment">     */</em>
+<a class="jxr_linenumber" name="L193" href="#L193">193</a>     @ToString
+<a class="jxr_linenumber" name="L194" href="#L194">194</a>     @EqualsAndHashCode(of = { <span class="jxr_string">"origin"</span>, <span class="jxr_string">"request"</span>, <span class="jxr_string">"uri"</span>, <span class="jxr_string">"headers"</span> })
+<a class="jxr_linenumber" name="L195" href="#L195">195</a>     <strong class="jxr_keyword">private</strong> <strong class="jxr_keyword">static</strong> <strong class="jxr_keyword">final</strong> <strong class="jxr_keyword">class</strong> <a href="../../../../com/jcabi/http/wire/CachingWire.html">Query</a> {
+<a class="jxr_linenumber" name="L196" href="#L196">196</a>         <em class="jxr_javadoccomment">/**</em>
+<a class="jxr_linenumber" name="L197" href="#L197">197</a> <em class="jxr_javadoccomment">         * Origin wire.</em>
+<a class="jxr_linenumber" name="L198" href="#L198">198</a> <em class="jxr_javadoccomment">         */</em>
+<a class="jxr_linenumber" name="L199" href="#L199">199</a>         <strong class="jxr_keyword">private</strong> <strong class="jxr_keyword">final</strong> <strong class="jxr_keyword">transient</strong> <a href="../../../../com/jcabi/http/Wire.html">Wire</a> origin;
+<a class="jxr_linenumber" name="L200" href="#L200">200</a>         <em class="jxr_javadoccomment">/**</em>
+<a class="jxr_linenumber" name="L201" href="#L201">201</a> <em class="jxr_javadoccomment">         * Request.</em>
+<a class="jxr_linenumber" name="L202" href="#L202">202</a> <em class="jxr_javadoccomment">         */</em>
+<a class="jxr_linenumber" name="L203" href="#L203">203</a>         <strong class="jxr_keyword">private</strong> <strong class="jxr_keyword">final</strong> <strong class="jxr_keyword">transient</strong> <a href="../../../../com/jcabi/http/Request.html">Request</a> request;
+<a class="jxr_linenumber" name="L204" href="#L204">204</a>         <em class="jxr_javadoccomment">/**</em>
+<a class="jxr_linenumber" name="L205" href="#L205">205</a> <em class="jxr_javadoccomment">         * URI.</em>
+<a class="jxr_linenumber" name="L206" href="#L206">206</a> <em class="jxr_javadoccomment">         */</em>
+<a class="jxr_linenumber" name="L207" href="#L207">207</a>         <strong class="jxr_keyword">private</strong> <strong class="jxr_keyword">final</strong> <strong class="jxr_keyword">transient</strong> String uri;
+<a class="jxr_linenumber" name="L208" href="#L208">208</a>         <em class="jxr_javadoccomment">/**</em>
+<a class="jxr_linenumber" name="L209" href="#L209">209</a> <em class="jxr_javadoccomment">         * Headers.</em>
+<a class="jxr_linenumber" name="L210" href="#L210">210</a> <em class="jxr_javadoccomment">         */</em>
+<a class="jxr_linenumber" name="L211" href="#L211">211</a>         <strong class="jxr_keyword">private</strong> <strong class="jxr_keyword">final</strong> <strong class="jxr_keyword">transient</strong> Collection&lt;Map.Entry&lt;String, String&gt;&gt; headers;
+<a class="jxr_linenumber" name="L212" href="#L212">212</a>         <em class="jxr_javadoccomment">/**</em>
+<a class="jxr_linenumber" name="L213" href="#L213">213</a> <em class="jxr_javadoccomment">         * Body.</em>
+<a class="jxr_linenumber" name="L214" href="#L214">214</a> <em class="jxr_javadoccomment">         */</em>
+<a class="jxr_linenumber" name="L215" href="#L215">215</a>         <strong class="jxr_keyword">private</strong> <strong class="jxr_keyword">final</strong> <strong class="jxr_keyword">transient</strong> InputStream body;
+<a class="jxr_linenumber" name="L216" href="#L216">216</a>         <em class="jxr_javadoccomment">/**</em>
+<a class="jxr_linenumber" name="L217" href="#L217">217</a> <em class="jxr_javadoccomment">         * Connect timeout.</em>
 <a class="jxr_linenumber" name="L218" href="#L218">218</a> <em class="jxr_javadoccomment">         */</em>
-<a class="jxr_linenumber" name="L219" href="#L219">219</a>         <a href="../../../../com/jcabi/http/wire/CachingWire.html">Query</a>(<strong class="jxr_keyword">final</strong> <a href="../../../../com/jcabi/http/Wire.html">Wire</a> wire, <strong class="jxr_keyword">final</strong> <a href="../../../../com/jcabi/http/Request.html">Request</a> req, <strong class="jxr_keyword">final</strong> String home,
-<a class="jxr_linenumber" name="L220" href="#L220">220</a>             <strong class="jxr_keyword">final</strong> Collection&lt;Map.Entry&lt;String, String&gt;&gt; hdrs,
-<a class="jxr_linenumber" name="L221" href="#L221">221</a>             <strong class="jxr_keyword">final</strong> InputStream input) {
-<a class="jxr_linenumber" name="L222" href="#L222">222</a>             <strong class="jxr_keyword">this</strong>.origin = wire;
-<a class="jxr_linenumber" name="L223" href="#L223">223</a>             <strong class="jxr_keyword">this</strong>.request = req;
-<a class="jxr_linenumber" name="L224" href="#L224">224</a>             <strong class="jxr_keyword">this</strong>.uri = home;
-<a class="jxr_linenumber" name="L225" href="#L225">225</a>             <strong class="jxr_keyword">this</strong>.headers = hdrs;
-<a class="jxr_linenumber" name="L226" href="#L226">226</a>             <strong class="jxr_keyword">this</strong>.body = input;
-<a class="jxr_linenumber" name="L227" href="#L227">227</a>         }
-<a class="jxr_linenumber" name="L228" href="#L228">228</a>         <em class="jxr_javadoccomment">/**</em>
-<a class="jxr_linenumber" name="L229" href="#L229">229</a> <em class="jxr_javadoccomment">         * Fetch.</em>
-<a class="jxr_linenumber" name="L230" href="#L230">230</a> <em class="jxr_javadoccomment">         * @return Response</em>
-<a class="jxr_linenumber" name="L231" href="#L231">231</a> <em class="jxr_javadoccomment">         * @throws IOException If fails</em>
-<a class="jxr_linenumber" name="L232" href="#L232">232</a> <em class="jxr_javadoccomment">         */</em>
-<a class="jxr_linenumber" name="L233" href="#L233">233</a>         <strong class="jxr_keyword">public</strong> <a href="../../../../com/jcabi/http/Response.html">Response</a> fetch() <strong class="jxr_keyword">throws</strong> IOException {
-<a class="jxr_linenumber" name="L234" href="#L234">234</a>             <strong class="jxr_keyword">return</strong> <strong class="jxr_keyword">this</strong>.origin.send(
-<a class="jxr_linenumber" name="L235" href="#L235">235</a>                 <strong class="jxr_keyword">this</strong>.request, <strong class="jxr_keyword">this</strong>.uri, Request.GET, <strong class="jxr_keyword">this</strong>.headers, <strong class="jxr_keyword">this</strong>.body
-<a class="jxr_linenumber" name="L236" href="#L236">236</a>             );
-<a class="jxr_linenumber" name="L237" href="#L237">237</a>         }
-<a class="jxr_linenumber" name="L238" href="#L238">238</a>     }
-<a class="jxr_linenumber" name="L239" href="#L239">239</a> 
-<a class="jxr_linenumber" name="L240" href="#L240">240</a> }
+<a class="jxr_linenumber" name="L219" href="#L219">219</a>         <strong class="jxr_keyword">private</strong> <strong class="jxr_keyword">final</strong> <strong class="jxr_keyword">transient</strong> <strong class="jxr_keyword">int</strong> connect;
+<a class="jxr_linenumber" name="L220" href="#L220">220</a>         <em class="jxr_javadoccomment">/**</em>
+<a class="jxr_linenumber" name="L221" href="#L221">221</a> <em class="jxr_javadoccomment">         * Read timeout.</em>
+<a class="jxr_linenumber" name="L222" href="#L222">222</a> <em class="jxr_javadoccomment">         */</em>
+<a class="jxr_linenumber" name="L223" href="#L223">223</a>         <strong class="jxr_keyword">private</strong> <strong class="jxr_keyword">final</strong> <strong class="jxr_keyword">transient</strong> <strong class="jxr_keyword">int</strong> read;
+<a class="jxr_linenumber" name="L224" href="#L224">224</a> 
+<a class="jxr_linenumber" name="L225" href="#L225">225</a>         <em class="jxr_javadoccomment">/**</em>
+<a class="jxr_linenumber" name="L226" href="#L226">226</a> <em class="jxr_javadoccomment">         * Ctor.</em>
+<a class="jxr_linenumber" name="L227" href="#L227">227</a> <em class="jxr_javadoccomment">         * @param wire Original wire</em>
+<a class="jxr_linenumber" name="L228" href="#L228">228</a> <em class="jxr_javadoccomment">         * @param req Request</em>
+<a class="jxr_linenumber" name="L229" href="#L229">229</a> <em class="jxr_javadoccomment">         * @param home URI to fetch</em>
+<a class="jxr_linenumber" name="L230" href="#L230">230</a> <em class="jxr_javadoccomment">         * @param hdrs Headers</em>
+<a class="jxr_linenumber" name="L231" href="#L231">231</a> <em class="jxr_javadoccomment">         * @param input Input body</em>
+<a class="jxr_linenumber" name="L232" href="#L232">232</a> <em class="jxr_javadoccomment">         * @param cnct Connect timeout</em>
+<a class="jxr_linenumber" name="L233" href="#L233">233</a> <em class="jxr_javadoccomment">         * @param rdd Read timeout</em>
+<a class="jxr_linenumber" name="L234" href="#L234">234</a> <em class="jxr_javadoccomment">         * @checkstyle ParameterNumberCheck (5 lines)</em>
+<a class="jxr_linenumber" name="L235" href="#L235">235</a> <em class="jxr_javadoccomment">         */</em>
+<a class="jxr_linenumber" name="L236" href="#L236">236</a>         <a href="../../../../com/jcabi/http/wire/CachingWire.html">Query</a>(<strong class="jxr_keyword">final</strong> <a href="../../../../com/jcabi/http/Wire.html">Wire</a> wire, <strong class="jxr_keyword">final</strong> <a href="../../../../com/jcabi/http/Request.html">Request</a> req, <strong class="jxr_keyword">final</strong> String home,
+<a class="jxr_linenumber" name="L237" href="#L237">237</a>             <strong class="jxr_keyword">final</strong> Collection&lt;Map.Entry&lt;String, String&gt;&gt; hdrs,
+<a class="jxr_linenumber" name="L238" href="#L238">238</a>             <strong class="jxr_keyword">final</strong> InputStream input, <strong class="jxr_keyword">final</strong> <strong class="jxr_keyword">int</strong> cnct,
+<a class="jxr_linenumber" name="L239" href="#L239">239</a>             <strong class="jxr_keyword">final</strong> <strong class="jxr_keyword">int</strong> rdd) {
+<a class="jxr_linenumber" name="L240" href="#L240">240</a>             <strong class="jxr_keyword">this</strong>.origin = wire;
+<a class="jxr_linenumber" name="L241" href="#L241">241</a>             <strong class="jxr_keyword">this</strong>.request = req;
+<a class="jxr_linenumber" name="L242" href="#L242">242</a>             <strong class="jxr_keyword">this</strong>.uri = home;
+<a class="jxr_linenumber" name="L243" href="#L243">243</a>             <strong class="jxr_keyword">this</strong>.headers = hdrs;
+<a class="jxr_linenumber" name="L244" href="#L244">244</a>             <strong class="jxr_keyword">this</strong>.body = input;
+<a class="jxr_linenumber" name="L245" href="#L245">245</a>             <strong class="jxr_keyword">this</strong>.connect = cnct;
+<a class="jxr_linenumber" name="L246" href="#L246">246</a>             <strong class="jxr_keyword">this</strong>.read = rdd;
+<a class="jxr_linenumber" name="L247" href="#L247">247</a>         }
+<a class="jxr_linenumber" name="L248" href="#L248">248</a>         <em class="jxr_javadoccomment">/**</em>
+<a class="jxr_linenumber" name="L249" href="#L249">249</a> <em class="jxr_javadoccomment">         * Fetch.</em>
+<a class="jxr_linenumber" name="L250" href="#L250">250</a> <em class="jxr_javadoccomment">         * @return Response</em>
+<a class="jxr_linenumber" name="L251" href="#L251">251</a> <em class="jxr_javadoccomment">         * @throws IOException If fails</em>
+<a class="jxr_linenumber" name="L252" href="#L252">252</a> <em class="jxr_javadoccomment">         */</em>
+<a class="jxr_linenumber" name="L253" href="#L253">253</a>         <strong class="jxr_keyword">public</strong> <a href="../../../../com/jcabi/http/Response.html">Response</a> fetch() <strong class="jxr_keyword">throws</strong> IOException {
+<a class="jxr_linenumber" name="L254" href="#L254">254</a>             <strong class="jxr_keyword">return</strong> <strong class="jxr_keyword">this</strong>.origin.send(
+<a class="jxr_linenumber" name="L255" href="#L255">255</a>                 <strong class="jxr_keyword">this</strong>.request, <strong class="jxr_keyword">this</strong>.uri, Request.GET, <strong class="jxr_keyword">this</strong>.headers, <strong class="jxr_keyword">this</strong>.body,
+<a class="jxr_linenumber" name="L256" href="#L256">256</a>                 <strong class="jxr_keyword">this</strong>.connect, <strong class="jxr_keyword">this</strong>.read
+<a class="jxr_linenumber" name="L257" href="#L257">257</a>             );
+<a class="jxr_linenumber" name="L258" href="#L258">258</a>         }
+<a class="jxr_linenumber" name="L259" href="#L259">259</a>     }
+<a class="jxr_linenumber" name="L260" href="#L260">260</a> 
+<a class="jxr_linenumber" name="L261" href="#L261">261</a> }
 </pre>
 <hr/>
 <div id="footer">Copyright &#169; 2012&#x2013;2015 <a href="http://www.jcabi.com">jcabi.com</a>. All rights reserved.</div>

@@ -58,7 +58,7 @@
 <a class="jxr_linenumber" name="L50" href="#L50">50</a>  <em class="jxr_javadoccomment"> * Default implementation of {@link com.jcabi.http.Response}.</em>
 <a class="jxr_linenumber" name="L51" href="#L51">51</a>  <em class="jxr_javadoccomment"> *</em>
 <a class="jxr_linenumber" name="L52" href="#L52">52</a>  <em class="jxr_javadoccomment"> * @author Yegor Bugayenko (yegor@tpc2.com)</em>
-<a class="jxr_linenumber" name="L53" href="#L53">53</a>  <em class="jxr_javadoccomment"> * @version $Id$</em>
+<a class="jxr_linenumber" name="L53" href="#L53">53</a>  <em class="jxr_javadoccomment"> * @version $Id: 2147dfe4bdc48e4c2620c464f0f26fc02abb9d67 $</em>
 <a class="jxr_linenumber" name="L54" href="#L54">54</a>  <em class="jxr_javadoccomment"> */</em>
 <a class="jxr_linenumber" name="L55" href="#L55">55</a>  @Immutable
 <a class="jxr_linenumber" name="L56" href="#L56">56</a>  @EqualsAndHashCode(of = { <span class="jxr_string">"req"</span>, <span class="jxr_string">"code"</span>, <span class="jxr_string">"phrase"</span>, <span class="jxr_string">"hdrs"</span>, <span class="jxr_string">"content"</span> })
@@ -187,28 +187,29 @@
 <a class="jxr_linenumber" name="L179" href="#L179">179</a>     }
 <a class="jxr_linenumber" name="L180" href="#L180">180</a> 
 <a class="jxr_linenumber" name="L181" href="#L181">181</a>     @Override
-<a class="jxr_linenumber" name="L182" href="#L182">182</a>     <strong class="jxr_keyword">public</strong> String toString() {
-<a class="jxr_linenumber" name="L183" href="#L183">183</a>         <strong class="jxr_keyword">final</strong> StringBuilder text = <strong class="jxr_keyword">new</strong> StringBuilder(0)
-<a class="jxr_linenumber" name="L184" href="#L184">184</a>             .append(<strong class="jxr_keyword">this</strong>.code).append(' ')
-<a class="jxr_linenumber" name="L185" href="#L185">185</a>             .append(<strong class="jxr_keyword">this</strong>.phrase)
-<a class="jxr_linenumber" name="L186" href="#L186">186</a>             .append(<span class="jxr_string">" ["</span>)
-<a class="jxr_linenumber" name="L187" href="#L187">187</a>             .append(<strong class="jxr_keyword">this</strong>.back().uri().get())
-<a class="jxr_linenumber" name="L188" href="#L188">188</a>             .append(<span class="jxr_string">"]\n"</span>);
-<a class="jxr_linenumber" name="L189" href="#L189">189</a>         <strong class="jxr_keyword">for</strong> (<strong class="jxr_keyword">final</strong> Map.Entry&lt;String, String&gt; header : <strong class="jxr_keyword">this</strong>.hdrs) {
-<a class="jxr_linenumber" name="L190" href="#L190">190</a>             text.append(
-<a class="jxr_linenumber" name="L191" href="#L191">191</a>                 Logger.format(
-<a class="jxr_linenumber" name="L192" href="#L192">192</a>                     <span class="jxr_string">"%s: %s\n"</span>,
-<a class="jxr_linenumber" name="L193" href="#L193">193</a>                     header.getKey(),
-<a class="jxr_linenumber" name="L194" href="#L194">194</a>                     header.getValue()
-<a class="jxr_linenumber" name="L195" href="#L195">195</a>                 )
-<a class="jxr_linenumber" name="L196" href="#L196">196</a>             );
-<a class="jxr_linenumber" name="L197" href="#L197">197</a>         }
-<a class="jxr_linenumber" name="L198" href="#L198">198</a>         <strong class="jxr_keyword">return</strong> text.append('\n')
-<a class="jxr_linenumber" name="L199" href="#L199">199</a>             .append(<strong class="jxr_keyword">new</strong> RequestBody.Printable(<strong class="jxr_keyword">this</strong>.content))
-<a class="jxr_linenumber" name="L200" href="#L200">200</a>             .toString();
-<a class="jxr_linenumber" name="L201" href="#L201">201</a>     }
-<a class="jxr_linenumber" name="L202" href="#L202">202</a> 
-<a class="jxr_linenumber" name="L203" href="#L203">203</a> }
+<a class="jxr_linenumber" name="L182" href="#L182">182</a>     @SuppressWarnings(<span class="jxr_string">"PMD.ConsecutiveLiteralAppends"</span>)
+<a class="jxr_linenumber" name="L183" href="#L183">183</a>     <strong class="jxr_keyword">public</strong> String toString() {
+<a class="jxr_linenumber" name="L184" href="#L184">184</a>         <strong class="jxr_keyword">final</strong> StringBuilder text = <strong class="jxr_keyword">new</strong> StringBuilder(0)
+<a class="jxr_linenumber" name="L185" href="#L185">185</a>             .append(<strong class="jxr_keyword">this</strong>.code).append(' ')
+<a class="jxr_linenumber" name="L186" href="#L186">186</a>             .append(<strong class="jxr_keyword">this</strong>.phrase)
+<a class="jxr_linenumber" name="L187" href="#L187">187</a>             .append(<span class="jxr_string">" ["</span>)
+<a class="jxr_linenumber" name="L188" href="#L188">188</a>             .append(<strong class="jxr_keyword">this</strong>.back().uri().get())
+<a class="jxr_linenumber" name="L189" href="#L189">189</a>             .append(<span class="jxr_string">"]\n"</span>);
+<a class="jxr_linenumber" name="L190" href="#L190">190</a>         <strong class="jxr_keyword">for</strong> (<strong class="jxr_keyword">final</strong> Map.Entry&lt;String, String&gt; header : <strong class="jxr_keyword">this</strong>.hdrs) {
+<a class="jxr_linenumber" name="L191" href="#L191">191</a>             text.append(
+<a class="jxr_linenumber" name="L192" href="#L192">192</a>                 Logger.format(
+<a class="jxr_linenumber" name="L193" href="#L193">193</a>                     <span class="jxr_string">"%s: %s\n"</span>,
+<a class="jxr_linenumber" name="L194" href="#L194">194</a>                     header.getKey(),
+<a class="jxr_linenumber" name="L195" href="#L195">195</a>                     header.getValue()
+<a class="jxr_linenumber" name="L196" href="#L196">196</a>                 )
+<a class="jxr_linenumber" name="L197" href="#L197">197</a>             );
+<a class="jxr_linenumber" name="L198" href="#L198">198</a>         }
+<a class="jxr_linenumber" name="L199" href="#L199">199</a>         <strong class="jxr_keyword">return</strong> text.append('\n')
+<a class="jxr_linenumber" name="L200" href="#L200">200</a>             .append(<strong class="jxr_keyword">new</strong> RequestBody.Printable(<strong class="jxr_keyword">this</strong>.content))
+<a class="jxr_linenumber" name="L201" href="#L201">201</a>             .toString();
+<a class="jxr_linenumber" name="L202" href="#L202">202</a>     }
+<a class="jxr_linenumber" name="L203" href="#L203">203</a> 
+<a class="jxr_linenumber" name="L204" href="#L204">204</a> }
 </pre>
 <hr/>
 <div id="footer">Copyright &#169; 2012&#x2013;2015 <a href="http://www.jcabi.com">jcabi.com</a>. All rights reserved.</div>
