@@ -5,7 +5,7 @@
 
 [![Build Status](https://travis-ci.org/jcabi/jcabi-http.svg?branch=master)](https://travis-ci.org/jcabi/jcabi-http)
 [![Build status](https://ci.appveyor.com/api/projects/status/a87rxtuvvek647fs/branch/master?svg=true)](https://ci.appveyor.com/project/yegor256/jcabi-http/branch/master)
-[![Coverage Status](https://coveralls.io/repos/jcabi/jcabi-http/badge.svg?branch=master&service=github)](https://coveralls.io/github/jcabi/jcabi-http?branch=master)
+[![Coverage Status](https://coveralls.io/repos/jcabi/jcabi-http/badge.svg?branch=__rultor&service=github)](https://coveralls.io/github/jcabi/jcabi-http?branch=__rultor)
 [![JavaDoc](https://img.shields.io/badge/javadoc-html-blue.svg)](http://www.javadoc.io/doc/com.jcabi/jcabi-http)
 
 [![Maven Central](https://maven-badges.herokuapp.com/maven-central/com.jcabi/jcabi-http/badge.svg)](https://maven-badges.herokuapp.com/maven-central/com.jcabi/jcabi-http)
