@@ -79,26 +79,7 @@ public final class FakeRequest implements Request {
      * Base request.
      * @checkstyle ParameterNumber (15 lines)
      */
-    private final transient Request base = new BaseRequest(
-        new Wire() {
-            @Override
-            public Response send(final Request req, final String home,
-                final String method,
-                final Collection<Map.Entry<String, String>> headers,
-                final InputStream text,
-                final int connect,
-                final int read) throws IOException {
-                return new DefaultResponse(
-                    req,
-                    FakeRequest.this.code,
-                    FakeRequest.this.phrase,
-                    FakeRequest.this.hdrs,
-                    FakeRequest.this.content
-                );
-            }
-        },
-        "http://localhost:12345/see-FakeRequest-class"
-    );
+    private final transient Request base;
 
     /**
      * Status code.
@@ -148,8 +129,29 @@ public final class FakeRequest implements Request {
         @NotNull(message = "body can't be NULL") final byte[] body) {
         this.code = status;
         this.phrase = reason;
-        this.hdrs = new Array<Map.Entry<String, String>>(headers);
+        this.hdrs = new Array<>(headers);
         this.content = body.clone();
+        this.base = new BaseRequest(
+            new Wire() {
+                @Override
+                // @checkstyle ParameterNumber (6 lines)
+                public Response send(final Request req, final String home,
+                    final String method,
+                    final Collection<Map.Entry<String, String>> headers,
+                    final InputStream text,
+                    final int connect,
+                    final int read) {
+                    return new DefaultResponse(
+                        req,
+                        FakeRequest.this.code,
+                        FakeRequest.this.phrase,
+                        FakeRequest.this.hdrs,
+                        FakeRequest.this.content
+                    );
+                }
+            },
+            "http://localhost:12345/see-FakeRequest-class"
+        );
     }
 
     @Override
