@@ -34,6 +34,8 @@ import com.jcabi.http.Response;
 import javax.validation.constraints.NotNull;
 import lombok.EqualsAndHashCode;
 import org.jsoup.Jsoup;
+import org.jsoup.nodes.Document;
+import org.jsoup.nodes.Entities;
 
 /**
  * Jsoup response.
@@ -79,7 +81,10 @@ public final class JsoupResponse extends AbstractResponse {
 
     @Override
     public String body() {
-        return Jsoup.parse(super.body()).html();
+        final Document html = Jsoup.parse(super.body());
+        html.outputSettings().syntax(Document.OutputSettings.Syntax.xml);
+        html.outputSettings().escapeMode(Entities.EscapeMode.xhtml);
+        return html.html();
     }
 
 }

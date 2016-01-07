@@ -29,6 +29,7 @@
  */
 package com.jcabi.http.response;
 
+import com.google.common.base.Joiner;
 import com.jcabi.http.Response;
 import com.jcabi.http.request.FakeRequest;
 import com.jcabi.matchers.XhtmlMatchers;
@@ -50,7 +51,11 @@ public final class JsoupResponseTest {
     @Test
     public void normalizesHtml() throws Exception {
         final Response resp = new FakeRequest().withBody(
-            "<html xmlns='http://www.w3.org/1999/xhtml'><p>Hello world"
+            Joiner.on(' ').join(
+                "<html xmlns='http://www.w3.org/1999/xhtml'>",
+                "<head><meta name='test'></head>",
+                "<p>Hello world"
+            )
         ).fetch();
         MatcherAssert.assertThat(
             new JsoupResponse(resp).body(),
