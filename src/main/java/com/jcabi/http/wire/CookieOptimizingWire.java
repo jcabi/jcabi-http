@@ -41,7 +41,6 @@ import java.util.LinkedList;
 import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.ConcurrentMap;
-import javax.validation.constraints.NotNull;
 import javax.ws.rs.core.HttpHeaders;
 import lombok.EqualsAndHashCode;
 import lombok.ToString;
@@ -87,8 +86,7 @@ public final class CookieOptimizingWire implements Wire {
      * Public ctor.
      * @param wire Original wire
      */
-    public CookieOptimizingWire(@NotNull(message = "wire can't be NULL")
-        final Wire wire) {
+    public CookieOptimizingWire(final Wire wire) {
         this.origin = wire;
     }
 

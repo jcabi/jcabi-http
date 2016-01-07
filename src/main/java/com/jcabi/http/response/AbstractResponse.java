@@ -95,10 +95,7 @@ abstract class AbstractResponse implements Response {
         return this.response.binary();
     }
 
-    /**
-     * {@inheritDoc}
-     * @checkstyle MethodName (4 lines)
-     */
+    // @checkstyle MethodName (4 lines)
     @Override
     @SuppressWarnings("PMD.ShortMethodName")
     public final <T extends Response> T as(final Class<T> type) {

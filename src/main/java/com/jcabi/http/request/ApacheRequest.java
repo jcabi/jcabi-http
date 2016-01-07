@@ -45,7 +45,6 @@ import java.net.URL;
 import java.util.Collection;
 import java.util.LinkedList;
 import java.util.Map;
-import javax.validation.constraints.NotNull;
 import lombok.EqualsAndHashCode;
 import org.apache.http.Header;
 import org.apache.http.HttpEntity;
@@ -79,10 +78,7 @@ public final class ApacheRequest implements Request {
      * @checkstyle AnonInnerLength (200 lines)
      */
     private static final Wire WIRE = new Wire() {
-        /**
-         * {@inheritDoc}
-         * @checkstyle ParameterNumber (6 lines)
-         */
+        // @checkstyle ParameterNumber (6 lines)
         @Override
         public Response send(final Request req, final String home,
             final String method,
@@ -175,7 +171,7 @@ public final class ApacheRequest implements Request {
         @SuppressWarnings("PMD.AvoidInstantiatingObjectsInLoops")
         private Array<Map.Entry<String, String>> headers(final Header... list) {
             final Collection<Map.Entry<String, String>> headers =
-                new LinkedList<Map.Entry<String, String>>();
+                new LinkedList<>();
             for (final Header header : list) {
                 headers.add(
                     new ImmutableHeader(
@@ -197,8 +193,7 @@ public final class ApacheRequest implements Request {
      * Public ctor.
      * @param url The resource to work with
      */
-    public ApacheRequest(@NotNull(message = "URL can't be NULL")
-        final URL url) {
+    public ApacheRequest(final URL url) {
         this(url.toString());
     }
 
@@ -206,8 +201,7 @@ public final class ApacheRequest implements Request {
      * Public ctor.
      * @param uri The resource to work with
      */
-    public ApacheRequest(@NotNull(message = "URI can't be NULL")
-        final URI uri) {
+    public ApacheRequest(final URI uri) {
         this(uri.toString());
     }
 
@@ -215,27 +209,22 @@ public final class ApacheRequest implements Request {
      * Public ctor.
      * @param uri The resource to work with
      */
-    public ApacheRequest(@NotNull(message = "URI can't be NULL")
-        final String uri) {
+    public ApacheRequest(final String uri) {
         this.base = new BaseRequest(ApacheRequest.WIRE, uri);
     }
 
     @Override
-    @NotNull
     public RequestURI uri() {
         return this.base.uri();
     }
 
     @Override
-    public Request header(
-        @NotNull(message = "header name can't be NULL") final String name,
-        @NotNull(message = "header value can't be NULL") final Object value) {
+    public Request header(final String name, final Object value) {
         return this.base.header(name, value);
     }
 
     @Override
-    public Request reset(
-        @NotNull(message = "header name can't be NULL") final String name) {
+    public Request reset(final String name) {
         return this.base.reset(name);
     }
 
@@ -245,8 +234,7 @@ public final class ApacheRequest implements Request {
     }
 
     @Override
-    public Request method(
-        @NotNull(message = "method can't be NULL") final String method) {
+    public Request method(final String method) {
         return this.base.method(method);
     }
 

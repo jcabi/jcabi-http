@@ -39,7 +39,6 @@ import java.util.Collections;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
-import javax.validation.constraints.NotNull;
 import javax.ws.rs.core.Cookie;
 import javax.ws.rs.core.HttpHeaders;
 import lombok.EqualsAndHashCode;
@@ -81,8 +80,7 @@ public final class RestResponse extends AbstractResponse {
      * Public ctor.
      * @param resp Response
      */
-    public RestResponse(
-        @NotNull(message = "response can't be NULL") final Response resp) {
+    public RestResponse(final Response resp) {
         super(resp);
     }
 
@@ -91,10 +89,7 @@ public final class RestResponse extends AbstractResponse {
      * @param matcher The matcher to use
      * @return The same object
      */
-    @NotNull(message = "new response is never NULL")
-    public RestResponse assertThat(
-        @NotNull(message = "matcher can't be NULL")
-        final Matcher<Response> matcher) {
+    public RestResponse assertThat(final Matcher<Response> matcher) {
         MatcherAssert.assertThat(
             String.format("HTTP response is not valid: %s", this),
             this,
@@ -109,7 +104,6 @@ public final class RestResponse extends AbstractResponse {
      * @param status Expected status code
      * @return The same object
      */
-    @NotNull(message = "response is never NULL")
     public RestResponse assertStatus(final int status) {
         final String message = String.format(
             "HTTP response with status %d", status
@@ -131,10 +125,7 @@ public final class RestResponse extends AbstractResponse {
      * @param matcher Matcher to validate status code
      * @return This object
      */
-    @NotNull(message = "REST response is never NULL")
-    public RestResponse assertStatus(
-        @NotNull(message = "status matcher can't be NULL")
-        final Matcher<Integer> matcher) {
+    public RestResponse assertStatus(final Matcher<Integer> matcher) {
         MatcherAssert.assertThat(
             String.format(
                 "HTTP response status is not the one expected:%n%s",
@@ -151,10 +142,7 @@ public final class RestResponse extends AbstractResponse {
      * @param matcher The matcher to use
      * @return This object
      */
-    @NotNull(message = "REST response is never NULL")
-    public RestResponse assertBody(
-        @NotNull(message = "body matcher can't be NULL")
-        final Matcher<String> matcher) {
+    public RestResponse assertBody(final Matcher<String> matcher) {
         MatcherAssert.assertThat(
             String.format(
                 "HTTP response body content is not valid:%n%s",
@@ -171,10 +159,7 @@ public final class RestResponse extends AbstractResponse {
      * @param matcher The matcher to use
      * @return This object
      */
-    @NotNull(message = "REST response is never NULL")
-    public RestResponse assertBinary(
-        @NotNull(message = "body matcher can't be NULL")
-        final Matcher<byte[]> matcher) {
+    public RestResponse assertBinary(final Matcher<byte[]> matcher) {
         MatcherAssert.assertThat(
             String.format(
                 "HTTP response binary content is not valid:%n%s",
@@ -197,10 +182,7 @@ public final class RestResponse extends AbstractResponse {
      * @param matcher The matcher to use
      * @return This object
      */
-    @NotNull(message = "response is never NULL")
-    public RestResponse assertHeader(
-        @NotNull(message = "header name can't be NULL") final String name,
-        @NotNull(message = "header matcher can't be NULL")
+    public RestResponse assertHeader(final String name,
         final Matcher<Iterable<String>> matcher) {
         Iterable<String> values = this.headers().get(name);
         if (values == null) {
@@ -224,10 +206,7 @@ public final class RestResponse extends AbstractResponse {
      * @return This object
      * @since 0.9
      */
-    @NotNull(message = "response is never NULL")
-    public RestResponse assertHeader(
-        @NotNull(message = "header name can't be NULL") final String name,
-        @NotNull(message = "header value can't be NULL") final String value) {
+    public RestResponse assertHeader(final String name, final String value) {
         return this.assertHeader(name, Matchers.hasItems(value));
     }
 
@@ -236,9 +215,8 @@ public final class RestResponse extends AbstractResponse {
      * @param uri Destination to jump to
      * @return New request
      */
-    @NotNull(message = "request is never NULL")
     @SuppressWarnings("PMD.UseConcurrentHashMap")
-    public Request jump(@NotNull(message = "URI can't be NULL") final URI uri) {
+    public Request jump(final URI uri) {
         Request req = this.back().uri()
             .set(this.back().uri().get().resolve(uri))
             .back();
@@ -262,7 +240,6 @@ public final class RestResponse extends AbstractResponse {
      * Follow LOCATION header.
      * @return New request
      */
-    @NotNull(message = "request is never NULL")
     public Request follow() {
         this.assertHeader(
             HttpHeaders.LOCATION,
@@ -279,8 +256,7 @@ public final class RestResponse extends AbstractResponse {
      * @return Cookie found
      */
     @SuppressWarnings("PMD.UseConcurrentHashMap")
-    @NotNull(message = "cookie is never NULL")
-    public Cookie cookie(@NotNull final String name) {
+    public Cookie cookie(final String name) {
         final Map<String, List<String>> headers = this.headers();
         MatcherAssert.assertThat(
             "cookies should be set in HTTP header",

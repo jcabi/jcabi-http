@@ -41,7 +41,6 @@ import javax.json.JsonObject;
 import javax.json.JsonReader;
 import javax.json.JsonStructure;
 import javax.json.stream.JsonParsingException;
-import javax.validation.constraints.NotNull;
 import lombok.EqualsAndHashCode;
 
 /**
@@ -79,8 +78,7 @@ public final class JsonResponse extends AbstractResponse {
      * Public ctor.
      * @param resp Response
      */
-    public JsonResponse(@NotNull(message = "response can't be NULL")
-        final Response resp) {
+    public JsonResponse(final Response resp) {
         super(resp);
     }
 
@@ -90,10 +88,7 @@ public final class JsonResponse extends AbstractResponse {
      * @param element Element in the JSON data of this object
      * @return This object
      */
-    @NotNull(message = "JSON response is never NULL")
-    public JsonResponse assertJson(
-        @NotNull(message = "JSON query can't be NULL")
-        final String element) {
+    public JsonResponse assertJson(final String element) {
         throw new UnsupportedOperationException(
             // @checkstyle LineLength (1 line)
             "assertJson() is not implemented yet, since we are not sure which JSON query standard to use"
@@ -104,7 +99,6 @@ public final class JsonResponse extends AbstractResponse {
      * Read body as JSON.
      * @return Json reader
      */
-    @NotNull(message = "JSON reader is never NULL")
     public JsonReader json() {
         final byte[] body = this.binary();
         final String json;

@@ -32,7 +32,6 @@ package com.jcabi.http;
 import com.jcabi.aspects.Immutable;
 import java.io.IOException;
 import java.io.InputStream;
-import javax.validation.constraints.NotNull;
 
 /**
  * RESTful request.
@@ -115,14 +114,12 @@ public interface Request {
      * Get destination URI.
      * @return The destination it is currently pointing to
      */
-    @NotNull(message = "URI is never NULL")
     RequestURI uri();
 
     /**
      * Get request body.
      * @return New alternated request
      */
-    @NotNull(message = "request is never NULL")
     RequestBody body();
 
     /**
@@ -131,10 +128,7 @@ public interface Request {
      * @param value Value of the header to set
      * @return New alternated request
      */
-    @NotNull(message = "request is never NULL")
-    Request header(
-        @NotNull(message = "header name can't be NULL") String name,
-        @NotNull(message = "header value can't be NULL") Object value);
+    Request header(String name, Object value);
 
     /**
      * Remove all headers with this name.
@@ -142,16 +136,14 @@ public interface Request {
      * @return New alternated request
      * @since 0.10
      */
-    @NotNull(message = "alternated request is never NULL")
-    Request reset(@NotNull(message = "header name can't be NULL") String name);
+    Request reset(String name);
 
     /**
      * Use this method.
      * @param method The method to use
      * @return New alternated request
      */
-    @NotNull(message = "request is never NULL")
-    Request method(@NotNull(message = "method can't be NULL") String method);
+    Request method(String method);
 
     /**
      * Use this timeout values.
@@ -159,7 +151,6 @@ public interface Request {
      * @param read The read timeout to use in ms
      * @return New alternated request
      */
-    @NotNull(message = "request is never NULL")
     Request timeout(int connect, int read);
 
     /**

@@ -44,7 +44,6 @@ import java.nio.charset.Charset;
 import java.util.Collection;
 import java.util.LinkedList;
 import java.util.Map;
-import javax.validation.constraints.NotNull;
 import javax.ws.rs.core.HttpHeaders;
 import javax.xml.bind.DatatypeConverter;
 import lombok.EqualsAndHashCode;
@@ -96,8 +95,7 @@ public final class BasicAuthWire implements Wire {
      * Public ctor.
      * @param wire Original wire
      */
-    public BasicAuthWire(@NotNull(message = "wire can't be NULL")
-        final Wire wire) {
+    public BasicAuthWire(final Wire wire) {
         this.origin = wire;
     }
 

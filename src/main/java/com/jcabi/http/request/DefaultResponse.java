@@ -43,7 +43,6 @@ import java.util.List;
 import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.ConcurrentMap;
-import javax.validation.constraints.NotNull;
 import lombok.EqualsAndHashCode;
 
 /**
@@ -113,7 +112,6 @@ final class DefaultResponse implements Response {
     }
 
     @Override
-    @NotNull
     public Request back() {
         return this.req;
     }
@@ -132,7 +130,7 @@ final class DefaultResponse implements Response {
     @SuppressWarnings("PMD.AvoidInstantiatingObjectsInLoops")
     public Map<String, List<String>> headers() {
         final ConcurrentMap<String, List<String>> map =
-            new ConcurrentHashMap<String, List<String>>(0);
+            new ConcurrentHashMap<>(0);
         for (final Map.Entry<String, String> header : this.hdrs) {
             map.putIfAbsent(header.getKey(), new LinkedList<String>());
             map.get(header.getKey()).add(header.getValue());
@@ -167,13 +165,9 @@ final class DefaultResponse implements Response {
         try {
             return type.getDeclaredConstructor(Response.class)
                 .newInstance(this);
-        } catch (final InstantiationException ex) {
-            throw new IllegalStateException(ex);
-        } catch (final IllegalAccessException ex) {
-            throw new IllegalStateException(ex);
-        } catch (final InvocationTargetException ex) {
-            throw new IllegalStateException(ex);
-        } catch (final NoSuchMethodException ex) {
+        } catch (final InstantiationException
+            | IllegalAccessException | NoSuchMethodException
+            | InvocationTargetException ex) {
             throw new IllegalStateException(ex);
         }
     }

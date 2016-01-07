@@ -39,7 +39,6 @@ import com.jcabi.xml.XMLDocument;
 import com.jcabi.xml.XPathContext;
 import java.net.URI;
 import java.util.Map;
-import javax.validation.constraints.NotNull;
 import javax.xml.namespace.NamespaceContext;
 import lombok.EqualsAndHashCode;
 import org.hamcrest.MatcherAssert;
@@ -92,8 +91,7 @@ public final class XmlResponse extends AbstractResponse {
      * Public ctor.
      * @param resp Response
      */
-    public XmlResponse(
-        @NotNull(message = "response can't be NULL") final Response resp) {
+    public XmlResponse(final Response resp) {
         this(resp, new ArrayMap<String, String>());
     }
 
@@ -112,7 +110,6 @@ public final class XmlResponse extends AbstractResponse {
      * Get XML body.
      * @return XML body
      */
-    @NotNull(message = "XML is never NULL")
     public XML xml() {
         return new XMLDocument(this.body()).merge(this.context());
     }
@@ -123,10 +120,7 @@ public final class XmlResponse extends AbstractResponse {
      * @param uri Namespace URI
      * @return This object
      */
-    @NotNull(message = "response is never NULL")
-    public XmlResponse registerNs(
-        @NotNull(message = "prefix can't be NULL") final String prefix,
-        @NotNull(message = "URI can't be NULL") final String uri) {
+    public XmlResponse registerNs(final String prefix, final String uri) {
         return new XmlResponse(this, this.namespaces.with(prefix, uri));
     }
 
@@ -136,9 +130,7 @@ public final class XmlResponse extends AbstractResponse {
      * @param xpath Query to use
      * @return This object
      */
-    @NotNull(message = "response is never NULL")
-    public XmlResponse assertXPath(
-        @NotNull(message = "xpath can't be NULL") final String xpath) {
+    public XmlResponse assertXPath(final String xpath) {
         MatcherAssert.assertThat(
             String.format(
                 "XML doesn't contain required XPath '%s':%n%s",
@@ -155,9 +147,7 @@ public final class XmlResponse extends AbstractResponse {
      * @param query XPath query to fetch new URI
      * @return New request
      */
-    @NotNull(message = "request is never NULL")
-    public Request rel(
-        @NotNull(message = "query can't be NULL") final String query) {
+    public Request rel(final String query) {
         this.assertXPath(query);
         return new RestResponse(this).jump(
             URI.create(this.xml().xpath(query).get(0))

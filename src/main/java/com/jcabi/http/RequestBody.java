@@ -33,7 +33,6 @@ import com.jcabi.aspects.Immutable;
 import java.nio.charset.Charset;
 import java.util.Map;
 import javax.json.JsonStructure;
-import javax.validation.constraints.NotNull;
 
 /**
  * Request body.
@@ -65,14 +64,12 @@ public interface RequestBody {
      * Get back to the request it's related to.
      * @return The request we're in
      */
-    @NotNull(message = "request is never NULL")
     Request back();
 
     /**
      * Get text content.
      * @return Content in UTF-8
      */
-    @NotNull(message = "body can't be NULL")
     String get();
 
     /**
@@ -80,8 +77,7 @@ public interface RequestBody {
      * @param body Body content
      * @return New alternated body
      */
-    @NotNull(message = "body is never NULL")
-    RequestBody set(@NotNull(message = "body can't be NULL") String body);
+    RequestBody set(String body);
 
     /**
      * Set JSON content.
@@ -89,17 +85,14 @@ public interface RequestBody {
      * @return New alternated body
      * @since 0.11
      */
-    @NotNull(message = "body is never NULL")
-    RequestBody set(@NotNull(message = "JSON structure can't be NULL")
-        JsonStructure json);
+    RequestBody set(JsonStructure json);
 
     /**
      * Set byte array content.
      * @param body Body content
      * @return New alternated body
      */
-    @NotNull(message = "modified body is never NULL")
-    RequestBody set(@NotNull(message = "body can't be NULL") byte[] body);
+    RequestBody set(byte[] body);
 
     /**
      * Add form param.
@@ -107,10 +100,7 @@ public interface RequestBody {
      * @param value Value of the query param to set
      * @return New alternated body
      */
-    @NotNull(message = "alternated body is never NULL")
-    RequestBody formParam(
-        @NotNull(message = "form param name can't be NULL") String name,
-        @NotNull(message = "form param value can't be NULL") Object value);
+    RequestBody formParam(String name, Object value);
 
     /**
      * Add form params.
@@ -118,10 +108,7 @@ public interface RequestBody {
      * @return New alternated body
      * @since 0.10
      */
-    @NotNull(message = "alternated body is never NULL")
-    RequestBody formParams(
-        @NotNull(message = "map of params can't be NULL")
-        Map<String, String> params);
+    RequestBody formParams(Map<String, String> params);
 
     /**
      * Printer of byte array.

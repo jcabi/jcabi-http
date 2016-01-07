@@ -32,7 +32,6 @@ package com.jcabi.http;
 import com.jcabi.aspects.Immutable;
 import java.net.URI;
 import java.util.Map;
-import javax.validation.constraints.NotNull;
 
 /**
  * Request URI.
@@ -63,14 +62,12 @@ public interface RequestURI {
      * Get back to the request it's related to.
      * @return The request we're in
      */
-    @NotNull(message = "request is never NULL")
     Request back();
 
     /**
      * Get URI.
      * @return The destination it is currently pointing to
      */
-    @NotNull(message = "URI is never NULL")
     URI get();
 
     /**
@@ -78,8 +75,7 @@ public interface RequestURI {
      * @param uri URI to set
      * @return New alternated URI
      */
-    @NotNull(message = "URI is never NULL")
-    RequestURI set(@NotNull(message = "URI can't be NULL") URI uri);
+    RequestURI set(URI uri);
 
     /**
      * Add query param.
@@ -87,42 +83,34 @@ public interface RequestURI {
      * @param value Value of the query param to set
      * @return New alternated URI
      */
-    @NotNull(message = "request URI is never NULL")
-    RequestURI queryParam(
-        @NotNull(message = "query param name can't be NULL") String name,
-        @NotNull(message = "query param value can't be NULL") Object value);
+    RequestURI queryParam(String name, Object value);
 
     /**
      * Add query params.
      * @param map Map of params to add
      * @return New alternated URI
      */
-    @NotNull(message = "request URI is never NULL")
-    RequestURI queryParams(@NotNull(message = "map of params can't be NULL")
-        Map<String, String> map);
+    RequestURI queryParams(Map<String, String> map);
 
     /**
      * Add URI path.
      * @param segment Path segment to add
      * @return New alternated URI
      */
-    @NotNull(message = "request URI is never NULL")
-    RequestURI path(@NotNull(message = "path can't be NULL") String segment);
+    RequestURI path(String segment);
 
     /**
      * Set user info.
      * @param info User info part to set
      * @return New alternated URI
      */
-    @NotNull(message = "new request URI is never NULL")
-    RequestURI userInfo(@NotNull(message = "info can't be NULL") String info);
+    RequestURI userInfo(String info);
 
     /**
      * Set port number.
      * @param num The port number to set
      * @return New altered URI
      */
-    @NotNull(message = "new request URI is never NULL")
     RequestURI port(int num);
 
 }

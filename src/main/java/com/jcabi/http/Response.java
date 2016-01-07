@@ -32,7 +32,6 @@ package com.jcabi.http;
 import com.jcabi.aspects.Immutable;
 import java.util.List;
 import java.util.Map;
-import javax.validation.constraints.NotNull;
 
 /**
  * RESTful response returned by {@link Request#fetch()}.
@@ -57,7 +56,6 @@ public interface Response {
      * Get back to the request it's related to.
      * @return The request we're in
      */
-    @NotNull(message = "request is never NULL")
     Request back();
 
     /**
@@ -70,14 +68,12 @@ public interface Response {
      * Get status line reason phrase.
      * @return The status line reason phrase
      */
-    @NotNull(message = "reason phrase is never NULL")
     String reason();
 
     /**
      * Get a collection of all headers.
      * @return The headers
      */
-    @NotNull(message = "map of headers is never NULL")
     Map<String, List<String>> headers();
 
     /**
@@ -94,14 +90,12 @@ public interface Response {
      *
      * @return The body, as a UTF-8 string
      */
-    @NotNull(message = "response body is never NULL")
     String body();
 
     /**
      * Raw body as a an array of bytes.
      * @return The body, as a UTF-8 string
      */
-    @NotNull(message = "response data is never NULL")
     byte[] binary();
 
     /**

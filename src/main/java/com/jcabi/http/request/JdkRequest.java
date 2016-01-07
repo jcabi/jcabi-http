@@ -50,7 +50,6 @@ import java.util.Collection;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
-import javax.validation.constraints.NotNull;
 import lombok.EqualsAndHashCode;
 
 /**
@@ -166,7 +165,7 @@ public final class JdkRequest implements Request {
                     headers.add(new ImmutableHeader(field.getKey(), value));
                 }
             }
-            return new Array<Map.Entry<String, String>>(headers);
+            return new Array<>(headers);
         }
         /**
          * Get response body of connection.
@@ -212,8 +211,7 @@ public final class JdkRequest implements Request {
      * Public ctor.
      * @param url The resource to work with
      */
-    public JdkRequest(@NotNull(message = "URL can't be NULL")
-        final URL url) {
+    public JdkRequest(final URL url) {
         this(url.toString());
     }
 
@@ -221,8 +219,7 @@ public final class JdkRequest implements Request {
      * Public ctor.
      * @param uri The resource to work with
      */
-    public JdkRequest(@NotNull(message = "URI can't be NULL")
-        final URI uri) {
+    public JdkRequest(final URI uri) {
         this(uri.toString());
     }
 
@@ -230,27 +227,22 @@ public final class JdkRequest implements Request {
      * Public ctor.
      * @param uri The resource to work with
      */
-    public JdkRequest(@NotNull(message = "URI can't be NULL")
-        final String uri) {
+    public JdkRequest(final String uri) {
         this.base = new BaseRequest(JdkRequest.WIRE, uri);
     }
 
     @Override
-    @NotNull
     public RequestURI uri() {
         return this.base.uri();
     }
 
     @Override
-    public Request header(
-        @NotNull(message = "header name can't be NULL") final String name,
-        @NotNull(message = "header value can't be NULL") final Object value) {
+    public Request header(final String name, final Object value) {
         return this.base.header(name, value);
     }
 
     @Override
-    public Request reset(
-        @NotNull(message = "header name can't be NULL") final String name) {
+    public Request reset(final String name) {
         return this.base.reset(name);
     }
 
@@ -260,8 +252,7 @@ public final class JdkRequest implements Request {
     }
 
     @Override
-    public Request method(
-        @NotNull(message = "method can't be NULL") final String method) {
+    public Request method(final String method) {
         return this.base.method(method);
     }
 

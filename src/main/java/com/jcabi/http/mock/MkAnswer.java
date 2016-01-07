@@ -42,7 +42,6 @@ import java.util.List;
 import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.ConcurrentMap;
-import javax.validation.constraints.NotNull;
 import lombok.EqualsAndHashCode;
 
 /**
@@ -71,7 +70,6 @@ public interface MkAnswer {
      * HTTP response body.
      * @return The body, as a UTF-8 string
      */
-    @NotNull(message = "response body is never NULL")
     String body();
 
     /**
@@ -145,7 +143,7 @@ public interface MkAnswer {
         @SuppressWarnings("PMD.AvoidInstantiatingObjectsInLoops")
         public Map<String, List<String>> headers() {
             final ConcurrentMap<String, List<String>> map =
-                new ConcurrentHashMap<String, List<String>>(0);
+                new ConcurrentHashMap<>(0);
             for (final Map.Entry<String, String> header : this.hdrs) {
                 map.putIfAbsent(header.getKey(), new LinkedList<String>());
                 map.get(header.getKey()).add(header.getValue());

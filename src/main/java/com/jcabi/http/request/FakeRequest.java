@@ -45,7 +45,6 @@ import java.nio.charset.Charset;
 import java.util.Collection;
 import java.util.Collections;
 import java.util.Map;
-import javax.validation.constraints.NotNull;
 import lombok.EqualsAndHashCode;
 
 /**
@@ -122,11 +121,9 @@ public final class FakeRequest implements Request {
      * @param body HTTP body
      * @checkstyle ParameterNumber (10 lines)
      */
-    public FakeRequest(final int status,
-        @NotNull(message = "HTTP reason can't be NULL") final String reason,
-        @NotNull(message = "list of headers can't be NULL")
+    public FakeRequest(final int status, final String reason,
         final Collection<Map.Entry<String, String>> headers,
-        @NotNull(message = "body can't be NULL") final byte[] body) {
+        final byte[] body) {
         this.code = status;
         this.phrase = reason;
         this.hdrs = new Array<>(headers);
@@ -160,21 +157,17 @@ public final class FakeRequest implements Request {
     }
 
     @Override
-    @NotNull
     public RequestURI uri() {
         return this.base.uri();
     }
 
     @Override
-    public Request header(
-        @NotNull(message = "header name can't be NULL") final String name,
-        @NotNull(message = "header value can't be NULL") final Object value) {
+    public Request header(final String name, final Object value) {
         return this.base.header(name, value);
     }
 
     @Override
-    public Request reset(
-        @NotNull(message = "header name can't be NULL") final String name) {
+    public Request reset(final String name) {
         return this.base.reset(name);
     }
 
@@ -184,8 +177,7 @@ public final class FakeRequest implements Request {
     }
 
     @Override
-    public Request method(
-        @NotNull(message = "method can't be NULL") final String method) {
+    public Request method(final String method) {
         return this.base.method(method);
     }
 

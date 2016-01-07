@@ -43,7 +43,6 @@ import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.ConcurrentMap;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
-import javax.validation.constraints.NotNull;
 import lombok.EqualsAndHashCode;
 
 /**
@@ -86,8 +85,7 @@ public final class WebLinkingResponse extends AbstractResponse {
      * Public ctor.
      * @param resp Response
      */
-    public WebLinkingResponse(
-        @NotNull(message = "response can't be NULL") final Response resp) {
+    public WebLinkingResponse(final Response resp) {
         super(resp);
     }
 
@@ -97,9 +95,7 @@ public final class WebLinkingResponse extends AbstractResponse {
      * @return The same object
      * @throws IOException If fails
      */
-    @NotNull(message = "response is never NULL")
-    public Request follow(@NotNull(message = "rel can't be NULL")
-        final String rel) throws IOException {
+    public Request follow(final String rel) throws IOException {
         final WebLinkingResponse.Link link = this.links().get(rel);
         if (link == null) {
             throw new IOException(
@@ -117,11 +113,10 @@ public final class WebLinkingResponse extends AbstractResponse {
      * @return List of all links found
      * @throws IOException If fails
      */
-    @NotNull(message = "list of links is never NULL")
     @SuppressWarnings("PMD.AvoidInstantiatingObjectsInLoops")
     public Map<String, WebLinkingResponse.Link> links() throws IOException {
         final ConcurrentMap<String, WebLinkingResponse.Link> links =
-            new ConcurrentHashMap<String, WebLinkingResponse.Link>();
+            new ConcurrentHashMap<>(0);
         final Collection<String> headers =
             this.headers().get(WebLinkingResponse.HEADER);
         if (headers != null) {
@@ -190,7 +185,7 @@ public final class WebLinkingResponse extends AbstractResponse {
             }
             this.addr = matcher.group(1);
             final ConcurrentMap<String, String> args =
-                new ConcurrentHashMap<String, String>();
+                new ConcurrentHashMap<>(0);
             for (final String pair
                 : matcher.group(2).trim().split("\\s*;\\s*")) {
                 final String[] parts = pair.split("=");
@@ -199,7 +194,7 @@ public final class WebLinkingResponse extends AbstractResponse {
                     parts[1].trim().replaceAll("(^\"|\"$)", "")
                 );
             }
-            this.params = new ArrayMap<String, String>(args);
+            this.params = new ArrayMap<>(args);
         }
         @Override
         public URI uri() {

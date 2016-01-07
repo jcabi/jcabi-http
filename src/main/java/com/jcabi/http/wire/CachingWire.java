@@ -44,7 +44,6 @@ import java.util.Collection;
 import java.util.Map;
 import java.util.concurrent.ExecutionException;
 import java.util.concurrent.TimeUnit;
-import javax.validation.constraints.NotNull;
 import lombok.EqualsAndHashCode;
 import lombok.ToString;
 
@@ -127,8 +126,7 @@ public final class CachingWire implements Wire {
      * Public ctor.
      * @param wire Original wire
      */
-    public CachingWire(@NotNull(message = "wire can't be NULL")
-        final Wire wire) {
+    public CachingWire(final Wire wire) {
         this(wire, "$never");
     }
 
@@ -138,9 +136,7 @@ public final class CachingWire implements Wire {
      * @param flsh Flushing regular expression
      * @since 1.5
      */
-    public CachingWire(
-        @NotNull(message = "wire can't be NULL") final Wire wire,
-        @NotNull(message = "regular expression is NULL") final String flsh) {
+    public CachingWire(final Wire wire, final String flsh) {
         this.origin = wire;
         this.regex = flsh;
     }

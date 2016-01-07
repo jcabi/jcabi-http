@@ -54,7 +54,6 @@ import java.util.LinkedList;
 import java.util.Map;
 import javax.json.Json;
 import javax.json.JsonStructure;
-import javax.validation.constraints.NotNull;
 import javax.ws.rs.core.UriBuilder;
 import lombok.EqualsAndHashCode;
 
@@ -184,15 +183,12 @@ final class BaseRequest implements Request {
     }
 
     @Override
-    @NotNull
     public RequestURI uri() {
         return new BaseRequest.BaseURI(this, this.home);
     }
 
     @Override
-    public Request header(
-        @NotNull(message = "header name can't be NULL") final String name,
-        @NotNull(message = "header value can't be NULL") final Object value) {
+    public Request header(final String name, final Object value) {
         return new BaseRequest(
             this.wire,
             this.home,
@@ -203,10 +199,9 @@ final class BaseRequest implements Request {
     }
 
     @Override
-    public Request reset(
-        @NotNull(message = "header name can't be NULL") final String name) {
+    public Request reset(final String name) {
         final Collection<Map.Entry<String, String>> headers =
-            new LinkedList<Map.Entry<String, String>>();
+            new LinkedList<>();
         final String key = ImmutableHeader.normalize(name);
         for (final Map.Entry<String, String> header : this.hdrs) {
             if (!header.getKey().equals(key)) {
@@ -228,8 +223,7 @@ final class BaseRequest implements Request {
     }
 
     @Override
-    public Request method(
-        @NotNull(message = "method can't be NULL") final String method) {
+    public Request method(final String method) {
         return new BaseRequest(
             this.wire,
             this.home,
@@ -291,11 +285,8 @@ final class BaseRequest implements Request {
         final Wire decorated;
         try {
             decorated = Wire.class.cast(ctor.newInstance(params));
-        } catch (final InstantiationException ex) {
-            throw new IllegalStateException(ex);
-        } catch (final IllegalAccessException ex) {
-            throw new IllegalStateException(ex);
-        } catch (final InvocationTargetException ex) {
+        } catch (final InstantiationException
+            | IllegalAccessException | InvocationTargetException ex) {
             throw new IllegalStateException(ex);
         }
         return new BaseRequest(
@@ -406,14 +397,11 @@ final class BaseRequest implements Request {
             return URI.create(this.owner.home);
         }
         @Override
-        public RequestURI set(@NotNull(message = "URI can't be NULL")
-            final URI uri) {
+        public RequestURI set(final URI uri) {
             return new BaseRequest.BaseURI(this.owner, uri.toString());
         }
         @Override
-        public RequestURI queryParam(
-            @NotNull(message = "param name can't be NULL") final String name,
-            @NotNull(message = "value can't be NULL") final Object value) {
+        public RequestURI queryParam(final String name, final Object value) {
             return new BaseRequest.BaseURI(
                 this.owner,
                 UriBuilder.fromUri(this.address)
@@ -422,8 +410,7 @@ final class BaseRequest implements Request {
             );
         }
         @Override
-        public RequestURI queryParams(@NotNull(message = "map can't be NULL")
-            final Map<String, String> map) {
+        public RequestURI queryParams(final Map<String, String> map) {
             final UriBuilder uri = UriBuilder.fromUri(this.address);
             final Object[] values = new Object[map.size()];
             int idx = 0;
@@ -438,8 +425,7 @@ final class BaseRequest implements Request {
             );
         }
         @Override
-        public RequestURI path(
-            @NotNull(message = "path can't be NULL") final String segment) {
+        public RequestURI path(final String segment) {
             return new BaseRequest.BaseURI(
                 this.owner,
                 UriBuilder.fromUri(this.address)
@@ -448,8 +434,7 @@ final class BaseRequest implements Request {
             );
         }
         @Override
-        public RequestURI userInfo(
-            @NotNull(message = "info can't be NULL") final String info) {
+        public RequestURI userInfo(final String info) {
             return new BaseRequest.BaseURI(
                 this.owner,
                 UriBuilder.fromUri(this.address)
@@ -525,26 +510,21 @@ final class BaseRequest implements Request {
             return new String(this.text, BaseRequest.CHARSET);
         }
         @Override
-        public RequestBody set(@NotNull(message = "content can't be NULL")
-            final String txt) {
+        public RequestBody set(final String txt) {
             return this.set(txt.getBytes(BaseRequest.CHARSET));
         }
         @Override
-        public RequestBody set(@NotNull(message = "JSON can't be NULL")
-            final JsonStructure json) {
+        public RequestBody set(final JsonStructure json) {
             final StringWriter writer = new StringWriter();
             Json.createWriter(writer).write(json);
             return this.set(writer.toString());
         }
         @Override
-        public RequestBody set(@NotNull(message = "body can't be NULL")
-            final byte[] txt) {
+        public RequestBody set(final byte[] txt) {
             return new BaseRequest.BaseBody(this.owner, txt);
         }
         @Override
-        public RequestBody formParam(
-            @NotNull(message = "name can't be NULL") final String name,
-            @NotNull(message = "value can't be NULL") final Object value) {
+        public RequestBody formParam(final String name, final Object value) {
             try {
                 return new BaseRequest.BaseBody(
                     this.owner,
@@ -567,9 +547,7 @@ final class BaseRequest implements Request {
             }
         }
         @Override
-        public RequestBody formParams(
-            @NotNull(message = "map of params can't be NULL")
-            final Map<String, String> params) {
+        public RequestBody formParams(final Map<String, String> params) {
             RequestBody body = this;
             for (final Map.Entry<String, String> param : params.entrySet()) {
                 body = body.formParam(param.getKey(), param.getValue());

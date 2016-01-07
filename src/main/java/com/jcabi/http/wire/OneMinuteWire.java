@@ -39,7 +39,6 @@ import java.io.InputStream;
 import java.util.Collection;
 import java.util.Map;
 import java.util.concurrent.TimeUnit;
-import javax.validation.constraints.NotNull;
 import lombok.EqualsAndHashCode;
 import lombok.ToString;
 
@@ -76,8 +75,7 @@ public final class OneMinuteWire implements Wire {
      * Public ctor.
      * @param wire Original wire
      */
-    public OneMinuteWire(@NotNull(message = "wire can't be NULL")
-        final Wire wire) {
+    public OneMinuteWire(final Wire wire) {
         this.origin = wire;
     }
 

@@ -42,7 +42,6 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.util.Collection;
 import java.util.Map;
-import javax.validation.constraints.NotNull;
 import lombok.EqualsAndHashCode;
 import lombok.ToString;
 
@@ -78,8 +77,7 @@ public final class VerboseWire implements Wire {
      * Public ctor.
      * @param wire Original wire
      */
-    public VerboseWire(@NotNull(message = "wire can't be NULL")
-        final Wire wire) {
+    public VerboseWire(final Wire wire) {
         this.origin = wire;
     }
 

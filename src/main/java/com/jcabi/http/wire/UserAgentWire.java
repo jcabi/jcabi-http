@@ -40,7 +40,6 @@ import java.io.InputStream;
 import java.util.Collection;
 import java.util.LinkedList;
 import java.util.Map;
-import javax.validation.constraints.NotNull;
 import javax.ws.rs.core.HttpHeaders;
 import lombok.EqualsAndHashCode;
 import lombok.ToString;
@@ -93,8 +92,7 @@ public final class UserAgentWire implements Wire {
      * Public ctor.
      * @param wire Original wire
      */
-    public UserAgentWire(@NotNull(message = "wire can't be NULL")
-        final Wire wire) {
+    public UserAgentWire(final Wire wire) {
         this.origin = wire;
     }
 

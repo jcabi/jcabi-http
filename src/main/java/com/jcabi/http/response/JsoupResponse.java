@@ -31,7 +31,6 @@ package com.jcabi.http.response;
 
 import com.jcabi.aspects.Immutable;
 import com.jcabi.http.Response;
-import javax.validation.constraints.NotNull;
 import lombok.EqualsAndHashCode;
 import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
@@ -74,8 +73,7 @@ public final class JsoupResponse extends AbstractResponse {
      * Public ctor.
      * @param resp Response
      */
-    public JsoupResponse(@NotNull(message = "response can't be NULL")
-        final Response resp) {
+    public JsoupResponse(final Response resp) {
         super(resp);
     }
 

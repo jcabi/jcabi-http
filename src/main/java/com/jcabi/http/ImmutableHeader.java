@@ -31,8 +31,6 @@ package com.jcabi.http;
 
 import com.jcabi.aspects.Immutable;
 import java.util.Map;
-import javax.validation.constraints.NotNull;
-import javax.validation.constraints.Pattern;
 import lombok.EqualsAndHashCode;
 import lombok.ToString;
 
@@ -88,10 +86,7 @@ public final class ImmutableHeader implements Map.Entry<String, String> {
      * @param key The key to normalize
      * @return Normalized key
      */
-    @NotNull
-    public static String normalize(
-        @NotNull(message = "key can't be NULL")
-        @Pattern(regexp = "[a-zA-Z0-9\\-]+") final String key) {
+    public static String normalize(final String key) {
         final char[] chars = key.toCharArray();
         chars[0] = ImmutableHeader.upper(chars[0]);
         for (int pos = 1; pos < chars.length; ++pos) {
