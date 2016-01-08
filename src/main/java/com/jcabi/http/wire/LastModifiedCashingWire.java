@@ -29,14 +29,12 @@
  */
 package com.jcabi.http.wire;
 
-import com.jcabi.aspects.Tv;
 import com.jcabi.http.Request;
 import com.jcabi.http.Response;
 import com.jcabi.http.Wire;
 import java.io.IOException;
 import java.io.InputStream;
 import java.net.HttpURLConnection;
-import java.net.URI;
 import java.util.Collection;
 import java.util.List;
 import java.util.Map;
@@ -59,10 +57,11 @@ public class LastModifiedCashingWire implements Wire {
      * If-Modified-Since header name.
      */
     public static final String IF_MODIFIED_SINCE = "If-Modified-Since";
+
     /**
      * Cache.
      */
-    private static final Map<String, Response> CACHE =
+    private static final Map<Request, Response> CACHE =
         new ConcurrentHashMap<>();
 
     /**
@@ -88,15 +87,8 @@ public class LastModifiedCashingWire implements Wire {
         final int read) throws IOException {
         final Response rsp;
         if (method.equals(Request.GET)) {
-            final URI uri = req.uri().get();
-            final StringBuilder queryBuilder = new StringBuilder(Tv.HUNDRED)
-                .append(method).append(' ').append(uri.getPath());
-            if (uri.getQuery() != null) {
-                queryBuilder.append('?').append(uri.getQuery());
-            }
-            final String query = queryBuilder.toString();
             rsp = this.lookInCache(
-                req, home, method, headers, content, connect, read, query
+                req, home, method, headers, content, connect, read
             );
         } else {
             rsp = this.origin.send(
@@ -116,7 +108,6 @@ public class LastModifiedCashingWire implements Wire {
      * @param content HTTP body
      * @param connect The connect timeout
      * @param read The read timeout
-     * @param query The key of the request
      * @return Response obtained
      * @throws IOException if fails
      * @checkstyle ParameterNumber (6 lines)
@@ -127,18 +118,17 @@ public class LastModifiedCashingWire implements Wire {
         final Collection<Map.Entry<String, String>> headers,
         final InputStream content,
         final int connect,
-        final int read,
-        final String query) throws IOException {
+        final int read) throws IOException {
         final Response rspReceived;
-        if (CACHE.containsKey(query)) {
+        if (CACHE.containsKey(req)) {
             rspReceived = this.updateCache(
-                req, home, method, headers, content, connect, read, query
+                req, home, method, headers, content, connect, read
             );
         } else {
             rspReceived = this.origin.send(
                 req, home, method, headers, content, connect, read
             );
-            this.addToCache(query, rspReceived);
+            this.addToCache(req, rspReceived);
         }
         return rspReceived;
     }
@@ -153,7 +143,6 @@ public class LastModifiedCashingWire implements Wire {
      * @param content HTTP body
      * @param connect The connect timeout
      * @param read The read timeout
-     * @param query The key of the request
      * @return Response obtained
      * @throws IOException if fails
      * @checkstyle ParameterNumber (8 lines)
@@ -164,9 +153,8 @@ public class LastModifiedCashingWire implements Wire {
         final Collection<Map.Entry<String, String>> headers,
         final InputStream content,
         final int connect,
-        final int read,
-        final String query) throws IOException {
-        final Response rspCashed = CACHE.get(query);
+        final int read) throws IOException {
+        final Response rspCashed = CACHE.get(req);
         final Collection<Map.Entry<String, String>> hdrs = this.enrich(
             headers, rspCashed
         );
@@ -176,20 +164,19 @@ public class LastModifiedCashingWire implements Wire {
         if (rsp.status() == HttpURLConnection.HTTP_NOT_MODIFIED) {
             rsp = rspCashed;
         } else {
-            this.addToCache(query, rsp);
+            this.addToCache(req, rsp);
         }
         return rsp;
     }
 
     /**
      * Add response to cache.
-     *
-     * @param query The key of the request
+     *  @param req The key of the request
      * @param rsp The response to add
      */
-    private void addToCache(final String query, final Response rsp) {
+    private void addToCache(final Request req, final Response rsp) {
         if (rsp.headers().containsKey(LAST_MODIFIED)) {
-            CACHE.put(query, rsp);
+            CACHE.put(req, rsp);
         }
     }
 
