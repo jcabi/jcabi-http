@@ -38,8 +38,8 @@ import com.jcabi.http.mock.MkQuery;
 import com.jcabi.http.request.JdkRequest;
 import com.jcabi.http.response.RestResponse;
 import java.net.HttpURLConnection;
-import java.util.HashMap;
 import java.util.Map;
+import java.util.concurrent.ConcurrentHashMap;
 import org.hamcrest.MatcherAssert;
 import org.hamcrest.Matchers;
 import org.hamcrest.core.IsAnything;
@@ -64,7 +64,7 @@ public class LastModifiedCashingWireTest {
      */
     @Test
     public final void cachesGetRequest() throws Exception {
-        final Map<String, String> headersCache = new HashMap<>();
+        final Map<String, String> headersCache = new ConcurrentHashMap<>();
         headersCache.put(LastModifiedCashingWire.LAST_MODIFIED, LONG_AGO);
         final MkContainer container = new MkGrizzlyContainer()
             .next(
