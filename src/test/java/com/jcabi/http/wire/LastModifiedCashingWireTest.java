@@ -46,6 +46,7 @@ import org.hamcrest.core.IsAnything;
 import org.junit.Test;
 
 /**
+ * Test case for {@link LastModifiedCashingWire}.
  * @author Igor Piddubnyi (igor.piddubnyi@gmail.com)
  * @version $Id$
  * @since 1.0
@@ -62,7 +63,7 @@ public class LastModifiedCashingWireTest {
      * @throws Exception If fails
      */
     @Test
-    public void cachesGetRequest() throws Exception {
+    public final void cachesGetRequest() throws Exception {
         final Map<String, String> headersCache = new HashMap<>();
         headersCache.put(LastModifiedCashingWire.LAST_MODIFIED, LONG_AGO);
         final MkContainer container = new MkGrizzlyContainer()
@@ -99,7 +100,7 @@ public class LastModifiedCashingWireTest {
      * @throws Exception If something goes wrong inside
      */
     @Test
-    public void ignoresPutRequest() throws Exception {
+    public final void ignoresPutRequest() throws Exception {
         final MkContainer container = new MkGrizzlyContainer()
             .next(new MkAnswer.Simple(""))
             .next(new MkAnswer.Simple(""))
