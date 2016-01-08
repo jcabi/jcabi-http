@@ -50,13 +50,19 @@ import java.util.Map;
  */
 public class LastModifiedCashingWire implements Wire {
 
+    /**
+     * Last-Modified header name.
+     */
     public static final String HEADER_LAST_MODIFIED = "Last-Modified";
 
     /**
+     * If-Modified-Since header name.
+     */
+    public static final String HEADER_IF_MODIFIED_SINCE = "If-Modified-Since";
+    /**
      * Cache.
      */
-    private static final Map<String, Response> CASHE = new HashMap<>();
-    public static final String HEADER_IF_MODIFIED_SINCE = "If-Modified-Since";
+    private static final Map<String, Response> CACHE = new HashMap<>();
 
     /**
      * Original wire.
@@ -73,74 +79,133 @@ public class LastModifiedCashingWire implements Wire {
 
     // @checkstyle ParameterNumber (5 lines)
     @Override
-    public Response send(final Request req, final String home,
+    public final Response send(final Request req, final String home,
         final String method,
         final Collection<Map.Entry<String, String>> headers,
         final InputStream content,
         final int connect,
         final int read) throws IOException {
         final URI uri = req.uri().get();
-        final StringBuilder queryKeyBuilder = new StringBuilder(Tv.HUNDRED)
+        final StringBuilder queryBuilder = new StringBuilder(Tv.HUNDRED)
             .append(method).append(' ').append(uri.getPath());
         if (uri.getQuery() != null) {
-            queryKeyBuilder.append('?').append(uri.getQuery());
+            queryBuilder.append('?').append(uri.getQuery());
         }
-        final String queryKey = queryKeyBuilder.toString();
-        Response rsp;
-        if(!method.equals(Request.GET)){
+        final String query = queryBuilder.toString();
+        if (!method.equals(Request.GET)) {
             return this.origin.send(
-                req, home, method, headers, content,
-                connect, read
+                req, home, method, headers, content, connect, read
             );
         }
-        return lookInCashe(req, home, method, headers,
-            content, connect, read, queryKey);
+        return this.lookInCache(
+            req, home, method, headers, content, connect, read, query
+        );
     }
 
-    protected Response lookInCashe(final Request req, final String home,
+    /**
+     * Check cache and update if needed.
+     *
+     * @param req Request
+     * @param home URI to fetch
+     * @param method HTTP method
+     * @param headers Headers
+     * @param content HTTP body
+     * @param connect The connect timeout
+     * @param read The read timeout
+     * @param query The key of the request
+     * @return Response obtained
+     * @throws IOException if fails
+     * @checkstyle ParameterNumber (6 lines)
+     */
+    private Response lookInCache(final Request req,
+        final String home,
         final String method,
         final Collection<Map.Entry<String, String>> headers,
-        final InputStream content, final int connect,
-        final int read, final String queryKey) throws IOException {
+        final InputStream content,
+        final int connect,
+        final int read,
+        final String query) throws IOException {
         final Response rspReceived;
-        if(CASHE.containsKey(queryKey)){
-            final Response rspCashed = CASHE.get(queryKey);
-            final List<String> lastModified =
-                rspCashed.headers().get(HEADER_LAST_MODIFIED);
-            Collection<Map.Entry<String, String>> hdrs =
-                enrich(headers,lastModified.get(0));
-            rspReceived = this.origin.send(
-                req, home, method, hdrs, content,
-                connect, read
+        if (CACHE.containsKey(query)) {
+            return this.updateCache(
+                req, home, method, headers, content, connect, read, query
             );
-            if(rspReceived.status() == HttpURLConnection.HTTP_NOT_MODIFIED ) {
-                return rspCashed;
-            } else {
-                if(rspReceived.headers().containsKey(HEADER_LAST_MODIFIED)){
-                    CASHE.put(queryKey,rspReceived);
-                }
-                return rspReceived;
-            }
         } else {
             rspReceived = this.origin.send(
-                req, home, method, headers, content,
-                connect, read
+                req, home, method, headers, content, connect, read
             );
-            if(rspReceived.headers().containsKey(HEADER_LAST_MODIFIED)){
-                CASHE.put(queryKey,rspReceived);
-            }
+            this.addToCache(query, rspReceived);
             return rspReceived;
         }
     }
 
-    private Collection<Map.Entry<String,String>> enrich(
+    /**
+     * Check response and update cache if needed.
+     *
+     * @param req Request
+     * @param home URI to fetch
+     * @param method HTTP method
+     * @param headers Headers
+     * @param content HTTP body
+     * @param connect The connect timeout
+     * @param read The read timeout
+     * @param query The key of the request
+     * @return Response obtained
+     * @throws IOException if fails
+     * @checkstyle ParameterNumber (8 lines)
+     */
+    private Response updateCache(final Request req,
+        final String home,
+        final String method,
         final Collection<Map.Entry<String, String>> headers,
-        final String lastModified) {
-        Map<String, String> map = new HashMap<>(headers.size()+1);
-        for(Map.Entry<String, String> entry : headers){
-            map.put(entry.getKey(),entry.getValue());
+        final InputStream content,
+        final int connect,
+        final int read,
+        final String query) throws IOException {
+        final Response rspReceived;
+        final Response rspCashed = CACHE.get(query);
+        final Collection<Map.Entry<String, String>> hdrs = this.enrich(
+            headers, rspCashed
+        );
+        rspReceived = this.origin.send(
+            req, home, method, hdrs, content, connect, read
+        );
+        if (rspReceived.status() == HttpURLConnection.HTTP_NOT_MODIFIED) {
+            return rspCashed;
+        } else {
+            this.addToCache(query, rspReceived);
+            return rspReceived;
         }
-        map.put(HEADER_IF_MODIFIED_SINCE, lastModified);
+    }
+
+    /**
+     * Add response to cache.
+     *
+     * @param query The key of the request
+     * @param rsp The response to add
+     */
+    private void addToCache(final String query, final Response rsp) {
+        if (rsp.headers().containsKey(HEADER_LAST_MODIFIED)) {
+            CACHE.put(query, rsp);
+        }
+    }
+
+    /**
+     * Add Last-Modified modified header.
+     *
+     * @param headers Original headers
+     * @param rsp Cached response
+     * @return Map with If-Modified-Since header
+     */
+    private Collection<Map.Entry<String, String>> enrich(
+        final Collection<Map.Entry<String, String>> headers,
+        final Response rsp) {
+        final List<String> list = rsp.headers().get(HEADER_LAST_MODIFIED);
+        final Map<String, String> map = new HashMap<>(headers.size() + 1);
+        for (final Map.Entry<String, String> entry : headers) {
+            map.put(entry.getKey(), entry.getValue());
+        }
+        map.put(HEADER_IF_MODIFIED_SINCE, list.iterator().next());
         return map.entrySet();
     }
 }
