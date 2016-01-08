@@ -38,9 +38,9 @@ import java.io.InputStream;
 import java.net.HttpURLConnection;
 import java.net.URI;
 import java.util.Collection;
-import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.concurrent.ConcurrentHashMap;
 
 /**
  * Wire that caches requests based on (for five minutes).
@@ -53,16 +53,17 @@ public class LastModifiedCashingWire implements Wire {
     /**
      * Last-Modified header name.
      */
-    public static final String HEADER_LAST_MODIFIED = "Last-Modified";
+    public static final String LAST_MODIFIED = "Last-Modified";
 
     /**
      * If-Modified-Since header name.
      */
-    public static final String HEADER_IF_MODIFIED_SINCE = "If-Modified-Since";
+    public static final String IF_MODIFIED_SINCE = "If-Modified-Since";
     /**
      * Cache.
      */
-    private static final Map<String, Response> CACHE = new HashMap<>();
+    private static final Map<String, Response> CACHE =
+        new ConcurrentHashMap<>();
 
     /**
      * Original wire.
@@ -85,21 +86,24 @@ public class LastModifiedCashingWire implements Wire {
         final InputStream content,
         final int connect,
         final int read) throws IOException {
-        final URI uri = req.uri().get();
-        final StringBuilder queryBuilder = new StringBuilder(Tv.HUNDRED)
-            .append(method).append(' ').append(uri.getPath());
-        if (uri.getQuery() != null) {
-            queryBuilder.append('?').append(uri.getQuery());
-        }
-        final String query = queryBuilder.toString();
-        if (!method.equals(Request.GET)) {
-            return this.origin.send(
+        final Response rsp;
+        if (method.equals(Request.GET)) {
+            final URI uri = req.uri().get();
+            final StringBuilder queryBuilder = new StringBuilder(Tv.HUNDRED)
+                .append(method).append(' ').append(uri.getPath());
+            if (uri.getQuery() != null) {
+                queryBuilder.append('?').append(uri.getQuery());
+            }
+            final String query = queryBuilder.toString();
+            rsp = this.lookInCache(
+                req, home, method, headers, content, connect, read, query
+            );
+        } else {
+            rsp = this.origin.send(
                 req, home, method, headers, content, connect, read
             );
         }
-        return this.lookInCache(
-            req, home, method, headers, content, connect, read, query
-        );
+        return rsp;
     }
 
     /**
@@ -127,7 +131,7 @@ public class LastModifiedCashingWire implements Wire {
         final String query) throws IOException {
         final Response rspReceived;
         if (CACHE.containsKey(query)) {
-            return this.updateCache(
+            rspReceived = this.updateCache(
                 req, home, method, headers, content, connect, read, query
             );
         } else {
@@ -135,8 +139,8 @@ public class LastModifiedCashingWire implements Wire {
                 req, home, method, headers, content, connect, read
             );
             this.addToCache(query, rspReceived);
-            return rspReceived;
         }
+        return rspReceived;
     }
 
     /**
@@ -162,20 +166,19 @@ public class LastModifiedCashingWire implements Wire {
         final int connect,
         final int read,
         final String query) throws IOException {
-        final Response rspReceived;
         final Response rspCashed = CACHE.get(query);
         final Collection<Map.Entry<String, String>> hdrs = this.enrich(
             headers, rspCashed
         );
-        rspReceived = this.origin.send(
+        Response rsp = this.origin.send(
             req, home, method, hdrs, content, connect, read
         );
-        if (rspReceived.status() == HttpURLConnection.HTTP_NOT_MODIFIED) {
-            return rspCashed;
+        if (rsp.status() == HttpURLConnection.HTTP_NOT_MODIFIED) {
+            rsp = rspCashed;
         } else {
-            this.addToCache(query, rspReceived);
-            return rspReceived;
+            this.addToCache(query, rsp);
         }
+        return rsp;
     }
 
     /**
@@ -185,7 +188,7 @@ public class LastModifiedCashingWire implements Wire {
      * @param rsp The response to add
      */
     private void addToCache(final String query, final Response rsp) {
-        if (rsp.headers().containsKey(HEADER_LAST_MODIFIED)) {
+        if (rsp.headers().containsKey(LAST_MODIFIED)) {
             CACHE.put(query, rsp);
         }
     }
@@ -200,12 +203,13 @@ public class LastModifiedCashingWire implements Wire {
     private Collection<Map.Entry<String, String>> enrich(
         final Collection<Map.Entry<String, String>> headers,
         final Response rsp) {
-        final List<String> list = rsp.headers().get(HEADER_LAST_MODIFIED);
-        final Map<String, String> map = new HashMap<>(headers.size() + 1);
+        final List<String> list = rsp.headers().get(LAST_MODIFIED);
+        final Map<String, String> map =
+            new ConcurrentHashMap<>(headers.size() + 1);
         for (final Map.Entry<String, String> entry : headers) {
             map.put(entry.getKey(), entry.getValue());
         }
-        map.put(HEADER_IF_MODIFIED_SINCE, list.iterator().next());
+        map.put(IF_MODIFIED_SINCE, list.iterator().next());
         return map.entrySet();
     }
 }
