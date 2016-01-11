@@ -80,7 +80,7 @@ public final class LastModifiedCachingWire implements Wire {
 
     // @checkstyle ParameterNumber (5 lines)
     @Override
-    public final Response send(final Request req, final String home,
+    public Response send(final Request req, final String home,
         final String method,
         final Collection<Map.Entry<String, String>> headers,
         final InputStream content,

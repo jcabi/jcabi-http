@@ -63,7 +63,7 @@ public final class LastModifiedCachingWireTest {
      * @throws Exception If fails
      */
     @Test
-    public final void cachesGetRequest() throws Exception {
+    public void cachesGetRequest() throws Exception {
         final Map<String, String> headers = Collections.singletonMap(
             LastModifiedCachingWire.LAST_MODIFIED,
             LastModifiedCachingWireTest.LONG_AGO
@@ -102,7 +102,7 @@ public final class LastModifiedCachingWireTest {
      * @throws Exception If something goes wrong inside
      */
     @Test
-    public final void ignoresPutRequest() throws Exception {
+    public void ignoresPutRequest() throws Exception {
         final MkContainer container = new MkGrizzlyContainer()
             .next(new MkAnswer.Simple(""))
             .next(new MkAnswer.Simple(""))
