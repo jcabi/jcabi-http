@@ -52,12 +52,12 @@ public final class LastModifiedCachingWire implements Wire {
     /**
      * Last-Modified header name.
      */
-    public static final String LAST_MODIFIED = "Last-Modified";
+    private static final String LAST_MODIFIED = "Last-Modified";
 
     /**
      * If-Modified-Since header name.
      */
-    public static final String IF_MODIFIED_SINCE = "If-Modified-Since";
+    private static final String IF_MODIFIED_SINCE = "If-Modified-Since";
 
     /**
      * Cache.
