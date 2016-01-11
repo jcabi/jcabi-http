@@ -49,7 +49,7 @@ import org.junit.Test;
  * Test case for {@link LastModifiedCachingWire}.
  * @author Igor Piddubnyi (igor.piddubnyi@gmail.com)
  * @version $Id$
- * @since 1.0
+ * @since 1.15
  */
 public final class LastModifiedCachingWireTest {
 
@@ -77,23 +77,22 @@ public final class LastModifiedCachingWireTest {
                 )
             )
             .next(
-                new MkAnswer.Simple(
-                    HttpURLConnection.HTTP_NOT_MODIFIED
-                ),
+                new MkAnswer.Simple(HttpURLConnection.HTTP_NOT_MODIFIED),
                 new IsAnything<MkQuery>(),
                 Tv.TEN
             ).start();
-        final Request req = new JdkRequest(container.home())
-            .through(LastModifiedCachingWire.class);
-        req.fetch().as(RestResponse.class)
-            .assertStatus(HttpURLConnection.HTTP_OK);
-        for (int idx = 0; idx < Tv.TEN; ++idx) {
-            final RestResponse response = req.fetch().as(RestResponse.class);
-            response.assertStatus(HttpURLConnection.HTTP_OK);
+        try {
+            final Request req = new JdkRequest(container.home())
+                .through(LastModifiedCachingWire.class);
+            for (int idx = 0; idx < Tv.TEN; ++idx) {
+                req.fetch().as(RestResponse.class)
+                    .assertStatus(HttpURLConnection.HTTP_OK);
+            }
+        } finally {
+            container.stop();
         }
-        container.stop();
         MatcherAssert.assertThat(
-            container.queries(), Matchers.equalTo(Tv.TEN + 1)
+            container.queries(), Matchers.equalTo(Tv.TEN)
         );
     }
 
@@ -109,11 +108,9 @@ public final class LastModifiedCachingWireTest {
             .start();
         final Request req = new JdkRequest(container.home())
             .through(LastModifiedCachingWire.class).method(Request.PUT);
-        for (int idx = 0; idx < 2; ++idx) {
-            req.fetch().as(RestResponse.class)
-                .assertStatus(HttpURLConnection.HTTP_OK);
-        }
+        req.fetch().as(RestResponse.class)
+            .assertStatus(HttpURLConnection.HTTP_OK);
         container.stop();
-        MatcherAssert.assertThat(container.queries(), Matchers.equalTo(2));
+        MatcherAssert.assertThat(container.queries(), Matchers.equalTo(1));
     }
 }

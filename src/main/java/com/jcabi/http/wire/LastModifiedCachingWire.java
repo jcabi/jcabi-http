@@ -62,8 +62,7 @@ public final class LastModifiedCachingWire implements Wire {
     /**
      * Cache.
      */
-    private static final Map<Request, Response> CACHE =
-        new ConcurrentHashMap<>();
+    private final Map<Request, Response> cache = new ConcurrentHashMap<>();
 
     /**
      * Original wire.
@@ -121,7 +120,7 @@ public final class LastModifiedCachingWire implements Wire {
         final int connect,
         final int read) throws IOException {
         final Response rspReceived;
-        if (CACHE.containsKey(req)) {
+        if (this.cache.containsKey(req)) {
             rspReceived = this.updateCache(
                 req, home, method, headers, content, connect, read
             );
@@ -155,7 +154,7 @@ public final class LastModifiedCachingWire implements Wire {
         final InputStream content,
         final int connect,
         final int read) throws IOException {
-        final Response rspCashed = CACHE.get(req);
+        final Response rspCashed = this.cache.get(req);
         final Collection<Map.Entry<String, String>> hdrs = this.enrich(
             headers, rspCashed
         );
@@ -177,7 +176,7 @@ public final class LastModifiedCachingWire implements Wire {
      */
     private void addToCache(final Request req, final Response rsp) {
         if (rsp.headers().containsKey(LAST_MODIFIED)) {
-            CACHE.put(req, rsp);
+            this.cache.put(req, rsp);
         }
     }
 
