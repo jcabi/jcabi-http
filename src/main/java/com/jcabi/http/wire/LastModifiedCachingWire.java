@@ -52,7 +52,7 @@ public final class LastModifiedCachingWire implements Wire {
     /**
      * Last-Modified header name.
      */
-    private static final String LAST_MODIFIED = "Last-Modified";
+    protected static final String LAST_MODIFIED = "Last-Modified";
 
     /**
      * If-Modified-Since header name.
@@ -176,7 +176,7 @@ public final class LastModifiedCachingWire implements Wire {
      * @param rsp The response to add
      */
     private void addToCache(final Request req, final Response rsp) {
-        if (rsp.headers().containsKey(LAST_MODIFIED)) {
+        if (rsp.headers().containsKey(LastModifiedCachingWire.LAST_MODIFIED)) {
             this.cache.put(req, rsp);
         }
     }
@@ -191,13 +191,17 @@ public final class LastModifiedCachingWire implements Wire {
     private Collection<Map.Entry<String, String>> enrich(
         final Collection<Map.Entry<String, String>> headers,
         final Response rsp) {
-        final List<String> list = rsp.headers().get(LAST_MODIFIED);
+        final List<String> list = rsp.headers().get(
+            LastModifiedCachingWire.LAST_MODIFIED
+        );
         final Map<String, String> map =
             new ConcurrentHashMap<>(headers.size() + 1);
         for (final Map.Entry<String, String> entry : headers) {
             map.put(entry.getKey(), entry.getValue());
         }
-        map.put(IF_MODIFIED_SINCE, list.iterator().next());
+        map.put(
+            LastModifiedCachingWire.IF_MODIFIED_SINCE, list.iterator().next()
+        );
         return map.entrySet();
     }
 }

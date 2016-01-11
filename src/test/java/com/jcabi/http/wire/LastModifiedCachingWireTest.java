@@ -88,16 +88,17 @@ public final class LastModifiedCachingWireTest {
                 req.fetch().as(RestResponse.class)
                     .assertStatus(HttpURLConnection.HTTP_OK);
             }
+            MatcherAssert.assertThat(
+                container.queries(), Matchers.equalTo(Tv.TEN)
+            );
         } finally {
             container.stop();
         }
-        MatcherAssert.assertThat(
-            container.queries(), Matchers.equalTo(Tv.TEN)
-        );
     }
 
     /**
-     * LastModifiedCachingWire can ignore PUT requests.
+     * LastModifiedCachingWire is skips cache for PUT requests and always send
+     * request to original destination.
      * @throws Exception If something goes wrong inside
      */
     @Test
@@ -106,11 +107,16 @@ public final class LastModifiedCachingWireTest {
             .next(new MkAnswer.Simple(""))
             .next(new MkAnswer.Simple(""))
             .start();
-        final Request req = new JdkRequest(container.home())
-            .through(LastModifiedCachingWire.class).method(Request.PUT);
-        req.fetch().as(RestResponse.class)
-            .assertStatus(HttpURLConnection.HTTP_OK);
-        container.stop();
-        MatcherAssert.assertThat(container.queries(), Matchers.equalTo(1));
+        try {
+            final Request req = new JdkRequest(container.home())
+                .through(LastModifiedCachingWire.class).method(Request.PUT);
+            for (int idx = 0; idx < 2; ++idx) {
+                req.fetch().as(RestResponse.class)
+                    .assertStatus(HttpURLConnection.HTTP_OK);
+            }
+            MatcherAssert.assertThat(container.queries(), Matchers.equalTo(2));
+        } finally {
+            container.stop();
+        }
     }
 }
