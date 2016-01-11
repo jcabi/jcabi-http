@@ -62,7 +62,7 @@ public final class LastModifiedCachingWire implements Wire {
     /**
      * Cache.
      */
-    private final Map<Request, Response> cache = new ConcurrentHashMap<>();
+    private final transient Map<Request, Response> cache;
 
     /**
      * Original wire.
@@ -75,6 +75,7 @@ public final class LastModifiedCachingWire implements Wire {
      */
     public LastModifiedCachingWire(final Wire wire) {
         this.origin = wire;
+        this.cache = new ConcurrentHashMap<>();
     }
 
     // @checkstyle ParameterNumber (5 lines)
