@@ -52,7 +52,7 @@ public final class LastModifiedCachingWire implements Wire {
     /**
      * Last-Modified header name.
      */
-    protected static final String LAST_MODIFIED = "Last-Modified";
+    static final String LAST_MODIFIED = "Last-Modified";
 
     /**
      * If-Modified-Since header name.
