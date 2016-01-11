@@ -38,39 +38,41 @@ import com.jcabi.http.mock.MkQuery;
 import com.jcabi.http.request.JdkRequest;
 import com.jcabi.http.response.RestResponse;
 import java.net.HttpURLConnection;
+import java.util.Collections;
 import java.util.Map;
-import java.util.concurrent.ConcurrentHashMap;
 import org.hamcrest.MatcherAssert;
 import org.hamcrest.Matchers;
 import org.hamcrest.core.IsAnything;
 import org.junit.Test;
 
 /**
- * Test case for {@link LastModifiedCashingWire}.
+ * Test case for {@link LastModifiedCachingWire}.
  * @author Igor Piddubnyi (igor.piddubnyi@gmail.com)
  * @version $Id$
  * @since 1.0
  */
-public class LastModifiedCashingWireTest {
+public final class LastModifiedCachingWireTest {
 
     /**
      * Time long ago.
      */
-    public static final String LONG_AGO = "Wed, 15 Nov 1995 04:58:08 GMT";
+    private static final String LONG_AGO = "Wed, 15 Nov 1995 04:58:08 GMT";
 
     /**
-     * LastModifiedCashingWire can cache GET requests.
+     * LastModifiedCachingWire can cache GET requests.
      * @throws Exception If fails
      */
     @Test
     public final void cachesGetRequest() throws Exception {
-        final Map<String, String> headersCache = new ConcurrentHashMap<>();
-        headersCache.put(LastModifiedCashingWire.LAST_MODIFIED, LONG_AGO);
+        final Map<String, String> headers = Collections.singletonMap(
+            LastModifiedCachingWire.LAST_MODIFIED,
+            LastModifiedCachingWireTest.LONG_AGO
+        );
         final MkContainer container = new MkGrizzlyContainer()
             .next(
                 new MkAnswer.Simple(
                     HttpURLConnection.HTTP_OK,
-                    headersCache.entrySet(),
+                    headers.entrySet(),
                     new byte[0]
                 )
             )
@@ -82,7 +84,7 @@ public class LastModifiedCashingWireTest {
                 Tv.TEN
             ).start();
         final Request req = new JdkRequest(container.home())
-            .through(LastModifiedCashingWire.class);
+            .through(LastModifiedCachingWire.class);
         req.fetch().as(RestResponse.class)
             .assertStatus(HttpURLConnection.HTTP_OK);
         for (int idx = 0; idx < Tv.TEN; ++idx) {
@@ -96,7 +98,7 @@ public class LastModifiedCashingWireTest {
     }
 
     /**
-     * LastModifiedCashingWire can ignore PUT requests.
+     * LastModifiedCachingWire can ignore PUT requests.
      * @throws Exception If something goes wrong inside
      */
     @Test
@@ -106,7 +108,7 @@ public class LastModifiedCashingWireTest {
             .next(new MkAnswer.Simple(""))
             .start();
         final Request req = new JdkRequest(container.home())
-            .through(LastModifiedCashingWire.class).method(Request.PUT);
+            .through(LastModifiedCachingWire.class).method(Request.PUT);
         for (int idx = 0; idx < 2; ++idx) {
             req.fetch().as(RestResponse.class)
                 .assertStatus(HttpURLConnection.HTTP_OK);

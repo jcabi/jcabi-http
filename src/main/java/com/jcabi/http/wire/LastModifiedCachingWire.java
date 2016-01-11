@@ -41,12 +41,13 @@ import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
 
 /**
- * Wire that caches requests based on (for five minutes).
+ * Wire that caches requests based on Last-Modified
+ * and If-Modified-Since headers.
  * @author Igor Piddubnyi (igor.piddubnyi@gmail.com)
  * @version $Id$
- * @since 1.0
+ * @since 1.15
  */
-public class LastModifiedCashingWire implements Wire {
+public final class LastModifiedCachingWire implements Wire {
 
     /**
      * Last-Modified header name.
@@ -73,7 +74,7 @@ public class LastModifiedCashingWire implements Wire {
      * Public ctor.
      * @param wire Original wire
      */
-    public LastModifiedCashingWire(final Wire wire) {
+    public LastModifiedCachingWire(final Wire wire) {
         this.origin = wire;
     }
 
