@@ -76,14 +76,16 @@ public final class LastModifiedCachingWireTest {
     public void requestWithoutHeaderPassed() throws Exception {
         final MkContainer container = new MkGrizzlyContainer()
             .next(
-                new MkAnswer.Simple(HttpURLConnection.HTTP_OK, BODY)
+                new MkAnswer.Simple(
+                    HttpURLConnection.HTTP_OK, LastModifiedCachingWireTest.BODY
+                )
             ).start();
         try {
             final Request req = new JdkRequest(container.home())
                 .through(LastModifiedCachingWire.class);
             req.fetch().as(RestResponse.class)
                 .assertStatus(HttpURLConnection.HTTP_OK)
-                .assertBody(Matchers.equalTo(BODY));
+                .assertBody(Matchers.equalTo(LastModifiedCachingWireTest.BODY));
             MatcherAssert.assertThat(container.queries(), Matchers.equalTo(1));
         } finally {
             container.stop();
@@ -105,7 +107,7 @@ public final class LastModifiedCachingWireTest {
                 new MkAnswer.Simple(
                     HttpURLConnection.HTTP_OK,
                     headers.entrySet(),
-                    BODY.getBytes()
+                    LastModifiedCachingWireTest.BODY.getBytes()
                 )
             )
             .next(
@@ -119,7 +121,9 @@ public final class LastModifiedCachingWireTest {
             for (int idx = 0; idx < Tv.TEN; ++idx) {
                 req.fetch().as(RestResponse.class)
                     .assertStatus(HttpURLConnection.HTTP_OK)
-                    .assertBody(Matchers.equalTo(BODY));
+                    .assertBody(
+                        Matchers.equalTo(LastModifiedCachingWireTest.BODY)
+                );
             }
             MatcherAssert.assertThat(
                 container.queries(), Matchers.equalTo(Tv.TEN)
@@ -144,7 +148,7 @@ public final class LastModifiedCachingWireTest {
                 new MkAnswer.Simple(
                     HttpURLConnection.HTTP_OK,
                     headers.entrySet(),
-                    BODY.getBytes()
+                    LastModifiedCachingWireTest.BODY.getBytes()
                 )
             )
             .next(new MkAnswer.Simple(HttpURLConnection.HTTP_NOT_MODIFIED))
@@ -152,7 +156,7 @@ public final class LastModifiedCachingWireTest {
                 new MkAnswer.Simple(
                     HttpURLConnection.HTTP_OK,
                     headers.entrySet(),
-                    BODY_UPDATED.getBytes()
+                    LastModifiedCachingWireTest.BODY_UPDATED.getBytes()
                 )
             )
             .next(new MkAnswer.Simple(HttpURLConnection.HTTP_NOT_MODIFIED))
@@ -163,12 +167,18 @@ public final class LastModifiedCachingWireTest {
             for (int idx = 0; idx < 2; ++idx) {
                 req.fetch().as(RestResponse.class)
                     .assertStatus(HttpURLConnection.HTTP_OK)
-                    .assertBody(Matchers.equalTo(BODY));
+                    .assertBody(
+                        Matchers.equalTo(LastModifiedCachingWireTest.BODY)
+                );
             }
             for (int idx = 0; idx < 2; ++idx) {
                 req.fetch().as(RestResponse.class)
                     .assertStatus(HttpURLConnection.HTTP_OK)
-                    .assertBody(Matchers.equalTo(BODY_UPDATED));
+                    .assertBody(
+                        Matchers.equalTo(
+                            LastModifiedCachingWireTest.BODY_UPDATED
+                        )
+                );
             }
             MatcherAssert.assertThat(
                 container.queries(), Matchers.equalTo(2 + 2)
