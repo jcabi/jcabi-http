@@ -64,6 +64,33 @@ public final class LastModifiedCachingWireTest {
     private static final String BODY = "Test body";
 
     /**
+     * Test body updated.
+     * */
+    private static final String BODY_UPDATED = "Test body updated";
+
+    /**
+     * LastModifiedCachingWire can handle requests without headers.
+     * @throws Exception If fails
+     */
+    @Test
+    public void requestWithoutHeaderPassed() throws Exception {
+        final MkContainer container = new MkGrizzlyContainer()
+            .next(
+                new MkAnswer.Simple(HttpURLConnection.HTTP_OK, BODY)
+            ).start();
+        try {
+            final Request req = new JdkRequest(container.home())
+                .through(LastModifiedCachingWire.class);
+            req.fetch().as(RestResponse.class)
+                .assertStatus(HttpURLConnection.HTTP_OK)
+                .assertBody(Matchers.equalTo(BODY));
+            MatcherAssert.assertThat(container.queries(), Matchers.equalTo(1));
+        } finally {
+            container.stop();
+        }
+    }
+
+    /**
      * LastModifiedCachingWire can cache GET requests.
      * @throws Exception If fails
      */
@@ -103,25 +130,49 @@ public final class LastModifiedCachingWireTest {
     }
 
     /**
-     * LastModifiedCachingWire is skips cache for PUT requests and always send
-     * request to original destination.
-     * @throws Exception If something goes wrong inside
+     * LastModifiedCachingWire cache updates with newer response.
+     * @throws Exception If fails
      */
     @Test
-    public void ignoresPutRequest() throws Exception {
+    public void cacheUpdateNewerResponse() throws Exception {
+        final Map<String, String> headers = Collections.singletonMap(
+            LastModifiedCachingWire.LAST_MODIFIED,
+            LastModifiedCachingWireTest.LONG_AGO
+        );
         final MkContainer container = new MkGrizzlyContainer()
-            .next(new MkAnswer.Simple(BODY))
-            .next(new MkAnswer.Simple(BODY))
+            .next(
+                new MkAnswer.Simple(
+                    HttpURLConnection.HTTP_OK,
+                    headers.entrySet(),
+                    BODY.getBytes()
+                )
+            )
+            .next(new MkAnswer.Simple(HttpURLConnection.HTTP_NOT_MODIFIED))
+            .next(
+                new MkAnswer.Simple(
+                    HttpURLConnection.HTTP_OK,
+                    headers.entrySet(),
+                    BODY_UPDATED.getBytes()
+                )
+            )
+            .next(new MkAnswer.Simple(HttpURLConnection.HTTP_NOT_MODIFIED))
             .start();
         try {
             final Request req = new JdkRequest(container.home())
-                .through(LastModifiedCachingWire.class).method(Request.PUT);
+                .through(LastModifiedCachingWire.class);
             for (int idx = 0; idx < 2; ++idx) {
                 req.fetch().as(RestResponse.class)
                     .assertStatus(HttpURLConnection.HTTP_OK)
                     .assertBody(Matchers.equalTo(BODY));
             }
-            MatcherAssert.assertThat(container.queries(), Matchers.equalTo(2));
+            for (int idx = 0; idx < 2; ++idx) {
+                req.fetch().as(RestResponse.class)
+                    .assertStatus(HttpURLConnection.HTTP_OK)
+                    .assertBody(Matchers.equalTo(BODY_UPDATED));
+            }
+            MatcherAssert.assertThat(
+                container.queries(), Matchers.equalTo(2 + 2)
+            );
         } finally {
             container.stop();
         }
