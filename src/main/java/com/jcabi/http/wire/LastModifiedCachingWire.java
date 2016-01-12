@@ -43,6 +43,8 @@ import java.util.concurrent.ConcurrentHashMap;
 /**
  * Wire that caches requests based on Last-Modified
  * and If-Modified-Since headers.
+ * @todo If the original request already has an If-Modified-Since header
+ * it should be sent directly.
  * @author Igor Piddubnyi (igor.piddubnyi@gmail.com)
  * @version $Id$
  * @since 1.15
@@ -122,14 +124,14 @@ public final class LastModifiedCachingWire implements Wire {
         final int read) throws IOException {
         final Response rspReceived;
         if (this.cache.containsKey(req)) {
-            rspReceived = this.updateCache(
+            rspReceived = this.validateCacheWithServer(
                 req, home, method, headers, content, connect, read
             );
         } else {
             rspReceived = this.origin.send(
                 req, home, method, headers, content, connect, read
             );
-            this.addToCache(req, rspReceived);
+            this.updateCache(req, rspReceived);
         }
         return rspReceived;
     }
@@ -148,34 +150,34 @@ public final class LastModifiedCachingWire implements Wire {
      * @throws IOException if fails
      * @checkstyle ParameterNumber (8 lines)
      */
-    private Response updateCache(final Request req,
+    private Response validateCacheWithServer(final Request req,
         final String home,
         final String method,
         final Collection<Map.Entry<String, String>> headers,
         final InputStream content,
         final int connect,
         final int read) throws IOException {
-        final Response rspCashed = this.cache.get(req);
+        final Response rspCached = this.cache.get(req);
         final Collection<Map.Entry<String, String>> hdrs = this.enrich(
-            headers, rspCashed
+            headers, rspCached
         );
         Response rsp = this.origin.send(
             req, home, method, hdrs, content, connect, read
         );
         if (rsp.status() == HttpURLConnection.HTTP_NOT_MODIFIED) {
-            rsp = rspCashed;
+            rsp = rspCached;
         } else {
-            this.addToCache(req, rsp);
+            this.updateCache(req, rsp);
         }
         return rsp;
     }
 
     /**
      * Add response to cache.
-     *  @param req The key of the request
+     * @param req The key of the request
      * @param rsp The response to add
      */
-    private void addToCache(final Request req, final Response rsp) {
+    private void updateCache(final Request req, final Response rsp) {
         if (rsp.headers().containsKey(LastModifiedCachingWire.LAST_MODIFIED)) {
             this.cache.put(req, rsp);
         }
