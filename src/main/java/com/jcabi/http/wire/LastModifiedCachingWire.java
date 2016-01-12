@@ -138,6 +138,8 @@ public final class LastModifiedCachingWire implements Wire {
 
     /**
      * Check response and update cache if needed.
+     * @todo Evict cache entry if If-Modified-Since request responded with
+     * HTTP_OK code and no Last-Modified header.
      *
      * @param req Request
      * @param home URI to fetch
