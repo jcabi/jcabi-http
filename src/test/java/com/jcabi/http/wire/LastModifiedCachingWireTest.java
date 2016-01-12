@@ -59,6 +59,11 @@ public final class LastModifiedCachingWireTest {
     private static final String LONG_AGO = "Wed, 15 Nov 1995 04:58:08 GMT";
 
     /**
+     * Test body.
+     * */
+    private static final String BODY = "Test body";
+
+    /**
      * LastModifiedCachingWire can cache GET requests.
      * @throws Exception If fails
      */
@@ -73,7 +78,7 @@ public final class LastModifiedCachingWireTest {
                 new MkAnswer.Simple(
                     HttpURLConnection.HTTP_OK,
                     headers.entrySet(),
-                    new byte[0]
+                    BODY.getBytes()
                 )
             )
             .next(
@@ -86,7 +91,8 @@ public final class LastModifiedCachingWireTest {
                 .through(LastModifiedCachingWire.class);
             for (int idx = 0; idx < Tv.TEN; ++idx) {
                 req.fetch().as(RestResponse.class)
-                    .assertStatus(HttpURLConnection.HTTP_OK);
+                    .assertStatus(HttpURLConnection.HTTP_OK)
+                    .assertBody(Matchers.equalTo(BODY));
             }
             MatcherAssert.assertThat(
                 container.queries(), Matchers.equalTo(Tv.TEN)
@@ -104,15 +110,16 @@ public final class LastModifiedCachingWireTest {
     @Test
     public void ignoresPutRequest() throws Exception {
         final MkContainer container = new MkGrizzlyContainer()
-            .next(new MkAnswer.Simple(""))
-            .next(new MkAnswer.Simple(""))
+            .next(new MkAnswer.Simple(BODY))
+            .next(new MkAnswer.Simple(BODY))
             .start();
         try {
             final Request req = new JdkRequest(container.home())
                 .through(LastModifiedCachingWire.class).method(Request.PUT);
             for (int idx = 0; idx < 2; ++idx) {
                 req.fetch().as(RestResponse.class)
-                    .assertStatus(HttpURLConnection.HTTP_OK);
+                    .assertStatus(HttpURLConnection.HTTP_OK)
+                    .assertBody(Matchers.equalTo(BODY));
             }
             MatcherAssert.assertThat(container.queries(), Matchers.equalTo(2));
         } finally {

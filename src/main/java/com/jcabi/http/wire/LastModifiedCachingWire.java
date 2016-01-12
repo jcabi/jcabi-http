@@ -90,7 +90,7 @@ public final class LastModifiedCachingWire implements Wire {
         final int read) throws IOException {
         final Response rsp;
         if (method.equals(Request.GET)) {
-            rsp = this.checkAndUpdateCache(
+            rsp = this.consultCache(
                 req, home, method, headers, content, connect, read
             );
         } else {
@@ -115,7 +115,7 @@ public final class LastModifiedCachingWire implements Wire {
      * @throws IOException if fails
      * @checkstyle ParameterNumber (6 lines)
      */
-    private Response checkAndUpdateCache(final Request req,
+    private Response consultCache(final Request req,
         final String home,
         final String method,
         final Collection<Map.Entry<String, String>> headers,
