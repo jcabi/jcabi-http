@@ -54,11 +54,6 @@ import org.junit.Test;
 public final class LastModifiedCachingWireTest {
 
     /**
-     * Time long ago.
-     */
-    private static final String LONG_AGO = "Wed, 15 Nov 1995 04:58:08 GMT";
-
-    /**
      * Test body.
      * */
     private static final String BODY = "Test body";
@@ -100,7 +95,7 @@ public final class LastModifiedCachingWireTest {
     public void cachesGetRequest() throws Exception {
         final Map<String, String> headers = Collections.singletonMap(
             LastModifiedCachingWire.LAST_MODIFIED,
-            LastModifiedCachingWireTest.LONG_AGO
+            "Wed, 15 Nov 1995 04:58:08 GMT"
         );
         final MkContainer container = new MkGrizzlyContainer()
             .next(
@@ -141,7 +136,7 @@ public final class LastModifiedCachingWireTest {
     public void cacheUpdateNewerResponse() throws Exception {
         final Map<String, String> headers = Collections.singletonMap(
             LastModifiedCachingWire.LAST_MODIFIED,
-            LastModifiedCachingWireTest.LONG_AGO
+            "Wed, 16 Nov 1995 04:58:08 GMT"
         );
         final MkContainer container = new MkGrizzlyContainer()
             .next(

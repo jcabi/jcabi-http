@@ -122,18 +122,18 @@ public final class LastModifiedCachingWire implements Wire {
         final InputStream content,
         final int connect,
         final int read) throws IOException {
-        final Response rspReceived;
+        final Response rsp;
         if (this.cache.containsKey(req)) {
-            rspReceived = this.validateCacheWithServer(
+            rsp = this.validateCacheWithServer(
                 req, home, method, headers, content, connect, read
             );
         } else {
-            rspReceived = this.origin.send(
+            rsp = this.origin.send(
                 req, home, method, headers, content, connect, read
             );
-            this.updateCache(req, rspReceived);
+            this.updateCache(req, rsp);
         }
-        return rspReceived;
+        return rsp;
     }
 
     /**
@@ -159,24 +159,24 @@ public final class LastModifiedCachingWire implements Wire {
         final InputStream content,
         final int connect,
         final int read) throws IOException {
-        final Response rspCached = this.cache.get(req);
+        final Response rsp = this.cache.get(req);
         final Collection<Map.Entry<String, String>> hdrs = this.enrich(
-            headers, rspCached
+            headers, rsp
         );
-        Response rsp = this.origin.send(
+        Response result = this.origin.send(
             req, home, method, hdrs, content, connect, read
         );
-        if (rsp.status() == HttpURLConnection.HTTP_NOT_MODIFIED) {
-            rsp = rspCached;
+        if (result.status() == HttpURLConnection.HTTP_NOT_MODIFIED) {
+            result = rsp;
         } else {
-            this.updateCache(req, rsp);
+            this.updateCache(req, result);
         }
-        return rsp;
+        return result;
     }
 
     /**
      * Add response to cache.
-     * @param req The key of the request
+     * @param req The request to be used as key
      * @param rsp The response to add
      */
     private void updateCache(final Request req, final Response rsp) {
