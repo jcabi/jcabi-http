@@ -38,7 +38,6 @@ import com.jcabi.http.response.RestResponse;
 import java.io.IOException;
 import java.net.HttpURLConnection;
 import javax.ws.rs.core.HttpHeaders;
-import org.hamcrest.MatcherAssert;
 import org.hamcrest.Matchers;
 import org.junit.Test;
 
@@ -64,11 +63,10 @@ public final class ETagCachingWireTest {
      */
     @Test
     public void nonmodifiedContent() throws IOException {
-        final String etag = "3e25";
         final MkContainer container = new MkGrizzlyContainer()
                 .next(
                         new MkAnswer.Simple(CONTENT)
-                        .withHeader(HttpHeaders.ETAG, etag)
+                        .withHeader(HttpHeaders.ETAG, "3e25")
                 )
                 .next(
                         new MkAnswer.Simple("")
@@ -84,7 +82,6 @@ public final class ETagCachingWireTest {
                 .assertStatus(HttpURLConnection.HTTP_OK)
                 .assertBody(Matchers.equalTo(CONTENT));
         req
-                .header(HttpHeaders.IF_NONE_MATCH, etag)
                 .fetch()
                 .as(RestResponse.class)
                 .assertStatus(HttpURLConnection.HTTP_OK)
@@ -98,16 +95,14 @@ public final class ETagCachingWireTest {
      */
     @Test
     public void modifiedContent() throws IOException {
-        final String etag = "3e26";
-        final String newetag = "3e27";
         final MkContainer container = new MkGrizzlyContainer()
                 .next(
                         new MkAnswer.Simple(CONTENT)
-                                .withHeader(HttpHeaders.ETAG, etag)
+                                .withHeader(HttpHeaders.ETAG, "3e26")
                 )
                 .next(
                         new MkAnswer.Simple(NEW_CONTENT)
-                                .withHeader(HttpHeaders.ETAG, newetag)
+                                .withHeader(HttpHeaders.ETAG, "3e27")
                 )
                 .start();
         final Request req =
@@ -119,43 +114,10 @@ public final class ETagCachingWireTest {
                 .assertStatus(HttpURLConnection.HTTP_OK)
                 .assertBody(Matchers.equalTo(CONTENT));
         req
-                .header(HttpHeaders.IF_NONE_MATCH, etag)
                 .fetch()
                 .as(RestResponse.class)
                 .assertStatus(HttpURLConnection.HTTP_OK)
                 .assertBody(Matchers.equalTo(NEW_CONTENT));
         container.stop();
-    }
-
-    /**
-     * Checks if content is absent in cache then it is queried again
-     * without If-Non-Match header.
-     * @throws IOException If something goes wrong inside
-     */
-    @Test
-    public void reloadsIfNoCacheEntry() throws IOException {
-        final String etag = "3e28";
-        final MkContainer container = new MkGrizzlyContainer()
-                .next(
-                        new MkAnswer.Simple("").withStatus(
-                                HttpURLConnection.HTTP_NOT_MODIFIED
-                        )
-                )
-                .next(
-                        new MkAnswer.Simple(CONTENT)
-                                .withHeader(HttpHeaders.ETAG, etag)
-                )
-                .start();
-        final Request req =
-                new JdkRequest(container.home())
-                        .through(ETagCachingWire.class);
-        req
-                .header(HttpHeaders.IF_NONE_MATCH, etag)
-                .fetch()
-                .as(RestResponse.class)
-                .assertStatus(HttpURLConnection.HTTP_OK)
-                .assertBody(Matchers.equalTo(CONTENT));
-        container.stop();
-        MatcherAssert.assertThat(container.queries(), Matchers.equalTo(2));
     }
 }

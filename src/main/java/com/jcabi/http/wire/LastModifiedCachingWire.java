@@ -29,16 +29,8 @@
  */
 package com.jcabi.http.wire;
 
-import com.jcabi.http.Request;
-import com.jcabi.http.Response;
 import com.jcabi.http.Wire;
-import java.io.IOException;
-import java.io.InputStream;
-import java.net.HttpURLConnection;
-import java.util.Collection;
-import java.util.List;
-import java.util.Map;
-import java.util.concurrent.ConcurrentHashMap;
+import javax.ws.rs.core.HttpHeaders;
 
 /**
  * Wire that caches requests based on Last-Modified
@@ -49,162 +41,14 @@ import java.util.concurrent.ConcurrentHashMap;
  * @version $Id$
  * @since 1.15
  */
-public final class LastModifiedCachingWire implements Wire {
-
-    /**
-     * Last-Modified header name.
-     */
-    public static final String LAST_MODIFIED = "Last-Modified";
-
-    /**
-     * If-Modified-Since header name.
-     */
-    private static final String IF_MODIFIED_SINCE = "If-Modified-Since";
-
-    /**
-     * Cache.
-     */
-    private final transient Map<Request, Response> cache;
-
-    /**
-     * Original wire.
-     */
-    private final transient Wire origin;
+public final class LastModifiedCachingWire
+        extends AbstractHeaderBasedCachingWire {
 
     /**
      * Public ctor.
-     * @param wire Original wire
+     * @param origin Original wire
      */
-    public LastModifiedCachingWire(final Wire wire) {
-        this.origin = wire;
-        this.cache = new ConcurrentHashMap<>();
-    }
-
-    // @checkstyle ParameterNumber (5 lines)
-    @Override
-    public Response send(final Request req, final String home,
-        final String method,
-        final Collection<Map.Entry<String, String>> headers,
-        final InputStream content,
-        final int connect,
-        final int read) throws IOException {
-        final Response rsp;
-        if (method.equals(Request.GET)) {
-            rsp = this.consultCache(
-                req, home, method, headers, content, connect, read
-            );
-        } else {
-            rsp = this.origin.send(
-                req, home, method, headers, content, connect, read
-            );
-        }
-        return rsp;
-    }
-
-    /**
-     * Check cache and update if needed.
-     *
-     * @param req Request
-     * @param home URI to fetch
-     * @param method HTTP method
-     * @param headers Headers
-     * @param content HTTP body
-     * @param connect The connect timeout
-     * @param read The read timeout
-     * @return Response obtained
-     * @throws IOException if fails
-     * @checkstyle ParameterNumber (6 lines)
-     */
-    private Response consultCache(final Request req,
-        final String home,
-        final String method,
-        final Collection<Map.Entry<String, String>> headers,
-        final InputStream content,
-        final int connect,
-        final int read) throws IOException {
-        final Response rsp;
-        if (this.cache.containsKey(req)) {
-            rsp = this.validateCacheWithServer(
-                req, home, method, headers, content, connect, read
-            );
-        } else {
-            rsp = this.origin.send(
-                req, home, method, headers, content, connect, read
-            );
-            this.updateCache(req, rsp);
-        }
-        return rsp;
-    }
-
-    /**
-     * Check response and update cache if needed.
-     * @todo #90:30min Evict cache entry if If-Modified-Since request responded
-     *  with HTTP_OK code and no Last-Modified header.
-     * @param req Request
-     * @param home URI to fetch
-     * @param method HTTP method
-     * @param headers Headers
-     * @param content HTTP body
-     * @param connect The connect timeout
-     * @param read The read timeout
-     * @return Response obtained
-     * @throws IOException if fails
-     * @checkstyle ParameterNumber (8 lines)
-     */
-    private Response validateCacheWithServer(final Request req,
-        final String home,
-        final String method,
-        final Collection<Map.Entry<String, String>> headers,
-        final InputStream content,
-        final int connect,
-        final int read) throws IOException {
-        final Response rsp = this.cache.get(req);
-        final Collection<Map.Entry<String, String>> hdrs = this.enrich(
-            headers, rsp
-        );
-        Response result = this.origin.send(
-            req, home, method, hdrs, content, connect, read
-        );
-        if (result.status() == HttpURLConnection.HTTP_NOT_MODIFIED) {
-            result = rsp;
-        } else {
-            this.updateCache(req, result);
-        }
-        return result;
-    }
-
-    /**
-     * Add response to cache.
-     * @param req The request to be used as key
-     * @param rsp The response to add
-     */
-    private void updateCache(final Request req, final Response rsp) {
-        if (rsp.headers().containsKey(LastModifiedCachingWire.LAST_MODIFIED)) {
-            this.cache.put(req, rsp);
-        }
-    }
-
-    /**
-     * Add Last-Modified modified header.
-     *
-     * @param headers Original headers
-     * @param rsp Cached response
-     * @return Map with If-Modified-Since header
-     */
-    private Collection<Map.Entry<String, String>> enrich(
-        final Collection<Map.Entry<String, String>> headers,
-        final Response rsp) {
-        final List<String> list = rsp.headers().get(
-            LastModifiedCachingWire.LAST_MODIFIED
-        );
-        final Map<String, String> map =
-            new ConcurrentHashMap<>(headers.size() + 1);
-        for (final Map.Entry<String, String> entry : headers) {
-            map.put(entry.getKey(), entry.getValue());
-        }
-        map.put(
-            LastModifiedCachingWire.IF_MODIFIED_SINCE, list.iterator().next()
-        );
-        return map.entrySet();
+    public LastModifiedCachingWire(final Wire origin) {
+        super(HttpHeaders.LAST_MODIFIED, HttpHeaders.IF_MODIFIED_SINCE, origin);
     }
 }
