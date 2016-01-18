@@ -48,11 +48,26 @@ import java.util.Map;
 import java.util.concurrent.Callable;
 import java.util.concurrent.ExecutionException;
 import java.util.concurrent.TimeUnit;
+import javax.ws.rs.core.HttpHeaders;
 import lombok.EqualsAndHashCode;
 import lombok.ToString;
 
 /**
- * This is dummy javadoc that will be updated later.
+ * Wire that caches requests with ETags (for five minutes).
+ *
+ * <p>This decorator can be used when you want to avoid duplicate
+ * requests to load-sensitive resources and server supports ETags, for example:
+ *
+ * <pre> String html = new JdkRequest("http://goggle.com")
+ *   .through(ETagCachingWire.class)
+ *   .header(HttpHeaders.ETAG, "some_etag")
+ *   .fetch()
+ *   .body();</pre>
+ *
+ * <p>Client will take response from the cache if present
+ * or will query resource for that.
+ *
+ * <p>The class is immutable and thread-safe.
  *
  * @author Ievgen Degtiarenko (ievgen.degtiarenko@gmail.com)
  * @version $Id$
@@ -149,7 +164,7 @@ public final class ETagCachingWire implements Wire {
      * @return ETag header value
      */
     private String findETagHeader(final Map<String, List<String>> headers) {
-        final List<String> etags = headers.get("ETag");
+        final List<String> etags = headers.get(HttpHeaders.ETAG);
         final String ret;
         if (etags != null && etags.size() == 1) {
             ret = etags.get(0);
@@ -169,7 +184,7 @@ public final class ETagCachingWire implements Wire {
     ) {
         Map.Entry<String, String> found = null;
         for (final Map.Entry<String, String> header : headers) {
-            if ("If-None-Match".equals(header.getKey())) {
+            if (HttpHeaders.IF_NONE_MATCH.equals(header.getKey())) {
                 found = header;
                 break;
             }

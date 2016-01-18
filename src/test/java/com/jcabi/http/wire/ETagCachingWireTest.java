@@ -37,6 +37,7 @@ import com.jcabi.http.request.JdkRequest;
 import com.jcabi.http.response.RestResponse;
 import java.io.IOException;
 import java.net.HttpURLConnection;
+import javax.ws.rs.core.HttpHeaders;
 import org.hamcrest.MatcherAssert;
 import org.hamcrest.Matchers;
 import org.junit.Test;
@@ -56,14 +57,6 @@ public final class ETagCachingWireTest {
      * Sample new body for the test.
      */
     private static final String NEW_CONTENT = "new content";
-    /**
-     *
-     */
-    private static final String IF_NONE_MATCH_HDR = "If-None-Match";
-    /**
-     *
-     */
-    private static final String E_TAG_HDR = "ETag";
 
     /**
      * Checks if nonmodified content is taken from the cache.
@@ -75,7 +68,7 @@ public final class ETagCachingWireTest {
         final MkContainer container = new MkGrizzlyContainer()
                 .next(
                         new MkAnswer.Simple(CONTENT)
-                        .withHeader(E_TAG_HDR, etag)
+                        .withHeader(HttpHeaders.ETAG, etag)
                 )
                 .next(
                         new MkAnswer.Simple("")
@@ -91,7 +84,7 @@ public final class ETagCachingWireTest {
                 .assertStatus(HttpURLConnection.HTTP_OK)
                 .assertBody(Matchers.equalTo(CONTENT));
         req
-                .header(IF_NONE_MATCH_HDR, etag)
+                .header(HttpHeaders.IF_NONE_MATCH, etag)
                 .fetch()
                 .as(RestResponse.class)
                 .assertStatus(HttpURLConnection.HTTP_OK)
@@ -110,11 +103,11 @@ public final class ETagCachingWireTest {
         final MkContainer container = new MkGrizzlyContainer()
                 .next(
                         new MkAnswer.Simple(CONTENT)
-                                .withHeader(E_TAG_HDR, etag)
+                                .withHeader(HttpHeaders.ETAG, etag)
                 )
                 .next(
                         new MkAnswer.Simple(NEW_CONTENT)
-                                .withHeader(E_TAG_HDR, newetag)
+                                .withHeader(HttpHeaders.ETAG, newetag)
                 )
                 .start();
         final Request req =
@@ -126,7 +119,7 @@ public final class ETagCachingWireTest {
                 .assertStatus(HttpURLConnection.HTTP_OK)
                 .assertBody(Matchers.equalTo(CONTENT));
         req
-                .header(IF_NONE_MATCH_HDR, etag)
+                .header(HttpHeaders.IF_NONE_MATCH, etag)
                 .fetch()
                 .as(RestResponse.class)
                 .assertStatus(HttpURLConnection.HTTP_OK)
@@ -150,14 +143,14 @@ public final class ETagCachingWireTest {
                 )
                 .next(
                         new MkAnswer.Simple(CONTENT)
-                                .withHeader(E_TAG_HDR, etag)
+                                .withHeader(HttpHeaders.ETAG, etag)
                 )
                 .start();
         final Request req =
                 new JdkRequest(container.home())
                         .through(ETagCachingWire.class);
         req
-                .header(IF_NONE_MATCH_HDR, etag)
+                .header(HttpHeaders.IF_NONE_MATCH, etag)
                 .fetch()
                 .as(RestResponse.class)
                 .assertStatus(HttpURLConnection.HTTP_OK)
