@@ -45,6 +45,7 @@ import org.junit.Test;
  * Test case for {@link ETagCachingWire}.
  * @author Ievgen Degtiarenko (ievgen.degtiarenko@gmail.com)
  * @version $Id$
+ * @since 2.0
  */
 public final class ETagCachingWireTest {
 
@@ -52,72 +53,72 @@ public final class ETagCachingWireTest {
      * Sample body for the test.
      */
     private static final String CONTENT = "sample content";
+
     /**
      * Sample new body for the test.
      */
     private static final String NEW_CONTENT = "new content";
 
     /**
-     * Checks if nonmodified content is taken from the cache.
+     * ETagCachingWire can take content from cache.
      * @throws IOException If something goes wrong inside
      */
     @Test
     public void nonmodifiedContent() throws IOException {
         final MkContainer container = new MkGrizzlyContainer()
-                .next(
-                        new MkAnswer.Simple(CONTENT)
-                        .withHeader(HttpHeaders.ETAG, "3e25")
-                )
-                .next(
-                        new MkAnswer.Simple("")
-                        .withStatus(HttpURLConnection.HTTP_NOT_MODIFIED)
-                )
-                .start();
+            .next(
+                new MkAnswer.Simple(CONTENT)
+                .withHeader(HttpHeaders.ETAG, "3e25")
+            )
+            .next(
+                new MkAnswer.Simple("")
+                .withStatus(HttpURLConnection.HTTP_NOT_MODIFIED)
+            )
+            .start();
         final Request req =
-                new JdkRequest(container.home())
-                        .through(ETagCachingWire.class);
+            new JdkRequest(container.home()).through(ETagCachingWire.class);
         req
-                .fetch()
-                .as(RestResponse.class)
-                .assertStatus(HttpURLConnection.HTTP_OK)
-                .assertBody(Matchers.equalTo(CONTENT));
+            .fetch()
+            .as(RestResponse.class)
+            .assertStatus(HttpURLConnection.HTTP_OK)
+            .assertBody(Matchers.equalTo(CONTENT));
         req
-                .fetch()
-                .as(RestResponse.class)
-                .assertStatus(HttpURLConnection.HTTP_OK)
-                .assertBody(Matchers.equalTo(CONTENT));
+            .fetch()
+            .as(RestResponse.class)
+            .assertStatus(HttpURLConnection.HTTP_OK)
+            .assertBody(Matchers.equalTo(CONTENT));
         container.stop();
     }
 
     /**
-     * Checks if modified content is returned.
+     * ETagCachingWire can detect content modification.
      * @throws IOException If something goes wrong inside
      */
     @Test
     public void modifiedContent() throws IOException {
         final MkContainer container = new MkGrizzlyContainer()
-                .next(
-                        new MkAnswer.Simple(CONTENT)
-                                .withHeader(HttpHeaders.ETAG, "3e26")
-                )
-                .next(
-                        new MkAnswer.Simple(NEW_CONTENT)
-                                .withHeader(HttpHeaders.ETAG, "3e27")
-                )
-                .start();
+            .next(
+                new MkAnswer.Simple(CONTENT)
+                    .withHeader(HttpHeaders.ETAG, "3e26")
+            )
+            .next(
+                new MkAnswer.Simple(NEW_CONTENT)
+                    .withHeader(HttpHeaders.ETAG, "3e27")
+            )
+            .start();
         final Request req =
-                new JdkRequest(container.home())
-                        .through(ETagCachingWire.class);
+            new JdkRequest(container.home())
+                .through(ETagCachingWire.class);
         req
-                .fetch()
-                .as(RestResponse.class)
-                .assertStatus(HttpURLConnection.HTTP_OK)
-                .assertBody(Matchers.equalTo(CONTENT));
+            .fetch()
+            .as(RestResponse.class)
+            .assertStatus(HttpURLConnection.HTTP_OK)
+            .assertBody(Matchers.equalTo(CONTENT));
         req
-                .fetch()
-                .as(RestResponse.class)
-                .assertStatus(HttpURLConnection.HTTP_OK)
-                .assertBody(Matchers.equalTo(NEW_CONTENT));
+            .fetch()
+            .as(RestResponse.class)
+            .assertStatus(HttpURLConnection.HTTP_OK)
+            .assertBody(Matchers.equalTo(NEW_CONTENT));
         container.stop();
     }
 }

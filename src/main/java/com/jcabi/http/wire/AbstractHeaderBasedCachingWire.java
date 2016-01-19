@@ -45,6 +45,7 @@ import java.util.concurrent.ConcurrentHashMap;
  *
  * @author Ievgen Degtiarenko (ievgen.degtiarenko@gmail.com)
  * @version $Id$
+ * @since 2.0
  */
 public abstract class AbstractHeaderBasedCachingWire implements Wire {
 
@@ -62,13 +63,15 @@ public abstract class AbstractHeaderBasedCachingWire implements Wire {
      * This header will be return by server to identify content version.
      */
     private final transient String scvh;
+
     /**
      * This header will be sent by client to check if server content has
      * been changed.
      */
     private final transient String cmch;
+
     /**
-     * Public ctor.
+     * Ctor.
      * @param scvh Server Response Version Header name
      * @param cmch Client Modification Check Header name
      * @param wire Original wire
@@ -84,14 +87,17 @@ public abstract class AbstractHeaderBasedCachingWire implements Wire {
         this.cache = new ConcurrentHashMap<>();
     }
 
-    // @checkstyle ParameterNumber (5 lines)
+    // @checkstyle ParameterNumber (7 lines)
     @Override
-    public final Response send(final Request req, final String home,
-                         final String method,
-                         final Collection<Map.Entry<String, String>> headers,
-                         final InputStream content,
-                         final int connect,
-                         final int read) throws IOException {
+    public final Response send(
+            final Request req,
+            final String home,
+            final String method,
+            final Collection<Map.Entry<String, String>> headers,
+            final InputStream content,
+            final int connect,
+            final int read
+    ) throws IOException {
         final Response rsp;
         if (method.equals(Request.GET)) {
             rsp = this.consultCache(

@@ -29,6 +29,7 @@
  */
 package com.jcabi.http.wire;
 
+import com.jcabi.aspects.Immutable;
 import com.jcabi.http.Wire;
 import javax.ws.rs.core.HttpHeaders;
 
@@ -38,10 +39,12 @@ import javax.ws.rs.core.HttpHeaders;
  * <p>This decorator can be used when you want to avoid duplicate
  * requests to load-sensitive resources and server supports ETags, for example:
  *
- * <pre> String html = new JdkRequest("http://goggle.com")
+ * <pre>{@code
+ *    String html = new JdkRequest("http://goggle.com")
  *   .through(ETagCachingWire.class)
  *   .fetch()
- *   .body();</pre>
+ *   .body();
+ * }</pre>
  *
  * <p>Client will automatically detect if server uses ETags and start adding
  * corresponding If-None-Match to outgoing requests
@@ -53,7 +56,9 @@ import javax.ws.rs.core.HttpHeaders;
  *
  * @author Ievgen Degtiarenko (ievgen.degtiarenko@gmail.com)
  * @version $Id$
+ * @since 2.0
  */
+@Immutable
 public final class ETagCachingWire extends AbstractHeaderBasedCachingWire {
 
     /**
