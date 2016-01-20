@@ -34,16 +34,16 @@ import com.jcabi.http.Wire;
 import javax.ws.rs.core.HttpHeaders;
 
 /**
- * Wire that caches requests with ETags (for five minutes).
+ * Wire that caches requests with ETags.
  *
  * <p>This decorator can be used when you want to avoid duplicate
  * requests to load-sensitive resources and server supports ETags, for example:
  *
  * <pre>{@code
  *    String html = new JdkRequest("http://goggle.com")
- *   .through(ETagCachingWire.class)
- *   .fetch()
- *   .body();
+ *        .through(ETagCachingWire.class)
+ *        .fetch()
+ *        .body();
  * }</pre>
  *
  * <p>Client will automatically detect if server uses ETags and start adding

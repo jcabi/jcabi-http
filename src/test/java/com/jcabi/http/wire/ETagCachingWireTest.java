@@ -64,7 +64,7 @@ public final class ETagCachingWireTest {
      * @throws IOException If something goes wrong inside
      */
     @Test
-    public void nonmodifiedContent() throws IOException {
+    public void takesContentFromCache() throws IOException {
         final MkContainer container = new MkGrizzlyContainer()
             .next(
                 new MkAnswer.Simple(CONTENT)
@@ -95,7 +95,7 @@ public final class ETagCachingWireTest {
      * @throws IOException If something goes wrong inside
      */
     @Test
-    public void modifiedContent() throws IOException {
+    public void detectsContentModification() throws IOException {
         final MkContainer container = new MkGrizzlyContainer()
             .next(
                 new MkAnswer.Simple(CONTENT)
