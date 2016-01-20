@@ -42,7 +42,7 @@ import javax.ws.rs.core.HttpHeaders;
  * @since 1.15
  */
 public final class LastModifiedCachingWire
-        extends AbstractHeaderBasedCachingWire {
+    extends AbstractHeaderBasedCachingWire {
 
     /**
      * Public ctor.

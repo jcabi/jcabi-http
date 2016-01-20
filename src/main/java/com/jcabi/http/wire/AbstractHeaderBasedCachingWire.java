@@ -197,7 +197,7 @@ public abstract class AbstractHeaderBasedCachingWire implements Wire {
         final Collection<Map.Entry<String, String>> headers, final Response rsp
     ) {
         final List<String> list = rsp.headers().get(
-                this.scvh
+            this.scvh
         );
         final Map<String, String> map =
             new ConcurrentHashMap<>(headers.size() + 1);
