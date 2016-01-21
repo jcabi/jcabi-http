@@ -36,7 +36,6 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.net.HttpURLConnection;
 import java.util.Collection;
-import java.util.List;
 import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
 
@@ -77,9 +76,7 @@ public abstract class AbstractHeaderBasedCachingWire implements Wire {
      * @param wire Original wire
      */
     AbstractHeaderBasedCachingWire(
-        final String scvh,
-        final String cmch,
-        final Wire wire
+        final String scvh, final String cmch, final Wire wire
     ) {
         this.scvh = scvh;
         this.cmch = cmch;
@@ -196,7 +193,7 @@ public abstract class AbstractHeaderBasedCachingWire implements Wire {
     private Collection<Map.Entry<String, String>> enrich(
         final Collection<Map.Entry<String, String>> headers, final Response rsp
     ) {
-        final List<String> list = rsp.headers().get(
+        final Collection<String> list = rsp.headers().get(
             this.scvh
         );
         final Map<String, String> map =

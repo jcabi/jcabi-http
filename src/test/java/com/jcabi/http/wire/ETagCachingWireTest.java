@@ -50,24 +50,15 @@ import org.junit.Test;
 public final class ETagCachingWireTest {
 
     /**
-     * Sample body for the test.
-     */
-    private static final String CONTENT = "sample content";
-
-    /**
-     * Sample new body for the test.
-     */
-    private static final String NEW_CONTENT = "new content";
-
-    /**
      * ETagCachingWire can take content from cache.
      * @throws IOException If something goes wrong inside
      */
     @Test
     public void takesContentFromCache() throws IOException {
+        final String body = "sample content";
         final MkContainer container = new MkGrizzlyContainer()
             .next(
-                new MkAnswer.Simple(CONTENT)
+                new MkAnswer.Simple(body)
                 .withHeader(HttpHeaders.ETAG, "3e25")
             )
             .next(
@@ -81,12 +72,12 @@ public final class ETagCachingWireTest {
             .fetch()
             .as(RestResponse.class)
             .assertStatus(HttpURLConnection.HTTP_OK)
-            .assertBody(Matchers.equalTo(CONTENT));
+            .assertBody(Matchers.equalTo(body));
         req
             .fetch()
             .as(RestResponse.class)
             .assertStatus(HttpURLConnection.HTTP_OK)
-            .assertBody(Matchers.equalTo(CONTENT));
+            .assertBody(Matchers.equalTo(body));
         container.stop();
     }
 
@@ -96,13 +87,15 @@ public final class ETagCachingWireTest {
      */
     @Test
     public void detectsContentModification() throws IOException {
+        final String beforeChange = "before change";
+        final String afterChange = "after change";
         final MkContainer container = new MkGrizzlyContainer()
             .next(
-                new MkAnswer.Simple(CONTENT)
+                new MkAnswer.Simple(beforeChange)
                     .withHeader(HttpHeaders.ETAG, "3e26")
             )
             .next(
-                new MkAnswer.Simple(NEW_CONTENT)
+                new MkAnswer.Simple(afterChange)
                     .withHeader(HttpHeaders.ETAG, "3e27")
             )
             .start();
@@ -113,12 +106,12 @@ public final class ETagCachingWireTest {
             .fetch()
             .as(RestResponse.class)
             .assertStatus(HttpURLConnection.HTTP_OK)
-            .assertBody(Matchers.equalTo(CONTENT));
+            .assertBody(Matchers.equalTo(beforeChange));
         req
             .fetch()
             .as(RestResponse.class)
             .assertStatus(HttpURLConnection.HTTP_OK)
-            .assertBody(Matchers.equalTo(NEW_CONTENT));
+            .assertBody(Matchers.equalTo(afterChange));
         container.stop();
     }
 }
