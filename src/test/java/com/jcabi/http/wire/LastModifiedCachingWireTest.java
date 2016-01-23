@@ -40,6 +40,7 @@ import com.jcabi.http.response.RestResponse;
 import java.net.HttpURLConnection;
 import java.util.Collections;
 import java.util.Map;
+import javax.ws.rs.core.HttpHeaders;
 import org.hamcrest.MatcherAssert;
 import org.hamcrest.Matchers;
 import org.hamcrest.core.IsAnything;
@@ -94,7 +95,7 @@ public final class LastModifiedCachingWireTest {
     @Test
     public void cachesGetRequest() throws Exception {
         final Map<String, String> headers = Collections.singletonMap(
-            LastModifiedCachingWire.LAST_MODIFIED,
+            HttpHeaders.LAST_MODIFIED,
             "Wed, 15 Nov 1995 04:58:08 GMT"
         );
         final MkContainer container = new MkGrizzlyContainer()
@@ -135,7 +136,7 @@ public final class LastModifiedCachingWireTest {
     @Test
     public void cacheUpdateNewerResponse() throws Exception {
         final Map<String, String> headers = Collections.singletonMap(
-            LastModifiedCachingWire.LAST_MODIFIED,
+            HttpHeaders.LAST_MODIFIED,
             "Wed, 16 Nov 1995 04:58:08 GMT"
         );
         final MkContainer container = new MkGrizzlyContainer()

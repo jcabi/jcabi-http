@@ -29,26 +29,43 @@
  */
 package com.jcabi.http.wire;
 
+import com.jcabi.aspects.Immutable;
 import com.jcabi.http.Wire;
 import javax.ws.rs.core.HttpHeaders;
 
 /**
- * Wire that caches requests based on Last-Modified
- * and If-Modified-Since headers.
- * @todo #90:30min If the original request already has an If-Modified-Since
- *  header it should be sent directly.
- * @author Igor Piddubnyi (igor.piddubnyi@gmail.com)
+ * Wire that caches requests with ETags.
+ *
+ * <p>This decorator can be used when you want to avoid duplicate
+ * requests to load-sensitive resources and server supports ETags, for example:
+ *
+ * <pre>{@code
+ *    String html = new JdkRequest("http://goggle.com")
+ *        .through(ETagCachingWire.class)
+ *        .fetch()
+ *        .body();
+ * }</pre>
+ *
+ * <p>Client will automatically detect if server uses ETags and start adding
+ * corresponding If-None-Match to outgoing requests
+ *
+ * <p>Client will take response from the cache if it is present
+ * or will query resource for that.
+ *
+ * <p>The class is immutable and thread-safe.
+ *
+ * @author Ievgen Degtiarenko (ievgen.degtiarenko@gmail.com)
  * @version $Id$
- * @since 1.15
+ * @since 2.0
  */
-public final class LastModifiedCachingWire
-    extends AbstractHeaderBasedCachingWire {
+@Immutable
+public final class ETagCachingWire extends AbstractHeaderBasedCachingWire {
 
     /**
      * Public ctor.
-     * @param origin Original wire
+     * @param wire Original wire
      */
-    public LastModifiedCachingWire(final Wire origin) {
-        super(HttpHeaders.LAST_MODIFIED, HttpHeaders.IF_MODIFIED_SINCE, origin);
+    public ETagCachingWire(final Wire wire) {
+        super(HttpHeaders.ETAG, HttpHeaders.IF_NONE_MATCH, wire);
     }
 }
