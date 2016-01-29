@@ -183,4 +183,36 @@ public final class LastModifiedCachingWireTest {
             container.stop();
         }
     }
+    /**
+     * LastModifiedCachingWire sends request directly,
+     * if it contains the "If-Modified-Since" header.
+     * @throws Exception - if the test fails
+     */
+    @Test
+    public void sendsRequestDirectly() throws Exception {
+        final MkContainer container = new MkGrizzlyContainer()
+            .next(
+                new MkAnswer.Simple(
+                    HttpURLConnection.HTTP_OK, LastModifiedCachingWireTest.BODY
+                )
+            ).next(
+                new MkAnswer.Simple(
+                    HttpURLConnection.HTTP_OK, LastModifiedCachingWireTest.BODY
+                )
+            )
+            .start();
+        try {
+            final Request req = new JdkRequest(container.home())
+                .through(LastModifiedCachingWire.class).header(
+                    HttpHeaders.IF_MODIFIED_SINCE,
+                    "Fri, 01 Jan 2016 00:00:00 GMT"
+                );
+            req.fetch().as(RestResponse.class)
+                .assertStatus(HttpURLConnection.HTTP_OK)
+                .assertBody(Matchers.equalTo(LastModifiedCachingWireTest.BODY));
+            MatcherAssert.assertThat(container.queries(), Matchers.equalTo(1));
+        } finally {
+            container.stop();
+        }
+    }
 }

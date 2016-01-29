@@ -92,7 +92,14 @@ public abstract class AbstractHeaderBasedCachingWire implements Wire {
         final InputStream content, final int connect, final int read
     ) throws IOException {
         final Response rsp;
-        if (method.equals(Request.GET)) {
+        boolean requestHasCmch = false;
+        for (final Map.Entry<String, String> header : headers) {
+            if (header.getKey().equals(this.cmch)) {
+                requestHasCmch = true;
+                break;
+            }
+        }
+        if (method.equals(Request.GET) && !requestHasCmch) {
             rsp = this.consultCache(
                 req, home, method, headers, content, connect, read
             );
