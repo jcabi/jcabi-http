@@ -207,10 +207,14 @@ public final class LastModifiedCachingWireTest {
                     HttpHeaders.IF_MODIFIED_SINCE,
                     "Fri, 01 Jan 2016 00:00:00 GMT"
                 );
-            req.fetch().as(RestResponse.class)
-                .assertStatus(HttpURLConnection.HTTP_OK)
-                .assertBody(Matchers.equalTo(LastModifiedCachingWireTest.BODY));
-            MatcherAssert.assertThat(container.queries(), Matchers.equalTo(1));
+            for (int idx = 0; idx < 2; idx = idx + 1) {
+                req.fetch().as(RestResponse.class)
+                    .assertStatus(HttpURLConnection.HTTP_OK)
+                    .assertBody(
+                        Matchers.equalTo(LastModifiedCachingWireTest.BODY)
+                );
+            }
+            MatcherAssert.assertThat(container.queries(), Matchers.equalTo(2));
         } finally {
             container.stop();
         }
