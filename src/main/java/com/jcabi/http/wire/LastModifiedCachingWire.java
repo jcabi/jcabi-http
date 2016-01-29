@@ -35,8 +35,6 @@ import javax.ws.rs.core.HttpHeaders;
 /**
  * Wire that caches requests based on Last-Modified
  * and If-Modified-Since headers.
- * @todo #90:30min If the original request already has an If-Modified-Since
- *  header it should be sent directly.
  * @author Igor Piddubnyi (igor.piddubnyi@gmail.com)
  * @version $Id$
  * @since 1.15
