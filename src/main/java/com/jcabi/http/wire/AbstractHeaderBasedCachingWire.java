@@ -92,25 +92,14 @@ public abstract class AbstractHeaderBasedCachingWire implements Wire {
         final InputStream content, final int connect, final int read
     ) throws IOException {
         final Response rsp;
-        if (method.equals(Request.GET)) {
-            boolean requestHasCmch = false;
-            for (final Map.Entry<String, String> header : headers) {
-                if (header.getKey().equals(this.cmch)) {
-                    requestHasCmch = true;
-                    break;
-                }
-            }
-            if (requestHasCmch) {
-                rsp = this.origin.send(
-                    req, home, method, headers, content, connect, read
-                );
-            } else {
-                rsp = this.consultCache(
-                    req, home, method, headers, content, connect, read
-                );
-            }
-        } else {
+        if (!method.equals(Request.GET)
+            || (method.equals(Request.GET) && this.requestHasCmcHeader(headers))
+        ) {
             rsp = this.origin.send(
+                req, home, method, headers, content, connect, read
+            );
+        } else {
+            rsp = this.consultCache(
                 req, home, method, headers, content, connect, read
             );
         }
@@ -218,5 +207,22 @@ public abstract class AbstractHeaderBasedCachingWire implements Wire {
             this.cmch, list.iterator().next()
         );
         return map.entrySet();
+    }
+    /**
+     * Check if the request send through this Wire has the cmch header.
+     * @param headers The headers of the request.
+     * @return True if the request contains the cmch header, false otherwise.
+     */
+    private boolean requestHasCmcHeader(
+        final Collection<Map.Entry<String, String>> headers
+    ) {
+        boolean requestHasCmch = false;
+        for (final Map.Entry<String, String> header : headers) {
+            if (header.getKey().equals(this.cmch)) {
+                requestHasCmch = true;
+                break;
+            }
+        }
+        return requestHasCmch;
     }
 }

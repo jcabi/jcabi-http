@@ -184,7 +184,7 @@ public final class LastModifiedCachingWireTest {
         }
     }
     /**
-     * LastModifiedCachingWire can send request directly,
+     * LastModifiedCachingWire can send a request directly
      * if it contains the "If-Modified-Since" header.
      * @throws Exception - if the test fails
      */
@@ -195,7 +195,8 @@ public final class LastModifiedCachingWireTest {
                 new MkAnswer.Simple(
                     HttpURLConnection.HTTP_OK, LastModifiedCachingWireTest.BODY
                 )
-            ).next(
+            )
+            .next(
                 new MkAnswer.Simple(
                     HttpURLConnection.HTTP_OK, LastModifiedCachingWireTest.BODY
                 )
