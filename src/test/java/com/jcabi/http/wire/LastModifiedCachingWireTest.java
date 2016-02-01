@@ -184,7 +184,7 @@ public final class LastModifiedCachingWireTest {
         }
     }
     /**
-     * LastModifiedCachingWire sends request directly,
+     * LastModifiedCachingWire can send request directly,
      * if it contains the "If-Modified-Since" header.
      * @throws Exception - if the test fails
      */
@@ -207,7 +207,7 @@ public final class LastModifiedCachingWireTest {
                     HttpHeaders.IF_MODIFIED_SINCE,
                     "Fri, 01 Jan 2016 00:00:00 GMT"
                 );
-            for (int idx = 0; idx < 2; idx = idx + 1) {
+            for (int idx = 0; idx < 2; ++idx) {
                 req.fetch().as(RestResponse.class)
                     .assertStatus(HttpURLConnection.HTTP_OK)
                     .assertBody(
