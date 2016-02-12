@@ -19,8 +19,10 @@ merge:
   - darkled
   - dmzaytsev
   - ggajos
+  - hdouss
   - krzyk
   - longtimeago
+  - mkordas
   - pinaf
 deploy:
   script: |-
