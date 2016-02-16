@@ -65,6 +65,12 @@ import java.io.InputStream;
  *
  * <p>Instances of this interface are immutable and thread-safe.
  *
+ * <p>You can use either {@link ApacheRequest} or {@link JdkRequest},
+ * according to your needs. {@link JdkRequest} won't require any additional
+ * dependencies, while {@link ApacheRequest} will properly support all
+ * possible HTTP methods ({@link JdkRequest} doesn't support {@code PATCH},
+ * for example).
+ *
  * @author Yegor Bugayenko (yegor@tpc2.com)
  * @version $Id$
  * @since 0.8
