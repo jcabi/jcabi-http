@@ -43,7 +43,6 @@ import java.net.URI;
 import java.util.Collection;
 import java.util.Map;
 import java.util.concurrent.ExecutionException;
-import java.util.concurrent.TimeUnit;
 import lombok.EqualsAndHashCode;
 import lombok.ToString;
 
@@ -91,17 +90,15 @@ public final class CachingWire implements Wire {
             @Override
             public LoadingCache<CachingWire.Query, Response> load(
                 final Wire key) {
-                return CacheBuilder.newBuilder()
-                    .expireAfterAccess((long) Tv.FIVE, TimeUnit.MINUTES)
-                    .build(
-                        new CacheLoader<CachingWire.Query, Response>() {
-                            @Override
-                            public Response load(final CachingWire.Query query)
-                                throws IOException {
-                                return query.fetch();
-                            }
+                return CacheBuilder.newBuilder().build(
+                    new CacheLoader<CachingWire.Query, Response>() {
+                        @Override
+                        public Response load(final CachingWire.Query query)
+                            throws IOException {
+                            return query.fetch();
                         }
-                    );
+                    }
+                );
             }
         };
 
@@ -181,6 +178,14 @@ public final class CachingWire implements Wire {
             );
         }
         return rsp;
+    }
+
+    /**
+     * Invalidate the entire cache.
+     * @since 1.15
+     */
+    public static void invalidate() {
+        CachingWire.CACHE.invalidateAll();
     }
 
     /**
