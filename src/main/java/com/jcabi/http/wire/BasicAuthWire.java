@@ -71,7 +71,7 @@ import lombok.ToString;
  * @see <a href="http://tools.ietf.org/html/rfc2617">RFC 2617 "HTTP Authentication: Basic and Digest Access Authentication"</a>
  */
 @Immutable
-@ToString
+@ToString(of = "origin")
 @EqualsAndHashCode(of = "origin")
 public final class BasicAuthWire implements Wire {
 

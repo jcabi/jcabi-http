@@ -71,7 +71,7 @@ import lombok.ToString;
  * @since 1.6
  */
 @Immutable
-@ToString
+@ToString(of = "origin")
 @EqualsAndHashCode(of = { "origin", "max" })
 public final class AutoRedirectingWire implements Wire {
     /**

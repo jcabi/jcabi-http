@@ -54,7 +54,7 @@ import lombok.EqualsAndHashCode;
 @Immutable
 @EqualsAndHashCode(of = { "req", "code", "phrase", "hdrs", "content" })
 @Loggable(Loggable.DEBUG)
-final class DefaultResponse implements Response {
+public final class DefaultResponse implements Response {
 
     /**
      * The Charset to use.
@@ -101,7 +101,7 @@ final class DefaultResponse implements Response {
      * @param body Body of HTTP response
      * @checkstyle ParameterNumber (5 lines)
      */
-    DefaultResponse(final Request request, final int status,
+    public DefaultResponse(final Request request, final int status,
         final String reason, final Array<Map.Entry<String, String>> headers,
         final byte[] body) {
         this.req = request;

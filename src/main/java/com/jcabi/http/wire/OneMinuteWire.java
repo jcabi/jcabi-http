@@ -62,7 +62,7 @@ import lombok.ToString;
  * @since 0.10
  */
 @Immutable
-@ToString
+@ToString(of = "origin")
 @EqualsAndHashCode(of = "origin")
 public final class OneMinuteWire implements Wire {
 

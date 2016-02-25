@@ -51,6 +51,7 @@ import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
 import lombok.EqualsAndHashCode;
+import lombok.ToString;
 
 /**
  * Implementation of {@link Request}, based on JDK.
@@ -69,6 +70,7 @@ import lombok.EqualsAndHashCode;
  */
 @Immutable
 @EqualsAndHashCode(of = "base")
+@ToString(of = "base")
 @Loggable(Loggable.DEBUG)
 @SuppressWarnings("PMD.TooManyMethods")
 public final class JdkRequest implements Request {

@@ -47,7 +47,7 @@ import lombok.EqualsAndHashCode;
 import lombok.ToString;
 
 /**
- * Wire that caches GET requests (for five minutes).
+ * Wire that caches GET requests.
  *
  * <p>This decorator can be used when you want to avoid duplicate
  * GET requests to load-sensitive resources, for example:

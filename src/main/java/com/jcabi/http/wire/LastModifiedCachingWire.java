@@ -31,6 +31,7 @@ package com.jcabi.http.wire;
 
 import com.jcabi.http.Wire;
 import javax.ws.rs.core.HttpHeaders;
+import lombok.ToString;
 
 /**
  * Wire that caches requests based on Last-Modified
@@ -39,6 +40,7 @@ import javax.ws.rs.core.HttpHeaders;
  * @version $Id$
  * @since 1.15
  */
+@ToString
 public final class LastModifiedCachingWire
     extends AbstractHeaderBasedCachingWire {
 

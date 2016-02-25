@@ -30,58 +30,57 @@
 package com.jcabi.http.wire;
 
 import com.jcabi.aspects.Immutable;
-import com.jcabi.http.ImmutableHeader;
+import com.jcabi.aspects.Tv;
 import com.jcabi.http.Request;
 import com.jcabi.http.Response;
 import com.jcabi.http.Wire;
-import com.jcabi.manifests.Manifests;
 import java.io.IOException;
 import java.io.InputStream;
+import java.net.URI;
 import java.util.Collection;
-import java.util.LinkedList;
 import java.util.Map;
-import javax.ws.rs.core.HttpHeaders;
 import lombok.EqualsAndHashCode;
 import lombok.ToString;
 
 /**
- * Wire with default user agent.
+ * Wire that caches GET requests.
  *
- * <p>This wire adds an extra HTTP header {@code User-Agent} to the request,
- * if it's not yet provided, for example:
+ * <p>This decorator can be used when you want to avoid duplicate
+ * GET requests to load-sensitive resources, for example:
  *
  * <pre> String html = new JdkRequest("http://goggle.com")
- *   .through(UserAgentWire.class)
+ *   .through(FileCachingWire.class)
+ *   .header(HttpHeaders.ACCEPT, MediaType.TEXT_PLAIN)
  *   .fetch()
  *   .body();</pre>
  *
- * <p>An actual HTTP request will be sent with {@code User-Agent}
- * header with a value {@code ReXSL-0.1/abcdef0 Java/1.6} (for example). It
- * is recommended to use this wire decorator when you're working with
- * third party RESTful services, to properly identify yourself and avoid
- * troubles.
+ * <p>You can also configure it to flush the entire cache
+ * on certain request URI's, for example:
+ *
+ * <pre>new JdkRequest(uri)
+ *   .through(CachingWire.class, "GET /save/.*")
+ *   .uri().path("/save/123").back()
+ *   .fetch();</pre>
+ *
+ * <p>The regular expression provided will be used against a string
+ * constructed as an HTTP method, space, path of the URI together with
+ * query part.
  *
  * <p>The class is immutable and thread-safe.
  *
  * @author Yegor Bugayenko (yegor@tpc2.com)
  * @version $Id$
- * @since 0.10
- * @see <a href="http://tools.ietf.org/html/rfc2616#section-14.43">RFC 2616 section 14.43 "User-Agent"</a>
+ * @since 1.16
  */
 @Immutable
-@ToString(of = "origin")
-@EqualsAndHashCode(of = "origin")
-public final class UserAgentWire implements Wire {
+@ToString
+@EqualsAndHashCode(of = { "origin", "regex" })
+public final class FcWire implements Wire {
 
     /**
-     * Default user agent.
+     * Cache in files.
      */
-    private static final String AGENT = String.format(
-        "jcabi-%s/%s Java/%s",
-        Manifests.read("JCabi-Version"),
-        Manifests.read("JCabi-Build"),
-        System.getProperty("java.version")
-    );
+    private final transient FcCache cache;
 
     /**
      * Original wire.
@@ -89,14 +88,50 @@ public final class UserAgentWire implements Wire {
     private final transient Wire origin;
 
     /**
+     * Flushing regular expression.
+     */
+    private final transient String regex;
+
+    /**
      * Public ctor.
      * @param wire Original wire
      */
-    public UserAgentWire(final Wire wire) {
-        this.origin = wire;
+    public FcWire(final Wire wire) {
+        this(wire, "$never");
     }
 
-    // @checkstyle ParameterNumber (7 lines)
+    /**
+     * Public ctor.
+     * @param wire Original wire
+     * @param flsh Flushing regular expression
+     */
+    public FcWire(final Wire wire, final String flsh) {
+        this(wire, flsh, new FcCache());
+    }
+
+    /**
+     * Public ctor.
+     * @param wire Original wire
+     * @param flsh Flushing regular expression
+     * @param path Path for the files
+     */
+    public FcWire(final Wire wire, final String flsh, final String path) {
+        this(wire, flsh, new FcCache(path));
+    }
+
+    /**
+     * Public ctor.
+     * @param wire Original wire
+     * @param flsh Flushing regular expression
+     * @param fcc Cache
+     */
+    public FcWire(final Wire wire, final String flsh, final FcCache fcc) {
+        this.origin = wire;
+        this.regex = flsh;
+        this.cache = fcc;
+    }
+
+    // @checkstyle ParameterNumber (5 lines)
     @Override
     public Response send(final Request req, final String home,
         final String method,
@@ -104,25 +139,28 @@ public final class UserAgentWire implements Wire {
         final InputStream content,
         final int connect,
         final int read) throws IOException {
-        final Collection<Map.Entry<String, String>> hdrs =
-            new LinkedList<Map.Entry<String, String>>();
-        boolean absent = true;
-        for (final Map.Entry<String, String> header : headers) {
-            hdrs.add(header);
-            if (header.getKey().equals(HttpHeaders.USER_AGENT)) {
-                absent = false;
-            }
+        final URI uri = req.uri().get();
+        final StringBuilder label = new StringBuilder(Tv.HUNDRED)
+            .append(method).append(' ').append(uri.getPath());
+        if (uri.getQuery() != null) {
+            label.append('?').append(uri.getQuery());
         }
-        if (absent) {
-            hdrs.add(
-                new ImmutableHeader(
-                    HttpHeaders.USER_AGENT,
-                    UserAgentWire.AGENT
-                )
+        if (label.toString().matches(this.regex)) {
+            this.cache.invalidate();
+        }
+        final Response rsp;
+        if (method.equals(Request.GET)) {
+            rsp = this.cache.get(
+                label.toString(), this.origin, req,
+                home, method, headers, content, connect, read
+            );
+        } else {
+            rsp = this.origin.send(
+                req, home, method, headers, content,
+                connect, read
             );
         }
-        return this.origin.send(
-            req, home, method, hdrs, content, connect, read
-        );
+        return rsp;
     }
+
 }

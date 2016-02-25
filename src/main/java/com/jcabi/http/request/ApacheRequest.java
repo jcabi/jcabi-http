@@ -46,6 +46,7 @@ import java.util.Collection;
 import java.util.LinkedList;
 import java.util.Map;
 import lombok.EqualsAndHashCode;
+import lombok.ToString;
 import org.apache.http.Header;
 import org.apache.http.HttpEntity;
 import org.apache.http.client.config.RequestConfig;
@@ -69,6 +70,7 @@ import org.apache.http.util.EntityUtils;
  */
 @Immutable
 @EqualsAndHashCode(of = "base")
+@ToString(of = "base")
 @Loggable(Loggable.DEBUG)
 @SuppressWarnings("PMD.TooManyMethods")
 public final class ApacheRequest implements Request {

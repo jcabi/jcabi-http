@@ -66,7 +66,7 @@ import lombok.ToString;
  * @since 1.10
  */
 @Immutable
-@ToString
+@ToString(of = "origin")
 @EqualsAndHashCode(of = "origin")
 public final class TrustedWire implements Wire {
 

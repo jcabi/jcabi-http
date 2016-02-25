@@ -73,7 +73,7 @@ import lombok.ToString;
  * @see <a href="http://tools.ietf.org/html/rfc2965">RFC 2965 "HTTP State Management Mechanism"</a>
  */
 @Immutable
-@ToString
+@ToString(of = "origin")
 @EqualsAndHashCode(of = "origin")
 public final class CookieOptimizingWire implements Wire {
 

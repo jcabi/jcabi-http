@@ -32,6 +32,7 @@ package com.jcabi.http.wire;
 import com.jcabi.aspects.Immutable;
 import com.jcabi.http.Wire;
 import javax.ws.rs.core.HttpHeaders;
+import lombok.ToString;
 
 /**
  * Wire that caches requests with ETags.
@@ -58,6 +59,7 @@ import javax.ws.rs.core.HttpHeaders;
  * @version $Id$
  * @since 2.0
  */
+@ToString
 @Immutable
 public final class ETagCachingWire extends AbstractHeaderBasedCachingWire {
 
