@@ -135,8 +135,8 @@ public final class LastModifiedCachingWireTest {
     }
 
     /**
-     * Must evict any previous cached entry if a new entry does not have a last
-     * modified header.
+     * LastModifiedCachingWire can evict any previous cached entry if a new
+     * response does not have a last modified header.
      * We can observe this via the If-Modified-Since headers as when the cache
      * does not contain an entry, this is not present on the request.
      * @throws Exception If fails
