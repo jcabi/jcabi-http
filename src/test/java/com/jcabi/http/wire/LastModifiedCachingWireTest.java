@@ -59,18 +59,15 @@ public final class LastModifiedCachingWireTest {
 
     /**
      * Test body.
+     * @todo: #120 inline constant to test(s)
      * */
     private static final String BODY = "Test body";
 
     /**
      * Test body updated.
+     * @todo: #120 inline constant to test(s)
      * */
     private static final String BODY_UPDATED = "Test body updated";
-
-    /**
-     * Test body updated 2.
-     * */
-    private static final String BODY_UPDATED_2 = "Test body updated 2";
 
     /**
      * LastModifiedCachingWire can handle requests without headers.
@@ -147,6 +144,9 @@ public final class LastModifiedCachingWireTest {
     @Test
     public void doesNotCacheGetRequestIfTheLastModifiedHeaderIsMissing()
         throws Exception {
+        final String firstresponse = "Body 1";
+        final String secondresponse = "Body 2";
+        final String thirdreponse = "Body 3";
         final Map<String, String> headers = Collections.singletonMap(
                 HttpHeaders.LAST_MODIFIED,
                 "Wed, 15 Nov 1995 05:58:08 GMT"
@@ -157,7 +157,7 @@ public final class LastModifiedCachingWireTest {
                 new MkAnswer.Simple(
                     HttpURLConnection.HTTP_OK,
                     headers.entrySet(),
-                    LastModifiedCachingWireTest.BODY.getBytes()
+                    firstresponse.getBytes()
                 ),
                 Matchers.not(queryContainsIfModifiedSinceHeader())
             )
@@ -165,7 +165,7 @@ public final class LastModifiedCachingWireTest {
                 new MkAnswer.Simple(
                     HttpURLConnection.HTTP_OK,
                     noHeaders.entrySet(),
-                    LastModifiedCachingWireTest.BODY_UPDATED.getBytes()
+                    secondresponse.getBytes()
                 ),
                 queryContainsIfModifiedSinceHeader()
             )
@@ -173,7 +173,7 @@ public final class LastModifiedCachingWireTest {
                 new MkAnswer.Simple(
                     HttpURLConnection.HTTP_OK,
                     noHeaders.entrySet(),
-                    LastModifiedCachingWireTest.BODY_UPDATED_2.getBytes()
+                    thirdreponse.getBytes()
                 ),
                 Matchers.not(queryContainsIfModifiedSinceHeader())
             ).start();
@@ -183,17 +183,17 @@ public final class LastModifiedCachingWireTest {
             req.fetch().as(RestResponse.class)
                 .assertStatus(HttpURLConnection.HTTP_OK)
                 .assertBody(
-                    Matchers.equalTo(LastModifiedCachingWireTest.BODY)
+                    Matchers.equalTo(firstresponse)
             );
             req.fetch().as(RestResponse.class)
                 .assertStatus(HttpURLConnection.HTTP_OK)
                 .assertBody(
-                    Matchers.equalTo(LastModifiedCachingWireTest.BODY_UPDATED)
+                    Matchers.equalTo(secondresponse)
             );
             req.fetch().as(RestResponse.class)
                 .assertStatus(HttpURLConnection.HTTP_OK)
                 .assertBody(
-                    Matchers.equalTo(LastModifiedCachingWireTest.BODY_UPDATED_2)
+                    Matchers.equalTo(thirdreponse)
             );
         } finally {
             container.stop();
