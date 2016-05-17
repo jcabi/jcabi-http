@@ -171,11 +171,9 @@ public abstract class AbstractHeaderBasedCachingWire implements Wire {
     }
 
     /**
-     * Add response to cache,
-     * Update response in cache or
-     * Evict response from cache.
+     * Add, update or evict response in cache.
      * @param req The request to be used as key
-     * @param rsp The response to add
+     * @param rsp The response to add/update
      */
     private void updateCache(final Request req, final Response rsp) {
         if (rsp.headers().containsKey(this.scvh)) {
