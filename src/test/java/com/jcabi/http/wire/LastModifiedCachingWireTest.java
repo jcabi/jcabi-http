@@ -204,7 +204,7 @@ public final class LastModifiedCachingWireTest {
 
     /**
      * LastModifiedCachingWire can resist cache eviction in the event of a non
-     * OK response.
+     * OK response without a last modified header.
      * @throws Exception If fails
      */
     @Test
