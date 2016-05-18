@@ -59,7 +59,7 @@ public final class LastModifiedCachingWireTest {
 
     /**
      * Test body.
-     * @todo: #120:15min Clean tests shared fields and redundant variables
+     * @todo #120:15min Clean tests shared fields and redundant variables
      *  Move constants in this file to their tests because tests must share
      *  nothing. Then also inline any redundant variables. See:
      *  http://www.yegor256.com/2016/05/03/test-methods-must-share-nothing.html
