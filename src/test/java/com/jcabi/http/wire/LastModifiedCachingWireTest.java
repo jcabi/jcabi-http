@@ -41,11 +41,11 @@ import java.net.HttpURLConnection;
 import java.util.Collections;
 import java.util.Map;
 import javax.ws.rs.core.HttpHeaders;
-import org.hamcrest.BaseMatcher;
 import org.hamcrest.Description;
 import org.hamcrest.Matcher;
 import org.hamcrest.MatcherAssert;
 import org.hamcrest.Matchers;
+import org.hamcrest.TypeSafeMatcher;
 import org.hamcrest.core.IsAnything;
 import org.junit.Test;
 
@@ -59,9 +59,11 @@ public final class LastModifiedCachingWireTest {
 
     /**
      * Test body.
-     * @todo: #120 move constants in this file to their tests because tests
-     *  must share nothing
+     * @todo: #120:15min Clean tests shared fields and redundant variables
+     *  Move constants in this file to their tests because tests must share
+     *  nothing. Then also inline any redundant variables. See:
      *  http://www.yegor256.com/2016/05/03/test-methods-must-share-nothing.html
+     *  http://www.yegor256.com/2015/09/01/redundant-variables-are-evil.html
      * */
     private static final String BODY = "Test body";
 
@@ -96,8 +98,6 @@ public final class LastModifiedCachingWireTest {
 
     /**
      * LastModifiedCachingWire can cache GET requests.
-     * @todo: #120 inline redundant "headers" variable
-     *  see http://www.yegor256.com/2015/09/01/redundant-variables-are-evil.html
      * @throws Exception If fails
      */
     @Test
@@ -196,6 +196,55 @@ public final class LastModifiedCachingWireTest {
                 .assertStatus(HttpURLConnection.HTTP_OK)
                 .assertBody(
                     Matchers.equalTo(third)
+            );
+        } finally {
+            container.stop();
+        }
+    }
+
+    /**
+     * LastModifiedCachingWire can resist cache eviction in the event of a non
+     * OK response.
+     * @throws Exception If fails
+     */
+    @Test
+    public void doesNotEvictCacheGetRequestOnNonOK()
+        throws Exception {
+        final String body = "Body";
+        final MkContainer container = new MkGrizzlyContainer()
+            .next(
+                new MkAnswer.Simple(
+                    HttpURLConnection.HTTP_OK,
+                    Collections.singletonMap(
+                        HttpHeaders.LAST_MODIFIED,
+                        "Wed, 15 Nov 1995 06:58:08 GMT"
+                    ).entrySet(),
+                    body.getBytes()
+                ),
+                Matchers.not(queryContainsIfModifiedSinceHeader())
+            )
+            .next(
+                new MkAnswer.Simple(HttpURLConnection.HTTP_NOT_FOUND),
+                queryContainsIfModifiedSinceHeader()
+            )
+            .next(
+                new MkAnswer.Simple(HttpURLConnection.HTTP_NOT_MODIFIED),
+                queryContainsIfModifiedSinceHeader()
+            ).start();
+        try {
+            final Request req = new JdkRequest(container.home())
+                .through(LastModifiedCachingWire.class);
+            req.fetch().as(RestResponse.class)
+                .assertStatus(HttpURLConnection.HTTP_OK)
+                .assertBody(
+                    Matchers.equalTo(body)
+            );
+            req.fetch().as(RestResponse.class)
+                .assertStatus(HttpURLConnection.HTTP_NOT_FOUND);
+            req.fetch().as(RestResponse.class)
+                .assertStatus(HttpURLConnection.HTTP_OK)
+                .assertBody(
+                    Matchers.equalTo(body)
             );
         } finally {
             container.stop();
@@ -309,10 +358,10 @@ public final class LastModifiedCachingWireTest {
      * @return A matcher which tests for the supplied header
      */
     private static Matcher<MkQuery> queryContainingHeader(final String header) {
-        return new BaseMatcher<MkQuery>() {
+        return new TypeSafeMatcher<MkQuery>() {
             @Override
-            public boolean matches(final Object object) {
-                return ((MkQuery) object).headers().containsKey(header);
+            protected boolean matchesSafely(final MkQuery query) {
+                return query.headers().containsKey(header);
             }
             @Override
             public void describeTo(final Description description) {
