@@ -59,13 +59,14 @@ public final class LastModifiedCachingWireTest {
 
     /**
      * Test body.
-     * @todo: #120 inline constant to test(s)
+     * @todo: #120 move constants in this file to their tests because tests
+     *  must share nothing
+     *  http://www.yegor256.com/2016/05/03/test-methods-must-share-nothing.html
      * */
     private static final String BODY = "Test body";
 
     /**
      * Test body updated.
-     * @todo: #120 inline constant to test(s)
      * */
     private static final String BODY_UPDATED = "Test body updated";
 
@@ -95,6 +96,8 @@ public final class LastModifiedCachingWireTest {
 
     /**
      * LastModifiedCachingWire can cache GET requests.
+     * @todo: #120 inline redundant "headers" variable
+     *  see http://www.yegor256.com/2015/09/01/redundant-variables-are-evil.html
      * @throws Exception If fails
      */
     @Test
@@ -144,20 +147,19 @@ public final class LastModifiedCachingWireTest {
     @Test
     public void doesNotCacheGetRequestIfTheLastModifiedHeaderIsMissing()
         throws Exception {
-        final String firstresponse = "Body 1";
-        final String secondresponse = "Body 2";
-        final String thirdreponse = "Body 3";
-        final Map<String, String> headers = Collections.singletonMap(
-                HttpHeaders.LAST_MODIFIED,
-                "Wed, 15 Nov 1995 05:58:08 GMT"
-        );
+        final String first = "Body 1";
+        final String second = "Body 2";
+        final String third = "Body 3";
         final Map<String, String> noHeaders = Collections.emptyMap();
         final MkContainer container = new MkGrizzlyContainer()
             .next(
                 new MkAnswer.Simple(
                     HttpURLConnection.HTTP_OK,
-                    headers.entrySet(),
-                    firstresponse.getBytes()
+                    Collections.singletonMap(
+                            HttpHeaders.LAST_MODIFIED,
+                            "Wed, 15 Nov 1995 05:58:08 GMT"
+                    ).entrySet(),
+                    first.getBytes()
                 ),
                 Matchers.not(queryContainsIfModifiedSinceHeader())
             )
@@ -165,7 +167,7 @@ public final class LastModifiedCachingWireTest {
                 new MkAnswer.Simple(
                     HttpURLConnection.HTTP_OK,
                     noHeaders.entrySet(),
-                    secondresponse.getBytes()
+                    second.getBytes()
                 ),
                 queryContainsIfModifiedSinceHeader()
             )
@@ -173,7 +175,7 @@ public final class LastModifiedCachingWireTest {
                 new MkAnswer.Simple(
                     HttpURLConnection.HTTP_OK,
                     noHeaders.entrySet(),
-                    thirdreponse.getBytes()
+                    third.getBytes()
                 ),
                 Matchers.not(queryContainsIfModifiedSinceHeader())
             ).start();
@@ -183,17 +185,17 @@ public final class LastModifiedCachingWireTest {
             req.fetch().as(RestResponse.class)
                 .assertStatus(HttpURLConnection.HTTP_OK)
                 .assertBody(
-                    Matchers.equalTo(firstresponse)
+                    Matchers.equalTo(first)
             );
             req.fetch().as(RestResponse.class)
                 .assertStatus(HttpURLConnection.HTTP_OK)
                 .assertBody(
-                    Matchers.equalTo(secondresponse)
+                    Matchers.equalTo(second)
             );
             req.fetch().as(RestResponse.class)
                 .assertStatus(HttpURLConnection.HTTP_OK)
                 .assertBody(
-                    Matchers.equalTo(thirdreponse)
+                    Matchers.equalTo(third)
             );
         } finally {
             container.stop();
@@ -310,8 +312,7 @@ public final class LastModifiedCachingWireTest {
         return new BaseMatcher<MkQuery>() {
             @Override
             public boolean matches(final Object object) {
-                final MkQuery query = (MkQuery) object;
-                return query.headers().containsKey(header);
+                return ((MkQuery) object).headers().containsKey(header);
             }
             @Override
             public void describeTo(final Description description) {
