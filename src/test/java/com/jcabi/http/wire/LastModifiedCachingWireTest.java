@@ -61,7 +61,10 @@ public final class LastModifiedCachingWireTest {
      * Test body.
      * @todo #120:15min Clean tests shared fields and redundant variables
      *  Move constants in this file to their tests because tests must share
-     *  nothing. Then also inline any redundant variables. See:
+     *  nothing. Then also inline any redundant variables.
+     *  Please also configure pdd and est in.travis.yml as done e.g. in
+     *  https://github.com/jcabi/jcabi-xml/blob/master/.travis.yml
+     *  For first points explanation, read:
      *  http://www.yegor256.com/2016/05/03/test-methods-must-share-nothing.html
      *  http://www.yegor256.com/2015/09/01/redundant-variables-are-evil.html
      * */
@@ -205,10 +208,19 @@ public final class LastModifiedCachingWireTest {
     /**
      * LastModifiedCachingWire can resist cache eviction in the event of a non
      * OK response without a last modified header.
+     * @todo #120:30min Confirm cache clearing behaviour in all non-OK responses
+     *  Non-OK behaviour was not specified in #120, so for example, if the
+     *  response is 404 as below, does it make any sense to keep the item in
+     *  cache? Is it likely a server will respond 404, and then later the exact
+     *  unmodified content is available again. I think they all need to be
+     *  thought about, another dubious response might be 301 Moved Permanently,
+     *  or 410 Gone etc. Or, personally I think all non-OK and OK responses
+     *  should behave the same WRT to clearing the cache as the cache value is
+     *  so unlikely to be returned in future.
      * @throws Exception If fails
      */
     @Test
-    public void doesNotEvictCacheGetRequestOnNonOK()
+    public void doesNotEvictCacheOnNonOK()
         throws Exception {
         final String body = "Body";
         final MkContainer container = new MkGrizzlyContainer()
