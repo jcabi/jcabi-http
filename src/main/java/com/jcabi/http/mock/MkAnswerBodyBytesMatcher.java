@@ -29,55 +29,44 @@
  */
 package com.jcabi.http.mock;
 
+import lombok.EqualsAndHashCode;
+import lombok.ToString;
+import org.hamcrest.Description;
 import org.hamcrest.Matcher;
+import org.hamcrest.TypeSafeMatcher;
 
 /**
- * Convenient set of matchers for {@link MkAnswer}.
- * @author Carlos Miranda (miranda.cma@gmail.com)
+ * Matcher for checking {@link MkAnswer#bodyBytes()} result.
+ * @author Peter Storch (peter.storch@gmail.com)
  * @version $Id$
  */
-public final class MkAnswerMatchers {
+@ToString
+@EqualsAndHashCode(callSuper = false, of = "matcher")
+final class MkAnswerBodyBytesMatcher extends TypeSafeMatcher<MkAnswer> {
     /**
-     * Private ctor.
+     * The Matcher to use against the body.
      */
-    private MkAnswerMatchers() {
-        // Utility class - cannot instantiate.
-    }
+    private final transient Matcher<byte[]> matcher;
 
     /**
-     * Matches the value of {@link MkAnswer#body()} against the given matcher.
-     *
-     * @param matcher The matcher to use.
-     * @return Matcher for checking the body of MkAnswer
+     * Ctor.
+     * @param match The matcher to use for the body
      */
-    public static Matcher<MkAnswer> hasBody(final Matcher<String> matcher) {
-        return new MkAnswerBodyMatcher(matcher);
+    MkAnswerBodyBytesMatcher(final Matcher<byte[]> match) {
+        super();
+        this.matcher = match;
     }
 
-    /**
-     * Matches the value of {@link MkAnswer#bodyBytes()} against the given
-     * matcher.
-     *
-     * @param matcher The matcher to use.
-     * @return Matcher for checking the body of MkAnswer
-     */
-    public static Matcher<MkAnswer> hasBodyBytes(
-            final Matcher<byte[]> matcher) {
-        return new MkAnswerBodyBytesMatcher(matcher);
+    @Override
+    public void describeTo(final Description description) {
+        this.matcher.describeTo(
+            description.appendText("MkAnswer body matching: ")
+        );
     }
 
-    /**
-     * Matches the content of {@link MkAnswer#header()} against the given
-     * matcher. Note that for a valid match to occur, the header entry must
-     * exist <i>and</i> its value(s) must match the given matcher.
-     *
-     * @param header The header to check.
-     * @param matcher The matcher to use.
-     * @return Matcher for checking the body of MkAnswer
-     */
-    public static Matcher<MkAnswer> hasHeader(final String header,
-        final Matcher<Iterable<? extends String>> matcher) {
-        return new MkAnswerHeaderMatcher(header, matcher);
-    }
+    @Override
+    public boolean matchesSafely(final MkAnswer item) {
+        return this.matcher.matches(item.bodyBytes());
+    };
 
 }

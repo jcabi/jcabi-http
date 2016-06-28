@@ -37,7 +37,6 @@ import java.io.OutputStreamWriter;
 import java.io.PrintWriter;
 import java.io.UnsupportedEncodingException;
 import java.net.HttpURLConnection;
-import java.nio.charset.Charset;
 import java.util.Collection;
 import java.util.Iterator;
 import java.util.LinkedList;
@@ -63,11 +62,6 @@ final class MkGrizzlyAdapter extends GrizzlyAdapter {
      * The encoding to use.
      */
     private static final String ENCODING = "UTF-8";
-
-    /**
-     * The Charset to use.
-     */
-    private static final Charset CHARSET = Charset.forName(ENCODING);
 
     /**
      * Queries received.
@@ -118,8 +112,7 @@ final class MkGrizzlyAdapter extends GrizzlyAdapter {
                         )
                     );
                     response.setStatus(answer.status());
-                    final byte[] body =
-                        answer.body().getBytes(MkGrizzlyAdapter.CHARSET);
+                    final byte[] body = answer.bodyBytes();
                     response.getStream().write(body);
                     response.setContentLength(body.length);
                     if (cond.decrement() == 0) {

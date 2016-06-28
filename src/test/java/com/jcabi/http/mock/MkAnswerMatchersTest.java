@@ -59,6 +59,22 @@ public final class MkAnswerMatchersTest {
     }
 
     /**
+     * MkAnswerMatchers should be able to match MkAnswer body.
+     */
+    @Test
+    public void canMatchBodyBytes() {
+        final byte[] body = {0x01, 0x45, 0x21};
+        final MkAnswer query = Mockito.mock(MkAnswer.class);
+        Mockito.doReturn(body).when(query).bodyBytes();
+        MatcherAssert.assertThat(
+                query,
+                MkAnswerMatchers.hasBodyBytes(
+                        Matchers.is(body)
+                )
+        );
+    }
+
+    /**
      * MkAnswerMatchers should be able to match MkAnswer header.
      */
     @Test

@@ -52,6 +52,7 @@ import lombok.EqualsAndHashCode;
  * @since 0.10
  */
 @Immutable
+@SuppressWarnings("PMD.TooManyMethods")
 public interface MkAnswer {
 
     /**
@@ -71,6 +72,12 @@ public interface MkAnswer {
      * @return The body, as a UTF-8 string
      */
     String body();
+
+    /**
+     * HTTP response body as bytes.
+     * @return The body, as byte array
+     */
+    byte[] bodyBytes();
 
     /**
      * Simple implementation.
@@ -155,6 +162,10 @@ public interface MkAnswer {
             return new String(this.content, MkAnswer.Simple.CHARSET);
         }
         @Override
+        public byte[] bodyBytes() {
+            return this.content.clone();
+        }
+        @Override
         public String toString() {
             final StringBuilder text = new StringBuilder(0)
                 .append(this.code).append('\n');
@@ -207,6 +218,18 @@ public interface MkAnswer {
                 this.code,
                 this.hdrs,
                 body.getBytes(MkAnswer.Simple.CHARSET)
+            );
+        }
+        /**
+         * Make a copy of this answer, with another body.
+         * @param body Body
+         * @return New answer
+         */
+        public MkAnswer.Simple withBody(final byte[] body) {
+            return new MkAnswer.Simple(
+                    this.code,
+                    this.hdrs,
+                    body
             );
         }
     }
