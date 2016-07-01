@@ -29,51 +29,41 @@
  */
 package com.jcabi.http.mock;
 
-import org.hamcrest.Matcher;
+    import java.net.HttpURLConnection;
+    import java.util.Collections;
+    import java.util.Map;
+    import java.util.Set;
+    import org.junit.Assert;
+    import org.junit.Test;
 
 /**
- * Convenient set of matchers for {@link MkAnswer}.
- * @author Carlos Miranda (miranda.cma@gmail.com)
+ * Test case for {@link MkAnswer.Simple}.
+ * @author Alan Evans (thealanevans@gmail.com)
  * @version $Id$
  */
-public final class MkAnswerMatchers {
+public final class MkAnswerSimpleTest {
+
     /**
-     * Private ctor.
+     * MkAnswer.Simple can return the content as a clone.
      */
-    private MkAnswerMatchers() {
-        // Utility class - cannot instantiate.
+    @Test
+    public void contentIsCloned() {
+        final byte[] body = new byte[]{1, 2, 3};
+        final MkAnswer answer = new MkAnswer.Simple(
+            HttpURLConnection.HTTP_OK,
+            this.getEmptyHeaders(),
+            body
+        );
+        Assert.assertArrayEquals(body, answer.content());
+        Assert.assertNotSame(body, answer.content());
+        Assert.assertNotSame(answer.content(), answer.content());
     }
 
     /**
-     * Matches the value of {@link MkAnswer#body()} against the given matcher.
-     * @param matcher The matcher to use.
-     * @return Matcher for checking the body of MkAnswer
+     * Gets a set of empty headers.
+     * @return An empty header set.
      */
-    public static Matcher<MkAnswer> hasBody(final Matcher<String> matcher) {
-        return new MkAnswerBodyMatcher(matcher);
+    private Set<Map.Entry<String, String>> getEmptyHeaders() {
+        return Collections.<String, String>emptyMap().entrySet();
     }
-
-    /**
-     * Matches the value of {@link MkAnswer#content()} against the given
-     *  matcher.
-     * @param matcher The matcher to use.
-     * @return Matcher for checking the body of MkAnswer
-     */
-    public static Matcher<MkAnswer> hasContent(final Matcher<byte[]> matcher) {
-        return new MkAnswerContentMatcher(matcher);
-    }
-
-    /**
-     * Matches the content of {@link MkAnswer#headers()} against the given
-     * matcher. Note that for a valid match to occur, the header entry must
-     * exist <i>and</i> its value(s) must match the given matcher.
-     * @param header The header to check.
-     * @param matcher The matcher to use.
-     * @return Matcher for checking the body of MkAnswer
-     */
-    public static Matcher<MkAnswer> hasHeader(final String header,
-        final Matcher<Iterable<? extends String>> matcher) {
-        return new MkAnswerHeaderMatcher(header, matcher);
-    }
-
 }

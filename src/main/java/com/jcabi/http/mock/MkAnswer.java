@@ -52,6 +52,7 @@ import lombok.EqualsAndHashCode;
  * @since 0.10
  */
 @Immutable
+@SuppressWarnings("PMD.TooManyMethods")
 public interface MkAnswer {
 
     /**
@@ -71,6 +72,12 @@ public interface MkAnswer {
      * @return The body, as a UTF-8 string
      */
     String body();
+
+    /**
+     * HTTP response body.
+     * @return The original content of the answer.
+     */
+    byte[] content();
 
     /**
      * Simple implementation.
@@ -126,14 +133,14 @@ public interface MkAnswer {
          * Public ctor.
          * @param status HTTP status
          * @param headers HTTP headers
-         * @param body Body of HTTP response
+         * @param content Body of HTTP response
          */
         public Simple(final int status,
             final Iterable<Map.Entry<String, String>> headers,
-            final byte[] body) {
+            final byte[] content) {
             this.code = status;
             this.hdrs = new Array<Map.Entry<String, String>>(headers);
-            this.content = body.clone();
+            this.content = content.clone();
         }
         @Override
         public int status() {
@@ -153,6 +160,10 @@ public interface MkAnswer {
         @Override
         public String body() {
             return new String(this.content, MkAnswer.Simple.CHARSET);
+        }
+        @Override
+        public byte[] content() {
+            return this.content.clone();
         }
         @Override
         public String toString() {
