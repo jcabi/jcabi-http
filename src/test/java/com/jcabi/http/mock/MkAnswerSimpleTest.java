@@ -29,12 +29,12 @@
  */
 package com.jcabi.http.mock;
 
-    import java.net.HttpURLConnection;
-    import java.util.Collections;
-    import java.util.Map;
-    import java.util.Set;
-    import org.junit.Assert;
-    import org.junit.Test;
+import java.net.HttpURLConnection;
+import java.util.Collections;
+import java.util.Map;
+import java.util.Set;
+import org.junit.Assert;
+import org.junit.Test;
 
 /**
  * Test case for {@link MkAnswer.Simple}.
@@ -44,14 +44,15 @@ package com.jcabi.http.mock;
 public final class MkAnswerSimpleTest {
 
     /**
-     * MkAnswer.Simple can return the content as a clone.
+     * MkAnswer.Simple can return the content as a clone so that it is not
+     * exposing its internal structure.
      */
     @Test
     public void contentIsCloned() {
         final byte[] body = new byte[]{1, 2, 3};
         final MkAnswer answer = new MkAnswer.Simple(
             HttpURLConnection.HTTP_OK,
-            this.getEmptyHeaders(),
+            this.emptyHeaders(),
             body
         );
         Assert.assertArrayEquals(body, answer.content());
@@ -60,10 +61,10 @@ public final class MkAnswerSimpleTest {
     }
 
     /**
-     * Gets a set of empty headers.
+     * Creates a new set of empty headers.
      * @return An empty header set.
      */
-    private Set<Map.Entry<String, String>> getEmptyHeaders() {
+    private Set<Map.Entry<String, String>> emptyHeaders() {
         return Collections.<String, String>emptyMap().entrySet();
     }
 }

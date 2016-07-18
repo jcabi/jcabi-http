@@ -99,15 +99,13 @@ public final class MkAnswerMatchersTest {
      */
     @Test
     public void canNotMatchBinaryBody() {
-        final byte[] body = new byte[]{0};
         final MkAnswer query = Mockito.mock(MkAnswer.class);
-        Mockito.doReturn(body).when(query).content();
-        final byte[] mismatch = new byte[]{1};
+        Mockito.doReturn(new byte[]{0}).when(query).content();
         MatcherAssert.assertThat(
             query,
             Matchers.not(
                 MkAnswerMatchers.hasContent(
-                    Matchers.is(mismatch)
+                    Matchers.is(new byte[]{1})
                 )
             )
         );

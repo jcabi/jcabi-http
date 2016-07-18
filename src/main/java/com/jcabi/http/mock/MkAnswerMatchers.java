@@ -55,8 +55,8 @@ public final class MkAnswerMatchers {
 
     /**
      * Matches the value of {@link MkAnswer#content()} against the given
-     *  matcher.
-     * @param matcher The matcher to use.
+     * matcher.
+     * @param matcher The matcher to use
      * @return Matcher for checking the body of MkAnswer
      */
     public static Matcher<MkAnswer> hasContent(final Matcher<byte[]> matcher) {

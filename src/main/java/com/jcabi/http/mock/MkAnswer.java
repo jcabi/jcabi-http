@@ -133,7 +133,7 @@ public interface MkAnswer {
          * Public ctor.
          * @param status HTTP status
          * @param headers HTTP headers
-         * @param content Body of HTTP response
+         * @param content Binary content of the HTTP response body
          */
         public Simple(final int status,
             final Iterable<Map.Entry<String, String>> headers,
