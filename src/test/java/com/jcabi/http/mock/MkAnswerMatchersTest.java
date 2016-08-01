@@ -77,4 +77,49 @@ public final class MkAnswerMatchersTest {
             )
         );
     }
+
+    /**
+     * MkAnswerMatchers can match MkAnswer binary body.
+     */
+    @Test
+    public void canMatchBinaryBody() {
+        final byte[] body = this.getAllByteValues();
+        final MkAnswer query = Mockito.mock(MkAnswer.class);
+        Mockito.doReturn(body).when(query).content();
+        MatcherAssert.assertThat(
+            query,
+            MkAnswerMatchers.hasContent(
+                Matchers.is(body)
+            )
+        );
+    }
+
+    /**
+     * MkAnswerMatchers can show mismatch of MkAnswer binary body.
+     */
+    @Test
+    public void canNotMatchBinaryBody() {
+        final MkAnswer query = Mockito.mock(MkAnswer.class);
+        Mockito.doReturn(new byte[]{0}).when(query).content();
+        MatcherAssert.assertThat(
+            query,
+            Matchers.not(
+                MkAnswerMatchers.hasContent(
+                    Matchers.is(new byte[]{1})
+                )
+            )
+        );
+    }
+
+    /**
+     * Gets all 256 byte values in an array.
+     * @return An array containing all byte values.
+     */
+    private byte[] getAllByteValues() {
+        final byte[] bytes = new byte[Byte.MAX_VALUE];
+        for (int index = 0; index < bytes.length; index += 1) {
+            bytes[index] = (byte) index;
+        }
+        return bytes;
+    }
 }
