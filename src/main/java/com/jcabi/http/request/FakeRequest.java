@@ -177,6 +177,11 @@ public final class FakeRequest implements Request {
     }
 
     @Override
+    public RequestBody multipartBody() {
+        return this.base.multipartBody();
+    }
+
+    @Override
     public Request method(final String method) {
         return this.base.method(method);
     }

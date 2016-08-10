@@ -70,7 +70,7 @@ import lombok.EqualsAndHashCode;
 @Immutable
 @EqualsAndHashCode(of = { "home", "mtd", "hdrs", "content" })
 @Loggable(Loggable.DEBUG)
-@SuppressWarnings("PMD.TooManyMethods")
+@SuppressWarnings({"PMD.TooManyMethods", "PMD.GodClass"})
 final class BaseRequest implements Request {
 
     /**
@@ -219,7 +219,12 @@ final class BaseRequest implements Request {
 
     @Override
     public RequestBody body() {
-        return new BaseRequest.BaseBody(this, this.content);
+        return new BaseRequest.FormEncodedBody(this, this.content);
+    }
+
+    @Override
+    public RequestBody multipartBody() {
+        return new BaseRequest.MultipartFormBody(this, this.content);
     }
 
     @Override
@@ -453,12 +458,89 @@ final class BaseRequest implements Request {
     }
 
     /**
-     * Base URI.
+     * Body of a request with a form that has attachments.
+     * @todo #87:1h Implement and unit test method formParam(String, Object)
+     *  Details <a href="http://stackoverflow.com/
+     *  questions/8659808/how-does-http-file-upload-work">here</a>
+     *  (second answer). <br> e.g. While FormEncodedBody.formParam adds
+     *  the param to a body with enctype application/x-www-form-urlencoded,
+     *  method MultipartFormBody.formParam should add it to a body with
+     *  enctype multipart/form-data.
+     */
+    private static final class MultipartFormBody implements RequestBody {
+        /**
+         * Content encapsulated.
+         */
+        @Immutable.Array
+        private final transient byte[] text;
+        /**
+         * Base request encapsulated.
+         */
+        private final transient BaseRequest owner;
+
+        /**
+         * Public ctor.
+         * @param req Request
+         * @param body Text to encapsulate
+         */
+        MultipartFormBody(final BaseRequest req, final byte[] body) {
+            this.owner = req;
+            this.text = body.clone();
+        }
+        @Override
+        public String toString() {
+            return new RequestBody.Printable(this.text).toString();
+        }
+        @Override
+        public Request back() {
+            return new BaseRequest(
+                this.owner.wire,
+                this.owner.home,
+                this.owner.hdrs,
+                this.owner.mtd,
+                this.text
+            );
+        }
+        @Override
+        public String get() {
+            return new String(this.text, BaseRequest.CHARSET);
+        }
+        @Override
+        public RequestBody set(final String txt) {
+            return this.set(txt.getBytes(BaseRequest.CHARSET));
+        }
+        @Override
+        public RequestBody set(final JsonStructure json) {
+            final StringWriter writer = new StringWriter();
+            Json.createWriter(writer).write(json);
+            return this.set(writer.toString());
+        }
+        @Override
+        public RequestBody set(final byte[] txt) {
+            return new BaseRequest.FormEncodedBody(this.owner, txt);
+        }
+        @Override
+        public RequestBody formParam(final String name, final Object value) {
+            throw new UnsupportedOperationException("Method not available");
+        }
+        @Override
+        public RequestBody formParams(final Map<String, String> params) {
+            RequestBody body = this;
+            for (final Map.Entry<String, String> param : params.entrySet()) {
+                body = body.formParam(param.getKey(), param.getValue());
+            }
+            return body;
+        }
+    }
+
+    /**
+     * Body of a request with a simple form.
+     * (enctype application/x-www-form-urlencoded)
      */
     @Immutable
     @EqualsAndHashCode(of = "text")
     @Loggable(Loggable.DEBUG)
-    private static final class BaseBody implements RequestBody {
+    private static final class FormEncodedBody implements RequestBody {
         /**
          * Content encapsulated.
          */
@@ -477,7 +559,7 @@ final class BaseRequest implements Request {
          * @param req Request
          * @param body Text to encapsulate
          */
-        BaseBody(final BaseRequest req, final byte[] body) {
+        FormEncodedBody(final BaseRequest req, final byte[] body) {
             this(req, body, "");
         }
         /**
@@ -486,7 +568,9 @@ final class BaseRequest implements Request {
          * @param body Text to encapsulate
          * @param pre Character to prepend
          */
-        BaseBody(final BaseRequest req, final byte[] body, final String pre) {
+        FormEncodedBody(
+            final BaseRequest req, final byte[] body, final String pre
+        ) {
             this.owner = req;
             this.text = body.clone();
             this.prepend = pre;
@@ -521,12 +605,12 @@ final class BaseRequest implements Request {
         }
         @Override
         public RequestBody set(final byte[] txt) {
-            return new BaseRequest.BaseBody(this.owner, txt);
+            return new BaseRequest.FormEncodedBody(this.owner, txt);
         }
         @Override
         public RequestBody formParam(final String name, final Object value) {
             try {
-                return new BaseRequest.BaseBody(
+                return new BaseRequest.FormEncodedBody(
                     this.owner,
                     new StringBuilder(this.get())
                         .append(this.prepend)
