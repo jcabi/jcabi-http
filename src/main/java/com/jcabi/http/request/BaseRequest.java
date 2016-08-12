@@ -66,11 +66,14 @@ import lombok.EqualsAndHashCode;
  * @checkstyle ClassDataAbstractionCoupling (500 lines)
  * @see Request
  * @see Response
- * @todo #87:30min Refactor this class to get rid of PMD.GodClass (and possibly
- *  also PMD.TooManyMethods). This can be done if MultiPartFormBody and
+ * @todo #87:30min Refactor this class to get rid of PMD.GodClass.
+ *  This can be done if MultiPartFormBody and
  *  FormEncodedBody are pulled out. Also, the two
  *  share the same implementations for all methods besides formParam,
  *  so they can be refactored to extend an AbstractRequestBody.
+ *  PMD.TooManyMethods might come together with getting rid of the
+ *  first one, since maybe qulice is counting the methods in the inner
+ *  classes too - if it doesn't, then it can be left.
  */
 @Immutable
 @EqualsAndHashCode(of = { "home", "mtd", "hdrs", "content" })
