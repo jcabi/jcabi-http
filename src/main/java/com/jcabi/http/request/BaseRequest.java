@@ -66,6 +66,11 @@ import lombok.EqualsAndHashCode;
  * @checkstyle ClassDataAbstractionCoupling (500 lines)
  * @see Request
  * @see Response
+ * @todo #87:30min Refactor this class to get rid of PMD.GodClass (and possibly
+ *  also PMD.TooManyMethods). This can be done if MultiPartFormBody and
+ *  FormEncodedBody are pulled out. Also, the two
+ *  share the same implementations for all methods besides formParam,
+ *  so they can be refactored to extend an AbstractRequestBody.
  */
 @Immutable
 @EqualsAndHashCode(of = { "home", "mtd", "hdrs", "content" })
@@ -468,11 +473,13 @@ final class BaseRequest implements Request {
      *  enctype multipart/form-data.
      */
     private static final class MultipartFormBody implements RequestBody {
+
         /**
          * Content encapsulated.
          */
         @Immutable.Array
         private final transient byte[] text;
+
         /**
          * Base request encapsulated.
          */
@@ -487,10 +494,12 @@ final class BaseRequest implements Request {
             this.owner = req;
             this.text = body.clone();
         }
+
         @Override
         public String toString() {
             return new RequestBody.Printable(this.text).toString();
         }
+
         @Override
         public Request back() {
             return new BaseRequest(
@@ -501,28 +510,34 @@ final class BaseRequest implements Request {
                 this.text
             );
         }
+
         @Override
         public String get() {
             return new String(this.text, BaseRequest.CHARSET);
         }
+
         @Override
         public RequestBody set(final String txt) {
             return this.set(txt.getBytes(BaseRequest.CHARSET));
         }
+
         @Override
         public RequestBody set(final JsonStructure json) {
             final StringWriter writer = new StringWriter();
             Json.createWriter(writer).write(json);
             return this.set(writer.toString());
         }
+
         @Override
         public RequestBody set(final byte[] txt) {
             return new BaseRequest.FormEncodedBody(this.owner, txt);
         }
+
         @Override
         public RequestBody formParam(final String name, final Object value) {
             throw new UnsupportedOperationException("Method not available");
         }
+
         @Override
         public RequestBody formParams(final Map<String, String> params) {
             RequestBody body = this;
@@ -541,19 +556,23 @@ final class BaseRequest implements Request {
     @EqualsAndHashCode(of = "text")
     @Loggable(Loggable.DEBUG)
     private static final class FormEncodedBody implements RequestBody {
+
         /**
          * Content encapsulated.
          */
         @Immutable.Array
         private final transient byte[] text;
+
         /**
          * Base request encapsulated.
          */
         private final transient BaseRequest owner;
+
         /**
          * URL form character to prepend.
          */
         private final transient String prepend;
+
         /**
          * Public ctor.
          * @param req Request
@@ -562,6 +581,7 @@ final class BaseRequest implements Request {
         FormEncodedBody(final BaseRequest req, final byte[] body) {
             this(req, body, "");
         }
+
         /**
          * Public ctor.
          * @param req Request
@@ -575,10 +595,12 @@ final class BaseRequest implements Request {
             this.text = body.clone();
             this.prepend = pre;
         }
+
         @Override
         public String toString() {
             return new RequestBody.Printable(this.text).toString();
         }
+
         @Override
         public Request back() {
             return new BaseRequest(
@@ -589,24 +611,29 @@ final class BaseRequest implements Request {
                 this.text
             );
         }
+
         @Override
         public String get() {
             return new String(this.text, BaseRequest.CHARSET);
         }
+
         @Override
         public RequestBody set(final String txt) {
             return this.set(txt.getBytes(BaseRequest.CHARSET));
         }
+
         @Override
         public RequestBody set(final JsonStructure json) {
             final StringWriter writer = new StringWriter();
             Json.createWriter(writer).write(json);
             return this.set(writer.toString());
         }
+
         @Override
         public RequestBody set(final byte[] txt) {
             return new BaseRequest.FormEncodedBody(this.owner, txt);
         }
+
         @Override
         public RequestBody formParam(final String name, final Object value) {
             try {
@@ -630,6 +657,7 @@ final class BaseRequest implements Request {
                 throw new IllegalStateException(ex);
             }
         }
+
         @Override
         public RequestBody formParams(final Map<String, String> params) {
             RequestBody body = this;
@@ -638,6 +666,7 @@ final class BaseRequest implements Request {
             }
             return body;
         }
+
     }
 
 }
