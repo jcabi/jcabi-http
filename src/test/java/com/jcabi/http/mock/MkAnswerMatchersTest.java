@@ -59,7 +59,7 @@ public final class MkAnswerMatchersTest {
     }
 
     /**
-     * MkAnswerMatchers should be able to match MkAnswer body.
+     * MkAnswerMatchers can match MkAnswer body bytes.
      */
     @Test
     public void canMatchBodyBytes() {

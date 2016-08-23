@@ -226,11 +226,7 @@ public interface MkAnswer {
          * @return New answer
          */
         public MkAnswer.Simple withBody(final byte[] body) {
-            return new MkAnswer.Simple(
-                    this.code,
-                    this.hdrs,
-                    body
-            );
+            return new MkAnswer.Simple(this.code, this.hdrs, body);
         }
     }
 

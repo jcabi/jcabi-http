@@ -39,6 +39,7 @@ import org.hamcrest.TypeSafeMatcher;
  * Matcher for checking {@link MkAnswer#bodyBytes()} result.
  * @author Peter Storch (peter.storch@gmail.com)
  * @version $Id$
+ * @since 1.21
  */
 @ToString
 @EqualsAndHashCode(callSuper = false, of = "matcher")
@@ -60,7 +61,7 @@ final class MkAnswerBodyBytesMatcher extends TypeSafeMatcher<MkAnswer> {
     @Override
     public void describeTo(final Description description) {
         this.matcher.describeTo(
-            description.appendText("MkAnswer body matching: ")
+            description.appendText("MkAnswer body bytes matching: ")
         );
     }
 
