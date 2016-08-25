@@ -122,6 +122,23 @@ public final class MkContainerTest {
     }
 
     /**
+     * MkContainer can return a correct binary answers.
+     * @throws Exception If something goes wrong inside.
+     */
+    @Test
+    public void answersBinary() throws Exception {
+        final byte[] body = {0x00, 0x01, 0x45, 0x21, (byte)0xFF};
+        try (final MkContainer container = new MkGrizzlyContainer()) {
+            container.next(new MkAnswer.Simple(HttpURLConnection.HTTP_OK).withBody(body)).start();
+            new JdkRequest(container.home())
+                    .through(VerboseWire.class)
+                    .fetch().as(RestResponse.class)
+                    .assertStatus(HttpURLConnection.HTTP_OK)
+                    .assertBinary(Matchers.is(body));
+        }
+    }
+
+    /**
      * MkContainer returns HTTP 500 if no answers match.
      * @throws Exception If something goes wrong inside
      */
