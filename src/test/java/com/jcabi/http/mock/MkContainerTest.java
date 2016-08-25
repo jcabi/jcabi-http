@@ -127,9 +127,12 @@ public final class MkContainerTest {
      */
     @Test
     public void answersBinary() throws Exception {
-        final byte[] body = {0x00, 0x01, 0x45, 0x21, (byte)0xFF};
+        final byte[] body = {0x00, 0x01, 0x45, 0x21, (byte) 0xFF};
         try (final MkContainer container = new MkGrizzlyContainer()) {
-            container.next(new MkAnswer.Simple(HttpURLConnection.HTTP_OK).withBody(body)).start();
+            container.next(
+                    new MkAnswer.Simple(HttpURLConnection.HTTP_OK)
+                            .withBody(body)
+                    ).start();
             new JdkRequest(container.home())
                     .through(VerboseWire.class)
                     .fetch().as(RestResponse.class)
