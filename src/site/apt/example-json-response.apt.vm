@@ -19,7 +19,7 @@ String name = new JdkRequest("http://my.example.com")
   .fetch()
   .as(JsonResponse.class)
   .json() // convert HTTP body to javax.json.JsonReader
-  .readJsonObject().getString("name");
+  .readObject().getString("name");
 +--
 
   Method {{{./apidocs-${project.version}/com/jcabi/http/response/JsonResponse.html}<<<JsonResponse#json()>>>}}
