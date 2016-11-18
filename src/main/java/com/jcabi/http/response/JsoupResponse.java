@@ -54,7 +54,7 @@ import org.jsoup.nodes.Entities;
  *  <li>Unclosed tags will be closed ("&lt;p&gt;Hello" will become
  *      "&lt;p&gt;Hello&lt;/p&gt;")
  *  <li>Implicit tags will be made explicit (e.g. a naked &lt;td&gt; will be
- *      wrapped in a &lt;table&gt;&lt;trgt;&lt;td&gt;?)
+ *      wrapped in a &lt;table&gt;&lt;tr&gt;&lt;td&gt;)
  *  <li>Basic structure is guaranteed (i.e. html, head, body elements)
  * </ul>
  *
