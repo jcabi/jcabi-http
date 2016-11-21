@@ -50,5 +50,4 @@ Please run Maven build before submitting a pull request:
 $ mvn clean install -Pqulice
 ```
 
-Make sure you're using Maven 3.2+ and Java7 (in Java8 you won't be able
-to use Qulice, because of [teamed/qulice#379](https://github.com/teamed/qulice/issues/379)).
+Make sure you're using Maven 3.2+ and Java7+.
