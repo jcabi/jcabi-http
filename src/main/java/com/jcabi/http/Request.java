@@ -129,6 +129,12 @@ public interface Request {
     RequestBody body();
 
     /**
+     * Get multipart form (multipart/form-data) body.
+     * @return New altered request
+     */
+    RequestBody multipartBody();
+
+    /**
      * Set request header.
      * @param name ImmutableHeader name
      * @param value Value of the header to set
