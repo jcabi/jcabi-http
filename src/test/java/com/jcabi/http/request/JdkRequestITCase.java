@@ -29,12 +29,11 @@
  */
 package com.jcabi.http.request;
 
+import com.jcabi.aspects.Tv;
 import java.io.IOException;
 import java.net.MalformedURLException;
 import java.net.URI;
-
 import javax.ws.rs.HttpMethod;
-
 import org.apache.commons.lang3.StringUtils;
 import org.hamcrest.Matchers;
 import org.junit.Rule;
@@ -73,14 +72,14 @@ public final class JdkRequestITCase {
         );
         new JdkRequest(new URI(uri)).method(method).fetch();
     }
-    
+
     /**
      * BaseRequest throws an exception with a descriptive message
      * if there is no port and no protocol mentioned in the uri.
      * @throws Exception If something goes wrong inside.
      */
     @Test
-    public final void failsNoProtocolNoPort() throws Exception {
+    public void failsNoProtocolNoPort() throws Exception {
         final String uri = "localhost";
         this.thrown.expect(MalformedURLException.class);
         this.thrown.expectMessage(
@@ -91,16 +90,16 @@ public final class JdkRequestITCase {
         );
         new JdkRequest(uri).fetch();
     }
-    
+
     /**
      * BaseRequest throws an exception with a descriptive message
      * if there is no protocol mentioned in the uri.
      * @throws Exception If something goes wrong inside.
      */
     @Test
-    public final void failsWithPortButNoProtocol() throws Exception {
+    public void failsWithPortButNoProtocol() throws Exception {
         final String url = "test.com";
-        final String port = ":8080";
+        final String colon = ":";
         this.thrown.expect(MalformedURLException.class);
         this.thrown.expectMessage(
             Matchers.allOf(
@@ -108,16 +107,18 @@ public final class JdkRequestITCase {
                 Matchers.containsString(url)
             )
         );
-        new JdkRequest(StringUtils.join(url, port)).fetch();
+        new JdkRequest(
+            StringUtils.join(url, colon, String.valueOf(Tv.EIGHTY))
+        ).fetch();
     }
-    
+
     /**
      * BaseRequest throws an exception with a descriptive message
      * if the uri is completely wrong (e.g. bla bla1)
      * @throws Exception If something goes wrong inside.
      */
     @Test
-    public final void failsMalformedEntirely() throws Exception {
+    public void failsMalformedEntirely() throws Exception {
         final String uri = "bla bla url";
         this.thrown.expect(MalformedURLException.class);
         this.thrown.expectMessage(
