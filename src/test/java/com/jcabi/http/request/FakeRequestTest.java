@@ -93,7 +93,7 @@ public final class FakeRequestTest {
             new FakeRequest()
                 .uri().set(new URI("http://facebook.com")).back()
                 .uri().get().toString(),
-            Matchers.endsWith("facebook.com")
+            Matchers.endsWith("facebook.com/")
         );
     }
 

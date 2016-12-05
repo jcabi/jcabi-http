@@ -178,13 +178,11 @@ final class BaseRequest implements Request {
         final String method, final byte[] body,
         final int cnct, final int rdd) {
         this.wire = wre;
-        final URI addr = UriBuilder.fromUri(uri).path("/").build();
-        if (addr.getPath().length() > 1) {
-            final String address = addr.toString();
-            this.home = address.substring(0, address.length() - 1);
-        } else {
-            this.home = addr.toString();
+        URI addr = URI.create(uri);
+        if (addr.getPath() != null && addr.getPath().isEmpty()) {
+            addr = UriBuilder.fromUri(addr).path("/").build();
         }
+        this.home = addr.toString();
         this.hdrs = new Array<Map.Entry<String, String>>(headers);
         this.mtd = method;
         this.content = body.clone();

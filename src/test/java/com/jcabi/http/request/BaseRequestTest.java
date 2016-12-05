@@ -89,7 +89,7 @@ public final class BaseRequestTest {
             // @checkstyle MagicNumber (2 lines)
             new BaseRequest(wire, "http://localhost")
                 .uri().port(8080).back().uri().get(),
-            Matchers.hasToString("http://localhost:8080")
+            Matchers.hasToString("http://localhost:8080/")
         );
     }
 

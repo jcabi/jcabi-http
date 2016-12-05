@@ -100,9 +100,12 @@ public final class JdkRequestITCase {
     public void failsWithPortButNoProtocol() throws Exception {
         final String url = "test.com";
         final String colon = ":";
-        this.thrown.expect(IllegalArgumentException.class);
+        this.thrown.expect(MalformedURLException.class);
         this.thrown.expectMessage(
-            Matchers.containsString("Schema specific part is opaque")
+            Matchers.allOf(
+                Matchers.containsString("unknown protocol: "),
+                Matchers.containsString(url)
+            )
         );
         new JdkRequest(
             StringUtils.join(url, colon, String.valueOf(Tv.EIGHTY))
