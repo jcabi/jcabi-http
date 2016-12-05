@@ -178,7 +178,13 @@ final class BaseRequest implements Request {
         final String method, final byte[] body,
         final int cnct, final int rdd) {
         this.wire = wre;
-        this.home = uri;
+        final URI addr = UriBuilder.fromUri(uri).path("/").build();
+        if (addr.getPath().length() > 1) {
+            final String address = addr.toString();
+            this.home = address.substring(0, address.length() - 1);
+        } else {
+            this.home = addr.toString();
+        }
         this.hdrs = new Array<Map.Entry<String, String>>(headers);
         this.mtd = method;
         this.content = body.clone();

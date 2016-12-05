@@ -100,12 +100,9 @@ public final class JdkRequestITCase {
     public void failsWithPortButNoProtocol() throws Exception {
         final String url = "test.com";
         final String colon = ":";
-        this.thrown.expect(MalformedURLException.class);
+        this.thrown.expect(IllegalArgumentException.class);
         this.thrown.expectMessage(
-            Matchers.allOf(
-                Matchers.containsString("unknown protocol: "),
-                Matchers.containsString(url)
-            )
+            Matchers.containsString("Schema specific part is opaque")
         );
         new JdkRequest(
             StringUtils.join(url, colon, String.valueOf(Tv.EIGHTY))
@@ -120,10 +117,10 @@ public final class JdkRequestITCase {
     @Test
     public void failsMalformedEntirely() throws Exception {
         final String uri = "bla bla url";
-        this.thrown.expect(MalformedURLException.class);
+        this.thrown.expect(IllegalArgumentException.class);
         this.thrown.expectMessage(
             Matchers.allOf(
-                Matchers.containsString("no protocol:"),
+                Matchers.containsString("Illegal character in path"),
                 Matchers.containsString(uri)
             )
         );
