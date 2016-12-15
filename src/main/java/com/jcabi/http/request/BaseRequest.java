@@ -179,7 +179,7 @@ final class BaseRequest implements Request {
         final int cnct, final int rdd) {
         this.wire = wre;
         URI addr = URI.create(uri);
-        if (addr.getPath().isEmpty()) {
+        if (addr.getPath() != null && addr.getPath().isEmpty()) {
             addr = UriBuilder.fromUri(addr).path("/").build();
         }
         this.home = addr.toString();
