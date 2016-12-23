@@ -4,10 +4,10 @@ architect:
 install:
 - sudo gem install pdd
 assets:
-  secring.gpg: teamed/home#assets/secring.gpg
-  settings.xml: teamed/home#assets/jcabi/settings.xml
-  pubring.gpg: teamed/home#assets/pubring.gpg
-  s3cfg: teamed/home#assets/s3cfg
+  secring.gpg: zerocracy/home#assets/secring.gpg
+  settings.xml: zerocracy/home#assets/jcabi/settings.xml
+  pubring.gpg: zerocracy/home#assets/pubring.gpg
+  s3cfg: zerocracy/home#assets/s3cfg
 merge:
   script: |-
     mvn clean install -Pqulice --errors --settings ../settings.xml
