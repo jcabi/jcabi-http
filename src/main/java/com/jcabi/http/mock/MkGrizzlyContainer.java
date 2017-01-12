@@ -30,6 +30,7 @@
 package com.jcabi.http.mock;
 
 import com.jcabi.aspects.Loggable;
+import com.jcabi.aspects.RetryOnFailure;
 import com.jcabi.log.Logger;
 import com.sun.grizzly.http.embed.GrizzlyWebServer;
 import java.io.IOException;
@@ -157,6 +158,7 @@ public final class MkGrizzlyContainer implements MkContainer {
      * @return Reserved TCP port
      * @throws IOException If fails
      */
+    @RetryOnFailure
     private static int reserve() throws IOException {
         final int reserved;
         try (final ServerSocket socket = new ServerSocket(0)) {
