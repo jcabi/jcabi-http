@@ -606,12 +606,16 @@ final class BaseRequest implements Request {
 
         @Override
         public Request back() {
+            final StringBuilder parameter = new StringBuilder(this.get());
+            if ('&' == parameter.charAt(parameter.length() - 1)) {
+                parameter.deleteCharAt(parameter.length() - 1);
+            }
             return new BaseRequest(
-                this.owner.wire,
-                this.owner.home,
-                this.owner.hdrs,
-                this.owner.mtd,
-                this.text
+                    this.owner.wire,
+                    this.owner.home,
+                    this.owner.hdrs,
+                    this.owner.mtd,
+                    parameter.toString().getBytes(BaseRequest.CHARSET)
             );
         }
 
@@ -671,5 +675,4 @@ final class BaseRequest implements Request {
         }
 
     }
-
 }
