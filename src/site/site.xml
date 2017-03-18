@@ -1,4 +1,4 @@
-<?xml version="1.0"?>
+<?xml version="1.0" encoding="UTF-8"?>
 <!--
  * Copyright (c) 2011-2017, jcabi.com
  * All rights reserved.
@@ -29,9 +29,9 @@
  * OF THE POSSIBILITY OF SUCH DAMAGE.
  -->
 <project xmlns="http://maven.apache.org/DECORATION/1.3.0"
-    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-    xsi:schemaLocation="http://maven.apache.org/DECORATION/1.3.0 http://maven.apache.org/xsd/decoration-1.3.0.xsd"
-    name="jcabi-http">
+         xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:schemaLocation="http://maven.apache.org/DECORATION/1.3.0 http://maven.apache.org/xsd/decoration-1.3.0.xsd"
+         name="jcabi-http">
     <skin>
         <groupId>com.jcabi</groupId>
         <artifactId>jcabi-maven-skin</artifactId>
@@ -48,11 +48,13 @@
     <body>
         <head>
             <link href="http://img.jcabi.com/favicon.ico" rel="shortcut icon"/>
-            <link href="https://plus.google.com/u/0/114792568016408327418?rel=author" rel="author"/>
+            <link href="https://plus.google.com/u/0/114792568016408327418?rel=author"
+                  rel="author"/>
         </head>
         <menu name="Overview">
             <item name="Introduction" href="index.html"/>
-            <item name="JavaDoc ${project.version}" href="./apidocs-${project.version}/index.html"/>
+            <item name="JavaDoc ${project.version}"
+                  href="./apidocs-${project.version}/index.html"/>
             <item name="Test coverage" href="./cobertura/index.html"/>
             <item name="Release History" href="https://github.com/jcabi/jcabi-http/releases"/>
         </menu>

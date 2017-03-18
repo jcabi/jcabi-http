@@ -1,7 +1,7 @@
-/*
+/**
  * Copyright (c) 2011-2017, jcabi.com
  * All rights reserved.
- * <p>
+ *
  * Redistribution and use in source and binary forms, with or without
  * modification, are permitted provided that the following conditions
  * are met: 1) Redistributions of source code must retain the above
@@ -13,7 +13,7 @@
  * the names of its contributors may be used to endorse or promote
  * products derived from this software without specific prior written
  * permission.
- * <p>
+ *
  * THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS
  * "AS IS" AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT
  * NOT LIMITED TO, THE IMPLIED WARRANTIES OF MERCHANTABILITY AND
@@ -60,13 +60,10 @@ public final class YmlResponseTest {
      * Simple deserialize class.
      */
     static final class SimpleYml {
+        // @checkstyle VisibilityModifierCheck (4 lines)
         /**
          * Simple field.
          */
-        @SuppressWarnings({
-                "checkstyle:visibilitymodifiercheck",
-                "checkstyle:javadocvariablecheck"}
-        )
         public String source;
     }
 }
