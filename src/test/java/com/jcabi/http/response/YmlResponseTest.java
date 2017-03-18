@@ -1,4 +1,4 @@
-/**
+/*
  * Copyright (c) 2011-2017, jcabi.com
  * All rights reserved.
  * <p>
@@ -36,12 +36,14 @@ import org.junit.Test;
 
 /**
  * Test case for {@link YmlResponse}.
+ *
  * @author Khlebnikov Andrey (viruszold@gmail.com)
  * @version $Id$
  */
 public final class YmlResponseTest {
     /**
      * YmlResponse can deserialize an object of some class.
+     *
      * @throws Exception If something goes wrong inside
      */
     @Test
@@ -58,10 +60,13 @@ public final class YmlResponseTest {
      * Simple deserialize class.
      */
     static final class SimpleYml {
+        /**
+         * Simple field.
+         */
         @SuppressWarnings({
                 "checkstyle:visibilitymodifiercheck",
-                "checkstyle:javadocvariablecheck"
-        })
+                "checkstyle:javadocvariablecheck"}
+        )
         public String source;
     }
 }
