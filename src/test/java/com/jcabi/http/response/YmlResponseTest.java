@@ -42,7 +42,7 @@ import org.junit.Test;
 public final class YmlResponseTest {
     /**
      * YmlResponse can deserialize an object of some class.
-     * @throws Exception If something goes wrong inside.
+     * @throws Exception If something goes wrong inside
      */
     @Test
     public void loadAs() throws Exception {
@@ -55,7 +55,7 @@ public final class YmlResponseTest {
     }
 
     /**
-     * Simple deserialize class
+     * Simple deserialize class.
      */
     static final class SimpleYml {
         @SuppressWarnings("checkstyle.visibilityModifierCheck")
