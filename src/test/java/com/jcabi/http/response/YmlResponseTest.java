@@ -58,7 +58,7 @@ public final class YmlResponseTest {
      * Simple deserialize class.
      */
     static final class SimpleYml {
-        @SuppressWarnings("checkstyle.visibilityModifierCheck")
+        @SuppressWarnings({"checkstyle.VisibilityModifierCheck", "checkstyle.JavadocVariableCheck"})
         public String source;
     }
 }
