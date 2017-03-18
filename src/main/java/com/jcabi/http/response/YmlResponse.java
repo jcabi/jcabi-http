@@ -55,6 +55,7 @@ import org.yaml.snakeyaml.Yaml;
  */
 @Immutable
 @EqualsAndHashCode(callSuper = true)
+@SuppressWarnings({"checkstyle.endOfSentenceFormat", "checkstyle.checkFirstSentence"})
 public final class YmlResponse extends AbstractResponse {
     /**
      * Public ctor.
@@ -67,6 +68,7 @@ public final class YmlResponse extends AbstractResponse {
     /**
      * Deserialize body
      * @param clazz Deserialized class
+     * @param <E> Class type
      * @return Deserialized object
      */
     public <E> E loadAs(final Class<E> clazz) {

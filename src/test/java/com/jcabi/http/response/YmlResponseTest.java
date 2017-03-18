@@ -39,15 +39,8 @@ import org.junit.Test;
  * @author Khlebnikov Andrey (viruszold@gmail.com)
  * @version $Id$
  */
+@SuppressWarnings({"checkstyle.endOfSentenceFormat", "checkstyle.checkFirstSentence"})
 public final class YmlResponseTest {
-    /**
-     * Simple deserialize class
-     */
-    static final class SimpleYml {
-        @SuppressWarnings("checkstyle:VisibilityModifierCheck")
-        public String source;
-    }
-
     /**
      * YmlResponse can deserialize an object of some class
      * @throws Exception If something goes wrong inside
@@ -62,4 +55,11 @@ public final class YmlResponseTest {
         );
     }
 
+    /**
+     * Simple deserialize class
+     */
+    static final class SimpleYml {
+        @SuppressWarnings("checkstyle.visibilityModifierCheck")
+        public String source;
+    }
 }
