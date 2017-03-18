@@ -39,11 +39,10 @@ import org.junit.Test;
  * @author Khlebnikov Andrey (viruszold@gmail.com)
  * @version $Id$
  */
-@SuppressWarnings({"checkstyle.endOfSentenceFormat", "checkstyle.checkFirstSentence"})
 public final class YmlResponseTest {
     /**
-     * YmlResponse can deserialize an object of some class
-     * @throws Exception If something goes wrong inside
+     * YmlResponse can deserialize an object of some class.
+     * @throws Exception If something goes wrong inside.
      */
     @Test
     public void loadAs() throws Exception {
