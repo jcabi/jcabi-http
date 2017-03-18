@@ -68,11 +68,11 @@ public final class YmlResponse extends AbstractResponse {
     }
 
     /**
-     *
+     * Deserialize body
      * @param clazz Deserialized class
      * @return Deserialized object
      */
-    public <E> E loadAs(final Class<? extends E> clazz) {
+    public <E> E loadAs(final Class<E> clazz) {
         return this.yaml.loadAs(super.body(), clazz);
     }
 }
