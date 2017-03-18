@@ -34,7 +34,6 @@ import com.jcabi.http.Response;
 import lombok.EqualsAndHashCode;
 import org.yaml.snakeyaml.Yaml;
 
-
 /**
  * Yaml response.
  *
@@ -57,8 +56,6 @@ import org.yaml.snakeyaml.Yaml;
 @Immutable
 @EqualsAndHashCode(callSuper = true)
 public final class YmlResponse extends AbstractResponse {
-    private final Yaml yaml = new Yaml();
-
     /**
      * Public ctor.
      * @param resp Response
@@ -73,6 +70,6 @@ public final class YmlResponse extends AbstractResponse {
      * @return Deserialized object
      */
     public <E> E loadAs(final Class<E> clazz) {
-        return this.yaml.loadAs(super.body(), clazz);
+        return new Yaml().loadAs(super.body(), clazz);
     }
 }
