@@ -7,7 +7,7 @@
 <body>
 <div id="overview"><a href="../../../../../apidocs/com/jcabi/http/request/JdkRequest.html">View Javadoc</a></div><pre>
 <a class="jxr_linenumber" name="L1" href="#L1">1</a>   <em class="jxr_javadoccomment">/**</em>
-<a class="jxr_linenumber" name="L2" href="#L2">2</a>   <em class="jxr_javadoccomment"> * Copyright (c) 2011-2015, jcabi.com</em>
+<a class="jxr_linenumber" name="L2" href="#L2">2</a>   <em class="jxr_javadoccomment"> * Copyright (c) 2011-2017, jcabi.com</em>
 <a class="jxr_linenumber" name="L3" href="#L3">3</a>   <em class="jxr_javadoccomment"> * All rights reserved.</em>
 <a class="jxr_linenumber" name="L4" href="#L4">4</a>   <em class="jxr_javadoccomment"> *</em>
 <a class="jxr_linenumber" name="L5" href="#L5">5</a>   <em class="jxr_javadoccomment"> * Redistribution and use in source and binary forms, with or without</em>
@@ -72,7 +72,7 @@
 <a class="jxr_linenumber" name="L64" href="#L64">64</a>  <em class="jxr_javadoccomment"> * &lt;p&gt;The class is immutable and thread-safe.</em>
 <a class="jxr_linenumber" name="L65" href="#L65">65</a>  <em class="jxr_javadoccomment"> *</em>
 <a class="jxr_linenumber" name="L66" href="#L66">66</a>  <em class="jxr_javadoccomment"> * @author Yegor Bugayenko (yegor@tpc2.com)</em>
-<a class="jxr_linenumber" name="L67" href="#L67">67</a>  <em class="jxr_javadoccomment"> * @version $Id: 287860161aad5132299dc814ab5a98be3b44bc8e $</em>
+<a class="jxr_linenumber" name="L67" href="#L67">67</a>  <em class="jxr_javadoccomment"> * @version $Id: 4f121de7e53e852ab14924e03a5be11cdd718fd5 $</em>
 <a class="jxr_linenumber" name="L68" href="#L68">68</a>  <em class="jxr_javadoccomment"> * @since 0.8</em>
 <a class="jxr_linenumber" name="L69" href="#L69">69</a>  <em class="jxr_javadoccomment"> * @checkstyle ClassDataAbstractionCoupling (500 lines)</em>
 <a class="jxr_linenumber" name="L70" href="#L70">70</a>  <em class="jxr_javadoccomment"> */</em>
@@ -262,34 +262,39 @@
 <a class="jxr_linenumber" name="L254" href="#L254">254</a>     }
 <a class="jxr_linenumber" name="L255" href="#L255">255</a> 
 <a class="jxr_linenumber" name="L256" href="#L256">256</a>     @Override
-<a class="jxr_linenumber" name="L257" href="#L257">257</a>     <strong class="jxr_keyword">public</strong> <a href="../../../../com/jcabi/http/Request.html">Request</a> method(<strong class="jxr_keyword">final</strong> String method) {
-<a class="jxr_linenumber" name="L258" href="#L258">258</a>         <strong class="jxr_keyword">return</strong> <strong class="jxr_keyword">this</strong>.base.method(method);
+<a class="jxr_linenumber" name="L257" href="#L257">257</a>     <strong class="jxr_keyword">public</strong> <a href="../../../../com/jcabi/http/RequestBody.html">RequestBody</a> multipartBody() {
+<a class="jxr_linenumber" name="L258" href="#L258">258</a>         <strong class="jxr_keyword">return</strong> <strong class="jxr_keyword">this</strong>.base.multipartBody();
 <a class="jxr_linenumber" name="L259" href="#L259">259</a>     }
 <a class="jxr_linenumber" name="L260" href="#L260">260</a> 
 <a class="jxr_linenumber" name="L261" href="#L261">261</a>     @Override
-<a class="jxr_linenumber" name="L262" href="#L262">262</a>     <strong class="jxr_keyword">public</strong> <a href="../../../../com/jcabi/http/Request.html">Request</a> timeout(<strong class="jxr_keyword">final</strong> <strong class="jxr_keyword">int</strong> connect, <strong class="jxr_keyword">final</strong> <strong class="jxr_keyword">int</strong> read) {
-<a class="jxr_linenumber" name="L263" href="#L263">263</a>         <strong class="jxr_keyword">return</strong> <strong class="jxr_keyword">this</strong>.base.timeout(connect, read);
+<a class="jxr_linenumber" name="L262" href="#L262">262</a>     <strong class="jxr_keyword">public</strong> <a href="../../../../com/jcabi/http/Request.html">Request</a> method(<strong class="jxr_keyword">final</strong> String method) {
+<a class="jxr_linenumber" name="L263" href="#L263">263</a>         <strong class="jxr_keyword">return</strong> <strong class="jxr_keyword">this</strong>.base.method(method);
 <a class="jxr_linenumber" name="L264" href="#L264">264</a>     }
 <a class="jxr_linenumber" name="L265" href="#L265">265</a> 
 <a class="jxr_linenumber" name="L266" href="#L266">266</a>     @Override
-<a class="jxr_linenumber" name="L267" href="#L267">267</a>     <strong class="jxr_keyword">public</strong> <a href="../../../../com/jcabi/http/Response.html">Response</a> fetch() <strong class="jxr_keyword">throws</strong> IOException {
-<a class="jxr_linenumber" name="L268" href="#L268">268</a>         <strong class="jxr_keyword">return</strong> <strong class="jxr_keyword">this</strong>.base.fetch();
+<a class="jxr_linenumber" name="L267" href="#L267">267</a>     <strong class="jxr_keyword">public</strong> <a href="../../../../com/jcabi/http/Request.html">Request</a> timeout(<strong class="jxr_keyword">final</strong> <strong class="jxr_keyword">int</strong> connect, <strong class="jxr_keyword">final</strong> <strong class="jxr_keyword">int</strong> read) {
+<a class="jxr_linenumber" name="L268" href="#L268">268</a>         <strong class="jxr_keyword">return</strong> <strong class="jxr_keyword">this</strong>.base.timeout(connect, read);
 <a class="jxr_linenumber" name="L269" href="#L269">269</a>     }
 <a class="jxr_linenumber" name="L270" href="#L270">270</a> 
 <a class="jxr_linenumber" name="L271" href="#L271">271</a>     @Override
-<a class="jxr_linenumber" name="L272" href="#L272">272</a>     <strong class="jxr_keyword">public</strong> <a href="../../../../com/jcabi/http/Response.html">Response</a> fetch(<strong class="jxr_keyword">final</strong> InputStream stream) <strong class="jxr_keyword">throws</strong> IOException {
-<a class="jxr_linenumber" name="L273" href="#L273">273</a>         <strong class="jxr_keyword">return</strong> <strong class="jxr_keyword">this</strong>.base.fetch(stream);
+<a class="jxr_linenumber" name="L272" href="#L272">272</a>     <strong class="jxr_keyword">public</strong> <a href="../../../../com/jcabi/http/Response.html">Response</a> fetch() <strong class="jxr_keyword">throws</strong> IOException {
+<a class="jxr_linenumber" name="L273" href="#L273">273</a>         <strong class="jxr_keyword">return</strong> <strong class="jxr_keyword">this</strong>.base.fetch();
 <a class="jxr_linenumber" name="L274" href="#L274">274</a>     }
 <a class="jxr_linenumber" name="L275" href="#L275">275</a> 
 <a class="jxr_linenumber" name="L276" href="#L276">276</a>     @Override
-<a class="jxr_linenumber" name="L277" href="#L277">277</a>     <strong class="jxr_keyword">public</strong> &lt;T <strong class="jxr_keyword">extends</strong> Wire&gt; <a href="../../../../com/jcabi/http/Request.html">Request</a> through(<strong class="jxr_keyword">final</strong> Class&lt;T&gt; type,
-<a class="jxr_linenumber" name="L278" href="#L278">278</a>         <strong class="jxr_keyword">final</strong> Object... args) {
-<a class="jxr_linenumber" name="L279" href="#L279">279</a>         <strong class="jxr_keyword">return</strong> <strong class="jxr_keyword">this</strong>.base.through(type, args);
-<a class="jxr_linenumber" name="L280" href="#L280">280</a>     }
-<a class="jxr_linenumber" name="L281" href="#L281">281</a> 
-<a class="jxr_linenumber" name="L282" href="#L282">282</a> }
+<a class="jxr_linenumber" name="L277" href="#L277">277</a>     <strong class="jxr_keyword">public</strong> <a href="../../../../com/jcabi/http/Response.html">Response</a> fetch(<strong class="jxr_keyword">final</strong> InputStream stream) <strong class="jxr_keyword">throws</strong> IOException {
+<a class="jxr_linenumber" name="L278" href="#L278">278</a>         <strong class="jxr_keyword">return</strong> <strong class="jxr_keyword">this</strong>.base.fetch(stream);
+<a class="jxr_linenumber" name="L279" href="#L279">279</a>     }
+<a class="jxr_linenumber" name="L280" href="#L280">280</a> 
+<a class="jxr_linenumber" name="L281" href="#L281">281</a>     @Override
+<a class="jxr_linenumber" name="L282" href="#L282">282</a>     <strong class="jxr_keyword">public</strong> &lt;T <strong class="jxr_keyword">extends</strong> Wire&gt; <a href="../../../../com/jcabi/http/Request.html">Request</a> through(<strong class="jxr_keyword">final</strong> Class&lt;T&gt; type,
+<a class="jxr_linenumber" name="L283" href="#L283">283</a>         <strong class="jxr_keyword">final</strong> Object... args) {
+<a class="jxr_linenumber" name="L284" href="#L284">284</a>         <strong class="jxr_keyword">return</strong> <strong class="jxr_keyword">this</strong>.base.through(type, args);
+<a class="jxr_linenumber" name="L285" href="#L285">285</a>     }
+<a class="jxr_linenumber" name="L286" href="#L286">286</a> 
+<a class="jxr_linenumber" name="L287" href="#L287">287</a> }
 </pre>
 <hr/>
-<div id="footer">Copyright &#169; 2012&#x2013;2016 <a href="http://www.jcabi.com">jcabi.com</a>. All rights reserved.</div>
+<div id="footer">Copyright &#169; 2012&#x2013;2017 <a href="http://www.jcabi.com">jcabi.com</a>. All rights reserved.</div>
 </body>
 </html>
