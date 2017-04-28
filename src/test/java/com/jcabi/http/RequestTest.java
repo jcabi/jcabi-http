@@ -29,6 +29,30 @@
  */
 package com.jcabi.http;
 
+import static org.junit.Assert.assertEquals;
+
+import java.io.ByteArrayInputStream;
+import java.io.InputStream;
+import java.net.HttpURLConnection;
+import java.net.URI;
+import java.net.URLDecoder;
+import java.net.URLEncoder;
+import java.util.Arrays;
+import java.util.Collection;
+
+import javax.ws.rs.core.HttpHeaders;
+import javax.ws.rs.core.MediaType;
+import javax.ws.rs.core.UriBuilder;
+
+import org.apache.commons.lang3.CharEncoding;
+import org.hamcrest.MatcherAssert;
+import org.hamcrest.Matchers;
+import org.junit.Test;
+import org.junit.runner.RunWith;
+import org.junit.runners.Parameterized;
+import org.mockito.ArgumentCaptor;
+import org.mockito.Mockito;
+
 import com.jcabi.http.mock.MkAnswer;
 import com.jcabi.http.mock.MkContainer;
 import com.jcabi.http.mock.MkGrizzlyContainer;
@@ -39,22 +63,6 @@ import com.jcabi.http.response.RestResponse;
 import com.jcabi.http.response.XmlResponse;
 import com.jcabi.http.wire.BasicAuthWire;
 import com.jcabi.http.wire.UserAgentWire;
-import java.io.ByteArrayInputStream;
-import java.net.HttpURLConnection;
-import java.net.URI;
-import java.net.URLDecoder;
-import java.net.URLEncoder;
-import java.util.Arrays;
-import java.util.Collection;
-import javax.ws.rs.core.HttpHeaders;
-import javax.ws.rs.core.MediaType;
-import javax.ws.rs.core.UriBuilder;
-import org.apache.commons.lang3.CharEncoding;
-import org.hamcrest.MatcherAssert;
-import org.hamcrest.Matchers;
-import org.junit.Test;
-import org.junit.runner.RunWith;
-import org.junit.runners.Parameterized;
 
 /**
  * Test case for {@link Request} and its implementations.
@@ -511,6 +519,62 @@ public final class RequestTest {
             .method(Request.GET)
             .body().set("already set").back()
             .fetch(new ByteArrayInputStream("ba".getBytes(CharEncoding.UTF_8)));
+    }
+    
+    @SuppressWarnings("unchecked")
+    @Test
+    public void testTimeoutOrderDoesntMattterJustBeforeFetch() throws Exception {
+        synchronized (MockWire.class) {
+            Wire mockWire = Mockito.mock(Wire.class);
+            ArgumentCaptor<Integer> connectCaptor = ArgumentCaptor.forClass(Integer.class);
+            ArgumentCaptor<Integer> readCaptor = ArgumentCaptor.forClass(Integer.class);
+            int connect = 1234;
+            int read = 2345;
+            MockWire.mockDelegate = mockWire;
+            Response mockResponse = Mockito.mock(Response.class);
+            Mockito.when(mockWire.send(Mockito.any(Request.class), Mockito.anyString(),
+                    Mockito.anyString(), Mockito.anyCollection(), Mockito.any(InputStream.class),
+                    Mockito.anyInt(), Mockito.anyInt())).thenReturn(mockResponse);
+            // set timeout just before fetch
+            this.request(new URI("http://localhost:78787"))
+                .through(MockWire.class)
+                .method(Request.GET)
+                .timeout(connect, read)
+                .fetch();
+            Mockito.verify(mockWire).send(Mockito.any(Request.class), Mockito.anyString(),
+                    Mockito.anyString(), Mockito.anyCollection(), Mockito.any(InputStream.class),
+                    connectCaptor.capture(), readCaptor.capture());
+            assertEquals(connect, connectCaptor.getValue().intValue());
+            assertEquals(read, readCaptor.getValue().intValue());
+        }
+    }
+    
+    @SuppressWarnings("unchecked")
+    @Test
+    public void testTimeoutOrderDoesntMattterEarlyCallTimeout() throws Exception {
+        synchronized (MockWire.class) {
+            Wire mockWire = Mockito.mock(Wire.class);
+            ArgumentCaptor<Integer> connectCaptor = ArgumentCaptor.forClass(Integer.class);
+            ArgumentCaptor<Integer> readCaptor = ArgumentCaptor.forClass(Integer.class);
+            int connect = 1234;
+            int read = 2345;
+            MockWire.mockDelegate = mockWire;
+            Response mockResponse = Mockito.mock(Response.class);
+            Mockito.when(mockWire.send(Mockito.any(Request.class), Mockito.anyString(),
+                    Mockito.anyString(), Mockito.anyCollection(), Mockito.any(InputStream.class),
+                    Mockito.anyInt(), Mockito.anyInt())).thenReturn(mockResponse);
+            // set timeout early
+            this.request(new URI("http://localhost:78787"))
+                .through(MockWire.class)
+                .timeout(connect, read)
+                .method(Request.GET)
+                .fetch();
+            Mockito.verify(mockWire).send(Mockito.any(Request.class), Mockito.anyString(),
+                    Mockito.anyString(), Mockito.anyCollection(), Mockito.any(InputStream.class),
+                    connectCaptor.capture(), readCaptor.capture());
+            assertEquals(connect, connectCaptor.getValue().intValue());
+            assertEquals(read, readCaptor.getValue().intValue());
+        }
     }
 
     /**
