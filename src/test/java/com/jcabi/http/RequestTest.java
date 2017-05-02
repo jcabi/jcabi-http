@@ -567,12 +567,12 @@ public final class RequestTest {
                     readCaptor.capture()
             );
             MatcherAssert.assertThat(
-                    connect,
-                    Matchers.is(connectCaptor.getValue().intValue())
+                    connectCaptor.getValue().intValue(),
+                    Matchers.is(connect)
             );
             MatcherAssert.assertThat(
-                    read,
-                    Matchers.is(readCaptor.getValue().intValue())
+                    readCaptor.getValue().intValue(),
+                    Matchers.is(read)
             );
         }
     }
@@ -623,12 +623,12 @@ public final class RequestTest {
                     readCaptor.capture()
             );
             MatcherAssert.assertThat(
-                    connect,
-                    Matchers.is(connectCaptor.getValue().intValue())
+                    connectCaptor.getValue().intValue(),
+                    Matchers.is(connect)
             );
             MatcherAssert.assertThat(
-                    read,
-                    Matchers.is(readCaptor.getValue().intValue())
+                    readCaptor.getValue().intValue(),
+                    Matchers.is(read)
             );
         }
     }
