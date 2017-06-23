@@ -202,7 +202,9 @@ final class BaseRequest implements Request {
             this.home,
             this.hdrs.with(new ImmutableHeader(name, value.toString())),
             this.mtd,
-            this.content
+            this.content,
+            this.connect,
+            this.read
         );
     }
 
@@ -221,7 +223,9 @@ final class BaseRequest implements Request {
             this.home,
             headers,
             this.mtd,
-            this.content
+            this.content,
+            this.connect,
+            this.read
         );
     }
 
@@ -242,7 +246,9 @@ final class BaseRequest implements Request {
             this.home,
             this.hdrs,
             method,
-            this.content
+            this.content,
+            this.connect,
+            this.read
         );
     }
 
