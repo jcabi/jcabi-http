@@ -37,9 +37,7 @@ import com.jcabi.http.Wire;
 import com.jcabi.log.Logger;
 import java.io.IOException;
 import java.io.InputStream;
-import java.io.UnsupportedEncodingException;
 import java.net.URI;
-import java.net.URLEncoder;
 import java.nio.charset.Charset;
 import java.util.Collection;
 import java.util.LinkedList;
@@ -119,29 +117,21 @@ public final class BasicAuthWire implements Wire {
         final String info = URI.create(home).getUserInfo();
         if (absent && info != null) {
             final String[] parts = info.split(":", 2);
-            try {
-                hdrs.add(
-                    new ImmutableHeader(
-                        HttpHeaders.AUTHORIZATION,
-                        Logger.format(
-                            "Basic %s",
-                            DatatypeConverter.printBase64Binary(
-                                Logger.format(
-                                    "%s:%s",
-                                    URLEncoder.encode(
-                                        parts[0], BasicAuthWire.ENCODING
-                                    ),
-                                    URLEncoder.encode(
-                                        parts[1], BasicAuthWire.ENCODING
-                                    )
-                                ).getBytes(BasicAuthWire.CHARSET)
-                            )
+            hdrs.add(
+                new ImmutableHeader(
+                    HttpHeaders.AUTHORIZATION,
+                    Logger.format(
+                        "Basic %s",
+                        DatatypeConverter.printBase64Binary(
+                            Logger.format(
+                                "%s:%s",
+                                parts[0],
+                                parts[1]
+                            ).getBytes(BasicAuthWire.CHARSET)
                         )
                     )
-                );
-            } catch (final UnsupportedEncodingException ex) {
-                throw new IllegalStateException(ex);
-            }
+                )
+            );
         }
         return this.origin.send(
             req, home, method, hdrs, content, connect, read
