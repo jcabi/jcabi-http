@@ -516,7 +516,9 @@ final class BaseRequest implements Request {
                 this.owner.home,
                 this.owner.hdrs,
                 this.owner.mtd,
-                this.text
+                this.text,
+                this.owner.connect,
+                this.owner.read
             );
         }
 
@@ -617,7 +619,9 @@ final class BaseRequest implements Request {
                 this.owner.home,
                 this.owner.hdrs,
                 this.owner.mtd,
-                this.text
+                this.text,
+                this.owner.connect,
+                this.owner.read
             );
         }
 

@@ -538,6 +538,39 @@ public final class RequestTest {
      *
      * @throws Exception If something goes wrong inside
      */
+    @Test
+    public void testTimeoutOrderDoesntMatterBeforeBody()
+            throws Exception {
+        final int connect = 1234;
+        final int read = 2345;
+        final Runnable requestExecution = new Runnable() {
+            @Override
+            public void run() {
+                try {
+                    // @checkstyle RequireThisCheck (1 lines)
+                    request(new URI(LOCALHOST_URL))
+                        .through(MockWire.class)
+                        .method(Request.GET)
+                        .timeout(connect, read)
+                        .body()
+                        .back()
+                        .fetch();
+                    // @checkstyle IllegalCatchCheck (1 lines)
+                } catch (final Exception ex) {
+                    throw new RuntimeException(ex);
+                }
+            }
+        };
+        this.testTimeoutOrderDoesntMatter(requestExecution);
+    }
+
+    /**
+     * The connect and read timeouts are properly set no matter in which order
+     * <code>Request.timeout</code> is called.
+     *
+     * @throws Exception If something goes wrong inside
+     */
+    @Test
     public void testTimeoutOrderDoesntMatterBeforeFetch()
             throws Exception {
         final int connect = 1234;
@@ -612,6 +645,38 @@ public final class RequestTest {
                         .through(MockWire.class)
                         .timeout(connect, read)
                         .method(Request.GET)
+                        .fetch();
+                    // @checkstyle IllegalCatchCheck (1 lines)
+                } catch (final Exception ex) {
+                    throw new RuntimeException(ex);
+                }
+            }
+        };
+        this.testTimeoutOrderDoesntMatter(requestExecution);
+    }
+
+    /**
+     * The connect and read timeouts are properly set no matter in which order
+     * <code>Request.timeout</code> is called.
+     *
+     * @throws Exception If something goes wrong inside
+     */
+    @Test
+    public void testTimeoutOrderDoesntMatterBeforeMultipartBody()
+            throws Exception {
+        final int connect = 1234;
+        final int read = 2345;
+        final Runnable requestExecution = new Runnable() {
+            @Override
+            public void run() {
+                try {
+                    // @checkstyle RequireThisCheck (1 lines)
+                    request(new URI(LOCALHOST_URL))
+                        .through(MockWire.class)
+                        .method(Request.GET)
+                        .timeout(connect, read)
+                        .multipartBody()
+                        .back()
                         .fetch();
                     // @checkstyle IllegalCatchCheck (1 lines)
                 } catch (final Exception ex) {
