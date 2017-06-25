@@ -422,7 +422,7 @@ public final class RequestTest {
             query.headers(),
             Matchers.hasEntry(
                 Matchers.equalTo(HttpHeaders.AUTHORIZATION),
-                Matchers.hasItem("Basic dXNlcjolRTIlODIlQUMlRTIlODIlQUM=")
+                Matchers.hasItem("Basic dXNlcjrigqzigqw=")
             )
         );
     }
