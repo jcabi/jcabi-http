@@ -41,7 +41,6 @@ import java.net.URI;
 import java.util.Map;
 import javax.xml.namespace.NamespaceContext;
 import lombok.EqualsAndHashCode;
-import org.hamcrest.MatcherAssert;
 
 /**
  * XML response.
@@ -131,14 +130,15 @@ public final class XmlResponse extends AbstractResponse {
      * @return This object
      */
     public XmlResponse assertXPath(final String xpath) {
-        MatcherAssert.assertThat(
-            String.format(
-                "XML doesn't contain required XPath '%s':%n%s",
-                xpath, this.body()
-            ),
-            this.body(),
-            XhtmlMatchers.hasXPath(xpath, this.context())
-        );
+        final String body = this.body();
+        if (!XhtmlMatchers.hasXPath(xpath, this.context()).matches(body)) {
+            throw new AssertionError(
+                String.format(
+                    "XML doesn't contain required XPath '%s':%n%s",
+                    xpath, body
+                )
+            );
+        }
         return this;
     }
 
