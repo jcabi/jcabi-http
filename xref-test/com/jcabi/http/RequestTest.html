@@ -55,29 +55,29 @@
 <a class="jxr_linenumber" name="L47" href="#L47">47</a>  <strong class="jxr_keyword">import</strong> java.net.URLEncoder;
 <a class="jxr_linenumber" name="L48" href="#L48">48</a>  <strong class="jxr_keyword">import</strong> java.util.Arrays;
 <a class="jxr_linenumber" name="L49" href="#L49">49</a>  <strong class="jxr_keyword">import</strong> java.util.Collection;
-<a class="jxr_linenumber" name="L50" href="#L50">50</a>  <strong class="jxr_keyword">import</strong> javax.ws.rs.core.HttpHeaders;
-<a class="jxr_linenumber" name="L51" href="#L51">51</a>  <strong class="jxr_keyword">import</strong> javax.ws.rs.core.MediaType;
-<a class="jxr_linenumber" name="L52" href="#L52">52</a>  <strong class="jxr_keyword">import</strong> javax.ws.rs.core.UriBuilder;
-<a class="jxr_linenumber" name="L53" href="#L53">53</a>  <strong class="jxr_keyword">import</strong> org.apache.commons.lang3.CharEncoding;
-<a class="jxr_linenumber" name="L54" href="#L54">54</a>  <strong class="jxr_keyword">import</strong> org.hamcrest.MatcherAssert;
-<a class="jxr_linenumber" name="L55" href="#L55">55</a>  <strong class="jxr_keyword">import</strong> org.hamcrest.Matchers;
-<a class="jxr_linenumber" name="L56" href="#L56">56</a>  <strong class="jxr_keyword">import</strong> org.junit.Test;
-<a class="jxr_linenumber" name="L57" href="#L57">57</a>  <strong class="jxr_keyword">import</strong> org.junit.runner.RunWith;
-<a class="jxr_linenumber" name="L58" href="#L58">58</a>  <strong class="jxr_keyword">import</strong> org.junit.runners.Parameterized;
-<a class="jxr_linenumber" name="L59" href="#L59">59</a>  <strong class="jxr_keyword">import</strong> org.mockito.ArgumentCaptor;
-<a class="jxr_linenumber" name="L60" href="#L60">60</a>  <strong class="jxr_keyword">import</strong> org.mockito.Mockito;
-<a class="jxr_linenumber" name="L61" href="#L61">61</a>  
-<a class="jxr_linenumber" name="L62" href="#L62">62</a>  <em class="jxr_javadoccomment">/**</em>
-<a class="jxr_linenumber" name="L63" href="#L63">63</a>  <em class="jxr_javadoccomment"> * Test case for {@link Request} and its implementations.</em>
-<a class="jxr_linenumber" name="L64" href="#L64">64</a>  <em class="jxr_javadoccomment"> * @author Yegor Bugayenko (yegor@tpc2.com)</em>
-<a class="jxr_linenumber" name="L65" href="#L65">65</a>  <em class="jxr_javadoccomment"> * @version $Id: c7c563832bf098117741c7022fa0c7e8e33a7e12 $</em>
-<a class="jxr_linenumber" name="L66" href="#L66">66</a>  <em class="jxr_javadoccomment"> * @checkstyle IndentationCheck (7 lines)</em>
-<a class="jxr_linenumber" name="L67" href="#L67">67</a>  <em class="jxr_javadoccomment"> */</em>
-<a class="jxr_linenumber" name="L68" href="#L68">68</a>  @SuppressWarnings({
-<a class="jxr_linenumber" name="L69" href="#L69">69</a>      <span class="jxr_string">"PMD.TooManyMethods"</span>,
-<a class="jxr_linenumber" name="L70" href="#L70">70</a>      <span class="jxr_string">"PMD.DoNotUseThreads"</span>,
+<a class="jxr_linenumber" name="L50" href="#L50">50</a>  <strong class="jxr_keyword">import</strong> java.util.Map;
+<a class="jxr_linenumber" name="L51" href="#L51">51</a>  <strong class="jxr_keyword">import</strong> javax.ws.rs.core.HttpHeaders;
+<a class="jxr_linenumber" name="L52" href="#L52">52</a>  <strong class="jxr_keyword">import</strong> javax.ws.rs.core.MediaType;
+<a class="jxr_linenumber" name="L53" href="#L53">53</a>  <strong class="jxr_keyword">import</strong> javax.ws.rs.core.UriBuilder;
+<a class="jxr_linenumber" name="L54" href="#L54">54</a>  <strong class="jxr_keyword">import</strong> org.apache.commons.lang3.CharEncoding;
+<a class="jxr_linenumber" name="L55" href="#L55">55</a>  <strong class="jxr_keyword">import</strong> org.hamcrest.MatcherAssert;
+<a class="jxr_linenumber" name="L56" href="#L56">56</a>  <strong class="jxr_keyword">import</strong> org.hamcrest.Matchers;
+<a class="jxr_linenumber" name="L57" href="#L57">57</a>  <strong class="jxr_keyword">import</strong> org.junit.Test;
+<a class="jxr_linenumber" name="L58" href="#L58">58</a>  <strong class="jxr_keyword">import</strong> org.junit.runner.RunWith;
+<a class="jxr_linenumber" name="L59" href="#L59">59</a>  <strong class="jxr_keyword">import</strong> org.junit.runners.Parameterized;
+<a class="jxr_linenumber" name="L60" href="#L60">60</a>  <strong class="jxr_keyword">import</strong> org.mockito.ArgumentCaptor;
+<a class="jxr_linenumber" name="L61" href="#L61">61</a>  <strong class="jxr_keyword">import</strong> org.mockito.Mockito;
+<a class="jxr_linenumber" name="L62" href="#L62">62</a>  
+<a class="jxr_linenumber" name="L63" href="#L63">63</a>  <em class="jxr_javadoccomment">/**</em>
+<a class="jxr_linenumber" name="L64" href="#L64">64</a>  <em class="jxr_javadoccomment"> * Test case for {@link Request} and its implementations.</em>
+<a class="jxr_linenumber" name="L65" href="#L65">65</a>  <em class="jxr_javadoccomment"> * @author Yegor Bugayenko (yegor@tpc2.com)</em>
+<a class="jxr_linenumber" name="L66" href="#L66">66</a>  <em class="jxr_javadoccomment"> * @version $Id: 7128904df3aaed3f8816e69de1b139a3cf10293e $</em>
+<a class="jxr_linenumber" name="L67" href="#L67">67</a>  <em class="jxr_javadoccomment"> * @checkstyle IndentationCheck (7 lines)</em>
+<a class="jxr_linenumber" name="L68" href="#L68">68</a>  <em class="jxr_javadoccomment"> */</em>
+<a class="jxr_linenumber" name="L69" href="#L69">69</a>  @SuppressWarnings({
+<a class="jxr_linenumber" name="L70" href="#L70">70</a>      <span class="jxr_string">"PMD.TooManyMethods"</span>, <span class="jxr_string">"PMD.DoNotUseThreads"</span>,
 <a class="jxr_linenumber" name="L71" href="#L71">71</a>      <span class="jxr_string">"PMD.AvoidCatchingGenericException"</span>,
-<a class="jxr_linenumber" name="L72" href="#L72">72</a>      <span class="jxr_string">"PMD.AvoidThrowingRawExceptionTypes"</span>
+<a class="jxr_linenumber" name="L72" href="#L72">72</a>      <span class="jxr_string">"PMD.AvoidThrowingRawExceptionTypes"</span>, <span class="jxr_string">"PMD.ExcessiveImports"</span>
 <a class="jxr_linenumber" name="L73" href="#L73">73</a>  })
 <a class="jxr_linenumber" name="L74" href="#L74">74</a>  @RunWith(Parameterized.<strong class="jxr_keyword">class</strong>)
 <a class="jxr_linenumber" name="L75" href="#L75">75</a>  <strong class="jxr_keyword">public</strong> <strong class="jxr_keyword">final</strong> <strong class="jxr_keyword">class</strong> <a href="../../../com/jcabi/http/RequestTest.html">RequestTest</a> {
@@ -751,7 +751,7 @@
 <a class="jxr_linenumber" name="L743" href="#L743">743</a>                             Mockito.any(Request.<strong class="jxr_keyword">class</strong>),
 <a class="jxr_linenumber" name="L744" href="#L744">744</a>                             Mockito.anyString(),
 <a class="jxr_linenumber" name="L745" href="#L745">745</a>                             Mockito.anyString(),
-<a class="jxr_linenumber" name="L746" href="#L746">746</a>                             Mockito.anyCollection(),
+<a class="jxr_linenumber" name="L746" href="#L746">746</a>                             Mockito.&lt;Map.Entry&lt;String, String&gt;&gt;anyCollection(),
 <a class="jxr_linenumber" name="L747" href="#L747">747</a>                             Mockito.any(InputStream.<strong class="jxr_keyword">class</strong>),
 <a class="jxr_linenumber" name="L748" href="#L748">748</a>                             Mockito.anyInt(),
 <a class="jxr_linenumber" name="L749" href="#L749">749</a>                             Mockito.anyInt()
@@ -762,7 +762,7 @@
 <a class="jxr_linenumber" name="L754" href="#L754">754</a>                     Mockito.any(Request.<strong class="jxr_keyword">class</strong>),
 <a class="jxr_linenumber" name="L755" href="#L755">755</a>                     Mockito.anyString(),
 <a class="jxr_linenumber" name="L756" href="#L756">756</a>                     Mockito.anyString(),
-<a class="jxr_linenumber" name="L757" href="#L757">757</a>                     Mockito.anyCollection(),
+<a class="jxr_linenumber" name="L757" href="#L757">757</a>                     Mockito.&lt;Map.Entry&lt;String, String&gt;&gt;anyCollection(),
 <a class="jxr_linenumber" name="L758" href="#L758">758</a>                     Mockito.any(InputStream.<strong class="jxr_keyword">class</strong>),
 <a class="jxr_linenumber" name="L759" href="#L759">759</a>                     connectCaptor.capture(),
 <a class="jxr_linenumber" name="L760" href="#L760">760</a>                     readCaptor.capture()
