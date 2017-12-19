@@ -47,6 +47,7 @@ import java.net.URLDecoder;
 import java.net.URLEncoder;
 import java.util.Arrays;
 import java.util.Collection;
+import java.util.Map;
 import javax.ws.rs.core.HttpHeaders;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.UriBuilder;
@@ -66,10 +67,9 @@ import org.mockito.Mockito;
  * @checkstyle IndentationCheck (7 lines)
  */
 @SuppressWarnings({
-    "PMD.TooManyMethods",
-    "PMD.DoNotUseThreads",
+    "PMD.TooManyMethods", "PMD.DoNotUseThreads",
     "PMD.AvoidCatchingGenericException",
-    "PMD.AvoidThrowingRawExceptionTypes"
+    "PMD.AvoidThrowingRawExceptionTypes", "PMD.ExcessiveImports"
 })
 @RunWith(Parameterized.class)
 public final class RequestTest {
@@ -743,7 +743,7 @@ public final class RequestTest {
                             Mockito.any(Request.class),
                             Mockito.anyString(),
                             Mockito.anyString(),
-                            Mockito.anyCollection(),
+                            Mockito.<Map.Entry<String, String>>anyCollection(),
                             Mockito.any(InputStream.class),
                             Mockito.anyInt(),
                             Mockito.anyInt()
@@ -754,7 +754,7 @@ public final class RequestTest {
                     Mockito.any(Request.class),
                     Mockito.anyString(),
                     Mockito.anyString(),
-                    Mockito.anyCollection(),
+                    Mockito.<Map.Entry<String, String>>anyCollection(),
                     Mockito.any(InputStream.class),
                     connectCaptor.capture(),
                     readCaptor.capture()
