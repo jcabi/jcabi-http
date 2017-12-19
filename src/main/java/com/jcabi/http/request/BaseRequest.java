@@ -79,7 +79,7 @@ import lombok.EqualsAndHashCode;
 @EqualsAndHashCode(of = { "home", "mtd", "hdrs", "content" })
 @Loggable(Loggable.DEBUG)
 @SuppressWarnings({"PMD.TooManyMethods", "PMD.GodClass"})
-final class BaseRequest implements Request {
+public final class BaseRequest implements Request {
 
     /**
      * The encoding to use.
