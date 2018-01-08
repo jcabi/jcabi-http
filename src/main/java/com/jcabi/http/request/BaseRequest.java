@@ -139,7 +139,7 @@ public final class BaseRequest implements Request {
      * @param wre Wire
      * @param uri The resource to work with
      */
-    BaseRequest(final Wire wre, final String uri) {
+    public BaseRequest(final Wire wre, final String uri) {
         this(
             wre, uri,
             new Array<Map.Entry<String, String>>(),
@@ -156,7 +156,7 @@ public final class BaseRequest implements Request {
      * @param body HTTP request body
      * @checkstyle ParameterNumber (5 lines)
      */
-    BaseRequest(final Wire wre, final String uri,
+    public BaseRequest(final Wire wre, final String uri,
         final Iterable<Map.Entry<String, String>> headers,
         final String method, final byte[] body) {
         this(wre, uri, headers, method, body, 0, 0);
@@ -173,7 +173,7 @@ public final class BaseRequest implements Request {
      * @param rdd Read timeout for http connection
      * @checkstyle ParameterNumber (5 lines)
      */
-    BaseRequest(final Wire wre, final String uri,
+    public BaseRequest(final Wire wre, final String uri,
         final Iterable<Map.Entry<String, String>> headers,
         final String method, final byte[] body,
         final int cnct, final int rdd) {
