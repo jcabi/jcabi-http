@@ -46,7 +46,7 @@ public final class MkQueryMatchers {
     }
 
     /**
-     * Matches the value of {@link MkQuery#body()} against the given matcher.
+     * Matches the value of the MkQuery's body against the given matcher.
      *
      * @param matcher The matcher to use.
      * @return Matcher for checking the body of MkQuery
@@ -56,7 +56,7 @@ public final class MkQueryMatchers {
     }
 
     /**
-     * Matches the content of {@link MkQuery#header()} against the given
+     * Matches the content of the MkQuery's header against the given
      * matcher. Note that for a valid match to occur, the header entry must
      * exist <i>and</i> its value(s) must match the given matcher.
      *
