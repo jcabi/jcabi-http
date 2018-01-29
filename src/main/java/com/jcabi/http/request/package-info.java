@@ -31,7 +31,7 @@
 /**
  * Requests.
  *
- * <p>This package contains implementations of class {@link Request}.
+ * <p>This package contains implementations of class Request.
  * The most popular and easy to use it {@link JdkRequest}.
  *
  * <p>However, in some situations {@link JdkRequest} falls short and

@@ -45,7 +45,7 @@ public final class MkAnswerMatchers {
     }
 
     /**
-     * Matches the value of {@link MkAnswer#body()} against the given matcher.
+     * Matches the value of the MkAnswer's body against the given matcher.
      *
      * @param matcher The matcher to use.
      * @return Matcher for checking the body of MkAnswer
@@ -55,7 +55,7 @@ public final class MkAnswerMatchers {
     }
 
     /**
-     * Matches the value of {@link MkAnswer#bodyBytes()} against the given
+     * Matches the value of the MkAnswer's body bytes against the given
      * matcher.
      * @param matcher The matcher to use
      * @return Matcher for checking the body of MkAnswer
@@ -66,7 +66,7 @@ public final class MkAnswerMatchers {
     }
 
     /**
-     * Matches the content of {@link MkAnswer#header()} against the given
+     * Matches the content of the MkAnswer's header against the given
      * matcher. Note that for a valid match to occur, the header entry must
      * exist <i>and</i> its value(s) must match the given matcher.
      *
