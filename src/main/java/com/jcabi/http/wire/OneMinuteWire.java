@@ -39,6 +39,7 @@ import java.io.InputStream;
 import java.util.Collection;
 import java.util.Map;
 import java.util.concurrent.TimeUnit;
+import javax.net.ssl.SSLContext;
 import lombok.EqualsAndHashCode;
 import lombok.ToString;
 
@@ -87,9 +88,10 @@ public final class OneMinuteWire implements Wire {
         final Collection<Map.Entry<String, String>> headers,
         final InputStream content,
         final int connect,
-        final int read) throws IOException {
+        final int read,
+        final SSLContext sslcontext) throws IOException {
         return this.origin.send(
-            req, home, method, headers, content, connect, read
+            req, home, method, headers, content, connect, read, sslcontext
         );
     }
 }

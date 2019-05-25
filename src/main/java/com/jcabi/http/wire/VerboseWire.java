@@ -42,6 +42,7 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.util.Collection;
 import java.util.Map;
+import javax.net.ssl.SSLContext;
 import lombok.EqualsAndHashCode;
 import lombok.ToString;
 
@@ -88,7 +89,8 @@ public final class VerboseWire implements Wire {
         final Collection<Map.Entry<String, String>> headers,
         final InputStream content,
         final int connect,
-        final int read) throws IOException {
+        final int read,
+        final SSLContext sslcontext) throws IOException {
         final ByteArrayOutputStream output = new ByteArrayOutputStream();
         final byte[] buffer = new byte[Tv.THOUSAND];
         for (int bytes = content.read(buffer); bytes != -1;
@@ -99,7 +101,7 @@ public final class VerboseWire implements Wire {
         final Response response = this.origin.send(
             req, home, method, headers,
             new ByteArrayInputStream(output.toByteArray()),
-                connect, read
+                connect, read, sslcontext
         );
         final StringBuilder text = new StringBuilder(0);
         for (final Map.Entry<String, String> header : headers) {

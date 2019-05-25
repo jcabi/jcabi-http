@@ -45,6 +45,7 @@ import java.net.URL;
 import java.util.Collection;
 import java.util.LinkedList;
 import java.util.Map;
+import javax.net.ssl.SSLContext;
 import lombok.EqualsAndHashCode;
 import lombok.ToString;
 import org.apache.http.Header;
@@ -54,7 +55,8 @@ import org.apache.http.client.methods.CloseableHttpResponse;
 import org.apache.http.client.methods.HttpEntityEnclosingRequestBase;
 import org.apache.http.entity.BufferedHttpEntity;
 import org.apache.http.entity.InputStreamEntity;
-import org.apache.http.impl.client.HttpClients;
+import org.apache.http.impl.client.CloseableHttpClient;
+import org.apache.http.impl.client.HttpClientBuilder;
 import org.apache.http.util.EntityUtils;
 
 /**
@@ -87,24 +89,25 @@ public final class ApacheRequest implements Request {
             final Collection<Map.Entry<String, String>> headers,
             final InputStream content,
             final int connect,
-            final int read) throws IOException {
-            final CloseableHttpResponse response =
-                HttpClients.createSystem().execute(
+            final int read,
+            final SSLContext sslcontext) throws IOException {
+            final CloseableHttpClient client = HttpClientBuilder.create()
+                    .useSystemProperties()
+                    .setSSLContext(sslcontext)
+                    .build();
+            try (CloseableHttpResponse response = client.execute(
                     this.httpRequest(
-                        home, method, headers, content,
-                        connect, read
+                            home, method, headers, content,
+                            connect, read
                     )
-                );
-            try {
+            )) {
                 return new DefaultResponse(
-                    req,
-                    response.getStatusLine().getStatusCode(),
-                    response.getStatusLine().getReasonPhrase(),
-                    this.headers(response.getAllHeaders()),
-                    this.consume(response.getEntity())
+                        req,
+                        response.getStatusLine().getStatusCode(),
+                        response.getStatusLine().getReasonPhrase(),
+                        this.headers(response.getAllHeaders()),
+                        this.consume(response.getEntity())
                 );
-            } finally {
-                response.close();
             }
         }
         /**
@@ -243,6 +246,11 @@ public final class ApacheRequest implements Request {
     @Override
     public Request method(final String method) {
         return this.base.method(method);
+    }
+
+    @Override
+    public Request sslcontext(final SSLContext context) {
+        return this.base.sslcontext(context);
     }
 
     @Override

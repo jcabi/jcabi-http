@@ -55,6 +55,7 @@ import javax.json.JsonArrayBuilder;
 import javax.json.JsonObject;
 import javax.json.JsonObjectBuilder;
 import javax.json.JsonString;
+import javax.net.ssl.SSLContext;
 import lombok.EqualsAndHashCode;
 import lombok.ToString;
 import org.apache.commons.io.FileUtils;
@@ -70,6 +71,7 @@ import org.apache.commons.io.FileUtils;
 @Immutable
 @ToString
 @EqualsAndHashCode
+@SuppressWarnings("PMD.ExcessiveImports")
 final class FcCache {
 
     /**
@@ -124,14 +126,17 @@ final class FcCache {
      * @param input Input body
      * @param connect Connect timeout
      * @param read Read timeout
+     * @param sslcontext SSL Context
      * @return Response
      * @throws IOException If fails
      * @checkstyle ParameterNumberCheck (10 lines)
      */
+    @SuppressWarnings("PMD.ExcessiveParameterList")
     public Response get(final String label, final Wire wire,
         final Request request, final String home, final String method,
         final Collection<Map.Entry<String, String>> headers,
-        final InputStream input, final int connect, final int read)
+        final InputStream input, final int connect, final int read,
+        final SSLContext sslcontext)
         throws IOException {
         final File file = this.file(label);
         final Response rsp;
@@ -141,7 +146,7 @@ final class FcCache {
             rsp = this.saved(
                 wire.send(
                     request, home, method,
-                    headers, input, connect, read
+                    headers, input, connect, read, sslcontext
                 ),
                 file
             );

@@ -38,6 +38,7 @@ import java.net.HttpURLConnection;
 import java.util.Collection;
 import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
+import javax.net.ssl.SSLContext;
 
 /**
  * This is the base class to handle http responses with 304 state.
@@ -84,21 +85,21 @@ public abstract class AbstractHeaderBasedCachingWire implements Wire {
         this.cache = new ConcurrentHashMap<>();
     }
 
-    // @checkstyle ParameterNumber (3 lines)
+    // @checkstyle ParameterNumber (4 lines)
     @Override
     public final Response send(
-        final Request req, final String home, final String method,
-        final Collection<Map.Entry<String, String>> headers,
-        final InputStream content, final int connect, final int read
-    ) throws IOException {
+            final Request req, final String home, final String method,
+            final Collection<Map.Entry<String, String>> headers,
+            final InputStream content, final int connect, final int read,
+            final SSLContext sslcontext) throws IOException {
         final Response rsp;
         if (method.equals(Request.GET) && !this.requestHasCmcHeader(headers)) {
             rsp = this.consultCache(
-                req, home, method, headers, content, connect, read
+                req, home, method, headers, content, connect, read, sslcontext
             );
         } else {
             rsp = this.origin.send(
-                req, home, method, headers, content, connect, read
+                req, home, method, headers, content, connect, read, sslcontext
             );
         }
         return rsp;
@@ -114,6 +115,7 @@ public abstract class AbstractHeaderBasedCachingWire implements Wire {
      * @param content HTTP body
      * @param connect The connect timeout
      * @param read The read timeout
+     * @param sslcontext SSL Context
      * @return Response obtained
      * @throws IOException if fails
      * @checkstyle ParameterNumber (6 lines)
@@ -121,16 +123,16 @@ public abstract class AbstractHeaderBasedCachingWire implements Wire {
     private Response consultCache(
         final Request req, final String home, final String method,
         final Collection<Map.Entry<String, String>> headers,
-        final InputStream content, final int connect, final int read
-    ) throws IOException {
+        final InputStream content, final int connect, final int read,
+        final SSLContext sslcontext) throws IOException {
         final Response rsp;
         if (this.cache.containsKey(req)) {
             rsp = this.validateCacheWithServer(
-                req, home, method, headers, content, connect, read
+                req, home, method, headers, content, connect, read, sslcontext
             );
         } else {
             rsp = this.origin.send(
-                req, home, method, headers, content, connect, read
+                req, home, method, headers, content, connect, read, sslcontext
             );
             this.updateCache(req, rsp);
         }
@@ -146,6 +148,7 @@ public abstract class AbstractHeaderBasedCachingWire implements Wire {
      * @param content HTTP body
      * @param connect The connect timeout
      * @param read The read timeout
+     * @param sslcontext SSL Context
      * @return Response obtained
      * @throws IOException if fails
      * @checkstyle ParameterNumber (8 lines)
@@ -153,14 +156,14 @@ public abstract class AbstractHeaderBasedCachingWire implements Wire {
     private Response validateCacheWithServer(
         final Request req, final String home, final String method,
         final Collection<Map.Entry<String, String>> headers,
-        final InputStream content, final int connect, final int read
-    ) throws IOException {
+        final InputStream content, final int connect, final int read,
+        final SSLContext sslcontext) throws IOException {
         final Response cached = this.cache.get(req);
         final Collection<Map.Entry<String, String>> hdrs = this.enrich(
             headers, cached
         );
         Response result = this.origin.send(
-            req, home, method, hdrs, content, connect, read
+            req, home, method, hdrs, content, connect, read, sslcontext
         );
         if (result.status() == HttpURLConnection.HTTP_NOT_MODIFIED) {
             result = cached;

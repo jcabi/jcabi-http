@@ -45,6 +45,7 @@ import java.nio.charset.Charset;
 import java.util.Collection;
 import java.util.Collections;
 import java.util.Map;
+import javax.net.ssl.SSLContext;
 import lombok.EqualsAndHashCode;
 
 /**
@@ -131,13 +132,14 @@ public final class FakeRequest implements Request {
         this.base = new BaseRequest(
             new Wire() {
                 @Override
-                // @checkstyle ParameterNumber (6 lines)
+                // @checkstyle ParameterNumber (7 lines)
                 public Response send(final Request req, final String home,
                     final String method,
                     final Collection<Map.Entry<String, String>> headers,
                     final InputStream text,
                     final int connect,
-                    final int read) {
+                    final int read,
+                    final SSLContext sslcontext) {
                     return new DefaultResponse(
                         req,
                         FakeRequest.this.code,
@@ -189,6 +191,11 @@ public final class FakeRequest implements Request {
     @Override
     public Request timeout(final int connect, final int read) {
         return this.base.timeout(connect, read);
+    }
+
+    @Override
+    public Request sslcontext(final SSLContext context) {
+        return this.base.sslcontext(context);
     }
 
     @Override

@@ -41,9 +41,7 @@ import java.security.SecureRandom;
 import java.security.cert.X509Certificate;
 import java.util.Collection;
 import java.util.Map;
-import javax.net.ssl.HttpsURLConnection;
 import javax.net.ssl.SSLContext;
-import javax.net.ssl.SSLSocketFactory;
 import javax.net.ssl.TrustManager;
 import javax.net.ssl.X509TrustManager;
 import lombok.EqualsAndHashCode;
@@ -109,22 +107,18 @@ public final class TrustedWire implements Wire {
         final String method,
         final Collection<Map.Entry<String, String>> headers,
         final InputStream content,
-        final int connect, final int read) throws IOException {
-        synchronized (TrustedWire.class) {
-            final SSLSocketFactory def =
-                HttpsURLConnection.getDefaultSSLSocketFactory();
-            try {
-                HttpsURLConnection.setDefaultSSLSocketFactory(
-                    TrustedWire.context().getSocketFactory()
-                );
-                return this.origin.send(
-                    req, home, method, headers, content,
-                    connect, read
-                );
-            } finally {
-                HttpsURLConnection.setDefaultSSLSocketFactory(def);
-            }
+        final int connect, final int read,
+        final SSLContext context) throws IOException {
+        final SSLContext resolvedContext;
+        if (context == null) {
+            resolvedContext = context();
+        } else {
+            resolvedContext = context;
         }
+        return this.origin.send(
+                req, home, method, headers, content,
+                connect, read, resolvedContext
+        );
     }
 
     /**

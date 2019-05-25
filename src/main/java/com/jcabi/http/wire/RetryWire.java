@@ -40,6 +40,7 @@ import java.io.InputStream;
 import java.net.HttpURLConnection;
 import java.util.Collection;
 import java.util.Map;
+import javax.net.ssl.SSLContext;
 import lombok.EqualsAndHashCode;
 import lombok.ToString;
 
@@ -88,7 +89,8 @@ public final class RetryWire implements Wire {
         final String method,
         final Collection<Map.Entry<String, String>> headers,
         final InputStream content,
-        final int connect, final int read) throws IOException {
+        final int connect, final int read,
+        final SSLContext sslcontext) throws IOException {
         int attempt = 0;
         while (true) {
             if (attempt > Tv.THREE) {
@@ -99,7 +101,7 @@ public final class RetryWire implements Wire {
             try {
                 final Response rsp = this.origin.send(
                     req, home, method, headers, content,
-                    connect, read
+                    connect, read, sslcontext
                 );
                 if (rsp.status() < HttpURLConnection.HTTP_INTERNAL_ERROR) {
                     return rsp;

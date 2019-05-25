@@ -43,6 +43,7 @@ import java.net.URI;
 import java.util.Collection;
 import java.util.Map;
 import java.util.concurrent.ExecutionException;
+import javax.net.ssl.SSLContext;
 import lombok.EqualsAndHashCode;
 import lombok.ToString;
 
@@ -145,7 +146,8 @@ public final class CachingWire implements Wire {
         final Collection<Map.Entry<String, String>> headers,
         final InputStream content,
         final int connect,
-        final int read) throws IOException {
+        final int read,
+        final SSLContext sslcontext) throws IOException {
         final URI uri = req.uri().get();
         final StringBuilder label = new StringBuilder(Tv.HUNDRED)
             .append(method).append(' ').append(uri.getPath());
@@ -165,7 +167,7 @@ public final class CachingWire implements Wire {
                 rsp = CachingWire.CACHE.get(this).get(
                     new CachingWire.Query(
                         this.origin, req, home, headers, content,
-                        connect, read
+                        connect, read, sslcontext
                     )
                 );
             } catch (final ExecutionException ex) {
@@ -174,7 +176,7 @@ public final class CachingWire implements Wire {
         } else {
             rsp = this.origin.send(
                 req, home, method, headers, content,
-                connect, read
+                connect, read, sslcontext
             );
         }
         return rsp;
@@ -222,6 +224,10 @@ public final class CachingWire implements Wire {
          * Read timeout.
          */
         private final transient int read;
+        /**
+         * SSL Context.
+         */
+        private final transient SSLContext sslcontext;
 
         /**
          * Ctor.
@@ -232,12 +238,13 @@ public final class CachingWire implements Wire {
          * @param input Input body
          * @param cnct Connect timeout
          * @param rdd Read timeout
-         * @checkstyle ParameterNumberCheck (5 lines)
+         * @param sslcontext SSL Context
+         * @checkstyle ParameterNumberCheck (6 lines)
          */
         Query(final Wire wire, final Request req, final String home,
             final Collection<Map.Entry<String, String>> hdrs,
             final InputStream input, final int cnct,
-            final int rdd) {
+            final int rdd, final SSLContext sslcontext) {
             this.origin = wire;
             this.request = req;
             this.uri = home;
@@ -245,6 +252,7 @@ public final class CachingWire implements Wire {
             this.body = input;
             this.connect = cnct;
             this.read = rdd;
+            this.sslcontext = sslcontext;
         }
         /**
          * Fetch.
@@ -254,7 +262,7 @@ public final class CachingWire implements Wire {
         public Response fetch() throws IOException {
             return this.origin.send(
                 this.request, this.uri, Request.GET, this.headers, this.body,
-                this.connect, this.read
+                this.connect, this.read, this.sslcontext
             );
         }
     }

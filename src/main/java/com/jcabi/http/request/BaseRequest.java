@@ -54,6 +54,7 @@ import java.util.LinkedList;
 import java.util.Map;
 import javax.json.Json;
 import javax.json.JsonStructure;
+import javax.net.ssl.SSLContext;
 import javax.ws.rs.core.UriBuilder;
 import lombok.EqualsAndHashCode;
 
@@ -135,6 +136,11 @@ public final class BaseRequest implements Request {
     private final transient byte[] content;
 
     /**
+     * SSL Context.
+     */
+    private final transient SSLContext sslctx;
+
+    /**
      * Public ctor.
      * @param wre Wire
      * @param uri The resource to work with
@@ -177,17 +183,52 @@ public final class BaseRequest implements Request {
         final Iterable<Map.Entry<String, String>> headers,
         final String method, final byte[] body,
         final int cnct, final int rdd) {
+        this(wre, uri, headers, method, body, cnct, rdd, null);
+    }
+
+    /**
+     * Public ctor.
+     * @param wre Wire
+     * @param uri The resource to work with
+     * @param headers Headers
+     * @param method HTTP method
+     * @param body HTTP request body
+     * @param cnct Connect timeout for http connection
+     * @param rdd Read timeout for http connection
+     * @param context The SSL context to use
+     * @checkstyle ParameterNumber (5 lines)
+     */
+    public BaseRequest(final Wire wre, final String uri,
+                       final Iterable<Map.Entry<String, String>> headers,
+                       final String method, final byte[] body,
+                       final int cnct, final int rdd,
+                       final SSLContext context) {
         this.wire = wre;
         URI addr = URI.create(uri);
         if (addr.getPath() != null && addr.getPath().isEmpty()) {
             addr = UriBuilder.fromUri(addr).path("/").build();
         }
         this.home = addr.toString();
-        this.hdrs = new Array<Map.Entry<String, String>>(headers);
+        this.hdrs = new Array<>(headers);
         this.mtd = method;
         this.content = body.clone();
         this.connect = cnct;
         this.read = rdd;
+        this.sslctx = context;
+    }
+
+    @Override
+    public Request sslcontext(final SSLContext context) {
+        return new BaseRequest(
+                this.wire,
+                this.home,
+                this.hdrs,
+                this.mtd,
+                this.content,
+                this.connect,
+                this.read,
+                context
+        );
     }
 
     @Override
@@ -355,7 +396,7 @@ public final class BaseRequest implements Request {
         final Response response = this.wire.send(
             this, this.home, this.mtd,
             this.hdrs, stream, this.connect,
-            this.read
+            this.read, this.sslctx
         );
         final URI uri = URI.create(this.home);
         Logger.info(

@@ -39,6 +39,7 @@ import java.io.InputStream;
 import java.net.URI;
 import java.util.Collection;
 import java.util.Map;
+import javax.net.ssl.SSLContext;
 import lombok.EqualsAndHashCode;
 import lombok.ToString;
 
@@ -138,7 +139,8 @@ public final class FcWire implements Wire {
         final Collection<Map.Entry<String, String>> headers,
         final InputStream content,
         final int connect,
-        final int read) throws IOException {
+        final int read,
+        final SSLContext sslcontext) throws IOException {
         final URI uri = req.uri().get();
         final StringBuilder label = new StringBuilder(Tv.HUNDRED)
             .append(method).append(' ').append(uri.getPath());
@@ -152,12 +154,12 @@ public final class FcWire implements Wire {
         if (method.equals(Request.GET)) {
             rsp = this.cache.get(
                 label.toString(), this.origin, req,
-                home, method, headers, content, connect, read
+                home, method, headers, content, connect, read, sslcontext
             );
         } else {
             rsp = this.origin.send(
                 req, home, method, headers, content,
-                connect, read
+                connect, read, sslcontext
             );
         }
         return rsp;

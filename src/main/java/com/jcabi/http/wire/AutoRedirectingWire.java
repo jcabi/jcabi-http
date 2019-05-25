@@ -42,6 +42,7 @@ import java.util.Collection;
 import java.util.List;
 import java.util.Map;
 import java.util.concurrent.TimeUnit;
+import javax.net.ssl.SSLContext;
 import javax.ws.rs.core.HttpHeaders;
 import lombok.EqualsAndHashCode;
 import lombok.ToString;
@@ -109,9 +110,10 @@ public final class AutoRedirectingWire implements Wire {
         final Collection<Map.Entry<String, String>> headers,
         final InputStream content,
         final int connect,
-        final int read) throws IOException {
+        final int read,
+        final SSLContext sslcontext) throws IOException {
         Response response = this.origin.send(
-            req, home, method, headers, content, connect, read
+            req, home, method, headers, content, connect, read, sslcontext
         );
         int attempt = 1;
         final URI uri = URI.create(home);
@@ -132,7 +134,7 @@ public final class AutoRedirectingWire implements Wire {
             }
             response = this.origin.send(
                 req, location.toString(),
-                method, headers, content, connect, read
+                method, headers, content, connect, read, sslcontext
             );
             try {
                 TimeUnit.SECONDS.sleep((long) attempt);

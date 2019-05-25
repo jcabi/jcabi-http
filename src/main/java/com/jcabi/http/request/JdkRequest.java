@@ -50,6 +50,8 @@ import java.util.Collection;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
+import javax.net.ssl.HttpsURLConnection;
+import javax.net.ssl.SSLContext;
 import lombok.EqualsAndHashCode;
 import lombok.ToString;
 
@@ -80,6 +82,7 @@ public final class JdkRequest implements Request {
      * @checkstyle AnonInnerLength (200 lines)
      */
     private static final Wire WIRE = new Wire() {
+
         // @checkstyle ParameterNumber (6 lines)
         @Override
         public Response send(final Request req, final String home,
@@ -87,26 +90,13 @@ public final class JdkRequest implements Request {
             final Collection<Map.Entry<String, String>> headers,
             final InputStream content,
             final int connect,
-            final int read) throws IOException {
-            final URLConnection raw = new URL(home).openConnection();
-            if (!(raw instanceof HttpURLConnection)) {
-                throw new IOException(
-                    String.format(
-                        "'%s' opens %s instead of expected HttpURLConnection",
-                        home, raw.getClass().getName()
-                    )
-                );
-            }
-            final HttpURLConnection conn = HttpURLConnection.class.cast(raw);
+            final int read,
+            final SSLContext sslcontext) throws IOException {
+            HttpURLConnection conn = null;
             try {
-                conn.setConnectTimeout(connect);
-                conn.setReadTimeout(read);
-                conn.setRequestMethod(method);
-                conn.setUseCaches(false);
-                conn.setInstanceFollowRedirects(false);
-                for (final Map.Entry<String, String> header : headers) {
-                    conn.addRequestProperty(header.getKey(), header.getValue());
-                }
+                conn = this.createConnection(
+                        home, connect, read, method, headers, sslcontext
+                );
                 if (method.equals(Request.POST) || method.equals(Request.PUT)
                     || method.equals(Request.PATCH)) {
                     conn.setDoOutput(true);
@@ -131,8 +121,39 @@ public final class JdkRequest implements Request {
                     exp
                 );
             } finally {
-                conn.disconnect();
+                if (conn != null) {
+                    conn.disconnect();
+                }
             }
+        }
+        // @checkstyle ParameterNumber (4 lines)
+        private HttpURLConnection createConnection(final String home,
+            final int connect, final int read, final String method,
+            final Collection<Map.Entry<String, String>> headers,
+            final SSLContext sslcontext) throws IOException {
+            final URLConnection raw = new URL(home).openConnection();
+            if (!(raw instanceof HttpURLConnection)) {
+                throw new IOException(
+                    String.format(
+                        "'%s' opens %s instead of expected HttpURLConnection",
+                        home, raw.getClass().getName()
+                    )
+                );
+            }
+            final HttpURLConnection conn = HttpURLConnection.class.cast(raw);
+            conn.setConnectTimeout(connect);
+            conn.setReadTimeout(read);
+            conn.setRequestMethod(method);
+            conn.setUseCaches(false);
+            conn.setInstanceFollowRedirects(false);
+            for (final Map.Entry<String, String> header : headers) {
+                conn.addRequestProperty(header.getKey(), header.getValue());
+            }
+            if (sslcontext != null && conn instanceof HttpsURLConnection) {
+                final HttpsURLConnection sconn = (HttpsURLConnection) conn;
+                sconn.setSSLSocketFactory(sslcontext.getSocketFactory());
+            }
+            return conn;
         }
         /**
          * Fully write the input stream contents to the output stream.
@@ -266,6 +287,11 @@ public final class JdkRequest implements Request {
     @Override
     public Request timeout(final int connect, final int read) {
         return this.base.timeout(connect, read);
+    }
+
+    @Override
+    public Request sslcontext(final SSLContext context) {
+        return this.base.sslcontext(context);
     }
 
     @Override

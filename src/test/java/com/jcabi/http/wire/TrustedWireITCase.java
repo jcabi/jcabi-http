@@ -50,13 +50,12 @@ public final class TrustedWireITCase {
      */
     @Test
     public void ignoresPkixErrors() throws Exception {
-        new JdkRequest("https://api.travis-ci.org/test")
+        new JdkRequest("https://expired.badssl.com/")
             .header(HttpHeaders.CONTENT_TYPE, MediaType.APPLICATION_JSON)
             .header(HttpHeaders.ACCEPT, MediaType.APPLICATION_JSON)
             .through(TrustedWire.class)
             .fetch()
             .as(RestResponse.class)
-            .assertStatus(HttpURLConnection.HTTP_NOT_FOUND);
+            .assertStatus(HttpURLConnection.HTTP_OK);
     }
-
 }

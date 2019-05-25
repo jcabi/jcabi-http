@@ -48,6 +48,7 @@ import java.net.URLEncoder;
 import java.util.Arrays;
 import java.util.Collection;
 import java.util.Map;
+import javax.net.ssl.SSLContext;
 import javax.ws.rs.core.HttpHeaders;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.UriBuilder;
@@ -746,7 +747,8 @@ public final class RequestTest {
                             Mockito.<Map.Entry<String, String>>anyCollection(),
                             Mockito.any(InputStream.class),
                             Mockito.anyInt(),
-                            Mockito.anyInt()
+                            Mockito.anyInt(),
+                            Mockito.any(SSLContext.class)
                     )
             ).thenReturn(mockResponse);
             execution.run();
@@ -757,7 +759,8 @@ public final class RequestTest {
                     Mockito.<Map.Entry<String, String>>anyCollection(),
                     Mockito.any(InputStream.class),
                     connectCaptor.capture(),
-                    readCaptor.capture()
+                    readCaptor.capture(),
+                    Mockito.any(SSLContext.class)
             );
             MatcherAssert.assertThat(
                     connectCaptor.getValue().intValue(),

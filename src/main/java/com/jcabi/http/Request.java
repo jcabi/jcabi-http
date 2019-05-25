@@ -32,6 +32,7 @@ package com.jcabi.http;
 import com.jcabi.aspects.Immutable;
 import java.io.IOException;
 import java.io.InputStream;
+import javax.net.ssl.SSLContext;
 
 /**
  * RESTful request.
@@ -78,7 +79,8 @@ import java.io.InputStream;
  * @see com.jcabi.http.request.ApacheRequest
  */
 @Immutable
-@SuppressWarnings("PMD.AvoidDuplicateLiterals")
+@SuppressWarnings({"PMD.AvoidDuplicateLiterals", "PMD.TooManyMethods"})
+
 public interface Request {
 
     /**
@@ -164,6 +166,14 @@ public interface Request {
      * @return New alternated request
      */
     Request timeout(int connect, int read);
+
+    /**
+     * Use this SSL Context.
+     *
+     * @param context The SSL Context to use
+     * @return New alternated request
+     */
+    Request sslcontext(SSLContext context);
 
     /**
      * Execute it with a specified HTTP method.

@@ -40,6 +40,7 @@ import java.io.InputStream;
 import java.util.Collection;
 import java.util.LinkedList;
 import java.util.Map;
+import javax.net.ssl.SSLContext;
 import javax.ws.rs.core.HttpHeaders;
 import lombok.EqualsAndHashCode;
 import lombok.ToString;
@@ -103,7 +104,8 @@ public final class UserAgentWire implements Wire {
         final Collection<Map.Entry<String, String>> headers,
         final InputStream content,
         final int connect,
-        final int read) throws IOException {
+        final int read,
+        final SSLContext sslcontext) throws IOException {
         final Collection<Map.Entry<String, String>> hdrs =
             new LinkedList<Map.Entry<String, String>>();
         boolean absent = true;
@@ -122,7 +124,7 @@ public final class UserAgentWire implements Wire {
             );
         }
         return this.origin.send(
-            req, home, method, hdrs, content, connect, read
+            req, home, method, hdrs, content, connect, read, sslcontext
         );
     }
 }

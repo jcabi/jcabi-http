@@ -33,6 +33,7 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.util.Collection;
 import java.util.Map.Entry;
+import javax.net.ssl.SSLContext;
 
 /**
  * Utility wire used for injecting a mock object into a {@link Request}
@@ -72,7 +73,8 @@ public class MockWire implements Wire {
     public final Response send(final Request req, final String home,
             final String method,
             final Collection<Entry<String, String>> headers,
-            final InputStream content, final int connect, final int read)
+            final InputStream content, final int connect, final int read,
+            final SSLContext sslcontext)
             throws IOException {
         return mockDelegate.send(
                 req,
@@ -81,7 +83,8 @@ public class MockWire implements Wire {
                 headers,
                 content,
                 connect,
-                read
+                read,
+                sslcontext
         );
     }
 
