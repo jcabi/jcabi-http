@@ -29,17 +29,20 @@
  */
 package com.jcabi.http;
 
+import com.google.common.base.Supplier;
 import com.jcabi.http.mock.MkAnswer;
 import com.jcabi.http.mock.MkContainer;
 import com.jcabi.http.mock.MkGrizzlyContainer;
 import com.jcabi.http.mock.MkQuery;
 import com.jcabi.http.request.ApacheRequest;
+import com.jcabi.http.request.BaseRequest;
 import com.jcabi.http.request.JdkRequest;
 import com.jcabi.http.response.RestResponse;
 import com.jcabi.http.response.XmlResponse;
 import com.jcabi.http.wire.BasicAuthWire;
 import com.jcabi.http.wire.UserAgentWire;
 import java.io.ByteArrayInputStream;
+import java.io.IOException;
 import java.io.InputStream;
 import java.net.HttpURLConnection;
 import java.net.URI;
@@ -716,6 +719,55 @@ public final class RequestTest {
             }
         };
         this.testTimeoutOrderDoesntMatter(requestExecution);
+    }
+
+    /**
+     * The wire passed to method "through" is used.
+     * @throws IOException On error
+     */
+    @Test
+    public void passesThroughWire() throws IOException {
+        final Wire original = Mockito.mock(Wire.class);
+        final Wire wire = Mockito.mock(Wire.class);
+        final Response response = Mockito.mock(Response.class);
+        final Supplier<Collection<Map.Entry<String, String>>> hdrs =
+            new Supplier<Collection<Map.Entry<String, String>>>() {
+                @Override
+                public Collection<Map.Entry<String, String>> get() {
+                    return org.mockito.Matchers.anyCollectionOf(null);
+                }
+            };
+        final String url = "fake-url";
+        Mockito.when(
+            wire.send(
+                org.mockito.Matchers.any(Request.class),
+                org.mockito.Matchers.eq(url),
+                org.mockito.Matchers.anyString(),
+                hdrs.get(),
+                org.mockito.Matchers.any(InputStream.class),
+                org.mockito.Matchers.anyInt(),
+                org.mockito.Matchers.anyInt()
+            )
+        ).thenReturn(response);
+        new BaseRequest(original, url).through(wire).fetch();
+        Mockito.verify(original, Mockito.never()).send(
+            org.mockito.Matchers.any(Request.class),
+            org.mockito.Matchers.anyString(),
+            org.mockito.Matchers.anyString(),
+            hdrs.get(),
+            org.mockito.Matchers.any(InputStream.class),
+            org.mockito.Matchers.anyInt(),
+            org.mockito.Matchers.anyInt()
+        );
+        Mockito.verify(wire).send(
+            org.mockito.Matchers.any(Request.class),
+            org.mockito.Matchers.anyString(),
+            org.mockito.Matchers.anyString(),
+            hdrs.get(),
+            org.mockito.Matchers.any(InputStream.class),
+            org.mockito.Matchers.anyInt(),
+            org.mockito.Matchers.anyInt()
+        );
     }
 
     /**
