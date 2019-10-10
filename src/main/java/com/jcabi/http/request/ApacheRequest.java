@@ -266,4 +266,8 @@ public final class ApacheRequest implements Request {
         return this.base.through(type, args);
     }
 
+    @Override
+    public Request through(final Wire wire) {
+        return this.base.through(wire);
+    }
 }
