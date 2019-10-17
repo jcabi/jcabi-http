@@ -56,7 +56,7 @@ OF THE POSSIBILITY OF SUCH DAMAGE.
   <distributionManagement>
     <site>
       <id>http.jcabi.com</id>
-      <url>http://http.jcabi.com/</url>
+      <url>https://http.jcabi.com/</url>
     </site>
   </distributionManagement>
   <dependencies>

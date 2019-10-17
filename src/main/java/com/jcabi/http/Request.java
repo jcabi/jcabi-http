@@ -80,7 +80,6 @@ import javax.net.ssl.SSLContext;
  */
 @Immutable
 @SuppressWarnings({"PMD.AvoidDuplicateLiterals", "PMD.TooManyMethods"})
-
 public interface Request {
 
     /**
@@ -205,4 +204,11 @@ public interface Request {
      */
     <T extends Wire> Request through(Class<T> type, Object... args);
 
+    /**
+     * Send it through a decorating {@link Wire}.
+     * @param wire Wire to use
+     * @return New request with a wire decorated
+     * @since 0.10
+     */
+    Request through(Wire wire);
 }

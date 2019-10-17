@@ -10,11 +10,11 @@ script:
   - pdd --source=$(pwd) --file=/dev/null
   - est --dir=est --file=/dev/null
 before_install:
-  - rvm install 2.2.2
-  - rvm use 2.2.2
+  - rvm install 2.6.0
+  - rvm use 2.6.0
 install:
-  - gem install pdd
-  - gem install est
+  - gem install pdd -v 0.20.5
+  - gem install est -v 0.3.4
 env:
   global:
     - MAVEN_OPTS="-Xmx256m"

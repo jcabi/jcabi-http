@@ -349,8 +349,13 @@ public final class BaseRequest implements Request {
             | IllegalAccessException | InvocationTargetException ex) {
             throw new IllegalStateException(ex);
         }
+        return this.through(decorated);
+    }
+
+    @Override
+    public Request through(final Wire wre) {
         return new BaseRequest(
-            decorated,
+            wre,
             this.home,
             this.hdrs,
             this.mtd,
