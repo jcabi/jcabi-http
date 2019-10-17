@@ -92,10 +92,19 @@ public final class JdkRequest implements Request {
             final int connect,
             final int read,
             final SSLContext sslcontext) throws IOException {
+            final URLConnection raw = new URL(home).openConnection();
+            if (!(raw instanceof HttpURLConnection)) {
+                throw new IOException(
+                        String.format(
+                                "'%s' opens %s instead of expected HttpURLConnection",
+                                home, raw.getClass().getName()
+                        )
+                );
+            }
             HttpURLConnection conn = null;
             try {
-                conn = this.createConnection(
-                        home, connect, read, method, headers, sslcontext
+                conn = this.createHttpUrlConnection(
+                        raw, connect, read, method, headers, sslcontext
                 );
                 if (method.equals(Request.POST) || method.equals(Request.PUT)
                     || method.equals(Request.PATCH)) {
@@ -127,19 +136,11 @@ public final class JdkRequest implements Request {
             }
         }
         // @checkstyle ParameterNumber (4 lines)
-        private HttpURLConnection createConnection(final String home,
-            final int connect, final int read, final String method,
-            final Collection<Map.Entry<String, String>> headers,
-            final SSLContext sslcontext) throws IOException {
-            final URLConnection raw = new URL(home).openConnection();
-            if (!(raw instanceof HttpURLConnection)) {
-                throw new IOException(
-                    String.format(
-                        "'%s' opens %s instead of expected HttpURLConnection",
-                        home, raw.getClass().getName()
-                    )
-                );
-            }
+        private HttpURLConnection createHttpUrlConnection(final URLConnection raw,
+                                                          final int connect, final int read, final String method,
+                                                          final Collection<Map.Entry<String, String>> headers,
+                                                          final SSLContext sslcontext) throws IOException {
+
             final HttpURLConnection conn = HttpURLConnection.class.cast(raw);
             conn.setConnectTimeout(connect);
             conn.setReadTimeout(read);
