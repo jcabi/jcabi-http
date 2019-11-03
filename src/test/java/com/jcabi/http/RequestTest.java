@@ -29,6 +29,7 @@
  */
 package com.jcabi.http;
 
+import com.google.common.base.Joiner;
 import com.google.common.base.Supplier;
 import com.jcabi.http.mock.MkAnswer;
 import com.jcabi.http.mock.MkContainer;
@@ -41,6 +42,7 @@ import com.jcabi.http.response.RestResponse;
 import com.jcabi.http.response.XmlResponse;
 import com.jcabi.http.wire.BasicAuthWire;
 import com.jcabi.http.wire.UserAgentWire;
+import com.sun.grizzly.http.Constants;
 import java.io.ByteArrayInputStream;
 import java.io.IOException;
 import java.io.InputStream;
@@ -256,6 +258,141 @@ public final class RequestTest {
         );
         container.stop();
     }
+
+    /**
+     * BaseRequest can fetch multipart body with HTTP POST request
+     * with single byte param.
+     * @throws Exception If something goes wrong inside
+     * @checkstyle LineLength (30 lines)
+     */
+    @Test
+    public void sendsMultipartPostRequestMatchByteParam() throws Exception {
+        final MkContainer container = new MkGrizzlyContainer().next(
+            new MkAnswer.Simple("")
+        ).start();
+        final byte[] value = new byte[]{Byte.valueOf("-122")};
+        this.request(container.home())
+            .method(Request.POST)
+            .header(
+                HttpHeaders.CONTENT_TYPE,
+                String.format(
+                    "%s; boundary=--xx", MediaType.MULTIPART_FORM_DATA
+                )
+            )
+            .multipartBody()
+            .formParam("x", value)
+            .back()
+            .fetch().as(RestResponse.class)
+            .assertStatus(HttpURLConnection.HTTP_OK);
+        final MkQuery query = container.take();
+        MatcherAssert.assertThat(
+            query.body(),
+            Matchers.is(
+                Joiner.on(Constants.CRLF).join(
+                    "----xx",
+                    "Content-Disposition: form-data; name=\"x\"; filename=\"binary\"",
+                    RequestTest.steamContentType(),
+                    "",
+                    "�",
+                    "----xx--"
+                )
+            )
+        );
+        container.stop();
+    }
+
+    /**
+     * BaseRequest can fetch multipart body with HTTP POST request
+     * with single param.
+     * @throws Exception If something goes wrong inside
+     * @checkstyle LineLength (30 lines)
+     */
+    @Test
+    public void sendsMultipartPostRequestMatchSingleParam() throws Exception {
+        final MkContainer container = new MkGrizzlyContainer().next(
+            new MkAnswer.Simple("")
+        ).start();
+        final String value = "value of \u20ac part param \"&^%*;'\"";
+        this.request(container.home())
+            .method(Request.POST)
+            .header(
+                HttpHeaders.CONTENT_TYPE,
+                String.format(
+                    "%s; boundary=--xyz", MediaType.MULTIPART_FORM_DATA
+                )
+            )
+            .multipartBody()
+            .formParam("c", value)
+            .back()
+            .fetch().as(RestResponse.class)
+            .assertStatus(HttpURLConnection.HTTP_OK);
+        final MkQuery query = container.take();
+        MatcherAssert.assertThat(
+            query.body(),
+            Matchers.is(
+                Joiner.on(Constants.CRLF).join(
+                    "----xyz",
+                    "Content-Disposition: form-data; name=\"c\"; filename=\"binary\"",
+                    RequestTest.steamContentType(),
+                    "",
+                    "value of € part param \"&^%*;'\"",
+                    "----xyz--"
+                )
+            )
+        );
+        container.stop();
+    }
+
+    /**
+     * BaseRequest can fetch multipart body with HTTP POST request
+     * with two params.
+     * @throws Exception If something goes wrong inside
+     * @checkstyle LineLength (40 lines)
+     */
+    @Test
+    public void sendsMultipartPostRequestMatchTwoParams() throws Exception {
+        final MkContainer container = new MkGrizzlyContainer().next(
+            new MkAnswer.Simple("")
+        ).start();
+        final String value = "value of \u20ac one param \"&^%*;'\"";
+        final String other = "value of \u20ac two param \"&^%*;'\"";
+        this.request(container.home())
+            .method(Request.POST)
+            .header(
+                HttpHeaders.CONTENT_TYPE,
+                String.format(
+                    "%s; boundary=xy--", MediaType.MULTIPART_FORM_DATA
+                )
+            )
+            .multipartBody()
+            .formParam("d", value)
+            .formParam("e", other)
+            .back()
+            .fetch().as(RestResponse.class)
+            .assertStatus(HttpURLConnection.HTTP_OK);
+        final MkQuery query = container.take();
+        final String separator = "--xy--";
+        MatcherAssert.assertThat(
+            query.body(),
+            Matchers.is(
+                Joiner.on(Constants.CRLF).join(
+                    separator,
+                    "Content-Disposition: form-data; name=\"d\"; filename=\"binary\"",
+                    RequestTest.steamContentType(),
+                    "",
+                    "value of € one param \"&^%*;'\"",
+                    separator,
+                    "Content-Disposition: form-data; name=\"e\"; filename=\"binary\"",
+                    RequestTest.steamContentType(),
+                    "",
+                    "value of € two param \"&^%*;'\"",
+                    "--xy----"
+                )
+            )
+        );
+        container.stop();
+    }
+
     /**
      * BaseRequest can fetch body with HTTP POST request.
      * @throws Exception If something goes wrong inside
@@ -543,7 +680,7 @@ public final class RequestTest {
      */
     @Test
     public void testTimeoutOrderDoesntMatterBeforeBody()
-            throws Exception {
+        throws Exception {
         final int connect = 1234;
         final int read = 2345;
         final Runnable requestExecution = new Runnable() {
@@ -575,7 +712,7 @@ public final class RequestTest {
      */
     @Test
     public void testTimeoutOrderDoesntMatterBeforeFetch()
-            throws Exception {
+        throws Exception {
         final int connect = 1234;
         final int read = 2345;
         final Runnable requestExecution = new Runnable() {
@@ -605,7 +742,7 @@ public final class RequestTest {
      */
     @Test
     public void testTimeoutOrderDoesntMatterBeforeHeader()
-            throws Exception {
+        throws Exception {
         final int connect = 1234;
         final int read = 2345;
         final Runnable requestExecution = new Runnable() {
@@ -636,7 +773,7 @@ public final class RequestTest {
      */
     @Test
     public void testTimeoutOrderDoesntMatterBeforeMethod()
-            throws Exception {
+        throws Exception {
         final int connect = 1234;
         final int read = 2345;
         final Runnable requestExecution = new Runnable() {
@@ -666,7 +803,7 @@ public final class RequestTest {
      */
     @Test
     public void testTimeoutOrderDoesntMatterBeforeMultipartBody()
-            throws Exception {
+        throws Exception {
         final int connect = 1234;
         final int read = 2345;
         final Runnable requestExecution = new Runnable() {
@@ -698,7 +835,7 @@ public final class RequestTest {
      */
     @Test
     public void testTimeoutOrderDoesntMatterBeforeReset()
-            throws Exception {
+        throws Exception {
         final int connect = 1234;
         final int read = 2345;
         final Runnable requestExecution = new Runnable() {
@@ -779,45 +916,45 @@ public final class RequestTest {
      */
     @SuppressWarnings("unchecked")
     private void testTimeoutOrderDoesntMatter(final Runnable execution)
-            throws Exception {
+        throws Exception {
         synchronized (MockWire.class) {
             final Wire mockWire = Mockito.mock(Wire.class);
             final ArgumentCaptor<Integer> connectCaptor = ArgumentCaptor
-                    .forClass(Integer.class);
+                .forClass(Integer.class);
             final ArgumentCaptor<Integer> readCaptor = ArgumentCaptor
-                    .forClass(Integer.class);
+                .forClass(Integer.class);
             final int connect = 1234;
             final int read = 2345;
             MockWire.setMockDelegate(mockWire);
             final Response mockResponse = Mockito.mock(Response.class);
             Mockito.when(
-                    mockWire.send(
-                            Mockito.any(Request.class),
-                            Mockito.anyString(),
-                            Mockito.anyString(),
-                            Mockito.<Map.Entry<String, String>>anyCollection(),
-                            Mockito.any(InputStream.class),
-                            Mockito.anyInt(),
-                            Mockito.anyInt()
-                    )
-            ).thenReturn(mockResponse);
-            execution.run();
-            Mockito.verify(mockWire).send(
+                mockWire.send(
                     Mockito.any(Request.class),
                     Mockito.anyString(),
                     Mockito.anyString(),
                     Mockito.<Map.Entry<String, String>>anyCollection(),
                     Mockito.any(InputStream.class),
-                    connectCaptor.capture(),
-                    readCaptor.capture()
+                    Mockito.anyInt(),
+                    Mockito.anyInt()
+                )
+            ).thenReturn(mockResponse);
+            execution.run();
+            Mockito.verify(mockWire).send(
+                Mockito.any(Request.class),
+                Mockito.anyString(),
+                Mockito.anyString(),
+                Mockito.<Map.Entry<String, String>>anyCollection(),
+                Mockito.any(InputStream.class),
+                connectCaptor.capture(),
+                readCaptor.capture()
             );
             MatcherAssert.assertThat(
-                    connectCaptor.getValue().intValue(),
-                    Matchers.is(connect)
+                connectCaptor.getValue().intValue(),
+                Matchers.is(connect)
             );
             MatcherAssert.assertThat(
-                    readCaptor.getValue().intValue(),
-                    Matchers.is(read)
+                readCaptor.getValue().intValue(),
+                Matchers.is(read)
             );
         }
     }
@@ -832,4 +969,11 @@ public final class RequestTest {
         return this.type.getDeclaredConstructor(URI.class).newInstance(uri);
     }
 
+    /**
+     * Content type stream.
+     * @return Content type header.
+     */
+    private static String steamContentType() {
+        return "Content-Type: application/octet-stream";
+    }
 }
