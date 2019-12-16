@@ -13,7 +13,6 @@
 
 [![jpeek report](https://i.jpeek.org/com.jcabi/jcabi-http/badge.svg)](https://i.jpeek.org/com.jcabi/jcabi-http/)
 [![Maven Central](https://maven-badges.herokuapp.com/maven-central/com.jcabi/jcabi-http/badge.svg)](https://maven-badges.herokuapp.com/maven-central/com.jcabi/jcabi-http)
-[![Dependencies](https://www.versioneye.com/user/projects/561a9e01a193340f32000eab/badge.svg?style=flat)](https://www.versioneye.com/user/projects/561a9e01a193340f32000eab)
 
 More details are here: [http.jcabi.com](https://http.jcabi.com/index.html).
 Also, read this blog post: [Fluent Java HTTP Client](http://www.yegor256.com/2014/04/11/jcabi-http-intro.html).
