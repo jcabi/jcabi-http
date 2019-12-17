@@ -90,6 +90,7 @@ public final class DefaultResponse implements Response {
      * Content received.
      */
     @Immutable.Array
+    //@checkstyle ParameterNumber (15 lines)
     private final transient byte[] content;
 
     /**
@@ -99,7 +100,6 @@ public final class DefaultResponse implements Response {
      * @param reason HTTP reason phrase
      * @param headers HTTP headers
      * @param body Body of HTTP response
-     * @checkstyle ParameterNumber (5 lines)
      */
     public DefaultResponse(final Request request, final int status,
         final String reason, final Array<Map.Entry<String, String>> headers,

@@ -66,7 +66,6 @@ import org.hamcrest.Matcher;
  * @version $Id$
  * @since 0.10
  * @see <a href="http://www.rexsl.com/rexsl-test/example-mock-servlet.html">Examples</a>
- * @checkstyle TooManyMethods (200 lines)
  */
 @SuppressWarnings("PMD.TooManyMethods")
 public interface MkContainer extends Closeable {
