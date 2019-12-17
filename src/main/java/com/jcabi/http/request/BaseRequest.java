@@ -80,7 +80,7 @@ import lombok.EqualsAndHashCode;
 @Immutable
 @EqualsAndHashCode(of = {"home", "mtd", "hdrs", "content"})
 @Loggable(Loggable.DEBUG)
-//@todo #87:30min Refactor this class to get rid of PMD.GodClass.
+// @todo #87:30min Refactor this class to get rid of PMD.GodClass.
 //@checkstyle LineLength (1 line)
 @SuppressWarnings({"PMD.TooManyMethods", "PMD.GodClass", "PMD.ExcessiveImports"})
 public final class BaseRequest implements Request {
