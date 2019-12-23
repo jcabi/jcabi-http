@@ -57,6 +57,7 @@ import java.util.Map;
  * @since 0.9
  */
 @Immutable
+//@checkstyle ParameterNumber (16 lines)
 public interface Wire {
 
     /**
@@ -70,7 +71,6 @@ public interface Wire {
      * @param read The read timeout
      * @return Response obtained
      * @throws IOException if fails
-     * @checkstyle ParameterNumber (6 lines)
      */
     Response send(Request req, String home, String method,
         Collection<Map.Entry<String, String>> headers, InputStream content,

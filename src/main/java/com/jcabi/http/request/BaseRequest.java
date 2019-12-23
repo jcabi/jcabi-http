@@ -66,21 +66,21 @@ import lombok.EqualsAndHashCode;
  * @author Yegor Bugayenko (yegor@tpc2.com)
  * @version $Id$
  * @since 0.8
- * @checkstyle ClassDataAbstractionCoupling (500 lines)
+ * // @checkstyle ClassDataAbstractionCoupling (500 lines)
  * @see Request
  * @see Response
- * @todo #87:30min Refactor this class to get rid of PMD.GodClass.
- *  This can be done if MultiPartFormBody and
- *  FormEncodedBody are pulled out. Also, the two
- *  share the same implementations for all methods besides formParam,
- *  so they can be refactored to extend an AbstractRequestBody.
- *  PMD.TooManyMethods might come together with getting rid of the
- *  first one, since maybe qulice is counting the methods in the inner
- *  classes too - if it doesn't, then it can be left.
  */
 @Immutable
 @EqualsAndHashCode(of = {"home", "mtd", "hdrs", "content"})
 @Loggable(Loggable.DEBUG)
+// @todo #87:30min Refactor this class to get rid of PMD.GodClass.
+//  This can be done if MultiPartFormBody and
+//  FormEncodedBody are pulled out. Also, the two
+//  share the same implementations for all methods besides formParam,
+//  so they can be refactored to extend an AbstractRequestBody.
+//  PMD.TooManyMethods might come together with getting rid of the
+//  first one, since maybe qulice is counting the methods in the inner
+//  classes too - if it doesn't, then it can be left.
 //@checkstyle LineLength (1 line)
 @SuppressWarnings({"PMD.TooManyMethods", "PMD.GodClass", "PMD.ExcessiveImports"})
 public final class BaseRequest implements Request {
@@ -149,6 +149,7 @@ public final class BaseRequest implements Request {
             new Array<Map.Entry<String, String>>(),
             Request.GET, BaseRequest.EMPTY_BYTE_ARRAY
         );
+        //@checkstyle ParameterNumber (15 lines)
     }
 
     /**
@@ -158,12 +159,12 @@ public final class BaseRequest implements Request {
      * @param headers Headers
      * @param method HTTP method
      * @param body HTTP request body
-     * @checkstyle ParameterNumber (5 lines)
      */
     public BaseRequest(final Wire wre, final String uri,
         final Iterable<Map.Entry<String, String>> headers,
         final String method, final byte[] body) {
         this(wre, uri, headers, method, body, 0, 0);
+        //@checkstyle ParameterNumber (15 lines)
     }
 
     /**
@@ -175,7 +176,6 @@ public final class BaseRequest implements Request {
      * @param body HTTP request body
      * @param cnct Connect timeout for http connection
      * @param rdd Read timeout for http connection
-     * @checkstyle ParameterNumber (5 lines)
      */
     public BaseRequest(final Wire wre, final String uri,
         final Iterable<Map.Entry<String, String>> headers,
