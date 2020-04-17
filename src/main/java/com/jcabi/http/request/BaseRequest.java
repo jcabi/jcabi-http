@@ -421,7 +421,9 @@ public final class BaseRequest implements Request {
                 this.address,
                 this.owner.hdrs,
                 this.owner.mtd,
-                this.owner.content
+                this.owner.content,
+                this.owner.connect,
+                this.owner.read
             );
         }
 

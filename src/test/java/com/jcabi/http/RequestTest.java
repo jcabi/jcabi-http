@@ -859,6 +859,39 @@ public final class RequestTest {
     }
 
     /**
+     * The connect and read timeouts are properly set no matter in which order
+     * <code>Request.timeout</code> is called.
+     *
+     * @throws Exception If something goes wrong inside
+     */
+    @Test
+    public void testTimeoutOrderDoesntMatterBeforeUriBack()
+            throws Exception {
+        final int connect = 1234;
+        final int read = 2345;
+        final Runnable requestExecution = new Runnable() {
+            @Override
+            public void run() {
+                try {
+                    // @checkstyle RequireThisCheck (1 lines)
+                    request(new URI(LOCALHOST_URL))
+                            .through(MockWire.class)
+                            .method(Request.GET)
+                            .timeout(connect, read)
+                            .uri()
+                            .path("/api")
+                            .back()
+                            .fetch();
+                    // @checkstyle IllegalCatchCheck (1 lines)
+                } catch (final Exception ex) {
+                    throw new RuntimeException(ex);
+                }
+            }
+        };
+        this.testTimeoutOrderDoesntMatter(requestExecution);
+    }
+
+    /**
      * The wire passed to method "through" is used.
      * @throws IOException On error
      */
