@@ -30,13 +30,11 @@
 package com.jcabi.http;
 
 import com.google.common.base.Joiner;
-import com.google.common.base.Supplier;
 import com.jcabi.http.mock.MkAnswer;
 import com.jcabi.http.mock.MkContainer;
 import com.jcabi.http.mock.MkGrizzlyContainer;
 import com.jcabi.http.mock.MkQuery;
 import com.jcabi.http.request.ApacheRequest;
-import com.jcabi.http.request.BaseRequest;
 import com.jcabi.http.request.JdkRequest;
 import com.jcabi.http.response.RestResponse;
 import com.jcabi.http.response.XmlResponse;
@@ -44,15 +42,12 @@ import com.jcabi.http.wire.BasicAuthWire;
 import com.jcabi.http.wire.UserAgentWire;
 import com.sun.grizzly.http.Constants;
 import java.io.ByteArrayInputStream;
-import java.io.IOException;
-import java.io.InputStream;
 import java.net.HttpURLConnection;
 import java.net.URI;
 import java.net.URLDecoder;
 import java.net.URLEncoder;
 import java.util.Arrays;
 import java.util.Collection;
-import java.util.Map;
 import javax.ws.rs.core.HttpHeaders;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.UriBuilder;
@@ -62,8 +57,6 @@ import org.hamcrest.Matchers;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.junit.runners.Parameterized;
-import org.mockito.ArgumentCaptor;
-import org.mockito.Mockito;
 
 /**
  * Test case for {@link Request} and its implementations.
@@ -78,17 +71,6 @@ import org.mockito.Mockito;
 })
 @RunWith(Parameterized.class)
 public final class RequestTest {
-
-    /**
-     * Placeholder URL used for testing purposes only.
-     */
-    private static final String LOCALHOST_URL = "http://localhost";
-
-    /**
-     * Content type header name for testing purposes only.
-     */
-    private static final String CONTENT_TYPE = "Content-Type";
-
     /**
      * Type of request.
      */
@@ -670,293 +652,6 @@ public final class RequestTest {
             .method(Request.GET)
             .body().set("already set").back()
             .fetch(new ByteArrayInputStream("ba".getBytes(CharEncoding.UTF_8)));
-    }
-
-    /**
-     * The connect and read timeouts are properly set no matter in which order
-     * <code>Request.timeout</code> is called.
-     *
-     * @throws Exception If something goes wrong inside
-     */
-    @Test
-    public void testTimeoutOrderDoesntMatterBeforeBody()
-        throws Exception {
-        final int connect = 1234;
-        final int read = 2345;
-        final Runnable requestExecution = new Runnable() {
-            @Override
-            public void run() {
-                try {
-                    // @checkstyle RequireThisCheck (1 lines)
-                    request(new URI(LOCALHOST_URL))
-                        .through(MockWire.class)
-                        .method(Request.GET)
-                        .timeout(connect, read)
-                        .body()
-                        .back()
-                        .fetch();
-                    // @checkstyle IllegalCatchCheck (1 lines)
-                } catch (final Exception ex) {
-                    throw new RuntimeException(ex);
-                }
-            }
-        };
-        this.testTimeoutOrderDoesntMatter(requestExecution);
-    }
-
-    /**
-     * The connect and read timeouts are properly set no matter in which order
-     * <code>Request.timeout</code> is called.
-     *
-     * @throws Exception If something goes wrong inside
-     */
-    @Test
-    public void testTimeoutOrderDoesntMatterBeforeFetch()
-        throws Exception {
-        final int connect = 1234;
-        final int read = 2345;
-        final Runnable requestExecution = new Runnable() {
-            @Override
-            public void run() {
-                try {
-                    // @checkstyle RequireThisCheck (1 lines)
-                    request(new URI(LOCALHOST_URL))
-                        .through(MockWire.class)
-                        .method(Request.GET)
-                        .timeout(connect, read)
-                        .fetch();
-                    // @checkstyle IllegalCatchCheck (1 lines)
-                } catch (final Exception ex) {
-                    throw new RuntimeException(ex);
-                }
-            }
-        };
-        this.testTimeoutOrderDoesntMatter(requestExecution);
-    }
-
-    /**
-     * The connect and read timeouts are properly set no matter in which order
-     * <code>Request.timeout</code> is called.
-     *
-     * @throws Exception If something goes wrong inside
-     */
-    @Test
-    public void testTimeoutOrderDoesntMatterBeforeHeader()
-        throws Exception {
-        final int connect = 1234;
-        final int read = 2345;
-        final Runnable requestExecution = new Runnable() {
-            @Override
-            public void run() {
-                try {
-                    // @checkstyle RequireThisCheck (1 lines)
-                    request(new URI(LOCALHOST_URL))
-                        .through(MockWire.class)
-                        .method(Request.GET)
-                        .timeout(connect, read)
-                        .header(CONTENT_TYPE, "text/plain")
-                        .fetch();
-                    // @checkstyle IllegalCatchCheck (1 lines)
-                } catch (final Exception ex) {
-                    throw new RuntimeException(ex);
-                }
-            }
-        };
-        this.testTimeoutOrderDoesntMatter(requestExecution);
-    }
-
-    /**
-     * The connect and read timeouts are properly set no matter in which order
-     * <code>Request.timeout</code> is called.
-     *
-     * @throws Exception If something goes wrong inside
-     */
-    @Test
-    public void testTimeoutOrderDoesntMatterBeforeMethod()
-        throws Exception {
-        final int connect = 1234;
-        final int read = 2345;
-        final Runnable requestExecution = new Runnable() {
-            @Override
-            public void run() {
-                try {
-                    // @checkstyle RequireThisCheck (1 lines)
-                    request(new URI(LOCALHOST_URL))
-                        .through(MockWire.class)
-                        .timeout(connect, read)
-                        .method(Request.GET)
-                        .fetch();
-                    // @checkstyle IllegalCatchCheck (1 lines)
-                } catch (final Exception ex) {
-                    throw new RuntimeException(ex);
-                }
-            }
-        };
-        this.testTimeoutOrderDoesntMatter(requestExecution);
-    }
-
-    /**
-     * The connect and read timeouts are properly set no matter in which order
-     * <code>Request.timeout</code> is called.
-     *
-     * @throws Exception If something goes wrong inside
-     */
-    @Test
-    public void testTimeoutOrderDoesntMatterBeforeMultipartBody()
-        throws Exception {
-        final int connect = 1234;
-        final int read = 2345;
-        final Runnable requestExecution = new Runnable() {
-            @Override
-            public void run() {
-                try {
-                    // @checkstyle RequireThisCheck (1 lines)
-                    request(new URI(LOCALHOST_URL))
-                        .through(MockWire.class)
-                        .method(Request.GET)
-                        .timeout(connect, read)
-                        .multipartBody()
-                        .back()
-                        .fetch();
-                    // @checkstyle IllegalCatchCheck (1 lines)
-                } catch (final Exception ex) {
-                    throw new RuntimeException(ex);
-                }
-            }
-        };
-        this.testTimeoutOrderDoesntMatter(requestExecution);
-    }
-
-    /**
-     * The connect and read timeouts are properly set no matter in which order
-     * <code>Request.timeout</code> is called.
-     *
-     * @throws Exception If something goes wrong inside
-     */
-    @Test
-    public void testTimeoutOrderDoesntMatterBeforeReset()
-        throws Exception {
-        final int connect = 1234;
-        final int read = 2345;
-        final Runnable requestExecution = new Runnable() {
-            @Override
-            public void run() {
-                try {
-                    // @checkstyle RequireThisCheck (1 lines)
-                    request(new URI(LOCALHOST_URL))
-                        .through(MockWire.class)
-                        .method(Request.GET)
-                        .timeout(connect, read)
-                        .reset(CONTENT_TYPE)
-                        .fetch();
-                    // @checkstyle IllegalCatchCheck (1 lines)
-                } catch (final Exception ex) {
-                    throw new RuntimeException(ex);
-                }
-            }
-        };
-        this.testTimeoutOrderDoesntMatter(requestExecution);
-    }
-
-    /**
-     * The wire passed to method "through" is used.
-     * @throws IOException On error
-     */
-    @Test
-    public void passesThroughWire() throws IOException {
-        final Wire original = Mockito.mock(Wire.class);
-        final Wire wire = Mockito.mock(Wire.class);
-        final Response response = Mockito.mock(Response.class);
-        final Supplier<Collection<Map.Entry<String, String>>> hdrs =
-            new Supplier<Collection<Map.Entry<String, String>>>() {
-                @Override
-                public Collection<Map.Entry<String, String>> get() {
-                    return org.mockito.Matchers.anyCollectionOf(null);
-                }
-            };
-        final String url = "fake-url";
-        Mockito.when(
-            wire.send(
-                org.mockito.Matchers.any(Request.class),
-                org.mockito.Matchers.eq(url),
-                org.mockito.Matchers.anyString(),
-                hdrs.get(),
-                org.mockito.Matchers.any(InputStream.class),
-                org.mockito.Matchers.anyInt(),
-                org.mockito.Matchers.anyInt()
-            )
-        ).thenReturn(response);
-        new BaseRequest(original, url).through(wire).fetch();
-        Mockito.verify(original, Mockito.never()).send(
-            org.mockito.Matchers.any(Request.class),
-            org.mockito.Matchers.anyString(),
-            org.mockito.Matchers.anyString(),
-            hdrs.get(),
-            org.mockito.Matchers.any(InputStream.class),
-            org.mockito.Matchers.anyInt(),
-            org.mockito.Matchers.anyInt()
-        );
-        Mockito.verify(wire).send(
-            org.mockito.Matchers.any(Request.class),
-            org.mockito.Matchers.anyString(),
-            org.mockito.Matchers.anyString(),
-            hdrs.get(),
-            org.mockito.Matchers.any(InputStream.class),
-            org.mockito.Matchers.anyInt(),
-            org.mockito.Matchers.anyInt()
-        );
-    }
-
-    /**
-     * The connect and read timeouts are properly set no matter in which order
-     * <code>Request.timeout</code> is called.
-     *
-     * @param execution The runnable that contains the actual request execution
-     * @throws Exception If something goes wrong inside
-     */
-    @SuppressWarnings("unchecked")
-    private void testTimeoutOrderDoesntMatter(final Runnable execution)
-        throws Exception {
-        synchronized (MockWire.class) {
-            final Wire mockWire = Mockito.mock(Wire.class);
-            final ArgumentCaptor<Integer> connectCaptor = ArgumentCaptor
-                .forClass(Integer.class);
-            final ArgumentCaptor<Integer> readCaptor = ArgumentCaptor
-                .forClass(Integer.class);
-            final int connect = 1234;
-            final int read = 2345;
-            MockWire.setMockDelegate(mockWire);
-            final Response mockResponse = Mockito.mock(Response.class);
-            Mockito.when(
-                mockWire.send(
-                    Mockito.any(Request.class),
-                    Mockito.anyString(),
-                    Mockito.anyString(),
-                    Mockito.<Map.Entry<String, String>>anyCollection(),
-                    Mockito.any(InputStream.class),
-                    Mockito.anyInt(),
-                    Mockito.anyInt()
-                )
-            ).thenReturn(mockResponse);
-            execution.run();
-            Mockito.verify(mockWire).send(
-                Mockito.any(Request.class),
-                Mockito.anyString(),
-                Mockito.anyString(),
-                Mockito.<Map.Entry<String, String>>anyCollection(),
-                Mockito.any(InputStream.class),
-                connectCaptor.capture(),
-                readCaptor.capture()
-            );
-            MatcherAssert.assertThat(
-                connectCaptor.getValue().intValue(),
-                Matchers.is(connect)
-            );
-            MatcherAssert.assertThat(
-                readCaptor.getValue().intValue(),
-                Matchers.is(read)
-            );
-        }
     }
 
     /**
