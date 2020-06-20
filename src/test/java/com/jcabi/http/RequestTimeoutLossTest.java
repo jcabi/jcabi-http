@@ -34,12 +34,6 @@ import com.google.common.base.Supplier;
 import com.jcabi.http.request.ApacheRequest;
 import com.jcabi.http.request.BaseRequest;
 import com.jcabi.http.request.JdkRequest;
-import java.io.IOException;
-import java.io.InputStream;
-import java.net.URI;
-import java.util.Arrays;
-import java.util.Collection;
-import java.util.Map;
 import org.hamcrest.MatcherAssert;
 import org.hamcrest.Matchers;
 import org.junit.Test;
@@ -47,6 +41,14 @@ import org.junit.runner.RunWith;
 import org.junit.runners.Parameterized;
 import org.mockito.ArgumentCaptor;
 import org.mockito.Mockito;
+
+import javax.net.ssl.SSLContext;
+import java.io.IOException;
+import java.io.InputStream;
+import java.net.URI;
+import java.util.Arrays;
+import java.util.Collection;
+import java.util.Map;
 
 /**
  * Test case for loss of timeout parameters.
@@ -336,7 +338,8 @@ public final class RequestTimeoutLossTest {
                         hdrs.get(),
                         org.mockito.Matchers.any(InputStream.class),
                         org.mockito.Matchers.anyInt(),
-                        org.mockito.Matchers.anyInt()
+                        org.mockito.Matchers.anyInt(),
+                        org.mockito.Matchers.any(SSLContext.class)
                 )
         ).thenReturn(response);
         new BaseRequest(original, url).through(wire).fetch();
@@ -347,7 +350,8 @@ public final class RequestTimeoutLossTest {
                 hdrs.get(),
                 org.mockito.Matchers.any(InputStream.class),
                 org.mockito.Matchers.anyInt(),
-                org.mockito.Matchers.anyInt()
+                org.mockito.Matchers.anyInt(),
+                org.mockito.Matchers.any(SSLContext.class)
         );
         Mockito.verify(wire).send(
                 org.mockito.Matchers.any(Request.class),
@@ -356,7 +360,8 @@ public final class RequestTimeoutLossTest {
                 hdrs.get(),
                 org.mockito.Matchers.any(InputStream.class),
                 org.mockito.Matchers.anyInt(),
-                org.mockito.Matchers.anyInt()
+                org.mockito.Matchers.anyInt(),
+                org.mockito.Matchers.any(SSLContext.class)
         );
     }
 
@@ -386,7 +391,8 @@ public final class RequestTimeoutLossTest {
                             Mockito.<Map.Entry<String, String>>anyCollection(),
                             Mockito.any(InputStream.class),
                             Mockito.anyInt(),
-                            Mockito.anyInt()
+                            Mockito.anyInt(),
+                            org.mockito.Matchers.any(SSLContext.class)
                     )
             ).thenReturn(mockResponse);
             execution.run();
@@ -397,7 +403,8 @@ public final class RequestTimeoutLossTest {
                     Mockito.<Map.Entry<String, String>>anyCollection(),
                     Mockito.any(InputStream.class),
                     connectCaptor.capture(),
-                    readCaptor.capture()
+                    readCaptor.capture(),
+                    org.mockito.Matchers.any(SSLContext.class)
             );
             MatcherAssert.assertThat(
                     connectCaptor.getValue().intValue(),
