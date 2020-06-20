@@ -27,57 +27,62 @@
  * ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED
  * OF THE POSSIBILITY OF SUCH DAMAGE.
  */
-package com.jcabi.http;
+package com.jcabi.http.request;
 
 import com.jcabi.aspects.Immutable;
-import java.io.IOException;
-import java.io.InputStream;
-import java.util.Collection;
-import java.util.Map;
-import javax.net.ssl.SSLContext;
+import com.jcabi.aspects.Loggable;
+import java.util.Random;
 
 /**
- * Wire.
+ * Boundary for content-type multipart/form-data.
+ * This is a copy of boundary created by Apache HttpComponents HttpClient 4.5.
  *
- * <p>An instance of this interface can be used in
- * {@link Request#through(Class,Object...)} to decorate
- * an existing {@code wire}, for example:
- *
- * <pre> String html = new JdkRequest("http://google.com")
- *   .through(VerboseWire.class)
- *   .through(RetryWire.class)
- *   .header("Accept", "text/html")
- *   .fetch()
- *   .body();</pre>
- *
- * <p>Every {@code Wire} decorator passed to {@code through()} method
- * wraps a previously existing one.
- *
- * @author Yegor Bugayenko (yegor@tpc2.com)
+ * @author Piotr Kotlicki (piotr.kotlicki@gmail.com)
  * @version $Id$
- * @since 0.9
+ * @since 1.0
  */
 @Immutable
-//@checkstyle ParameterNumber (16 lines)
-public interface Wire {
+@Loggable(Loggable.DEBUG)
+public final class Boundary {
+    /**
+     * The pool of ASCII chars to be used for generating a multipart boundary.
+     */
+    private static final char[] MULTIPART_CHARS =
+        "-_1234567890abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ"
+            .toCharArray();
 
     /**
-     * Send request and return response.
-     * @param req Request
-     * @param home URI to fetch
-     * @param method HTTP method
-     * @param headers Headers
-     * @param content HTTP body
-     * @param connect The connect timeout
-     * @param read The read timeout
-     * @param sslcontext SSL Context
-     * @return Response obtained
-     * @throws IOException if fails
+     * Generation of pseudorandom numbers.
      */
-    Response send(Request req, String home, String method,
-                  Collection<Map.Entry<String, String>> headers,
-                  InputStream content, int connect, int read,
-                  SSLContext sslcontext)
-        throws IOException;
+    private final transient Random rand;
 
+    /**
+     * Constructor with new random number generation.
+     */
+    public Boundary() {
+        this(new Random());
+    }
+
+    /**
+     * Ctor.
+     * @param random Random number generation.
+     */
+    public Boundary(final Random random) {
+        this.rand = random;
+    }
+
+    /**
+     * Generates random boundary with random size from 30 to 40.
+     * @return Boundary value.
+     */
+    public String value() {
+        final StringBuilder buffer = new StringBuilder();
+        final int count = this.rand.nextInt(11) + 30;
+        for (int index = 0; index < count; ++index) {
+            buffer.append(
+                MULTIPART_CHARS[this.rand.nextInt(MULTIPART_CHARS.length)]
+            );
+        }
+        return buffer.toString();
+    }
 }

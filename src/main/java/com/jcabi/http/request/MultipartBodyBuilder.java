@@ -27,57 +27,73 @@
  * ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED
  * OF THE POSSIBILITY OF SUCH DAMAGE.
  */
-package com.jcabi.http;
+package com.jcabi.http.request;
 
 import com.jcabi.aspects.Immutable;
-import java.io.IOException;
-import java.io.InputStream;
-import java.util.Collection;
-import java.util.Map;
-import javax.net.ssl.SSLContext;
+import com.jcabi.aspects.Loggable;
+import java.util.Arrays;
 
 /**
- * Wire.
+ * Byte builder for multipart body.
  *
- * <p>An instance of this interface can be used in
- * {@link Request#through(Class,Object...)} to decorate
- * an existing {@code wire}, for example:
- *
- * <pre> String html = new JdkRequest("http://google.com")
- *   .through(VerboseWire.class)
- *   .through(RetryWire.class)
- *   .header("Accept", "text/html")
- *   .fetch()
- *   .body();</pre>
- *
- * <p>Every {@code Wire} decorator passed to {@code through()} method
- * wraps a previously existing one.
- *
- * @author Yegor Bugayenko (yegor@tpc2.com)
+ * @author Piotr Kotlicki (piotr.kotlicki@gmail.com)
  * @version $Id$
- * @since 0.9
+ * @since 1.0
  */
 @Immutable
-//@checkstyle ParameterNumber (16 lines)
-public interface Wire {
+@Loggable(Loggable.DEBUG)
+public final class MultipartBodyBuilder {
+    /**
+     * Carriage return constant.
+     */
+    private static final byte[] CRLF = new byte[]{13, 10};
 
     /**
-     * Send request and return response.
-     * @param req Request
-     * @param home URI to fetch
-     * @param method HTTP method
-     * @param headers Headers
-     * @param content HTTP body
-     * @param connect The connect timeout
-     * @param read The read timeout
-     * @param sslcontext SSL Context
-     * @return Response obtained
-     * @throws IOException if fails
+     * Byte array.
      */
-    Response send(Request req, String home, String method,
-                  Collection<Map.Entry<String, String>> headers,
-                  InputStream content, int connect, int read,
-                  SSLContext sslcontext)
-        throws IOException;
+    private final transient byte[] values;
 
+    /**
+     * Ctor.
+     */
+    public MultipartBodyBuilder() {
+        this(new byte[0]);
+    }
+
+    /**
+     * Ctor.
+     * @param values Initial byte array.
+     */
+    public MultipartBodyBuilder(final byte[] values) {
+        this.values = values.clone();
+    }
+
+    /**
+     * Append byte array to this multipart body including carriage return.
+     * @param bytes Byte array to append.
+     * @return New multipart body.
+     */
+    public MultipartBodyBuilder appendLine(final byte[] bytes) {
+        return this.append(bytes).append(MultipartBodyBuilder.CRLF);
+    }
+
+    /**
+     * Bytes of multipart body.
+     * @return Bytes array.
+     */
+    public byte[] asBytes() {
+        return this.values.clone();
+    }
+
+    /**
+     * Append byte array to this multipart body.
+     * @param bytes Byte array to append.
+     * @return New multipart body.
+     */
+    public MultipartBodyBuilder append(final byte[] bytes) {
+        final int offset = this.values.length;
+        final byte[] neww = Arrays.copyOf(this.values, offset + bytes.length);
+        System.arraycopy(bytes, 0, neww, offset, bytes.length);
+        return new MultipartBodyBuilder(neww);
+    }
 }

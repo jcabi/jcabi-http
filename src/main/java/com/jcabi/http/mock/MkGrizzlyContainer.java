@@ -48,7 +48,6 @@ import org.hamcrest.core.IsAnything;
  * @version $Id$
  * @since 0.10
  * @see MkContainer
- * @checkstyle TooManyMethods (200 lines)
  */
 @SuppressWarnings("PMD.TooManyMethods")
 @EqualsAndHashCode(of = { "adapter", "gws", "port" })

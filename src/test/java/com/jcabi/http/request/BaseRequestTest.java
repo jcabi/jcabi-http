@@ -32,9 +32,13 @@ package com.jcabi.http.request;
 import com.jcabi.http.Wire;
 import com.jcabi.immutable.ArrayMap;
 import javax.json.Json;
+import javax.ws.rs.core.HttpHeaders;
+import javax.ws.rs.core.MediaType;
 import org.hamcrest.MatcherAssert;
 import org.hamcrest.Matchers;
+import org.junit.Rule;
 import org.junit.Test;
+import org.junit.rules.ExpectedException;
 import org.mockito.Mockito;
 
 /**
@@ -43,6 +47,13 @@ import org.mockito.Mockito;
  * @version $Id$
  */
 public final class BaseRequestTest {
+
+    /**
+     * Expected exception.
+     * @checkstyle VisibilityModifier (3 lines)
+     */
+    @Rule
+    public final transient ExpectedException thrown = ExpectedException.none();
 
     /**
      * BaseRequest can build the right destination URI.
@@ -114,4 +125,51 @@ public final class BaseRequestTest {
         );
     }
 
+    /**
+     * Throws exception when using formParam on multipartbody without
+     * content-type defined.
+     * @throws Exception If something goes wrong inside.
+     */
+    @Test
+    public void exceptionWhenMissingContentType() throws Exception {
+        final Wire wire = Mockito.mock(Wire.class);
+        this.thrown.expect(IllegalStateException.class);
+        this.thrown.expectMessage(
+            BaseRequestTest.boundaryErrorMesg()
+        );
+        new BaseRequest(wire, "")
+            .multipartBody()
+            .formParam("a", "value")
+            .back();
+    }
+
+    /**
+     * Throws exception when using formParam on multipartbody without
+     * boundary provided in content-type defined.
+     * @throws Exception If something goes wrong inside.
+     */
+    @Test
+    public void exceptionWhenMissingBoundary() throws Exception {
+        final Wire wire = Mockito.mock(Wire.class);
+        this.thrown.expect(IllegalStateException.class);
+        this.thrown.expectMessage(
+            BaseRequestTest.boundaryErrorMesg()
+        );
+        new BaseRequest(wire, "")
+            .header(
+                HttpHeaders.CONTENT_TYPE,
+                MediaType.MULTIPART_FORM_DATA
+            )
+            .multipartBody()
+            .formParam("b", "val")
+            .back();
+    }
+
+    /**
+     * Boundary error message.
+     * @return Message error as String.
+     */
+    private static String boundaryErrorMesg() {
+        return "Content-Type: multipart/form-data requires boundary";
+    }
 }

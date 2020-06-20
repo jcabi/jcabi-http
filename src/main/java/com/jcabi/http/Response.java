@@ -103,9 +103,9 @@ public interface Response {
      * @param type Type to use
      * @param <T> Type to use
      * @return New response
-     * @checkstyle MethodName (3 lines)
      */
     @SuppressWarnings("PMD.ShortMethodName")
+    //@checkstyle MethodName (1 lines)
     <T extends Response> T as(Class<T> type);
 
 }

@@ -29,6 +29,7 @@
  */
 package com.jcabi.http.request;
 
+import com.google.common.base.Joiner;
 import com.jcabi.aspects.Immutable;
 import com.jcabi.aspects.Loggable;
 import com.jcabi.http.ImmutableHeader;
@@ -49,11 +50,13 @@ import java.lang.reflect.InvocationTargetException;
 import java.net.URI;
 import java.net.URLEncoder;
 import java.nio.charset.Charset;
+import java.util.Arrays;
 import java.util.Collection;
 import java.util.LinkedList;
 import java.util.Map;
 import javax.json.Json;
 import javax.json.JsonStructure;
+import javax.ws.rs.core.HttpHeaders;
 import javax.net.ssl.SSLContext;
 import javax.ws.rs.core.UriBuilder;
 import lombok.EqualsAndHashCode;
@@ -64,22 +67,23 @@ import lombok.EqualsAndHashCode;
  * @author Yegor Bugayenko (yegor@tpc2.com)
  * @version $Id$
  * @since 0.8
- * @checkstyle ClassDataAbstractionCoupling (500 lines)
+ * // @checkstyle ClassDataAbstractionCoupling (500 lines)
  * @see Request
  * @see Response
- * @todo #87:30min Refactor this class to get rid of PMD.GodClass.
- *  This can be done if MultiPartFormBody and
- *  FormEncodedBody are pulled out. Also, the two
- *  share the same implementations for all methods besides formParam,
- *  so they can be refactored to extend an AbstractRequestBody.
- *  PMD.TooManyMethods might come together with getting rid of the
- *  first one, since maybe qulice is counting the methods in the inner
- *  classes too - if it doesn't, then it can be left.
  */
 @Immutable
-@EqualsAndHashCode(of = { "home", "mtd", "hdrs", "content" })
+@EqualsAndHashCode(of = {"home", "mtd", "hdrs", "content"})
 @Loggable(Loggable.DEBUG)
-@SuppressWarnings({"PMD.TooManyMethods", "PMD.GodClass"})
+// @todo #87:30min Refactor this class to get rid of PMD.GodClass.
+//  This can be done if MultiPartFormBody and
+//  FormEncodedBody are pulled out. Also, the two
+//  share the same implementations for all methods besides formParam,
+//  so they can be refactored to extend an AbstractRequestBody.
+//  PMD.TooManyMethods might come together with getting rid of the
+//  first one, since maybe qulice is counting the methods in the inner
+//  classes too - if it doesn't, then it can be left.
+//@checkstyle LineLength (1 line)
+@SuppressWarnings({"PMD.TooManyMethods", "PMD.GodClass", "PMD.ExcessiveImports"})
 public final class BaseRequest implements Request {
 
     /**
@@ -151,6 +155,7 @@ public final class BaseRequest implements Request {
             new Array<Map.Entry<String, String>>(),
             Request.GET, BaseRequest.EMPTY_BYTE_ARRAY
         );
+        //@checkstyle ParameterNumber (15 lines)
     }
 
     /**
@@ -160,12 +165,12 @@ public final class BaseRequest implements Request {
      * @param headers Headers
      * @param method HTTP method
      * @param body HTTP request body
-     * @checkstyle ParameterNumber (5 lines)
      */
     public BaseRequest(final Wire wre, final String uri,
         final Iterable<Map.Entry<String, String>> headers,
         final String method, final byte[] body) {
         this(wre, uri, headers, method, body, 0, 0);
+        //@checkstyle ParameterNumber (15 lines)
     }
 
     /**
@@ -177,7 +182,6 @@ public final class BaseRequest implements Request {
      * @param body HTTP request body
      * @param cnct Connect timeout for http connection
      * @param rdd Read timeout for http connection
-     * @checkstyle ParameterNumber (5 lines)
      */
     public BaseRequest(final Wire wre, final String uri,
         final Iterable<Map.Entry<String, String>> headers,
@@ -209,7 +213,7 @@ public final class BaseRequest implements Request {
             addr = UriBuilder.fromUri(addr).path("/").build();
         }
         this.home = addr.toString();
-        this.hdrs = new Array<>(headers);
+        this.hdrs = new Array<Map.Entry<String, String>>(headers);
         this.mtd = method;
         this.content = body.clone();
         this.connect = cnct;
@@ -430,10 +434,12 @@ public final class BaseRequest implements Request {
          * URI encapsulated.
          */
         private final transient String address;
+
         /**
          * Base request encapsulated.
          */
         private final transient BaseRequest owner;
+
         /**
          * Public ctor.
          * @param req Request
@@ -443,10 +449,12 @@ public final class BaseRequest implements Request {
             this.owner = req;
             this.address = uri;
         }
+
         @Override
         public String toString() {
             return this.address;
         }
+
         @Override
         public Request back() {
             return new BaseRequest(
@@ -454,17 +462,22 @@ public final class BaseRequest implements Request {
                 this.address,
                 this.owner.hdrs,
                 this.owner.mtd,
-                this.owner.content
+                this.owner.content,
+                this.owner.connect,
+                this.owner.read
             );
         }
+
         @Override
         public URI get() {
             return URI.create(this.owner.home);
         }
+
         @Override
         public RequestURI set(final URI uri) {
             return new BaseRequest.BaseURI(this.owner, uri.toString());
         }
+
         @Override
         public RequestURI queryParam(final String name, final Object value) {
             return new BaseRequest.BaseURI(
@@ -474,6 +487,7 @@ public final class BaseRequest implements Request {
                     .build(value).toString()
             );
         }
+
         @Override
         public RequestURI queryParams(final Map<String, String> map) {
             final UriBuilder uri = UriBuilder.fromUri(this.address);
@@ -489,6 +503,7 @@ public final class BaseRequest implements Request {
                 uri.build(values).toString()
             );
         }
+
         @Override
         public RequestURI path(final String segment) {
             return new BaseRequest.BaseURI(
@@ -498,6 +513,7 @@ public final class BaseRequest implements Request {
                     .build().toString()
             );
         }
+
         @Override
         public RequestURI userInfo(final String info) {
             return new BaseRequest.BaseURI(
@@ -507,6 +523,7 @@ public final class BaseRequest implements Request {
                     .build().toString()
             );
         }
+
         @Override
         public RequestURI port(final int num) {
             return new BaseRequest.BaseURI(
@@ -519,16 +536,8 @@ public final class BaseRequest implements Request {
 
     /**
      * Body of a request with a form that has attachments.
-     * @todo #87:1h Implement and unit test method formParam(String, Object)
-     *  Details <a href="http://stackoverflow.com/
-     *  questions/8659808/how-does-http-file-upload-work">here</a>
-     *  (second answer). <br> e.g. While FormEncodedBody.formParam adds
-     *  the param to a body with enctype application/x-www-form-urlencoded,
-     *  method MultipartFormBody.formParam should add it to a body with
-     *  enctype multipart/form-data.
      */
     private static final class MultipartFormBody implements RequestBody {
-
         /**
          * Content encapsulated.
          */
@@ -587,12 +596,53 @@ public final class BaseRequest implements Request {
 
         @Override
         public RequestBody set(final byte[] txt) {
-            return new BaseRequest.FormEncodedBody(this.owner, txt);
+            return new BaseRequest.MultipartFormBody(this.owner, txt);
         }
 
         @Override
         public RequestBody formParam(final String name, final Object value) {
-            throw new UnsupportedOperationException("Method not available");
+            final String boundary = boundary();
+            final String dashes = "--";
+            final byte[] last = Arrays.copyOfRange(
+                this.text,
+                Math.max(this.text.length - 2, 0),
+                this.text.length
+            );
+            final byte[] old;
+            if (Arrays.equals(last, dashes.getBytes(BaseRequest.CHARSET))) {
+                old = Arrays.copyOf(this.text, this.text.length - 2);
+            } else {
+                old = String.format("%s%s", dashes, boundary)
+                    .getBytes(BaseRequest.CHARSET);
+            }
+            final byte[] bytes;
+            if (value instanceof byte[]) {
+                bytes = (byte[]) value;
+            } else {
+                bytes = value.toString().getBytes(BaseRequest.CHARSET);
+            }
+            final byte[] disposition = Joiner.on("; ")
+                .join(
+                    "Content-Disposition: form-data",
+                    String.format("name=\"%s\"", name),
+                    "filename=\"binary\""
+                ).getBytes(BaseRequest.CHARSET);
+            final byte[] type = "Content-Type: application/octet-stream"
+                .getBytes(BaseRequest.CHARSET);
+            final byte[] footer = String.format(
+                "%s%s%s", dashes, boundary, dashes
+            ).getBytes(BaseRequest.CHARSET);
+            final MultipartBodyBuilder neww = new MultipartBodyBuilder()
+                .appendLine(old)
+                .appendLine(disposition)
+                .appendLine(type)
+                .appendLine(new byte[0])
+                .appendLine(bytes)
+                .append(footer);
+            return new BaseRequest.MultipartFormBody(
+                this.owner,
+                neww.asBytes()
+            );
         }
 
         @Override
@@ -602,6 +652,23 @@ public final class BaseRequest implements Request {
                 body = body.formParam(param.getKey(), param.getValue());
             }
             return body;
+        }
+
+        /**
+         * Boundary value found.
+         * @return Boundary string.
+         */
+        private String boundary() {
+            for (final Map.Entry<String, String> hdr : this.owner.hdrs) {
+                if (hdr.getKey().equals(HttpHeaders.CONTENT_TYPE)
+                    && hdr.getValue().matches(".*;\\s*[bB]oundary=.*")) {
+                    return hdr.getValue()
+                        .replaceFirst(".*;\\s*[bB]oundary=", "");
+                }
+            }
+            throw new IllegalStateException(
+                "Content-Type: multipart/form-data requires boundary"
+            );
         }
     }
 
