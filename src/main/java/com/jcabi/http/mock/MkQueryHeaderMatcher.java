@@ -36,9 +36,10 @@ import org.hamcrest.Matcher;
 import org.hamcrest.TypeSafeMatcher;
 
 /**
- * Matcher for checking {@link MkQuery#header()} contents.
+ * Matcher for checking {@link MkQuery#headers()} contents.
  * @author Carlos Miranda (miranda.cma@gmail.com)
  * @version $Id$
+ * @since 1.5
  */
 @ToString
 @EqualsAndHashCode(callSuper = false, of = { "header", "matcher" })
