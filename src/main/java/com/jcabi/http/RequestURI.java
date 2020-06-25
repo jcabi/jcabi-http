@@ -54,6 +54,7 @@ import java.util.Map;
  * @author Yegor Bugayenko (yegor@tpc2.com)
  * @version $Id$
  * @since 0.8
+ * @checkstyle AbbreviationAsWordInNameCheck (100 lines)
  */
 @Immutable
 public interface RequestURI {
