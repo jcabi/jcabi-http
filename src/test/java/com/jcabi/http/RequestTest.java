@@ -67,10 +67,7 @@ import org.junit.runners.Parameterized;
 @SuppressWarnings(
     {
         "PMD.TooManyMethods",
-        "PMD.DoNotUseThreads",
-        "PMD.AvoidCatchingGenericException",
-        "PMD.AvoidThrowingRawExceptionTypes",
-        "PMD.ExcessiveImports"
+        "PMD.AvoidDuplicateLiterals"
     })
 @RunWith(Parameterized.class)
 public final class RequestTest {
