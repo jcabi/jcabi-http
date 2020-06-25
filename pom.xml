@@ -109,10 +109,35 @@ OF THE POSSIBILITY OF SUCH DAMAGE.
       <optional>true</optional>
     </dependency>
     <dependency>
+      <!--
+      @todo #171:30m Transitive dependencies for hamcrest 1.3 and junit 4
+       comes from this dependency.
+       1) Upgrade jcabi-matchers to the same version of parent as jcabi-http.
+       2) Replace hamcrest 1.3 with hamcrest 2.2 (?) from parent
+       3) Replace junit 5 with junit 5
+      -->
       <groupId>com.jcabi</groupId>
       <artifactId>jcabi-matchers</artifactId>
       <scope>provided</scope>
       <optional>true</optional>
+    </dependency>
+    <dependency>
+      <groupId>junit</groupId>
+      <artifactId>junit</artifactId>
+      <version>4.12</version>
+      <scope>test</scope>
+    </dependency>
+    <dependency>
+      <groupId>org.hamcrest</groupId>
+      <artifactId>hamcrest-core</artifactId>
+      <version>1.3</version>
+      <scope>provided</scope>
+    </dependency>
+    <dependency>
+      <groupId>org.hamcrest</groupId>
+      <artifactId>hamcrest-library</artifactId>
+      <version>1.3</version>
+      <scope>provided</scope>
     </dependency>
     <dependency>
       <groupId>com.jcabi</groupId>
@@ -120,18 +145,6 @@ OF THE POSSIBILITY OF SUCH DAMAGE.
       <version>0.20</version>
       <scope>provided</scope>
       <optional>true</optional>
-    </dependency>
-    <dependency>
-      <groupId>org.hamcrest</groupId>
-      <artifactId>hamcrest</artifactId>
-      <optional>true</optional>
-      <scope>provided</scope>
-    </dependency>
-    <dependency>
-      <groupId>org.junit.vintage</groupId>
-      <artifactId>junit-vintage-engine</artifactId>
-      <version>${junit-platform.version}</version>
-      <scope>test</scope>
     </dependency>
     <dependency>
       <groupId>javax.xml.bind</groupId>
