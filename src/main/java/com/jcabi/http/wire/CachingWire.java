@@ -76,7 +76,7 @@ import lombok.ToString;
  */
 @Immutable
 @ToString
-@EqualsAndHashCode(of = { "origin", "regex" })
+@EqualsAndHashCode(of = {"origin", "regex"})
 public final class CachingWire implements Wire {
 
     /**
@@ -139,11 +139,11 @@ public final class CachingWire implements Wire {
     // @checkstyle ParameterNumber (5 lines)
     @Override
     public Response send(final Request req, final String home,
-        final String method,
-        final Collection<Map.Entry<String, String>> headers,
-        final InputStream content,
-        final int connect,
-        final int read) throws IOException {
+                         final String method,
+                         final Collection<Map.Entry<String, String>> headers,
+                         final InputStream content,
+                         final int connect,
+                         final int read) throws IOException {
         final URI uri = req.uri().get();
         final StringBuilder label = new StringBuilder(Tv.HUNDRED)
             .append(method).append(' ').append(uri.getPath());
@@ -189,34 +189,42 @@ public final class CachingWire implements Wire {
 
     /**
      * Query.
+     *
+     * @since 1.8.3
      */
     @ToString
-    @EqualsAndHashCode(of = { "origin", "request", "uri", "headers" })
+    @EqualsAndHashCode(of = {"origin", "request", "uri", "headers"})
     private static final class Query {
         /**
          * Origin wire.
          */
         private final transient Wire origin;
+
         /**
          * Request.
          */
         private final transient Request request;
+
         /**
          * URI.
          */
         private final transient String uri;
+
         /**
          * Headers.
          */
         private final transient Collection<Map.Entry<String, String>> headers;
+
         /**
          * Body.
          */
         private final transient InputStream body;
+
         /**
          * Connect timeout.
          */
         private final transient int connect;
+
         /**
          * Read timeout.
          */
@@ -245,6 +253,7 @@ public final class CachingWire implements Wire {
             this.connect = cnct;
             this.read = rdd;
         }
+
         /**
          * Fetch.
          * @return Response
