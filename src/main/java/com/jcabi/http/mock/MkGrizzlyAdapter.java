@@ -261,14 +261,9 @@ final class MkGrizzlyAdapter extends GrizzlyAdapter {
             final int times) {
             this.answr = ans;
             this.condition = matcher;
-            if (times < 1) {
-                throw new IllegalArgumentException(
-                    "Answer must be returned at least once."
-                );
-            } else {
-                this.count = new AtomicInteger(times);
-            }
+            this.count = Conditional.positiveAtomic(times);
         }
+
         /**
          * Get the answer.
          * @return The answer
@@ -291,6 +286,21 @@ final class MkGrizzlyAdapter extends GrizzlyAdapter {
         public int decrement() {
             return this.count.decrementAndGet();
         }
+
+        /**
+         * Check if positive and convert to atomic.
+         * @param num Number
+         * @return Positive atomic integer
+         */
+        private static AtomicInteger positiveAtomic(final int num) {
+            if (num < 1) {
+                throw new IllegalArgumentException(
+                    "Answer must be returned at least once."
+                );
+            }
+            return new AtomicInteger(num);
+        }
+
     }
 
     /**
