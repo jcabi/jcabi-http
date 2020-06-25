@@ -68,10 +68,10 @@ public final class MkAnswerMatchersTest {
         final MkAnswer query = Mockito.mock(MkAnswer.class);
         Mockito.doReturn(body).when(query).bodyBytes();
         MatcherAssert.assertThat(
-                query,
-                MkAnswerMatchers.hasBodyBytes(
-                        Matchers.is(body)
-                )
+            query,
+            MkAnswerMatchers.hasBodyBytes(
+                Matchers.is(body)
+            )
         );
     }
 
