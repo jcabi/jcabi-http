@@ -129,7 +129,7 @@ public final class FakeRequestTest {
     /**
      * FakeRequest returns the Response Body if the Request Body is set.
      * @throws Exception If something goes wrong inside.
-     * @see https://github.com/jcabi/jcabi-http/issues/47
+     * @link https://github.com/jcabi/jcabi-http/issues/47
      */
     @Test
     public void fakeRequestReturnsResponseBody() throws Exception {
