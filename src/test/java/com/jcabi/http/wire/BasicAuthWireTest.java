@@ -129,7 +129,7 @@ public final class BasicAuthWireTest {
                 URLEncoder.encode(this.password, ENCODING)
             )
         ).build();
-        final String expectedHeader = expectHeader(
+        final String expected = expectHeader(
             this.username,
             this.password
         );
@@ -141,7 +141,7 @@ public final class BasicAuthWireTest {
         container.stop();
         MatcherAssert.assertThat(
             container.take().headers().get(HttpHeaders.AUTHORIZATION).get(0),
-            Matchers.equalTo(expectedHeader)
+            Matchers.equalTo(expected)
         );
     }
 
