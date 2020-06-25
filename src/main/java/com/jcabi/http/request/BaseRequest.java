@@ -560,7 +560,7 @@ public final class BaseRequest implements Request {
 
         @Override
         public RequestBody formParam(final String name, final Object value) {
-            final String boundary = boundary();
+            final String boundary = this.boundary();
             final String dashes = "--";
             final byte[] last = Arrays.copyOfRange(
                 this.text,
