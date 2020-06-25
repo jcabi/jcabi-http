@@ -44,6 +44,7 @@ import org.mockito.Mockito;
  * Test case for {@link GrizzlyQuery}.
  * @author Paul Polishchuk (ppol@ua.fm)
  * @version $Id$
+ * @since 1.13
  */
 public final class GrizzlyQueryTest {
 
