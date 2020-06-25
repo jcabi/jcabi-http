@@ -48,7 +48,6 @@ import org.hamcrest.Matchers;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.junit.runners.Parameterized;
-import org.junit.runners.Parameterized.Parameters;
 
 /**
  * Test case for {@link BasicAuthWire}.
@@ -73,7 +72,9 @@ public final class BasicAuthWireTest {
     /**
      * The charset to use.
      */
-    private static final Charset CHARSET = Charset.forName(ENCODING);
+    private static final Charset CHARSET = Charset.forName(
+        BasicAuthWireTest.ENCODING
+    );
 
     /**
      * The username to use for authentication.
@@ -103,7 +104,7 @@ public final class BasicAuthWireTest {
      * @return The username and password parameters used to construct
      *  the test
      */
-    @Parameters
+    @Parameterized.Parameters
     public static Collection<Object[]> getParameters() {
         final Collection<Object[]> parameters = new ArrayList<>(10);
         parameters.add(new String[] {"Alice", "secret"});
@@ -124,12 +125,12 @@ public final class BasicAuthWireTest {
         ).start();
         final URI uri = UriBuilder.fromUri(container.home()).userInfo(
             String.format(
-                CRED_FORMAT,
-                URLEncoder.encode(this.username, ENCODING),
-                URLEncoder.encode(this.password, ENCODING)
+                BasicAuthWireTest.CRED_FORMAT,
+                URLEncoder.encode(this.username, BasicAuthWireTest.ENCODING),
+                URLEncoder.encode(this.password, BasicAuthWireTest.ENCODING)
             )
         ).build();
-        final String expected = expectHeader(
+        final String expected = BasicAuthWireTest.expectHeader(
             this.username,
             this.password
         );
@@ -158,10 +159,10 @@ public final class BasicAuthWireTest {
         final String password) {
         final String credentials = DatatypeConverter.printBase64Binary(
             String.format(
-                CRED_FORMAT,
+                BasicAuthWireTest.CRED_FORMAT,
                 username,
                 password
-            ).getBytes(CHARSET)
+            ).getBytes(BasicAuthWireTest.CHARSET)
         );
         return String.format("Basic %s", credentials);
     }
