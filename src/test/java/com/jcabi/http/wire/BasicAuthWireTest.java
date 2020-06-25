@@ -123,21 +123,21 @@ public final class BasicAuthWireTest {
             new MkAnswer.Simple("")
         ).start();
         final URI uri = UriBuilder.fromUri(container.home()).userInfo(
-                String.format(
-                        CRED_FORMAT,
-                        URLEncoder.encode(this.username, ENCODING),
-                        URLEncoder.encode(this.password, ENCODING)
-                )
+            String.format(
+                CRED_FORMAT,
+                URLEncoder.encode(this.username, ENCODING),
+                URLEncoder.encode(this.password, ENCODING)
+            )
         ).build();
         final String expectedHeader = expectHeader(
-                this.username,
-                this.password
+            this.username,
+            this.password
         );
         new JdkRequest(uri)
-                .through(BasicAuthWire.class)
-                .fetch()
-                .as(RestResponse.class)
-                .assertStatus(HttpURLConnection.HTTP_OK);
+            .through(BasicAuthWire.class)
+            .fetch()
+            .as(RestResponse.class)
+            .assertStatus(HttpURLConnection.HTTP_OK);
         container.stop();
         MatcherAssert.assertThat(
             container.take().headers().get(HttpHeaders.AUTHORIZATION).get(0),
@@ -155,13 +155,13 @@ public final class BasicAuthWireTest {
      *  <code>Basic &lt;base64 of username:password&gt;</code>
      */
     private static String expectHeader(final String username,
-            final String password) {
+        final String password) {
         final String credentials = DatatypeConverter.printBase64Binary(
-                String.format(
-                        CRED_FORMAT,
-                        username,
-                        password
-                ).getBytes(CHARSET)
+            String.format(
+                CRED_FORMAT,
+                username,
+                password
+            ).getBytes(CHARSET)
         );
         return String.format("Basic %s", credentials);
     }
