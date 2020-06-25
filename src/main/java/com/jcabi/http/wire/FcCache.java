@@ -46,6 +46,7 @@ import java.io.OutputStream;
 import java.io.UnsupportedEncodingException;
 import java.net.URLEncoder;
 import java.nio.charset.StandardCharsets;
+import java.nio.file.Files;
 import java.util.AbstractMap;
 import java.util.Collection;
 import java.util.LinkedList;
@@ -227,7 +228,7 @@ final class FcCache {
         if (file.getParentFile().mkdirs()) {
             Logger.debug(this, "directory created for %s", file);
         }
-        try (OutputStream out = new FileOutputStream(file)) {
+        try (OutputStream out = Files.newOutputStream(file.toPath())) {
             Json.createWriter(out).write(json.build());
         }
         Logger.debug(this, "cache saved into %s", file);
