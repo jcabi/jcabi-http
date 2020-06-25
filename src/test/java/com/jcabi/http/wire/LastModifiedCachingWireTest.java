@@ -124,7 +124,9 @@ public final class LastModifiedCachingWireTest {
             final Request req = new JdkRequest(container.home())
                 .through(LastModifiedCachingWire.class);
             for (int idx = 0; idx < Tv.TEN; ++idx) {
-                req.fetch().as(RestResponse.class)
+                req
+                    .fetch()
+                    .as(RestResponse.class)
                     .assertStatus(HttpURLConnection.HTTP_OK)
                     .assertBody(
                         Matchers.equalTo(LastModifiedCachingWireTest.BODY)
@@ -237,14 +239,20 @@ public final class LastModifiedCachingWireTest {
         try {
             final Request req = new JdkRequest(container.home())
                 .through(LastModifiedCachingWire.class);
-            req.fetch().as(RestResponse.class)
+            req
+                .fetch()
+                .as(RestResponse.class)
                 .assertStatus(HttpURLConnection.HTTP_OK)
                 .assertBody(
                     Matchers.equalTo(body)
                 );
-            req.fetch().as(RestResponse.class)
+            req
+                .fetch()
+                .as(RestResponse.class)
                 .assertStatus(HttpURLConnection.HTTP_NOT_FOUND);
-            req.fetch().as(RestResponse.class)
+            req
+                .fetch()
+                .as(RestResponse.class)
                 .assertStatus(HttpURLConnection.HTTP_OK)
                 .assertBody(
                     Matchers.equalTo(body)
@@ -286,14 +294,18 @@ public final class LastModifiedCachingWireTest {
             final Request req = new JdkRequest(container.home())
                 .through(LastModifiedCachingWire.class);
             for (int idx = 0; idx < 2; ++idx) {
-                req.fetch().as(RestResponse.class)
+                req
+                    .fetch()
+                    .as(RestResponse.class)
                     .assertStatus(HttpURLConnection.HTTP_OK)
                     .assertBody(
                         Matchers.equalTo(LastModifiedCachingWireTest.BODY)
                     );
             }
             for (int idx = 0; idx < 2; ++idx) {
-                req.fetch().as(RestResponse.class)
+                req
+                    .fetch()
+                    .as(RestResponse.class)
                     .assertStatus(HttpURLConnection.HTTP_OK)
                     .assertBody(
                         Matchers.equalTo(
@@ -335,7 +347,9 @@ public final class LastModifiedCachingWireTest {
                     "Fri, 01 Jan 2016 00:00:00 GMT"
                 );
             for (int idx = 0; idx < 2; ++idx) {
-                req.fetch().as(RestResponse.class)
+                req
+                    .fetch()
+                    .as(RestResponse.class)
                     .assertStatus(HttpURLConnection.HTTP_OK)
                     .assertBody(
                         Matchers.equalTo(LastModifiedCachingWireTest.BODY)
