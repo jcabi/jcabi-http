@@ -128,7 +128,7 @@ public final class LastModifiedCachingWireTest {
                     .assertStatus(HttpURLConnection.HTTP_OK)
                     .assertBody(
                         Matchers.equalTo(LastModifiedCachingWireTest.BODY)
-                );
+                    );
             }
             MatcherAssert.assertThat(
                 container.queries(), Matchers.equalTo(Tv.TEN)
@@ -241,14 +241,14 @@ public final class LastModifiedCachingWireTest {
                 .assertStatus(HttpURLConnection.HTTP_OK)
                 .assertBody(
                     Matchers.equalTo(body)
-            );
+                );
             req.fetch().as(RestResponse.class)
                 .assertStatus(HttpURLConnection.HTTP_NOT_FOUND);
             req.fetch().as(RestResponse.class)
                 .assertStatus(HttpURLConnection.HTTP_OK)
                 .assertBody(
                     Matchers.equalTo(body)
-            );
+                );
         } finally {
             container.stop();
         }
@@ -290,7 +290,7 @@ public final class LastModifiedCachingWireTest {
                     .assertStatus(HttpURLConnection.HTTP_OK)
                     .assertBody(
                         Matchers.equalTo(LastModifiedCachingWireTest.BODY)
-                );
+                    );
             }
             for (int idx = 0; idx < 2; ++idx) {
                 req.fetch().as(RestResponse.class)
@@ -299,7 +299,7 @@ public final class LastModifiedCachingWireTest {
                         Matchers.equalTo(
                             LastModifiedCachingWireTest.BODY_UPDATED
                         )
-                );
+                    );
             }
             MatcherAssert.assertThat(
                 container.queries(), Matchers.equalTo(2 + 2)
@@ -308,6 +308,7 @@ public final class LastModifiedCachingWireTest {
             container.stop();
         }
     }
+
     /**
      * LastModifiedCachingWire can send a request directly
      * if it contains the "If-Modified-Since" header.
@@ -338,7 +339,7 @@ public final class LastModifiedCachingWireTest {
                     .assertStatus(HttpURLConnection.HTTP_OK)
                     .assertBody(
                         Matchers.equalTo(LastModifiedCachingWireTest.BODY)
-                );
+                    );
             }
             MatcherAssert.assertThat(container.queries(), Matchers.equalTo(2));
         } finally {
@@ -351,7 +352,9 @@ public final class LastModifiedCachingWireTest {
      * @return The query matcher
      */
     private static Matcher<MkQuery> queryContainsIfModifiedSinceHeader() {
-        return queryContainingHeader("If-Modified-Since");
+        return LastModifiedCachingWireTest.queryContainingHeader(
+            "If-Modified-Since"
+        );
     }
 
     /**
@@ -366,6 +369,7 @@ public final class LastModifiedCachingWireTest {
             protected boolean matchesSafely(final MkQuery query) {
                 return query.headers().containsKey(header);
             }
+
             @Override
             public void describeTo(final Description description) {
                 description.appendText("contains ");
