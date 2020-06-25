@@ -37,6 +37,7 @@ import org.hamcrest.Matcher;
  * @version $Id$
  * @since 1.5
  */
+@SuppressWarnings("PMD.ProhibitPublicStaticMethods")
 public final class MkQueryMatchers {
 
     /**

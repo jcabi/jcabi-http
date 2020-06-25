@@ -184,6 +184,7 @@ public final class CachingWire implements Wire {
      * Invalidate the entire cache.
      * @since 1.15
      */
+    @SuppressWarnings("PMD.ProhibitPublicStaticMethods")
     public static void invalidate() {
         CachingWire.CACHE.invalidateAll();
     }
