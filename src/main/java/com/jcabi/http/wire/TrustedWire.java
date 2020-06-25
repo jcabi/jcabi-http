@@ -76,11 +76,13 @@ public final class TrustedWire implements Wire {
         public X509Certificate[] getAcceptedIssuers() {
             return new X509Certificate[0];
         }
+
         @Override
         public void checkClientTrusted(final X509Certificate[] certs,
             final String type) {
             // nothing to check here
         }
+
         @Override
         public void checkServerTrusted(final X509Certificate[] certs,
             final String types) {
@@ -134,13 +136,11 @@ public final class TrustedWire implements Wire {
             final SSLContext ctx = SSLContext.getInstance("SSL");
             ctx.init(
                 null,
-                new TrustManager[] {TrustedWire.MANAGER},
+                new TrustManager[]{TrustedWire.MANAGER},
                 new SecureRandom()
             );
             return ctx;
-        } catch (final KeyManagementException ex) {
-            throw new IllegalStateException(ex);
-        } catch (final NoSuchAlgorithmException ex) {
+        } catch (final KeyManagementException | NoSuchAlgorithmException ex) {
             throw new IllegalStateException(ex);
         }
     }
