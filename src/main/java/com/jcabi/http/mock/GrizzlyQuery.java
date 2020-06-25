@@ -37,7 +37,7 @@ import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.net.URI;
-import java.nio.charset.Charset;
+import java.nio.charset.StandardCharsets;
 import java.util.Arrays;
 import java.util.Collections;
 import java.util.Enumeration;
@@ -56,16 +56,6 @@ import java.util.concurrent.ConcurrentMap;
  */
 @Immutable
 final class GrizzlyQuery implements MkQuery {
-
-    /**
-     * The encoding to use.
-     */
-    private static final String ENCODING = "UTF-8";
-
-    /**
-     * The Charset to use.
-     */
-    private static final Charset CHARSET = Charset.forName(ENCODING);
 
     /**
      * HTTP request method.
@@ -94,19 +84,11 @@ final class GrizzlyQuery implements MkQuery {
      * @throws IOException If fails
      */
     GrizzlyQuery(final GrizzlyRequest request) throws IOException {
-        request.setCharacterEncoding(GrizzlyQuery.ENCODING);
+        request.setCharacterEncoding(StandardCharsets.UTF_8.toString());
         this.home = GrizzlyQuery.uri(request);
         this.mtd = request.getMethod();
         this.hdrs = GrizzlyQuery.headers(request);
-        // @checkstyle MagicNumber (1 line)
-        final byte[] buffer = new byte[8192];
-        final InputStream input = request.getInputStream();
-        final ByteArrayOutputStream output = new ByteArrayOutputStream();
-        for (int bytes = input.read(buffer); bytes != -1;
-            bytes = input.read(buffer)) {
-            output.write(buffer, 0, bytes);
-        }
-        this.content = output.toByteArray();
+        this.content = GrizzlyQuery.input(request);
     }
 
     @Override
@@ -126,7 +108,7 @@ final class GrizzlyQuery implements MkQuery {
 
     @Override
     public String body() {
-        return new String(this.content, GrizzlyQuery.CHARSET);
+        return new String(this.content, StandardCharsets.UTF_8);
     }
 
     @Override
@@ -183,5 +165,24 @@ final class GrizzlyQuery implements MkQuery {
         }
         return list;
     }
-
+    /**
+     * Read req.
+     * @param req Grizzly req
+     * @return Bytes of input
+     * @throws IOException If fails
+     */
+    private static byte[] input(final GrizzlyRequest req) throws IOException {
+        // @checkstyle MagicNumber (1 line)
+        final byte[] buffer = new byte[8192];
+        final InputStream input = req.getInputStream();
+        final ByteArrayOutputStream output = new ByteArrayOutputStream();
+        while (true) {
+            final int bytes = input.read(buffer);
+            if (bytes == -1) {
+                break;
+            }
+            output.write(buffer, 0, bytes);
+        }
+        return output.toByteArray();
+    }
 }
