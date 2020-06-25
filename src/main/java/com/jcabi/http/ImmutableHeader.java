@@ -86,6 +86,7 @@ public final class ImmutableHeader implements Map.Entry<String, String> {
      * @param key The key to normalize
      * @return Normalized key
      */
+    @SuppressWarnings("PMD.ProhibitPublicStaticMethods")
     public static String normalize(final String key) {
         final char[] chars = key.toCharArray();
         chars[0] = ImmutableHeader.upper(chars[0]);
