@@ -227,7 +227,7 @@ final class FcCache {
         if (file.getParentFile().mkdirs()) {
             Logger.debug(this, "directory created for %s", file);
         }
-        try (final OutputStream out = new FileOutputStream(file)) {
+        try (OutputStream out = new FileOutputStream(file)) {
             Json.createWriter(out).write(json.build());
         }
         Logger.debug(this, "cache saved into %s", file);

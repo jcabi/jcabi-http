@@ -158,7 +158,7 @@ public final class MkGrizzlyContainer implements MkContainer {
     @RetryOnFailure
     private static int reserve() throws IOException {
         final int reserved;
-        try (final ServerSocket socket = new ServerSocket(0)) {
+        try (ServerSocket socket = new ServerSocket(0)) {
             reserved = socket.getLocalPort();
         }
         return reserved;
