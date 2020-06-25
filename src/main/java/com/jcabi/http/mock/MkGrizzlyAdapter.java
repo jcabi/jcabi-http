@@ -67,13 +67,13 @@ final class MkGrizzlyAdapter extends GrizzlyAdapter {
      * Queries received.
      */
     private final transient Queue<QueryWithAnswer> queue =
-        new ConcurrentLinkedQueue<QueryWithAnswer>();
+        new ConcurrentLinkedQueue<>();
 
     /**
      * Answers to give conditionally.
      */
     private final transient Queue<Conditional> conditionals =
-        new ConcurrentLinkedQueue<Conditional>();
+        new ConcurrentLinkedQueue<>();
 
     // @checkstyle ExecutableStatementCount (55 lines)
     @Override
@@ -185,7 +185,7 @@ final class MkGrizzlyAdapter extends GrizzlyAdapter {
      *  oldest to newest.
      */
     public Collection<MkQuery> takeAll(final Matcher<MkAnswer> matcher) {
-        final Collection<MkQuery> results = new LinkedList<MkQuery>();
+        final Collection<MkQuery> results = new LinkedList<>();
         final Iterator<QueryWithAnswer> iter = this.queue.iterator();
         while (iter.hasNext()) {
             final QueryWithAnswer candidate = iter.next();
