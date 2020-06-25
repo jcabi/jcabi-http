@@ -43,6 +43,7 @@ import org.junit.Test;
  * Test case for {@link RestResponse}.
  * @author Yegor Bugayenko (yegor@tpc2.com)
  * @version $Id$
+ * @since 1.1
  */
 public final class RestResponseTest {
 

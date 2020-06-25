@@ -42,6 +42,7 @@ import org.junit.Test;
  * @author Yegor Bugayenko (yegor@tpc2.com)
  * @version $Id$
  * @checkstyle ClassDataAbstractionCoupling (500 lines)
+ * @since 1.1
  */
 @SuppressWarnings("PMD.TooManyMethods")
 public final class XmlResponseTest {

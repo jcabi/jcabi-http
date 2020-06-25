@@ -41,6 +41,7 @@ import org.junit.Test;
  *
  * @author Carlos Miranda (miranda.cma@gmail.com)
  * @version $Id$
+ * @since 1.4
  */
 public final class JsoupResponseTest {
 
