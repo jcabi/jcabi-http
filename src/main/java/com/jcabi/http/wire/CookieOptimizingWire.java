@@ -99,9 +99,9 @@ public final class CookieOptimizingWire implements Wire {
         final int connect,
         final int read) throws IOException {
         final Collection<Map.Entry<String, String>> hdrs =
-            new LinkedList<Map.Entry<String, String>>();
+            new LinkedList<>();
         final ConcurrentMap<String, String> cookies =
-            new ConcurrentHashMap<String, String>(0);
+            new ConcurrentHashMap<>(0);
         for (final Map.Entry<String, String> header : headers) {
             if (header.getKey().equals(HttpHeaders.COOKIE)) {
                 final String cookie = header.getValue();
