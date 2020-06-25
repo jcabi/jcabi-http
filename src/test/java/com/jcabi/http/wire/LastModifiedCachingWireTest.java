@@ -186,19 +186,13 @@ public final class LastModifiedCachingWireTest {
                 .through(LastModifiedCachingWire.class);
             req.fetch().as(RestResponse.class)
                 .assertStatus(HttpURLConnection.HTTP_OK)
-                .assertBody(
-                    Matchers.equalTo(first)
-                );
+                .assertBody(Matchers.equalTo(first));
             req.fetch().as(RestResponse.class)
                 .assertStatus(HttpURLConnection.HTTP_OK)
-                .assertBody(
-                    Matchers.equalTo(second)
-                );
+                .assertBody(Matchers.equalTo(second));
             req.fetch().as(RestResponse.class)
                 .assertStatus(HttpURLConnection.HTTP_OK)
-                .assertBody(
-                    Matchers.equalTo(third)
-                );
+                .assertBody(Matchers.equalTo(third));
         } finally {
             container.stop();
         }
@@ -219,7 +213,7 @@ public final class LastModifiedCachingWireTest {
      * @throws Exception If fails
      */
     @Test
-    public void doesNotEvictCacheOnNonOK()
+    public void doesNotEvictCacheOnNonOk()
         throws Exception {
         final String body = "Body";
         final MkContainer container = new MkGrizzlyContainer()
