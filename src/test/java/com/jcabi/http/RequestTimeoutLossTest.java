@@ -46,6 +46,7 @@ import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.junit.runners.Parameterized;
 import org.mockito.ArgumentCaptor;
+import org.mockito.ArgumentMatchers;
 import org.mockito.Mockito;
 
 /**
@@ -324,39 +325,39 @@ public final class RequestTimeoutLossTest {
             new Supplier<Collection<Map.Entry<String, String>>>() {
                 @Override
                 public Collection<Map.Entry<String, String>> get() {
-                    return org.mockito.Matchers.anyCollectionOf(null);
+                    return ArgumentMatchers.anyCollection();
             }
         };
         final String url = "fake-url";
         Mockito.when(
                 wire.send(
-                        org.mockito.Matchers.any(Request.class),
-                        org.mockito.Matchers.eq(url),
-                        org.mockito.Matchers.anyString(),
+                        ArgumentMatchers.any(Request.class),
+                        ArgumentMatchers.eq(url),
+                        ArgumentMatchers.anyString(),
                         hdrs.get(),
-                        org.mockito.Matchers.any(InputStream.class),
-                        org.mockito.Matchers.anyInt(),
-                        org.mockito.Matchers.anyInt()
+                        ArgumentMatchers.any(InputStream.class),
+                        ArgumentMatchers.anyInt(),
+                        ArgumentMatchers.anyInt()
                 )
         ).thenReturn(response);
         new BaseRequest(original, url).through(wire).fetch();
         Mockito.verify(original, Mockito.never()).send(
-                org.mockito.Matchers.any(Request.class),
-                org.mockito.Matchers.anyString(),
-                org.mockito.Matchers.anyString(),
+                ArgumentMatchers.any(Request.class),
+                ArgumentMatchers.anyString(),
+                ArgumentMatchers.anyString(),
                 hdrs.get(),
-                org.mockito.Matchers.any(InputStream.class),
-                org.mockito.Matchers.anyInt(),
-                org.mockito.Matchers.anyInt()
+                ArgumentMatchers.any(InputStream.class),
+                ArgumentMatchers.anyInt(),
+                ArgumentMatchers.anyInt()
         );
         Mockito.verify(wire).send(
-                org.mockito.Matchers.any(Request.class),
-                org.mockito.Matchers.anyString(),
-                org.mockito.Matchers.anyString(),
+                ArgumentMatchers.any(Request.class),
+                ArgumentMatchers.anyString(),
+                ArgumentMatchers.anyString(),
                 hdrs.get(),
-                org.mockito.Matchers.any(InputStream.class),
-                org.mockito.Matchers.anyInt(),
-                org.mockito.Matchers.anyInt()
+                ArgumentMatchers.any(InputStream.class),
+                ArgumentMatchers.anyInt(),
+                ArgumentMatchers.anyInt()
         );
     }
 
