@@ -79,28 +79,34 @@ public interface MkAnswer {
 
     /**
      * Simple implementation.
+     *
+     * @since 1.0
      */
     @Immutable
-    @EqualsAndHashCode(of = { "code", "hdrs", "content" })
+    @EqualsAndHashCode(of = {"code", "hdrs", "content"})
     @Loggable(Loggable.DEBUG)
     final class Simple implements MkAnswer {
         /**
          * The Charset to use.
          */
         private static final Charset CHARSET = Charset.forName("UTF-8");
+
         /**
          * Encapsulated response.
          */
         private final transient int code;
+
         /**
          * Headers.
          */
         private final transient Array<Map.Entry<String, String>> hdrs;
+
         /**
          * Content received.
          */
         @Immutable.Array
         private final transient byte[] content;
+
         /**
          * Public ctor.
          * @param body Body of HTTP response
@@ -108,6 +114,7 @@ public interface MkAnswer {
         public Simple(final String body) {
             this(HttpURLConnection.HTTP_OK, body);
         }
+
         /**
          * Public ctor (with empty HTTP body).
          * @param status HTTP status
@@ -116,6 +123,7 @@ public interface MkAnswer {
         public Simple(final int status) {
             this(status, "");
         }
+
         /**
          * Public ctor.
          * @param status HTTP status
@@ -127,6 +135,7 @@ public interface MkAnswer {
                 body.getBytes(MkAnswer.Simple.CHARSET)
             );
         }
+
         /**
          * Public ctor.
          * @param status HTTP status
@@ -137,13 +146,15 @@ public interface MkAnswer {
             final Iterable<Map.Entry<String, String>> headers,
             final byte[] body) {
             this.code = status;
-            this.hdrs = new Array<Map.Entry<String, String>>(headers);
+            this.hdrs = new Array<>(headers);
             this.content = body.clone();
         }
+
         @Override
         public int status() {
             return this.code;
         }
+
         @Override
         @SuppressWarnings("PMD.AvoidInstantiatingObjectsInLoops")
         public Map<String, List<String>> headers() {
@@ -155,14 +166,17 @@ public interface MkAnswer {
             }
             return map;
         }
+
         @Override
         public String body() {
             return new String(this.content, MkAnswer.Simple.CHARSET);
         }
+
         @Override
         public byte[] bodyBytes() {
             return this.content.clone();
         }
+
         @Override
         public String toString() {
             final StringBuilder text = new StringBuilder(0)
@@ -180,6 +194,7 @@ public interface MkAnswer {
                 .append(new RequestBody.Printable(this.content))
                 .toString();
         }
+
         /**
          * Make a copy of this answer, with an extra header.
          * @param name Name of the header
@@ -194,6 +209,7 @@ public interface MkAnswer {
                 this.content
             );
         }
+
         /**
          * Make a copy of this answer, with another status code.
          * @param status Status code
@@ -206,6 +222,7 @@ public interface MkAnswer {
                 this.content
             );
         }
+
         /**
          * Make a copy of this answer, with another body.
          * @param body Body
@@ -218,6 +235,7 @@ public interface MkAnswer {
                 body.getBytes(MkAnswer.Simple.CHARSET)
             );
         }
+
         /**
          * Make a copy of this answer, with another body.
          * @param body Body
