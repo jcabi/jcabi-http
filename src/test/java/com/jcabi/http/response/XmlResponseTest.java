@@ -39,7 +39,6 @@ import org.junit.Test;
 
 /**
  * Test case for {@link XmlResponse}.
- * @author Yegor Bugayenko (yegor@tpc2.com)
  * @version $Id$
  * @checkstyle ClassDataAbstractionCoupling (500 lines)
  * @since 1.1

@@ -45,7 +45,6 @@ import org.junit.Test;
 /**
  * Test case for {@link AutoRedirectingWire}.
  *
- * @author Carlos Miranda (miranda.cma@gmail.com)
  * @version $Id$
  * @since 1.7
  */

@@ -33,7 +33,6 @@ import org.hamcrest.Matcher;
 
 /**
  * Convenient set of matchers for {@link MkQuery}.
- * @author Carlos Miranda (miranda.cma@gmail.com)
  * @version $Id$
  * @since 1.5
  */

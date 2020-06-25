@@ -43,7 +43,6 @@ import org.junit.Test;
 
 /**
  * Test case for {@link ETagCachingWire}.
- * @author Ievgen Degtiarenko (ievgen.degtiarenko@gmail.com)
  * @version $Id$
  * @since 2.0
  */

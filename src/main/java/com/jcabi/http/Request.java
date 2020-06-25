@@ -71,7 +71,6 @@ import java.io.InputStream;
  * possible HTTP methods (JdkRequest doesn't support {@code PATCH},
  * for example).
  *
- * @author Yegor Bugayenko (yegor@tpc2.com)
  * @version $Id$
  * @since 0.8
  * @see com.jcabi.http.request.JdkRequest

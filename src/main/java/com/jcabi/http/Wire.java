@@ -52,7 +52,6 @@ import java.util.Map;
  * <p>Every {@code Wire} decorator passed to {@code through()} method
  * wraps a previously existing one.
  *
- * @author Yegor Bugayenko (yegor@tpc2.com)
  * @version $Id$
  * @since 0.9
  */

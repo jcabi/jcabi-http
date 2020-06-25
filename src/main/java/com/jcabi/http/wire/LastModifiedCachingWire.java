@@ -36,7 +36,6 @@ import lombok.ToString;
 /**
  * Wire that caches requests based on Last-Modified
  * and If-Modified-Since headers.
- * @author Igor Piddubnyi (igor.piddubnyi@gmail.com)
  * @version $Id$
  * @since 1.15
  */

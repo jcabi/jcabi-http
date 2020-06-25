@@ -37,7 +37,6 @@ import lombok.ToString;
 /**
  * Immutable HTTP header.
  *
- * @author Yegor Bugayenko (yegor@tpc2.com)
  * @version $Id$
  * @since 0.10
  */

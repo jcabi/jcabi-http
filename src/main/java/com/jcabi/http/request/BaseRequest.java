@@ -63,7 +63,6 @@ import lombok.EqualsAndHashCode;
 /**
  * Base implementation of {@link Request}.
  *
- * @author Yegor Bugayenko (yegor@tpc2.com)
  * @version $Id$
  * @since 0.8
  * // @checkstyle ClassDataAbstractionCoupling (500 lines)

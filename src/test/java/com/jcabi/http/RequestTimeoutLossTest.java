@@ -52,7 +52,6 @@ import org.mockito.Mockito;
 
 /**
  * Test case for loss of timeout parameters.
- * @author Jakob Oswald (jakob.oswald@gmx.net)
  * @version $Id$
  * @since 1.17.3
  */

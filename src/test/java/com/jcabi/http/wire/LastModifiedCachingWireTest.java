@@ -51,7 +51,6 @@ import org.junit.Test;
 
 /**
  * Test case for {@link LastModifiedCachingWire}.
- * @author Igor Piddubnyi (igor.piddubnyi@gmail.com)
  * @version $Id$
  * @since 1.15
  */

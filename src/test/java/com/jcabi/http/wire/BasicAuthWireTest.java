@@ -53,7 +53,6 @@ import org.junit.runners.Parameterized;
  * Test case for {@link BasicAuthWire}.
  *
  * @version $Id$
- * @author Jakob Oswald (jakob.oswald@gmx.net)
  * @since 1.17.1
  */
 @RunWith(Parameterized.class)

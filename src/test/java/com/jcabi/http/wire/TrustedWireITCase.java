@@ -38,7 +38,6 @@ import org.junit.Test;
 
 /**
  * Integration case for {@link TrustedWire}.
- * @author Yegor Bugayenko (yegor@tpc2.com)
  * @version $Id$
  * @since 1.10.1
  */

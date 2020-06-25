@@ -37,7 +37,6 @@ import org.mockito.Mockito;
 
 /**
  * Test case for {@link MkAnswerMatchers}.
- * @author Carlos Miranda (miranda.cma@gmail.com)
  * @version $Id$
  * @since 1.5
  */

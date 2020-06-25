@@ -50,7 +50,6 @@ import java.util.concurrent.ConcurrentMap;
 /**
  * Mock HTTP query/request.
  *
- * @author Yegor Bugayenko (yegor@tpc2.com)
  * @version $Id$
  * @since 0.10
  */

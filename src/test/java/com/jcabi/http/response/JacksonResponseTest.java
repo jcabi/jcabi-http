@@ -41,7 +41,6 @@ import org.junit.Test;
 /**
  * Test case for {@link JacksonResponse}.
  *
- * @author Borislav Borisov (bborisov@protonmail.com)
  * @version $Id$
  * @since 1.17
  */

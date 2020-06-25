@@ -42,7 +42,6 @@ import java.util.concurrent.ConcurrentHashMap;
 /**
  * This is the base class to handle http responses with 304 state.
  *
- * @author Ievgen Degtiarenko (ievgen.degtiarenko@gmail.com)
  * @version $Id$
  * @since 2.0
  */

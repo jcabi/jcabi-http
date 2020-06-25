@@ -60,7 +60,6 @@ import org.junit.runners.Parameterized;
 
 /**
  * Test case for {@link Request} and its implementations.
- * @author Yegor Bugayenko (yegor@tpc2.com)
  * @version $Id$
  * @since 1.7
  */

@@ -37,7 +37,6 @@ import org.hamcrest.TypeSafeMatcher;
 
 /**
  * Matcher for checking {@link MkAnswer#body()} result.
- * @author Carlos Miranda (miranda.cma@gmail.com)
  * @version $Id$
  * @since 1.5
  */

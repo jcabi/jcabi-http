@@ -39,7 +39,6 @@
  * {@link JdkRequest} doesn't support {@code PATCH} HTTP method due to
  * a bug in HttpURLConnection.
  *
- * @author Yegor Bugayenko (yegor@tpc2.com)
  * @version $Id$
  * @since 0.10
  */

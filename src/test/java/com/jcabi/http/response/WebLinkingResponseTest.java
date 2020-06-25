@@ -37,7 +37,6 @@ import org.junit.Test;
 
 /**
  * Test case for {@link WebLinkingResponse}.
- * @author Yegor Bugayenko (yegor@tpc2.com)
  * @version $Id$
  * @since 0.9
  */

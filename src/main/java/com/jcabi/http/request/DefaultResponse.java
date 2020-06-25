@@ -48,7 +48,6 @@ import lombok.EqualsAndHashCode;
 /**
  * Default implementation of {@link com.jcabi.http.Response}.
  *
- * @author Yegor Bugayenko (yegor@tpc2.com)
  * @version $Id$
  * @since 1.0
  */

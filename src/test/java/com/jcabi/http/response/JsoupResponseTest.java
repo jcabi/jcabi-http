@@ -39,7 +39,6 @@ import org.junit.Test;
 /**
  * Test case for {@link JsoupResponse}.
  *
- * @author Carlos Miranda (miranda.cma@gmail.com)
  * @version $Id$
  * @since 1.4
  */
