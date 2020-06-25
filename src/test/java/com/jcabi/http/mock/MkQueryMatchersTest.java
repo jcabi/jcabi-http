@@ -37,7 +37,6 @@ import org.mockito.Mockito;
 
 /**
  * Test case for {@link MkQueryMatchers}.
- * @version $Id$
  * @since 1.5
  */
 public final class MkQueryMatchersTest {

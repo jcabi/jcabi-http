@@ -52,7 +52,6 @@ import org.mockito.Mockito;
 
 /**
  * Test case for loss of timeout parameters.
- * @version $Id$
  * @since 1.17.3
  */
 @SuppressWarnings("PMD.TooManyMethods")

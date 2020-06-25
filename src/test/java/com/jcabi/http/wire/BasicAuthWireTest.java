@@ -52,7 +52,6 @@ import org.junit.runners.Parameterized;
 /**
  * Test case for {@link BasicAuthWire}.
  *
- * @version $Id$
  * @since 1.17.1
  */
 @RunWith(Parameterized.class)

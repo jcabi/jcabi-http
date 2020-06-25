@@ -44,7 +44,6 @@ import org.junit.runners.Parameterized;
 
 /**
  * Integration case for {@link com.jcabi.http.request.ApacheRequest}.
- * @version $Id$
  * @since 1.1
  */
 @RunWith(Parameterized.class)

@@ -44,7 +44,6 @@ import org.junit.Test;
 
 /**
  * Test case for {@link FakeRequest}.
- * @version $Id$
  * @since 1.0
  */
 public final class FakeRequestTest {

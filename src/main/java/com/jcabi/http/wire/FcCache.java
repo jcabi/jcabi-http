@@ -63,7 +63,6 @@ import org.apache.commons.io.FileUtils;
 /**
  * Cache for FcWire.
  *
- * @version $Id$
  * @since 1.16
  */
 @Immutable

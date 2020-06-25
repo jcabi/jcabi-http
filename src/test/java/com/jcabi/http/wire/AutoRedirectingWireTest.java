@@ -45,7 +45,6 @@ import org.junit.Test;
 /**
  * Test case for {@link AutoRedirectingWire}.
  *
- * @version $Id$
  * @since 1.7
  */
 public final class AutoRedirectingWireTest {

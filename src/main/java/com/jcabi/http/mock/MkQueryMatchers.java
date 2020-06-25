@@ -33,7 +33,6 @@ import org.hamcrest.Matcher;
 
 /**
  * Convenient set of matchers for {@link MkQuery}.
- * @version $Id$
  * @since 1.5
  */
 @SuppressWarnings("PMD.ProhibitPublicStaticMethods")

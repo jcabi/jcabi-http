@@ -37,7 +37,6 @@ import org.junit.Test;
 
 /**
  * Test case for {@link WebLinkingResponse}.
- * @version $Id$
  * @since 0.9
  */
 public final class WebLinkingResponseTest {

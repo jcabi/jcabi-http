@@ -51,7 +51,6 @@ import org.junit.Test;
 
 /**
  * Test case for {@link LastModifiedCachingWire}.
- * @version $Id$
  * @since 1.15
  */
 public final class LastModifiedCachingWireTest {

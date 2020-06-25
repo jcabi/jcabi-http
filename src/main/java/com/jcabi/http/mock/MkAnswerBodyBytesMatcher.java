@@ -37,7 +37,6 @@ import org.hamcrest.TypeSafeMatcher;
 
 /**
  * Matcher for checking {@link MkAnswer#bodyBytes()} result.
- * @version $Id$
  * @since 0.17
  */
 @ToString

@@ -60,7 +60,6 @@ import org.junit.runners.Parameterized;
 
 /**
  * Test case for {@link Request} and its implementations.
- * @version $Id$
  * @since 1.7
  */
 @SuppressWarnings(

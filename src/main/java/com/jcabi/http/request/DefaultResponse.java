@@ -48,7 +48,6 @@ import lombok.EqualsAndHashCode;
 /**
  * Default implementation of {@link com.jcabi.http.Response}.
  *
- * @version $Id$
  * @since 1.0
  */
 @Immutable

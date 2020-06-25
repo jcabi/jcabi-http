@@ -42,7 +42,6 @@ import org.junit.Test;
 
 /**
  * Test case for {@link UserAgentWire}.
- * @version $Id$
  * @since 1.2
  */
 public final class UserAgentWireTest {

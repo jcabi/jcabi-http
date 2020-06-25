@@ -39,7 +39,6 @@ import org.junit.Test;
 /**
  * Test case for {@link JsoupResponse}.
  *
- * @version $Id$
  * @since 1.4
  */
 public final class JsoupResponseTest {

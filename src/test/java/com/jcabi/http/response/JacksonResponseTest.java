@@ -41,7 +41,6 @@ import org.junit.Test;
 /**
  * Test case for {@link JacksonResponse}.
  *
- * @version $Id$
  * @since 1.17
  */
 public final class JacksonResponseTest {

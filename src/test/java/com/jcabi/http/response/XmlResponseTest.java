@@ -39,7 +39,6 @@ import org.junit.Test;
 
 /**
  * Test case for {@link XmlResponse}.
- * @version $Id$
  * @checkstyle ClassDataAbstractionCoupling (500 lines)
  * @since 1.1
  */

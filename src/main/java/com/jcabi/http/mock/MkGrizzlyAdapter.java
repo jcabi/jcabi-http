@@ -52,7 +52,6 @@ import org.hamcrest.Matcher;
 /**
  * Mocker of Java Servlet container.
  *
- * @version $Id$
  * @since 0.10
  * @checkstyle ClassDataAbstractionCouplingCheck (300 lines)
  */

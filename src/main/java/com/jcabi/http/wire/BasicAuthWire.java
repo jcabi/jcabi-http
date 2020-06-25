@@ -63,7 +63,6 @@ import lombok.ToString;
  *
  * <p>The class is immutable and thread-safe.
  *
- * @version $Id$
  * @since 0.10
  * @see <a href="http://tools.ietf.org/html/rfc2617">RFC 2617 "HTTP Authentication: Basic and Digest Access Authentication"</a>
  */

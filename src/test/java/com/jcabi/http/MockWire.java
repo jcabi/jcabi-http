@@ -40,7 +40,6 @@ import java.util.Map.Entry;
  * <p>
  * NOTE: This is not threadsafe and access to it should be synchronized.
  *
- * @version $Id$
  * @since 1.17.1
  * @checkstyle ParameterNumberCheck (50 lines)
  */

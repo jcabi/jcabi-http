@@ -39,7 +39,6 @@
  *   &lt;artifactId&gt;rexsl-test&lt;/artifactId&gt;
  * &lt;/dependency&gt;</pre>
  *
- * @version $Id$
  * @see <a href="http://www.rexsl.com/rexsl-test">project site</a>
  */
 package com.jcabi.http;

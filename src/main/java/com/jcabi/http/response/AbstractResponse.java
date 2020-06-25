@@ -39,7 +39,6 @@ import lombok.EqualsAndHashCode;
 /**
  * Abstract response.
  *
- * @version $Id$
  * @since 0.8
  */
 @Immutable

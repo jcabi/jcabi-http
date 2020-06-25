@@ -51,7 +51,6 @@ import java.util.Map;
  *
  * <p>Instances of this interface are immutable and thread-safe.
  *
- * @version $Id$
  * @since 0.8
  * @checkstyle AbbreviationAsWordInNameCheck (100 lines)
  */

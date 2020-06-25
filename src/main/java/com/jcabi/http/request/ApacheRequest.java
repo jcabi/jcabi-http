@@ -63,7 +63,6 @@ import org.apache.http.util.EntityUtils;
  *
  * <p>The class is immutable and thread-safe.
  *
- * @version $Id$
  * @since 0.8
  * // @checkstyle ClassDataAbstractionCoupling (500 lines)
  */

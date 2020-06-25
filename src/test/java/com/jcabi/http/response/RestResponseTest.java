@@ -41,7 +41,6 @@ import org.junit.Test;
 
 /**
  * Test case for {@link RestResponse}.
- * @version $Id$
  * @since 1.1
  */
 public final class RestResponseTest {

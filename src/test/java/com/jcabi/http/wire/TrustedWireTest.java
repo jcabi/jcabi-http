@@ -39,7 +39,6 @@ import org.junit.Test;
 
 /**
  * Test case for {@link TrustedWire}.
- * @version $Id$
  * @since 1.10
  */
 public final class TrustedWireTest {

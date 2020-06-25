@@ -31,6 +31,5 @@
 /**
  * Test package, tests for it.
  *
- * @version $Id$
  */
 package com.jcabi.http;

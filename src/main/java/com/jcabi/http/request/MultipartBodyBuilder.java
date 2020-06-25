@@ -36,7 +36,6 @@ import java.util.Arrays;
 /**
  * Byte builder for multipart body.
  *
- * @version $Id$
  * @since 1.0
  */
 @Immutable

@@ -62,7 +62,6 @@ import org.hamcrest.Matcher;
  * <p>Since version 0.11 container implements {@link Closeable} and can be
  * used in try-with-resource block.
  *
- * @version $Id$
  * @since 0.10
  * @see <a href="http://www.rexsl.com/rexsl-test/example-mock-servlet.html">Examples</a>
  */

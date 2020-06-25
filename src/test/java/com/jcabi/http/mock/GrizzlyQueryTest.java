@@ -42,7 +42,6 @@ import org.mockito.Mockito;
 
 /**
  * Test case for {@link GrizzlyQuery}.
- * @version $Id$
  * @since 1.13
  */
 public final class GrizzlyQueryTest {

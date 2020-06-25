@@ -42,7 +42,6 @@ import org.junit.rules.ExpectedException;
 
 /**
  * Integration case for {@link JdkRequest}.
- * @version $Id$
  * @since 1.4.1
  */
 public final class JdkRequestITCase {

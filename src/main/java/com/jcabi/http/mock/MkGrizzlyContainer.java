@@ -44,7 +44,6 @@ import org.hamcrest.core.IsAnything;
 /**
  * Implementation of {@link MkContainer} based on Grizzly Server.
  *
- * @version $Id$
  * @since 0.10
  * @see MkContainer
  */

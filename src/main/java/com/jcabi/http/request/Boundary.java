@@ -37,7 +37,6 @@ import java.util.Random;
  * Boundary for content-type multipart/form-data.
  * This is a copy of boundary created by Apache HttpComponents HttpClient 4.5.
  *
- * @version $Id$
  * @since 1.0
  */
 @Immutable

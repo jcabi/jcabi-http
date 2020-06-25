@@ -43,7 +43,6 @@ import lombok.EqualsAndHashCode;
 /**
  * A JSON response provided by the Jackson Project.
  *
- * @version $Id$
  * @since 1.17
  */
 @Immutable

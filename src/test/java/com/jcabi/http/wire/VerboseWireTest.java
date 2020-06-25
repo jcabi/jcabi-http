@@ -44,7 +44,6 @@ import org.junit.Test;
 
 /**
  * Test case for {@link VerboseWire}.
- * @version $Id$
  * @since 1.0
  */
 public final class VerboseWireTest {

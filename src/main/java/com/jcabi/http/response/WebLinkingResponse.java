@@ -61,7 +61,6 @@ import lombok.EqualsAndHashCode;
  *
  * <p>The class is immutable and thread-safe.
  *
- * @version $Id$
  * @since 0.9
  * @see <a href="http://tools.ietf.org/html/rfc5988">RFC 5988 "Web Linking"</a>
  */

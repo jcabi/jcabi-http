@@ -63,7 +63,6 @@ import lombok.ToString;
  *
  * <p>The class is immutable and thread-safe.
  *
- * @version $Id$
  * @since 0.8
  * // @checkstyle ClassDataAbstractionCoupling (500 lines)
  */

@@ -36,7 +36,6 @@ import org.junit.Test;
 
 /**
  * Test case {@link Boundary}.
- * @version $Id$
  * @since 1.17.3
  */
 public final class BoundaryTest {

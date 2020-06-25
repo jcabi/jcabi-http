@@ -36,7 +36,6 @@ import org.junit.Test;
 
 /**
  * Test case for {@link ImmutableHeader}.
- * @version $Id$
  * @since 1.1
  */
 public final class ImmutableHeaderTest {

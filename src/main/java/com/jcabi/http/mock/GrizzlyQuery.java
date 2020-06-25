@@ -50,7 +50,6 @@ import java.util.concurrent.ConcurrentMap;
 /**
  * Mock HTTP query/request.
  *
- * @version $Id$
  * @since 0.10
  */
 @Immutable

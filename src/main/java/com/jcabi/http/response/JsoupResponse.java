@@ -60,7 +60,6 @@ import org.jsoup.nodes.Entities;
  *
  * <p>The class is immutable and thread-safe.
  *
- * @version $Id$
  * @since 1.4
  * @see <a href="http://jsoup.org/">Jsoup website</a>
  */

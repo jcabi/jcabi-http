@@ -53,7 +53,6 @@ import lombok.EqualsAndHashCode;
  *
  * <p>The class is immutable and thread-safe.
  *
- * @version $Id$
  * @since 0.9
  * // @checkstyle ClassDataAbstractionCoupling (500 lines)
  */

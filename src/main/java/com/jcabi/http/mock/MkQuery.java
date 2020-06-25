@@ -37,7 +37,6 @@ import java.util.Map;
 /**
  * Mock HTTP query/request.
  *
- * @version $Id$
  * @since 0.10
  */
 @Immutable

@@ -39,7 +39,6 @@ import org.junit.Test;
 
 /**
  * Test case for {@link RetryWire}.
- * @version $Id$
  * @since 1.2
  */
 public final class RetryWireTest {

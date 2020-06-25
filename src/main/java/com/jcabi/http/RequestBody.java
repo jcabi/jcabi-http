@@ -53,7 +53,6 @@ import javax.json.JsonStructure;
  *
  * <p>Instances of this interface are immutable and thread-safe.
  *
- * @version $Id$
  * @since 0.8
  */
 @Immutable

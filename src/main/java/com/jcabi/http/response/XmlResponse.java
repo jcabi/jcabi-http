@@ -73,7 +73,6 @@ import lombok.EqualsAndHashCode;
  *
  * <p>The class is immutable and thread-safe.
  *
- * @version $Id$
  * @since 0.8
  */
 @Immutable

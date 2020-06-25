@@ -37,7 +37,6 @@ import org.hamcrest.TypeSafeMatcher;
 
 /**
  * Matcher for checking {@link MkQuery#headers()} contents.
- * @version $Id$
  * @since 1.5
  */
 @ToString

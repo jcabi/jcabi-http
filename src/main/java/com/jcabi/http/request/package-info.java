@@ -39,7 +39,6 @@
  * {@link JdkRequest} doesn't support {@code PATCH} HTTP method due to
  * a bug in HttpURLConnection.
  *
- * @version $Id$
  * @since 0.10
  */
 package com.jcabi.http.request;

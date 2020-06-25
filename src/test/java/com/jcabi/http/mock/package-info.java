@@ -31,7 +31,6 @@
 /**
  * Mock of Servlet Container, tests.
  *
- * @version $Id$
  * @since 0.10
  */
 package com.jcabi.http.mock;

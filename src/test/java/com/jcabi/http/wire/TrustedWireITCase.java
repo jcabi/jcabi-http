@@ -38,7 +38,6 @@ import org.junit.Test;
 
 /**
  * Integration case for {@link TrustedWire}.
- * @version $Id$
  * @since 1.10.1
  */
 public final class TrustedWireITCase {

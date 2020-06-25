@@ -43,7 +43,6 @@ import org.junit.Test;
 
 /**
  * Test case for {@link CookieOptimizingWire}.
- * @version $Id$
  * @since 1.0
  */
 public final class CookieOptimizingWireTest {

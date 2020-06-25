@@ -37,7 +37,6 @@ import lombok.ToString;
 /**
  * Immutable HTTP header.
  *
- * @version $Id$
  * @since 0.10
  */
 @Immutable
