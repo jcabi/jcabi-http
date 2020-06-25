@@ -214,13 +214,13 @@ public abstract class AbstractHeaderBasedCachingWire implements Wire {
     private boolean requestHasCmcHeader(
         final Collection<Map.Entry<String, String>> headers
     ) {
-        boolean requestHasCmch = false;
+        boolean cmch = false;
         for (final Map.Entry<String, String> header : headers) {
             if (header.getKey().equals(this.cmch)) {
-                requestHasCmch = true;
+                cmch = true;
                 break;
             }
         }
-        return requestHasCmch;
+        return cmch;
     }
 }
