@@ -391,6 +391,8 @@ public final class BaseRequest implements Request {
 
     /**
      * Base URI.
+     *
+     * @since 1.0
      */
     @Immutable
     @EqualsAndHashCode(of = "address")
@@ -502,6 +504,8 @@ public final class BaseRequest implements Request {
 
     /**
      * Body of a request with a form that has attachments.
+     *
+     * @since 1.17
      */
     private static final class MultipartFormBody implements RequestBody {
         /**
@@ -641,6 +645,8 @@ public final class BaseRequest implements Request {
     /**
      * Body of a request with a simple form.
      * (enctype application/x-www-form-urlencoded)
+     *
+     * @since 1.17
      */
     @Immutable
     @EqualsAndHashCode(of = "text")
