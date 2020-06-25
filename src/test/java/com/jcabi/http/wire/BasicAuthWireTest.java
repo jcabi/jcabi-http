@@ -105,7 +105,7 @@ public final class BasicAuthWireTest {
      */
     @Parameters
     public static Collection<Object[]> getParameters() {
-        final Collection<Object[]> parameters = new ArrayList<Object[]>(10);
+        final Collection<Object[]> parameters = new ArrayList<>(10);
         parameters.add(new String[] {"Alice", "secret"});
         parameters.add(new String[] {"Bob", "s&e+c`ret"});
         parameters.add(new String[] {"user", "\u20ac\u20ac"});
