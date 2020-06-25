@@ -55,16 +55,8 @@ import org.mockito.Mockito;
  * @author Jakob Oswald (jakob.oswald@gmx.net)
  * @version $Id$
  * @since 1.17.3
- * @checkstyle IllegalCatchCheck (400 lines)
  */
-@SuppressWarnings(
-    {
-        "PMD.TooManyMethods",
-        "PMD.DoNotUseThreads",
-        "PMD.AvoidCatchingGenericException",
-        "PMD.AvoidThrowingRawExceptionTypes"
-    }
-    )
+@SuppressWarnings("PMD.TooManyMethods")
 @RunWith(Parameterized.class)
 public final class RequestTimeoutLossTest {
     /**
@@ -416,7 +408,7 @@ public final class RequestTimeoutLossTest {
      * @throws Exception If fails
      */
     private Request request() throws Exception {
-        return RequestTimeoutLossTest.this.request(
+        return this.request(
             new URI(RequestTimeoutLossTest.LOCALHOST_URL)
         );
     }
