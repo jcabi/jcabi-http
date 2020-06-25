@@ -382,7 +382,7 @@ final class MkGrizzlyAdapter extends GrizzlyAdapter {
 
         @Override
         public MkQuery next() {
-            return this.results.poll();
+            return this.results.remove();
         }
 
         @Override
