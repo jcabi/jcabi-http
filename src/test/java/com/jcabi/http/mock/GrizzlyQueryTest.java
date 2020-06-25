@@ -69,6 +69,8 @@ public final class GrizzlyQueryTest {
 
     /**
      * Mock for GrizzlyInputStream, which returns desired byte array.
+     *
+     * @since 1.13
      */
     private static class MkGrizzlyInputStream extends GrizzlyInputStream {
         /**
