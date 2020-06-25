@@ -40,8 +40,9 @@ import java.util.Map.Entry;
  * <p>
  * NOTE: This is not threadsafe and access to it should be synchronized.
  *
- * @version $Id$
  * @author Jakob Oswald (jakob.oswald@gmx.net)
+ * @version $Id$
+ * @since 1.17.1
  */
 public class MockWire implements Wire {
 
