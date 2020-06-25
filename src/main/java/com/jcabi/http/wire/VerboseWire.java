@@ -92,7 +92,7 @@ public final class VerboseWire implements Wire {
         final ByteArrayOutputStream output = new ByteArrayOutputStream();
         final byte[] buffer = new byte[Tv.THOUSAND];
         for (int bytes = content.read(buffer); bytes != -1;
-             bytes = content.read(buffer)) {
+            bytes = content.read(buffer)) {
             output.write(buffer, 0, bytes);
         }
         output.flush();
