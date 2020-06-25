@@ -66,6 +66,5 @@ final class MkAnswerBodyMatcher extends TypeSafeMatcher<MkAnswer> {
     @Override
     public boolean matchesSafely(final MkAnswer item) {
         return this.matcher.matches(item.body());
-    };
-
+    }
 }

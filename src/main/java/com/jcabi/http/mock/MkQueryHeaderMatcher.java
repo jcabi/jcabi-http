@@ -40,7 +40,7 @@ import org.hamcrest.TypeSafeMatcher;
  * @since 1.5
  */
 @ToString
-@EqualsAndHashCode(callSuper = false, of = { "header", "matcher" })
+@EqualsAndHashCode(callSuper = false, of = {"header", "matcher"})
 final class MkQueryHeaderMatcher extends TypeSafeMatcher<MkQuery> {
 
     /**
@@ -78,6 +78,6 @@ final class MkQueryHeaderMatcher extends TypeSafeMatcher<MkQuery> {
     public boolean matchesSafely(final MkQuery item) {
         return item.headers().containsKey(this.header)
             && this.matcher.matches(item.headers().get(this.header));
-    };
+    }
 
 }
