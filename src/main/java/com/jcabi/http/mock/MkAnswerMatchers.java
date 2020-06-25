@@ -35,6 +35,7 @@ import org.hamcrest.Matcher;
  * Convenient set of matchers for {@link MkAnswer}.
  * @author Carlos Miranda (miranda.cma@gmail.com)
  * @version $Id$
+ * @since 1.4
  */
 public final class MkAnswerMatchers {
     /**
