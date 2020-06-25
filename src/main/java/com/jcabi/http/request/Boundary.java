@@ -80,7 +80,9 @@ public final class Boundary {
         final int count = this.rand.nextInt(11) + 30;
         for (int index = 0; index < count; ++index) {
             buffer.append(
-                MULTIPART_CHARS[this.rand.nextInt(MULTIPART_CHARS.length)]
+                Boundary.MULTIPART_CHARS[
+                    this.rand.nextInt(MULTIPART_CHARS.length)
+                    ]
             );
         }
         return buffer.toString();
