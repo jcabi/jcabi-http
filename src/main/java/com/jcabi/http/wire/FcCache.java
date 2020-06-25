@@ -39,7 +39,6 @@ import com.jcabi.immutable.Array;
 import com.jcabi.log.Logger;
 import java.io.ByteArrayInputStream;
 import java.io.File;
-import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
