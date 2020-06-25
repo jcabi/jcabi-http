@@ -105,6 +105,7 @@ public final class ApacheRequest implements Request {
                 response.close();
             }
         }
+
         /**
          * Create request.
          * @param home Home URI
@@ -148,6 +149,7 @@ public final class ApacheRequest implements Request {
             }
             return req;
         }
+
         /**
          * Fetch body from http entity.
          * @param entity HTTP entity
@@ -163,6 +165,7 @@ public final class ApacheRequest implements Request {
             }
             return body;
         }
+
         /**
          * Make a list of all hdrs.
          * @param list Apache HTTP hdrs

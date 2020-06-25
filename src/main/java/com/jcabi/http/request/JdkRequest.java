@@ -132,6 +132,7 @@ public final class JdkRequest implements Request {
                 conn.disconnect();
             }
         }
+
         /**
          * Fully write the input stream contents to the output stream.
          * @param content The content to write
@@ -147,6 +148,7 @@ public final class JdkRequest implements Request {
                 output.write(buffer, 0, bytes);
             }
         }
+
         /**
          * Get headers from response.
          * @param fields ImmutableHeader fields
@@ -167,6 +169,7 @@ public final class JdkRequest implements Request {
             }
             return new Array<>(headers);
         }
+
         /**
          * Get response body of connection.
          * @param conn Connection
