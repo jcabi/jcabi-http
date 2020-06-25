@@ -30,6 +30,5 @@
 
 /**
  * Test package, tests for it.
- *
  */
 package com.jcabi.http;
