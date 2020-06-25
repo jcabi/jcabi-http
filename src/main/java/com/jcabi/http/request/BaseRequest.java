@@ -182,12 +182,8 @@ public final class BaseRequest implements Request {
         final String method, final byte[] body,
         final int cnct, final int rdd) {
         this.wire = wre;
-        URI addr = URI.create(uri);
-        if (addr.getPath() != null && addr.getPath().isEmpty()) {
-            addr = UriBuilder.fromUri(addr).path("/").build();
-        }
-        this.home = addr.toString();
-        this.hdrs = new Array<Map.Entry<String, String>>(headers);
+        this.home = BaseRequest.createUri(uri).toString();
+        this.hdrs = new Array<>(headers);
         this.mtd = method;
         this.content = body.clone();
         this.connect = cnct;
@@ -753,5 +749,18 @@ public final class BaseRequest implements Request {
         }
 
     }
+    /**
+     * Create uri from String.
+     * @param uri String
+     * @return URI
+     */
+    private static URI createUri(final String uri) {
+        URI addr = URI.create(uri);
+        if (addr.getPath() != null && addr.getPath().isEmpty()) {
+            addr = UriBuilder.fromUri(addr).path("/").build();
+        }
+        return addr;
+    }
+
 
 }
