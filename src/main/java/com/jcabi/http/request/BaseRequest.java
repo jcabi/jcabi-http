@@ -379,6 +379,19 @@ public final class BaseRequest implements Request {
     }
 
     /**
+     * Create uri from String.
+     * @param uri String
+     * @return URI
+     */
+    private static URI createUri(final String uri) {
+        URI addr = URI.create(uri);
+        if (addr.getPath() != null && addr.getPath().isEmpty()) {
+            addr = UriBuilder.fromUri(addr).path("/").build();
+        }
+        return addr;
+    }
+
+    /**
      * Base URI.
      */
     @Immutable
@@ -749,18 +762,5 @@ public final class BaseRequest implements Request {
         }
 
     }
-    /**
-     * Create uri from String.
-     * @param uri String
-     * @return URI
-     */
-    private static URI createUri(final String uri) {
-        URI addr = URI.create(uri);
-        if (addr.getPath() != null && addr.getPath().isEmpty()) {
-            addr = UriBuilder.fromUri(addr).path("/").build();
-        }
-        return addr;
-    }
-
 
 }
