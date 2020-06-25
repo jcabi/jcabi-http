@@ -83,6 +83,7 @@ final class GrizzlyQuery implements MkQuery {
      * @param request Grizzly request
      * @throws IOException If fails
      */
+    @SuppressWarnings("PMD.ConstructorOnlyInitializesOrCallOtherConstructors")
     GrizzlyQuery(final GrizzlyRequest request) throws IOException {
         request.setCharacterEncoding(StandardCharsets.UTF_8.toString());
         this.home = GrizzlyQuery.uri(request);
