@@ -45,6 +45,7 @@ import java.util.Queue;
 import java.util.concurrent.ConcurrentLinkedQueue;
 import java.util.concurrent.atomic.AtomicInteger;
 import lombok.EqualsAndHashCode;
+import lombok.RequiredArgsConstructor;
 import org.apache.http.HttpHeaders;
 import org.hamcrest.Matcher;
 
@@ -54,6 +55,7 @@ import org.hamcrest.Matcher;
  * @author Yegor Bugayenko (yegor@tpc2.com)
  * @version $Id$
  * @since 0.10
+ * @checkstyle ClassDataAbstractionCouplingCheck (300 lines)
  */
 @SuppressWarnings("PMD.TooManyMethods")
 final class MkGrizzlyAdapter extends GrizzlyAdapter {
@@ -159,21 +161,7 @@ final class MkGrizzlyAdapter extends GrizzlyAdapter {
      * @return Request received satisfying the matcher
      */
     public MkQuery take(final Matcher<MkAnswer> matcher) {
-        MkQuery result = null;
-        final Iterator<QueryWithAnswer> iter = this.queue.iterator();
-        while (iter.hasNext()) {
-            final QueryWithAnswer candidate = iter.next();
-            if (matcher.matches(candidate.answer())) {
-                result = candidate.query();
-                iter.remove();
-                break;
-            }
-        }
-        if (result == null) {
-            // @checkstyle MultipleStringLiterals (1 line)
-            throw new NoSuchElementException("No matching results found");
-        }
-        return result;
+        return this.takeMatching(matcher).next();
     }
 
     /**
@@ -186,16 +174,9 @@ final class MkGrizzlyAdapter extends GrizzlyAdapter {
      */
     public Collection<MkQuery> takeAll(final Matcher<MkAnswer> matcher) {
         final Collection<MkQuery> results = new LinkedList<>();
-        final Iterator<QueryWithAnswer> iter = this.queue.iterator();
+        final Iterator<MkQuery> iter = this.takeMatching(matcher);
         while (iter.hasNext()) {
-            final QueryWithAnswer candidate = iter.next();
-            if (matcher.matches(candidate.answer())) {
-                results.add(candidate.query());
-                iter.remove();
-            }
-        }
-        if (results.isEmpty()) {
-            throw new NoSuchElementException("No matching results found");
+            results.add(iter.next());
         }
         return results;
     }
@@ -206,6 +187,22 @@ final class MkGrizzlyAdapter extends GrizzlyAdapter {
      */
     public int queries() {
         return this.queue.size();
+    }
+
+    /**
+     * Get the all requests received satisfying the given matcher.
+     * ({@link java.util.NoSuchElementException} if no elements satisfy the
+     * condition).
+     * @param matcher The matcher specifying the condition
+     * @return Iterator over all requests
+     */
+    private Iterator<MkQuery> takeMatching(final Matcher<MkAnswer> matcher) {
+        final Iterator<QueryWithAnswer> iter = this.queue.iterator();
+        final Iterator<MkQuery> result = new MkQueryIterator(iter, matcher);
+        if (!result.hasNext()) {
+            throw new NoSuchElementException("No matching results found");
+        }
+        return result;
     }
 
     /**
@@ -237,7 +234,7 @@ final class MkGrizzlyAdapter extends GrizzlyAdapter {
     /**
      * Answer with condition.
      */
-    @EqualsAndHashCode(of = { "answr", "condition" })
+    @EqualsAndHashCode(of = {"answr", "condition"})
     private static final class Conditional {
         /**
          * The MkAnswer.
@@ -251,6 +248,7 @@ final class MkGrizzlyAdapter extends GrizzlyAdapter {
          * The number of times the answer is expected to appear.
          */
         private final transient AtomicInteger count;
+
         /**
          * Ctor.
          * @param ans The answer.
@@ -271,6 +269,7 @@ final class MkGrizzlyAdapter extends GrizzlyAdapter {
         public MkAnswer answer() {
             return this.answr;
         }
+
         /**
          * Does the query match the answer?
          * @param query The query to match
@@ -279,6 +278,7 @@ final class MkGrizzlyAdapter extends GrizzlyAdapter {
         public boolean matches(final MkQuery query) {
             return this.condition.matches(query);
         }
+
         /**
          * Decrement the count for this conditional.
          * @return The updated count
@@ -306,7 +306,7 @@ final class MkGrizzlyAdapter extends GrizzlyAdapter {
     /**
      * Query with answer.
      */
-    @EqualsAndHashCode(of = { "answr", "que" })
+    @EqualsAndHashCode(of = {"answr", "que"})
     private static final class QueryWithAnswer {
         /**
          * The answer.
@@ -316,6 +316,7 @@ final class MkGrizzlyAdapter extends GrizzlyAdapter {
          * The query.
          */
         private final transient MkQuery que;
+
         /**
          * Ctor.
          * @param qry The query
@@ -325,6 +326,7 @@ final class MkGrizzlyAdapter extends GrizzlyAdapter {
             this.answr = ans;
             this.que = qry;
         }
+
         /**
          * Get the query.
          * @return The query.
@@ -332,12 +334,60 @@ final class MkGrizzlyAdapter extends GrizzlyAdapter {
         public MkQuery query() {
             return this.que;
         }
+
         /**
          * Get the answer.
          * @return Answer
          */
         public MkAnswer answer() {
             return this.answr;
+        }
+    }
+
+    /**
+     * Iterator over matching answers.
+     *
+     * @since 1.17.3
+     */
+    @RequiredArgsConstructor
+    private static final class MkQueryIterator implements Iterator<MkQuery> {
+
+        /**
+         * Queue of results.
+         */
+        private final Queue<MkQuery> results = new LinkedList<>();
+
+        /**
+         * Original iterator.
+         */
+        private final Iterator<QueryWithAnswer> iter;
+
+        /**
+         * Matcher.
+         */
+        private final Matcher<MkAnswer> matcher;
+
+        @Override
+        public boolean hasNext() {
+            while (this.iter.hasNext()) {
+                final QueryWithAnswer candidate = this.iter.next();
+                if (this.matcher.matches(candidate.answer())) {
+                    this.results.add(candidate.query());
+                    this.iter.remove();
+                    break;
+                }
+            }
+            return !this.results.isEmpty();
+        }
+
+        @Override
+        public MkQuery next() {
+            return this.results.poll();
+        }
+
+        @Override
+        public void remove() {
+            this.results.remove();
         }
     }
 }
