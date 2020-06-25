@@ -55,6 +55,7 @@ import org.junit.runners.Parameterized.Parameters;
  *
  * @version $Id$
  * @author Jakob Oswald (jakob.oswald@gmx.net)
+ * @since 1.17.1
  */
 @RunWith(Parameterized.class)
 public final class BasicAuthWireTest {
