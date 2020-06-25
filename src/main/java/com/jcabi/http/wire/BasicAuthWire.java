@@ -106,7 +106,7 @@ public final class BasicAuthWire implements Wire {
         final int connect,
         final int read) throws IOException {
         final Collection<Map.Entry<String, String>> hdrs =
-            new LinkedList<Map.Entry<String, String>>();
+            new LinkedList<>();
         boolean absent = true;
         for (final Map.Entry<String, String> header : headers) {
             if (header.getKey().equals(HttpHeaders.AUTHORIZATION)) {
