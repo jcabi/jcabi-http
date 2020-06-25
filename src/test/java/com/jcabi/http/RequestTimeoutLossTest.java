@@ -40,6 +40,7 @@ import java.net.URI;
 import java.util.Arrays;
 import java.util.Collection;
 import java.util.Map;
+import java.util.concurrent.Callable;
 import org.hamcrest.MatcherAssert;
 import org.hamcrest.Matchers;
 import org.junit.Test;
@@ -120,21 +121,19 @@ public final class RequestTimeoutLossTest {
     @Test
     public void testTimeoutOrderDoesntMatterBeforeBody()
         throws Exception {
-        final Runnable execution = new Runnable() {
+        final Callable<Response> execution = new Callable<Response>() {
             @Override
-            public void run() {
-                try {
-                    // @checkstyle RequireThisCheck (1 lines)
-                    request(new URI(LOCALHOST_URL))
-                        .through(MockWire.class)
-                        .method(Request.GET)
-                        .timeout(CONNECT_TIMEOUT, READ_TIMEOUT)
-                        .body()
-                        .back()
-                        .fetch();
-                } catch (final Exception ex) {
-                    throw new RuntimeException(ex);
-                }
+            public Response call() throws Exception {
+                return RequestTimeoutLossTest.this.request()
+                    .through(MockWire.class)
+                    .method(Request.GET)
+                    .timeout(
+                        RequestTimeoutLossTest.CONNECT_TIMEOUT,
+                        RequestTimeoutLossTest.READ_TIMEOUT
+                    )
+                    .body()
+                    .back()
+                    .fetch();
             }
         };
         this.testTimeoutOrderDoesntMatter(execution);
@@ -149,19 +148,17 @@ public final class RequestTimeoutLossTest {
     @Test
     public void testTimeoutOrderDoesntMatterBeforeFetch()
         throws Exception {
-        final Runnable execution = new Runnable() {
+        final Callable<Response> execution = new Callable<Response>() {
             @Override
-            public void run() {
-                try {
-                    // @checkstyle RequireThisCheck (1 lines)
-                    request(new URI(LOCALHOST_URL))
-                        .through(MockWire.class)
-                        .method(Request.GET)
-                        .timeout(CONNECT_TIMEOUT, READ_TIMEOUT)
-                        .fetch();
-                } catch (final Exception ex) {
-                    throw new RuntimeException(ex);
-                }
+            public Response call() throws Exception {
+                return RequestTimeoutLossTest.this.request()
+                    .through(MockWire.class)
+                    .method(Request.GET)
+                    .timeout(
+                        RequestTimeoutLossTest.CONNECT_TIMEOUT,
+                        RequestTimeoutLossTest.READ_TIMEOUT
+                    )
+                    .fetch();
             }
         };
         this.testTimeoutOrderDoesntMatter(execution);
@@ -176,20 +173,21 @@ public final class RequestTimeoutLossTest {
     @Test
     public void testTimeoutOrderDoesntMatterBeforeHeader()
         throws Exception {
-        final Runnable execution = new Runnable() {
+        final Callable<Response> execution = new Callable<Response>() {
             @Override
-            public void run() {
-                try {
-                    // @checkstyle RequireThisCheck (1 lines)
-                    request(new URI(LOCALHOST_URL))
-                        .through(MockWire.class)
-                        .method(Request.GET)
-                        .timeout(CONNECT_TIMEOUT, READ_TIMEOUT)
-                        .header(CONTENT_TYPE, "text/plain")
-                        .fetch();
-                } catch (final Exception ex) {
-                    throw new RuntimeException(ex);
-                }
+            public Response call() throws Exception {
+                return RequestTimeoutLossTest.this.request()
+                    .through(MockWire.class)
+                    .method(Request.GET)
+                    .timeout(
+                        RequestTimeoutLossTest.CONNECT_TIMEOUT,
+                        RequestTimeoutLossTest.READ_TIMEOUT
+                    )
+                    .header(
+                        RequestTimeoutLossTest.CONTENT_TYPE,
+                        "text/plain"
+                    )
+                    .fetch();
             }
         };
         this.testTimeoutOrderDoesntMatter(execution);
@@ -204,19 +202,17 @@ public final class RequestTimeoutLossTest {
     @Test
     public void testTimeoutOrderDoesntMatterBeforeMethod()
         throws Exception {
-        final Runnable execution = new Runnable() {
+        final Callable<Response> execution = new Callable<Response>() {
             @Override
-            public void run() {
-                try {
-                    // @checkstyle RequireThisCheck (1 lines)
-                    request(new URI(LOCALHOST_URL))
-                        .through(MockWire.class)
-                        .timeout(CONNECT_TIMEOUT, READ_TIMEOUT)
-                        .method(Request.GET)
-                        .fetch();
-                } catch (final Exception ex) {
-                    throw new RuntimeException(ex);
-                }
+            public Response call() throws Exception {
+                return RequestTimeoutLossTest.this.request()
+                    .through(MockWire.class)
+                    .timeout(
+                        RequestTimeoutLossTest.CONNECT_TIMEOUT,
+                        RequestTimeoutLossTest.READ_TIMEOUT
+                    )
+                    .method(Request.GET)
+                    .fetch();
             }
         };
         this.testTimeoutOrderDoesntMatter(execution);
@@ -231,21 +227,19 @@ public final class RequestTimeoutLossTest {
     @Test
     public void testTimeoutOrderDoesntMatterBeforeMultipartBody()
         throws Exception {
-        final Runnable execution = new Runnable() {
+        final Callable<Response> execution = new Callable<Response>() {
             @Override
-            public void run() {
-                try {
-                    // @checkstyle RequireThisCheck (1 lines)
-                    request(new URI(LOCALHOST_URL))
-                        .through(MockWire.class)
-                        .method(Request.GET)
-                        .timeout(CONNECT_TIMEOUT, READ_TIMEOUT)
-                        .multipartBody()
-                        .back()
-                        .fetch();
-                } catch (final Exception ex) {
-                    throw new RuntimeException(ex);
-                }
+            public Response call() throws Exception {
+                return RequestTimeoutLossTest.this.request()
+                    .through(MockWire.class)
+                    .method(Request.GET)
+                    .timeout(
+                        RequestTimeoutLossTest.CONNECT_TIMEOUT,
+                        RequestTimeoutLossTest.READ_TIMEOUT
+                    )
+                    .multipartBody()
+                    .back()
+                    .fetch();
             }
         };
         this.testTimeoutOrderDoesntMatter(execution);
@@ -260,20 +254,18 @@ public final class RequestTimeoutLossTest {
     @Test
     public void testTimeoutOrderDoesntMatterBeforeReset()
         throws Exception {
-        final Runnable execution = new Runnable() {
+        final Callable<Response> execution = new Callable<Response>() {
             @Override
-            public void run() {
-                try {
-                    // @checkstyle RequireThisCheck (1 lines)
-                    request(new URI(LOCALHOST_URL))
-                        .through(MockWire.class)
-                        .method(Request.GET)
-                        .timeout(CONNECT_TIMEOUT, READ_TIMEOUT)
-                        .reset(CONTENT_TYPE)
-                        .fetch();
-                } catch (final Exception ex) {
-                    throw new RuntimeException(ex);
-                }
+            public Response call() throws Exception {
+                return RequestTimeoutLossTest.this.request()
+                    .through(MockWire.class)
+                    .method(Request.GET)
+                    .timeout(
+                        RequestTimeoutLossTest.CONNECT_TIMEOUT,
+                        RequestTimeoutLossTest.READ_TIMEOUT
+                    )
+                    .reset(RequestTimeoutLossTest.CONTENT_TYPE)
+                    .fetch();
             }
         };
         this.testTimeoutOrderDoesntMatter(execution);
@@ -288,24 +280,24 @@ public final class RequestTimeoutLossTest {
     @Test
     public void testTimeoutOrderDoesntMatterBeforeUriBack()
         throws Exception {
-        final Runnable execution = new Runnable() {
-            @Override
-            public void run() {
-                try {
-                    RequestTimeoutLossTest.this.request(new URI(LOCALHOST_URL))
+        this.testTimeoutOrderDoesntMatter(
+            new Callable<Response>() {
+                @Override
+                public Response call() throws Exception {
+                    return RequestTimeoutLossTest.this.request()
                         .through(MockWire.class)
                         .method(Request.GET)
-                        .timeout(CONNECT_TIMEOUT, READ_TIMEOUT)
+                        .timeout(
+                            RequestTimeoutLossTest.CONNECT_TIMEOUT,
+                            RequestTimeoutLossTest.READ_TIMEOUT
+                        )
                         .uri()
                         .path("/api")
                         .back()
                         .fetch();
-                } catch (final Exception ex) {
-                    throw new RuntimeException(ex);
                 }
             }
-        };
-        this.testTimeoutOrderDoesntMatter(execution);
+        );
     }
 
     /**
@@ -362,11 +354,11 @@ public final class RequestTimeoutLossTest {
      * The connect and read timeouts are properly set no matter in which order
      * <code>Request.timeout</code> is called.
      *
-     * @param execution The runnable that contains the actual request execution
+     * @param exec The callable that contains the actual request
      * @throws Exception If something goes wrong inside
      */
     @SuppressWarnings("unchecked")
-    private void testTimeoutOrderDoesntMatter(final Runnable execution)
+    private void testTimeoutOrderDoesntMatter(final Callable<Response> exec)
         throws Exception {
         synchronized (MockWire.class) {
             final Wire wire = Mockito.mock(Wire.class);
@@ -387,7 +379,7 @@ public final class RequestTimeoutLossTest {
                     Mockito.anyInt()
                 )
             ).thenReturn(response);
-            execution.run();
+            exec.call();
             Mockito.verify(wire).send(
                 Mockito.any(Request.class),
                 Mockito.anyString(),
@@ -399,11 +391,11 @@ public final class RequestTimeoutLossTest {
             );
             MatcherAssert.assertThat(
                 cnc.getValue().intValue(),
-                Matchers.is(CONNECT_TIMEOUT)
+                Matchers.is(RequestTimeoutLossTest.CONNECT_TIMEOUT)
             );
             MatcherAssert.assertThat(
                 rdc.getValue().intValue(),
-                Matchers.is(READ_TIMEOUT)
+                Matchers.is(RequestTimeoutLossTest.READ_TIMEOUT)
             );
         }
     }
@@ -416,6 +408,17 @@ public final class RequestTimeoutLossTest {
      */
     private Request request(final URI uri) throws Exception {
         return this.type.getDeclaredConstructor(URI.class).newInstance(uri);
+    }
+
+    /**
+     * Make a request with default url.
+     * @return Request
+     * @throws Exception If fails
+     */
+    private Request request() throws Exception {
+        return RequestTimeoutLossTest.this.request(
+            new URI(RequestTimeoutLossTest.LOCALHOST_URL)
+        );
     }
 
 }
