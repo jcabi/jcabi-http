@@ -47,6 +47,7 @@ import org.junit.Test;
  *
  * @author Carlos Miranda (miranda.cma@gmail.com)
  * @version $Id$
+ * @since 1.7
  */
 public final class AutoRedirectingWireTest {
 

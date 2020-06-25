@@ -53,12 +53,13 @@ import org.mockito.Mockito;
  * Test case for loss of timeout parameters.
  * @author Jakob Oswald (jakob.oswald@gmx.net)
  * @version $Id$
+ * @since 1.17.3
  */
 @SuppressWarnings({
-        "PMD.TooManyMethods", "PMD.DoNotUseThreads",
-        "PMD.AvoidCatchingGenericException",
-        "PMD.AvoidThrowingRawExceptionTypes"
-    })
+    "PMD.TooManyMethods", "PMD.DoNotUseThreads",
+    "PMD.AvoidCatchingGenericException",
+    "PMD.AvoidThrowingRawExceptionTypes"
+})
 @RunWith(Parameterized.class)
 public final class RequestTimeoutLossTest {
     /**
@@ -101,8 +102,8 @@ public final class RequestTimeoutLossTest {
     @Parameterized.Parameters
     public static Collection<Object[]> primeNumbers() {
         return Arrays.asList(
-                new Object[]{ApacheRequest.class},
-                new Object[]{JdkRequest.class}
+            new Object[]{ApacheRequest.class},
+            new Object[]{JdkRequest.class}
         );
     }
 
@@ -114,19 +115,19 @@ public final class RequestTimeoutLossTest {
      */
     @Test
     public void testTimeoutOrderDoesntMatterBeforeBody()
-            throws Exception {
+        throws Exception {
         final Runnable requestExecution = new Runnable() {
             @Override
             public void run() {
                 try {
                     // @checkstyle RequireThisCheck (1 lines)
                     request(new URI(LOCALHOST_URL))
-                            .through(MockWire.class)
-                            .method(Request.GET)
-                            .timeout(CONNECT_TIMEOUT, READ_TIMEOUT)
-                            .body()
-                            .back()
-                            .fetch();
+                        .through(MockWire.class)
+                        .method(Request.GET)
+                        .timeout(CONNECT_TIMEOUT, READ_TIMEOUT)
+                        .body()
+                        .back()
+                        .fetch();
                     // @checkstyle IllegalCatchCheck (1 lines)
                 } catch (final Exception ex) {
                     throw new RuntimeException(ex);
@@ -144,17 +145,17 @@ public final class RequestTimeoutLossTest {
      */
     @Test
     public void testTimeoutOrderDoesntMatterBeforeFetch()
-            throws Exception {
+        throws Exception {
         final Runnable requestExecution = new Runnable() {
             @Override
             public void run() {
                 try {
                     // @checkstyle RequireThisCheck (1 lines)
                     request(new URI(LOCALHOST_URL))
-                            .through(MockWire.class)
-                            .method(Request.GET)
-                            .timeout(CONNECT_TIMEOUT, READ_TIMEOUT)
-                            .fetch();
+                        .through(MockWire.class)
+                        .method(Request.GET)
+                        .timeout(CONNECT_TIMEOUT, READ_TIMEOUT)
+                        .fetch();
                     // @checkstyle IllegalCatchCheck (1 lines)
                 } catch (final Exception ex) {
                     throw new RuntimeException(ex);
@@ -172,18 +173,18 @@ public final class RequestTimeoutLossTest {
      */
     @Test
     public void testTimeoutOrderDoesntMatterBeforeHeader()
-            throws Exception {
+        throws Exception {
         final Runnable requestExecution = new Runnable() {
             @Override
             public void run() {
                 try {
                     // @checkstyle RequireThisCheck (1 lines)
                     request(new URI(LOCALHOST_URL))
-                            .through(MockWire.class)
-                            .method(Request.GET)
-                            .timeout(CONNECT_TIMEOUT, READ_TIMEOUT)
-                            .header(CONTENT_TYPE, "text/plain")
-                            .fetch();
+                        .through(MockWire.class)
+                        .method(Request.GET)
+                        .timeout(CONNECT_TIMEOUT, READ_TIMEOUT)
+                        .header(CONTENT_TYPE, "text/plain")
+                        .fetch();
                     // @checkstyle IllegalCatchCheck (1 lines)
                 } catch (final Exception ex) {
                     throw new RuntimeException(ex);
@@ -201,17 +202,17 @@ public final class RequestTimeoutLossTest {
      */
     @Test
     public void testTimeoutOrderDoesntMatterBeforeMethod()
-            throws Exception {
+        throws Exception {
         final Runnable requestExecution = new Runnable() {
             @Override
             public void run() {
                 try {
                     // @checkstyle RequireThisCheck (1 lines)
                     request(new URI(LOCALHOST_URL))
-                            .through(MockWire.class)
-                            .timeout(CONNECT_TIMEOUT, READ_TIMEOUT)
-                            .method(Request.GET)
-                            .fetch();
+                        .through(MockWire.class)
+                        .timeout(CONNECT_TIMEOUT, READ_TIMEOUT)
+                        .method(Request.GET)
+                        .fetch();
                     // @checkstyle IllegalCatchCheck (1 lines)
                 } catch (final Exception ex) {
                     throw new RuntimeException(ex);
@@ -229,19 +230,19 @@ public final class RequestTimeoutLossTest {
      */
     @Test
     public void testTimeoutOrderDoesntMatterBeforeMultipartBody()
-            throws Exception {
+        throws Exception {
         final Runnable requestExecution = new Runnable() {
             @Override
             public void run() {
                 try {
                     // @checkstyle RequireThisCheck (1 lines)
                     request(new URI(LOCALHOST_URL))
-                            .through(MockWire.class)
-                            .method(Request.GET)
-                            .timeout(CONNECT_TIMEOUT, READ_TIMEOUT)
-                            .multipartBody()
-                            .back()
-                            .fetch();
+                        .through(MockWire.class)
+                        .method(Request.GET)
+                        .timeout(CONNECT_TIMEOUT, READ_TIMEOUT)
+                        .multipartBody()
+                        .back()
+                        .fetch();
                     // @checkstyle IllegalCatchCheck (1 lines)
                 } catch (final Exception ex) {
                     throw new RuntimeException(ex);
@@ -259,18 +260,18 @@ public final class RequestTimeoutLossTest {
      */
     @Test
     public void testTimeoutOrderDoesntMatterBeforeReset()
-            throws Exception {
+        throws Exception {
         final Runnable requestExecution = new Runnable() {
             @Override
             public void run() {
                 try {
                     // @checkstyle RequireThisCheck (1 lines)
                     request(new URI(LOCALHOST_URL))
-                            .through(MockWire.class)
-                            .method(Request.GET)
-                            .timeout(CONNECT_TIMEOUT, READ_TIMEOUT)
-                            .reset(CONTENT_TYPE)
-                            .fetch();
+                        .through(MockWire.class)
+                        .method(Request.GET)
+                        .timeout(CONNECT_TIMEOUT, READ_TIMEOUT)
+                        .reset(CONTENT_TYPE)
+                        .fetch();
                     // @checkstyle IllegalCatchCheck (1 lines)
                 } catch (final Exception ex) {
                     throw new RuntimeException(ex);
@@ -288,20 +289,20 @@ public final class RequestTimeoutLossTest {
      */
     @Test
     public void testTimeoutOrderDoesntMatterBeforeUriBack()
-            throws Exception {
+        throws Exception {
         final Runnable requestExecution = new Runnable() {
             @Override
             public void run() {
                 try {
                     // @checkstyle RequireThisCheck (1 lines)
                     request(new URI(LOCALHOST_URL))
-                            .through(MockWire.class)
-                            .method(Request.GET)
-                            .timeout(CONNECT_TIMEOUT, READ_TIMEOUT)
-                            .uri()
-                            .path("/api")
-                            .back()
-                            .fetch();
+                        .through(MockWire.class)
+                        .method(Request.GET)
+                        .timeout(CONNECT_TIMEOUT, READ_TIMEOUT)
+                        .uri()
+                        .path("/api")
+                        .back()
+                        .fetch();
                     // @checkstyle IllegalCatchCheck (1 lines)
                 } catch (final Exception ex) {
                     throw new RuntimeException(ex);
@@ -326,38 +327,38 @@ public final class RequestTimeoutLossTest {
                 @Override
                 public Collection<Map.Entry<String, String>> get() {
                     return ArgumentMatchers.anyCollection();
-            }
-        };
+                }
+            };
         final String url = "fake-url";
         Mockito.when(
-                wire.send(
-                        ArgumentMatchers.any(Request.class),
-                        ArgumentMatchers.eq(url),
-                        ArgumentMatchers.anyString(),
-                        hdrs.get(),
-                        ArgumentMatchers.any(InputStream.class),
-                        ArgumentMatchers.anyInt(),
-                        ArgumentMatchers.anyInt()
-                )
+            wire.send(
+                ArgumentMatchers.any(Request.class),
+                ArgumentMatchers.eq(url),
+                ArgumentMatchers.anyString(),
+                hdrs.get(),
+                ArgumentMatchers.any(InputStream.class),
+                ArgumentMatchers.anyInt(),
+                ArgumentMatchers.anyInt()
+            )
         ).thenReturn(response);
         new BaseRequest(original, url).through(wire).fetch();
         Mockito.verify(original, Mockito.never()).send(
-                ArgumentMatchers.any(Request.class),
-                ArgumentMatchers.anyString(),
-                ArgumentMatchers.anyString(),
-                hdrs.get(),
-                ArgumentMatchers.any(InputStream.class),
-                ArgumentMatchers.anyInt(),
-                ArgumentMatchers.anyInt()
+            ArgumentMatchers.any(Request.class),
+            ArgumentMatchers.anyString(),
+            ArgumentMatchers.anyString(),
+            hdrs.get(),
+            ArgumentMatchers.any(InputStream.class),
+            ArgumentMatchers.anyInt(),
+            ArgumentMatchers.anyInt()
         );
         Mockito.verify(wire).send(
-                ArgumentMatchers.any(Request.class),
-                ArgumentMatchers.anyString(),
-                ArgumentMatchers.anyString(),
-                hdrs.get(),
-                ArgumentMatchers.any(InputStream.class),
-                ArgumentMatchers.anyInt(),
-                ArgumentMatchers.anyInt()
+            ArgumentMatchers.any(Request.class),
+            ArgumentMatchers.anyString(),
+            ArgumentMatchers.anyString(),
+            hdrs.get(),
+            ArgumentMatchers.any(InputStream.class),
+            ArgumentMatchers.anyInt(),
+            ArgumentMatchers.anyInt()
         );
     }
 
@@ -370,43 +371,43 @@ public final class RequestTimeoutLossTest {
      */
     @SuppressWarnings("unchecked")
     private void testTimeoutOrderDoesntMatter(final Runnable execution)
-            throws Exception {
+        throws Exception {
         synchronized (MockWire.class) {
             final Wire mockWire = Mockito.mock(Wire.class);
             final ArgumentCaptor<Integer> connectCaptor = ArgumentCaptor
-                    .forClass(Integer.class);
+                .forClass(Integer.class);
             final ArgumentCaptor<Integer> readCaptor = ArgumentCaptor
-                    .forClass(Integer.class);
+                .forClass(Integer.class);
             MockWire.setMockDelegate(mockWire);
             final Response mockResponse = Mockito.mock(Response.class);
             Mockito.when(
-                    mockWire.send(
-                            Mockito.any(Request.class),
-                            Mockito.anyString(),
-                            Mockito.anyString(),
-                            Mockito.<Map.Entry<String, String>>anyCollection(),
-                            Mockito.any(InputStream.class),
-                            Mockito.anyInt(),
-                            Mockito.anyInt()
-                    )
-            ).thenReturn(mockResponse);
-            execution.run();
-            Mockito.verify(mockWire).send(
+                mockWire.send(
                     Mockito.any(Request.class),
                     Mockito.anyString(),
                     Mockito.anyString(),
                     Mockito.<Map.Entry<String, String>>anyCollection(),
                     Mockito.any(InputStream.class),
-                    connectCaptor.capture(),
-                    readCaptor.capture()
+                    Mockito.anyInt(),
+                    Mockito.anyInt()
+                )
+            ).thenReturn(mockResponse);
+            execution.run();
+            Mockito.verify(mockWire).send(
+                Mockito.any(Request.class),
+                Mockito.anyString(),
+                Mockito.anyString(),
+                Mockito.<Map.Entry<String, String>>anyCollection(),
+                Mockito.any(InputStream.class),
+                connectCaptor.capture(),
+                readCaptor.capture()
             );
             MatcherAssert.assertThat(
-                    connectCaptor.getValue().intValue(),
-                    Matchers.is(CONNECT_TIMEOUT)
+                connectCaptor.getValue().intValue(),
+                Matchers.is(CONNECT_TIMEOUT)
             );
             MatcherAssert.assertThat(
-                    readCaptor.getValue().intValue(),
-                    Matchers.is(READ_TIMEOUT)
+                readCaptor.getValue().intValue(),
+                Matchers.is(READ_TIMEOUT)
             );
         }
     }
