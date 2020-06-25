@@ -196,7 +196,7 @@ public final class BaseRequest implements Request {
 
     @Override
     public RequestURI uri() {
-        return new BaseRequest.BaseURI(this, this.home);
+        return new BaseUri(this, this.home);
     }
 
     @Override
@@ -388,7 +388,7 @@ public final class BaseRequest implements Request {
     @Immutable
     @EqualsAndHashCode(of = "address")
     @Loggable(Loggable.DEBUG)
-    private static final class BaseURI implements RequestURI {
+    private static final class BaseUri implements RequestURI {
         /**
          * URI encapsulated.
          */
@@ -404,7 +404,7 @@ public final class BaseRequest implements Request {
          * @param req Request
          * @param uri The URI to start with
          */
-        BaseURI(final BaseRequest req, final String uri) {
+        BaseUri(final BaseRequest req, final String uri) {
             this.owner = req;
             this.address = uri;
         }
@@ -434,12 +434,12 @@ public final class BaseRequest implements Request {
 
         @Override
         public RequestURI set(final URI uri) {
-            return new BaseRequest.BaseURI(this.owner, uri.toString());
+            return new BaseUri(this.owner, uri.toString());
         }
 
         @Override
         public RequestURI queryParam(final String name, final Object value) {
-            return new BaseRequest.BaseURI(
+            return new BaseUri(
                 this.owner,
                 UriBuilder.fromUri(this.address)
                     .queryParam(name, "{value}")
@@ -457,7 +457,7 @@ public final class BaseRequest implements Request {
                 values[idx] = pair.getValue();
                 ++idx;
             }
-            return new BaseRequest.BaseURI(
+            return new BaseUri(
                 this.owner,
                 uri.build(values).toString()
             );
@@ -465,7 +465,7 @@ public final class BaseRequest implements Request {
 
         @Override
         public RequestURI path(final String segment) {
-            return new BaseRequest.BaseURI(
+            return new BaseUri(
                 this.owner,
                 UriBuilder.fromUri(this.address)
                     .path(segment)
@@ -475,7 +475,7 @@ public final class BaseRequest implements Request {
 
         @Override
         public RequestURI userInfo(final String info) {
-            return new BaseRequest.BaseURI(
+            return new BaseUri(
                 this.owner,
                 UriBuilder.fromUri(this.address)
                     .userInfo(info)
@@ -485,7 +485,7 @@ public final class BaseRequest implements Request {
 
         @Override
         public RequestURI port(final int num) {
-            return new BaseRequest.BaseURI(
+            return new BaseUri(
                 this.owner,
                 UriBuilder.fromUri(this.address)
                     .port(num).build().toString()
