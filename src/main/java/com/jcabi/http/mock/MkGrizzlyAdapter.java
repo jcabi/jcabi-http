@@ -231,6 +231,8 @@ final class MkGrizzlyAdapter extends GrizzlyAdapter {
 
     /**
      * Answer with condition.
+     *
+     * @since 1.5
      */
     @EqualsAndHashCode(of = {"answr", "condition"})
     private static final class Conditional {
@@ -238,10 +240,12 @@ final class MkGrizzlyAdapter extends GrizzlyAdapter {
          * The MkAnswer.
          */
         private final transient MkAnswer answr;
+
         /**
          * Condition for this answer.
          */
         private final transient Matcher<MkQuery> condition;
+
         /**
          * The number of times the answer is expected to appear.
          */
@@ -303,6 +307,8 @@ final class MkGrizzlyAdapter extends GrizzlyAdapter {
 
     /**
      * Query with answer.
+     *
+     * @since 1.5
      */
     @EqualsAndHashCode(of = {"answr", "que"})
     private static final class QueryWithAnswer {
@@ -310,6 +316,7 @@ final class MkGrizzlyAdapter extends GrizzlyAdapter {
          * The answer.
          */
         private final transient MkAnswer answr;
+
         /**
          * The query.
          */
