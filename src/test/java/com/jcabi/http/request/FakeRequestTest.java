@@ -34,9 +34,9 @@ import com.jcabi.http.response.RestResponse;
 import java.io.ByteArrayInputStream;
 import java.net.HttpURLConnection;
 import java.net.URI;
+import java.nio.charset.StandardCharsets;
 import javax.ws.rs.core.HttpHeaders;
 import javax.ws.rs.core.MediaType;
-import org.apache.commons.lang3.CharEncoding;
 import org.hamcrest.MatcherAssert;
 import org.hamcrest.Matchers;
 import org.junit.Ignore;
@@ -46,6 +46,7 @@ import org.junit.Test;
  * Test case for {@link FakeRequest}.
  * @author Yegor Bugayenko (yegor@tpc2.com)
  * @version $Id$
+ * @since 1.0
  */
 public final class FakeRequestTest {
 
@@ -123,7 +124,7 @@ public final class FakeRequestTest {
             .withStatus(HttpURLConnection.HTTP_OK)
             .withBody("blah")
             .fetch(
-                new ByteArrayInputStream("foo".getBytes(CharEncoding.UTF_8))
+                new ByteArrayInputStream("foo".getBytes(StandardCharsets.UTF_8))
             );
     }
 
