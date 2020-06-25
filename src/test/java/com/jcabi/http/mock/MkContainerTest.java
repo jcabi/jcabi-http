@@ -46,6 +46,7 @@ import org.junit.Test;
  * Test case for {@link MkContainer}.
  * @author Yegor Bugayenko (yegor@tpc2.com)
  * @version $Id$
+ * @since 1.0
  */
 public final class MkContainerTest {
 
@@ -130,14 +131,14 @@ public final class MkContainerTest {
         final byte[] body = {0x00, 0x01, 0x45, 0x21, (byte) 0xFF};
         try (final MkContainer container = new MkGrizzlyContainer()) {
             container.next(
-                    new MkAnswer.Simple(HttpURLConnection.HTTP_OK)
-                            .withBody(body)
-                    ).start();
+                new MkAnswer.Simple(HttpURLConnection.HTTP_OK)
+                    .withBody(body)
+            ).start();
             new JdkRequest(container.home())
-                    .through(VerboseWire.class)
-                    .fetch().as(RestResponse.class)
-                    .assertStatus(HttpURLConnection.HTTP_OK)
-                    .assertBinary(Matchers.is(body));
+                .through(VerboseWire.class)
+                .fetch().as(RestResponse.class)
+                .assertStatus(HttpURLConnection.HTTP_OK)
+                .assertBinary(Matchers.is(body));
         }
     }
 
