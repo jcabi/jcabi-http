@@ -382,6 +382,9 @@ final class MkGrizzlyAdapter extends GrizzlyAdapter {
 
         @Override
         public MkQuery next() {
+            if (this.results.isEmpty()) {
+                throw new NoSuchElementException();
+            }
             return this.results.remove();
         }
 
