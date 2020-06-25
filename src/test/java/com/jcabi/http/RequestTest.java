@@ -46,12 +46,12 @@ import java.net.HttpURLConnection;
 import java.net.URI;
 import java.net.URLDecoder;
 import java.net.URLEncoder;
+import java.nio.charset.StandardCharsets;
 import java.util.Arrays;
 import java.util.Collection;
 import javax.ws.rs.core.HttpHeaders;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.UriBuilder;
-import org.apache.commons.lang3.CharEncoding;
 import org.hamcrest.MatcherAssert;
 import org.hamcrest.Matchers;
 import org.junit.Test;
@@ -175,7 +175,10 @@ public final class RequestTest {
             .assertStatus(HttpURLConnection.HTTP_OK);
         final MkQuery query = container.take();
         MatcherAssert.assertThat(
-            URLDecoder.decode(query.uri().toString(), CharEncoding.UTF_8),
+            URLDecoder.decode(
+                query.uri().toString(),
+                String.valueOf(StandardCharsets.UTF_8)
+            ),
             Matchers.endsWith("\"€\"")
         );
         container.stop();
