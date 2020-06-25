@@ -134,6 +134,8 @@ public final class WebLinkingResponse extends AbstractResponse {
 
     /**
      * Single link.
+     *
+     * @since 1.0
      */
     @Immutable
     public interface Link extends Map<String, String> {
@@ -146,10 +148,13 @@ public final class WebLinkingResponse extends AbstractResponse {
 
     /**
      * Implementation of a link.
+     *
+     * @since 1.0
      */
     @Immutable
     @EqualsAndHashCode
     private static final class SimpleLink implements WebLinkingResponse.Link {
+
         /**
          * Pattern to match link value.
          */
@@ -157,10 +162,12 @@ public final class WebLinkingResponse extends AbstractResponse {
         private static final Pattern PTN = Pattern.compile(
             "<([^>]+)>\\s*;(.*)"
         );
+
         /**
          * URI encapsulated.
          */
         private final transient String addr;
+
         /**
          * Map of link params.
          */
