@@ -37,7 +37,7 @@ import com.jcabi.http.Response;
 import com.jcabi.immutable.Array;
 import com.jcabi.log.Logger;
 import java.lang.reflect.InvocationTargetException;
-import java.nio.charset.Charset;
+import java.nio.charset.StandardCharsets;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
@@ -54,11 +54,6 @@ import lombok.EqualsAndHashCode;
 @EqualsAndHashCode(of = { "req", "code", "phrase", "hdrs", "content" })
 @Loggable(Loggable.DEBUG)
 public final class DefaultResponse implements Response {
-
-    /**
-     * The Charset to use.
-     */
-    private static final Charset CHARSET = Charset.forName("UTF-8");
 
     /**
      * UTF-8 error marker.
@@ -139,7 +134,7 @@ public final class DefaultResponse implements Response {
 
     @Override
     public String body() {
-        final String body = new String(this.content, DefaultResponse.CHARSET);
+        final String body = new String(this.content, StandardCharsets.UTF_8);
         if (body.contains(DefaultResponse.ERR)) {
             throw new IllegalStateException(
                 Logger.format(
@@ -157,6 +152,7 @@ public final class DefaultResponse implements Response {
     public byte[] binary() {
         return this.content.clone();
     }
+
     // @checkstyle MethodName (4 lines)
     @Override
     @SuppressWarnings("PMD.ShortMethodName")
