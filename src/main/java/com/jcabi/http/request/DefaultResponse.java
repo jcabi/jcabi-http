@@ -50,6 +50,7 @@ import lombok.EqualsAndHashCode;
  *
  * @author Yegor Bugayenko (yegor@tpc2.com)
  * @version $Id$
+ * @since 1.0
  */
 @Immutable
 @EqualsAndHashCode(of = { "req", "code", "phrase", "hdrs", "content" })
