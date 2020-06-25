@@ -312,12 +312,16 @@ public final class RestResponse extends AbstractResponse {
 
     /**
      * Status matcher.
+     *
+     * @since 1.2
      */
     private static final class StatusMatch extends CustomMatcher<Response> {
+
         /**
          * HTTP status to check.
          */
         private final transient int status;
+
         /**
          * Ctor.
          * @param msg Message to show
@@ -327,6 +331,7 @@ public final class RestResponse extends AbstractResponse {
             super(msg);
             this.status = sts;
         }
+
         @Override
         public boolean matches(final Object resp) {
             return Response.class.cast(resp).status() == this.status;
