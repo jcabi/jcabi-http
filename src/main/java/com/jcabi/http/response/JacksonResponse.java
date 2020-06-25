@@ -70,6 +70,8 @@ public final class JacksonResponse extends AbstractResponse {
 
     /**
      * A tree representation views of JSON documents.
+     *
+     * @since 1.17.1
      */
     public static final class JsonReader {
         /**
