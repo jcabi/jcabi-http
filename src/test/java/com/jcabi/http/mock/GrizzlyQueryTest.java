@@ -75,10 +75,12 @@ public final class GrizzlyQueryTest {
          * Bytes to be returned by the stream.
          */
         private final transient byte[] bytes;
+
         /**
          * Is it empty?
          */
         private transient boolean empty;
+
         /**
          * Ctor.
          * @param bts Bytes
@@ -87,6 +89,7 @@ public final class GrizzlyQueryTest {
             super(new GrizzlyInputBuffer());
             this.bytes = Arrays.copyOf(bts, bts.length);
         }
+
         @Override
         public int read(final byte[] bts) throws IOException {
             int length = -1;
