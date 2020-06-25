@@ -156,7 +156,7 @@ final class GrizzlyQuery implements MkQuery {
     private static ArrayMap<String, List<String>> headers(
         final GrizzlyRequest request) {
         final ConcurrentMap<String, List<String>> headers =
-            new ConcurrentHashMap<String, List<String>>(0);
+            new ConcurrentHashMap<>(0);
         final Enumeration<?> names = request.getHeaderNames();
         while (names.hasMoreElements()) {
             final String name = names.nextElement().toString();
@@ -176,7 +176,7 @@ final class GrizzlyQuery implements MkQuery {
      */
     private static List<String> headers(
         final GrizzlyRequest request, final String name) {
-        final List<String> list = new LinkedList<String>();
+        final List<String> list = new LinkedList<>();
         final Enumeration<?> values = request.getHeaders(name);
         while (values.hasMoreElements()) {
             list.add(values.nextElement().toString());
