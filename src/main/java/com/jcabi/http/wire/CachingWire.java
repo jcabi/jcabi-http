@@ -139,11 +139,11 @@ public final class CachingWire implements Wire {
     // @checkstyle ParameterNumber (5 lines)
     @Override
     public Response send(final Request req, final String home,
-                         final String method,
-                         final Collection<Map.Entry<String, String>> headers,
-                         final InputStream content,
-                         final int connect,
-                         final int read) throws IOException {
+        final String method,
+        final Collection<Map.Entry<String, String>> headers,
+        final InputStream content,
+        final int connect,
+        final int read) throws IOException {
         final URI uri = req.uri().get();
         final StringBuilder label = new StringBuilder(Tv.HUNDRED)
             .append(method).append(' ').append(uri.getPath());
