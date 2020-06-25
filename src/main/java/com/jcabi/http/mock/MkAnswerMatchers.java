@@ -62,7 +62,7 @@ public final class MkAnswerMatchers {
      * @return Matcher for checking the body of MkAnswer
      */
     public static Matcher<MkAnswer> hasBodyBytes(
-            final Matcher<byte[]> matcher) {
+        final Matcher<byte[]> matcher) {
         return new MkAnswerBodyBytesMatcher(matcher);
     }
 
