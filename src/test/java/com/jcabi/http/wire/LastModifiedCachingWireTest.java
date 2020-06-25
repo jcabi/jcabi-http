@@ -153,14 +153,13 @@ public final class LastModifiedCachingWireTest {
         final String first = "Body 1";
         final String second = "Body 2";
         final String third = "Body 3";
-        final Map<String, String> noHeaders = Collections.emptyMap();
         final MkContainer container = new MkGrizzlyContainer()
             .next(
                 new MkAnswer.Simple(
                     HttpURLConnection.HTTP_OK,
                     Collections.singletonMap(
-                            HttpHeaders.LAST_MODIFIED,
-                            "Wed, 15 Nov 1995 05:58:08 GMT"
+                        HttpHeaders.LAST_MODIFIED,
+                        "Wed, 15 Nov 1995 05:58:08 GMT"
                     ).entrySet(),
                     first.getBytes()
                 ),
@@ -169,7 +168,7 @@ public final class LastModifiedCachingWireTest {
             .next(
                 new MkAnswer.Simple(
                     HttpURLConnection.HTTP_OK,
-                    noHeaders.entrySet(),
+                    Collections.<Map.Entry<String, String>>emptySet(),
                     second.getBytes()
                 ),
                 queryContainsIfModifiedSinceHeader()
@@ -177,7 +176,7 @@ public final class LastModifiedCachingWireTest {
             .next(
                 new MkAnswer.Simple(
                     HttpURLConnection.HTTP_OK,
-                    noHeaders.entrySet(),
+                    Collections.<Map.Entry<String, String>>emptySet(),
                     third.getBytes()
                 ),
                 Matchers.not(queryContainsIfModifiedSinceHeader())
@@ -189,17 +188,17 @@ public final class LastModifiedCachingWireTest {
                 .assertStatus(HttpURLConnection.HTTP_OK)
                 .assertBody(
                     Matchers.equalTo(first)
-            );
+                );
             req.fetch().as(RestResponse.class)
                 .assertStatus(HttpURLConnection.HTTP_OK)
                 .assertBody(
                     Matchers.equalTo(second)
-            );
+                );
             req.fetch().as(RestResponse.class)
                 .assertStatus(HttpURLConnection.HTTP_OK)
                 .assertBody(
                     Matchers.equalTo(third)
-            );
+                );
         } finally {
             container.stop();
         }
