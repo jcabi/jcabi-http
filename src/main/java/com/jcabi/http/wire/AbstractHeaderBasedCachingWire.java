@@ -204,6 +204,7 @@ public abstract class AbstractHeaderBasedCachingWire implements Wire {
         );
         return map.entrySet();
     }
+
     /**
      * Check if the request send through this Wire has the cmch header.
      * @param headers The headers of the request.
