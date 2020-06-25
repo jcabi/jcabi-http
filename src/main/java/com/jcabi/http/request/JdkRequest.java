@@ -157,7 +157,7 @@ public final class JdkRequest implements Request {
         private Array<Map.Entry<String, String>> headers(
             final Map<String, List<String>> fields) {
             final Collection<Map.Entry<String, String>> headers =
-                new LinkedList<Map.Entry<String, String>>();
+                    new LinkedList<>();
             for (final Map.Entry<String, List<String>> field
                 : fields.entrySet()) {
                 if (field.getKey() == null) {
