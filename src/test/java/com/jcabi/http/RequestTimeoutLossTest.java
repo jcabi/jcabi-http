@@ -34,6 +34,13 @@ import com.google.common.base.Supplier;
 import com.jcabi.http.request.ApacheRequest;
 import com.jcabi.http.request.BaseRequest;
 import com.jcabi.http.request.JdkRequest;
+import java.io.IOException;
+import java.io.InputStream;
+import java.net.URI;
+import java.util.Arrays;
+import java.util.Collection;
+import java.util.Map;
+import javax.net.ssl.SSLContext;
 import org.hamcrest.MatcherAssert;
 import org.hamcrest.Matchers;
 import org.junit.Test;
@@ -41,14 +48,6 @@ import org.junit.runner.RunWith;
 import org.junit.runners.Parameterized;
 import org.mockito.ArgumentCaptor;
 import org.mockito.Mockito;
-
-import javax.net.ssl.SSLContext;
-import java.io.IOException;
-import java.io.InputStream;
-import java.net.URI;
-import java.util.Arrays;
-import java.util.Collection;
-import java.util.Map;
 
 /**
  * Test case for loss of timeout parameters.

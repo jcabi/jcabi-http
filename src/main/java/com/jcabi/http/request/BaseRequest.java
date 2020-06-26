@@ -56,8 +56,8 @@ import java.util.LinkedList;
 import java.util.Map;
 import javax.json.Json;
 import javax.json.JsonStructure;
-import javax.ws.rs.core.HttpHeaders;
 import javax.net.ssl.SSLContext;
+import javax.ws.rs.core.HttpHeaders;
 import javax.ws.rs.core.UriBuilder;
 import lombok.EqualsAndHashCode;
 

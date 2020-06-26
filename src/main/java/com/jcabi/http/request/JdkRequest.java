@@ -94,12 +94,11 @@ public final class JdkRequest implements Request {
             final SSLContext sslcontext) throws IOException {
             final URLConnection raw = new URL(home).openConnection();
             if (!(raw instanceof HttpURLConnection)) {
-                throw new IOException(
-                        String.format(
-                                "'%s' opens %s instead of expected HttpURLConnection",
-                                home, raw.getClass().getName()
-                        )
+                final String message = String.format(
+                        "'%s' opens %s instead of expected HttpURLConnection",
+                        home, raw.getClass().getName()
                 );
+                throw new IOException(message);
             }
             HttpURLConnection conn = null;
             try {
@@ -135,13 +134,14 @@ public final class JdkRequest implements Request {
                 }
             }
         }
-        // @checkstyle ParameterNumber (4 lines)
+        // @checkstyle ParameterNumber (5 lines)
+        // @checkstyle LineLengthCheck (4 lines)
         private HttpURLConnection createHttpUrlConnection(final URLConnection raw,
                                                           final int connect, final int read, final String method,
                                                           final Collection<Map.Entry<String, String>> headers,
                                                           final SSLContext sslcontext) throws IOException {
-
-            final HttpURLConnection conn = HttpURLConnection.class.cast(raw);
+            final HttpURLConnection conn =
+                    HttpURLConnection.class.cast(raw);
             conn.setConnectTimeout(connect);
             conn.setReadTimeout(read);
             conn.setRequestMethod(method);
