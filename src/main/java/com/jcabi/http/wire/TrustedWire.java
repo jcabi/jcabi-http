@@ -109,15 +109,9 @@ public final class TrustedWire implements Wire {
         final InputStream content,
         final int connect, final int read,
         final SSLContext context) throws IOException {
-        final SSLContext resolvedContext;
-        if (context == null) {
-            resolvedContext = context();
-        } else {
-            resolvedContext = context;
-        }
         return this.origin.send(
                 req, home, method, headers, content,
-                connect, read, resolvedContext
+                connect, read, context()
         );
     }
 
