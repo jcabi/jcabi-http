@@ -148,12 +148,10 @@ OF THE POSSIBILITY OF SUCH DAMAGE.
     </dependency>
     <dependency>
       <!--
-      @todo #171:30m Migrate all simple tests to Junit 5. For the sake of
-       smaller PRs, migration can be done in steps
-       1) All tests classes without @Rule, and @Test(expected = ...)
-       2) All parameterized tests classes
-       3) The rest, (i.e dependent on @Rule's and so on)
-       After completing one of the steps, create a new puzzle for the next.
+      @todo #195:30m Migrate the rest of tests to Junit 5.
+       For the sake of smaller PRs, migration can be done in steps
+       1) Parameterized tests classes
+       2) Tests dependent on ExpectedException, or @Test(expected= ...)
        After all tests are run by Junit 5 remove this dependency.
       -->
       <groupId>org.junit.vintage</groupId>
