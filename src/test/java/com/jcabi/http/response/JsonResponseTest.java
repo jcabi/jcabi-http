@@ -35,7 +35,7 @@ import javax.json.stream.JsonParsingException;
 import org.hamcrest.MatcherAssert;
 import org.hamcrest.Matchers;
 import org.junit.Assert;
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
 
 /**
  * Test case for {@link JsonResponse}.
@@ -48,7 +48,7 @@ public final class JsonResponseTest {
      * @throws Exception If something goes wrong inside
      */
     @Test
-    public void readsJsonDocument() throws Exception {
+    void readsJsonDocument() throws Exception {
         final Response resp = new FakeRequest()
             .withBody("{\n\t\r\"foo-foo\":2,\n\"bar\":\"\u20ac\"}")
             .fetch();
@@ -69,7 +69,7 @@ public final class JsonResponseTest {
      * @throws Exception If something goes wrong inside
      */
     @Test
-    public void readsControlCharacters() throws Exception {
+    void readsControlCharacters() throws Exception {
         final Response resp = new FakeRequest()
             .withBody("{\"test\":\n\"\u001Fblah\uFFFDcwhoa\u0000!\"}").fetch();
         final JsonResponse response = new JsonResponse(resp);
@@ -85,7 +85,7 @@ public final class JsonResponseTest {
      * @throws Exception If something goes wrong inside
      */
     @Test
-    public void logsForInvalidJsonObject() throws Exception {
+    void logsForInvalidJsonObject() throws Exception {
         final String body = "{\"test\": \"logged!\"$@%#^&%@$#}";
         final Response resp = new FakeRequest().withBody(body).fetch();
         try {
@@ -105,7 +105,7 @@ public final class JsonResponseTest {
      * @throws Exception If something goes wrong inside
      */
     @Test
-    public void logsForInvalidJsonArray() throws Exception {
+    void logsForInvalidJsonArray() throws Exception {
         final String body = "[\"test\": \"logged!\"$@%#^&%@$#]";
         final Response resp = new FakeRequest().withBody(body).fetch();
         try {
@@ -125,7 +125,7 @@ public final class JsonResponseTest {
      * @throws Exception If something goes wrong inside
      */
     @Test
-    public void logsForInvalidJson() throws Exception {
+    void logsForInvalidJson() throws Exception {
         final String body = "{test:[]}}}";
         final Response resp = new FakeRequest().withBody(body).fetch();
         try {

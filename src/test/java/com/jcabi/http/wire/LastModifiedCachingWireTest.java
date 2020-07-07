@@ -47,7 +47,7 @@ import org.hamcrest.MatcherAssert;
 import org.hamcrest.Matchers;
 import org.hamcrest.TypeSafeMatcher;
 import org.hamcrest.core.IsAnything;
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
 
 /**
  * Test case for {@link LastModifiedCachingWire}.
@@ -78,7 +78,7 @@ public final class LastModifiedCachingWireTest {
      * @throws Exception If fails
      */
     @Test
-    public void requestWithoutHeaderPassed() throws Exception {
+    void requestWithoutHeaderPassed() throws Exception {
         final MkContainer container = new MkGrizzlyContainer()
             .next(
                 new MkAnswer.Simple(
@@ -102,7 +102,7 @@ public final class LastModifiedCachingWireTest {
      * @throws Exception If fails
      */
     @Test
-    public void cachesGetRequest() throws Exception {
+    void cachesGetRequest() throws Exception {
         final Map<String, String> headers = Collections.singletonMap(
             HttpHeaders.LAST_MODIFIED,
             "Wed, 15 Nov 1995 04:58:08 GMT"
@@ -148,7 +148,7 @@ public final class LastModifiedCachingWireTest {
      * @throws Exception If fails
      */
     @Test
-    public void doesNotCacheGetRequestIfTheLastModifiedHeaderIsMissing()
+    void doesNotCacheGetRequestIfTheLastModifiedHeaderIsMissing()
         throws Exception {
         final String first = "Body 1";
         final String second = "Body 2";
@@ -213,7 +213,7 @@ public final class LastModifiedCachingWireTest {
      * @throws Exception If fails
      */
     @Test
-    public void doesNotEvictCacheOnNonOk()
+    void doesNotEvictCacheOnNonOk()
         throws Exception {
         final String body = "Body";
         final MkContainer container = new MkGrizzlyContainer()
@@ -267,7 +267,7 @@ public final class LastModifiedCachingWireTest {
      * @throws Exception If fails
      */
     @Test
-    public void cacheUpdateNewerResponse() throws Exception {
+    void cacheUpdateNewerResponse() throws Exception {
         final Map<String, String> headers = Collections.singletonMap(
             HttpHeaders.LAST_MODIFIED,
             "Wed, 16 Nov 1995 04:58:08 GMT"
@@ -327,7 +327,7 @@ public final class LastModifiedCachingWireTest {
      * @throws Exception - if the test fails
      */
     @Test
-    public void sendsRequestDirectly() throws Exception {
+    void sendsRequestDirectly() throws Exception {
         final MkContainer container = new MkGrizzlyContainer()
             .next(
                 new MkAnswer.Simple(

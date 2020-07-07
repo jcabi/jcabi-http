@@ -39,7 +39,7 @@ import java.net.HttpURLConnection;
 import javax.ws.rs.core.HttpHeaders;
 import org.hamcrest.MatcherAssert;
 import org.hamcrest.Matchers;
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
 
 /**
  * Test case for {@link CookieOptimizingWire}.
@@ -52,7 +52,7 @@ public final class CookieOptimizingWireTest {
      * @throws Exception If something goes wrong inside
      */
     @Test
-    public void transfersCookiesOnFollow() throws Exception {
+    void transfersCookiesOnFollow() throws Exception {
         final MkContainer container = new MkGrizzlyContainer().next(
             new MkAnswer.Simple("")
                 .withHeader(HttpHeaders.SET_COOKIE, "beta=something; path=/")
@@ -96,7 +96,7 @@ public final class CookieOptimizingWireTest {
      * @throws Exception If something goes wrong inside
      */
     @Test
-    public void avoidsTransferringOfEmptyCookiesOnFollow() throws Exception {
+    void avoidsTransferringOfEmptyCookiesOnFollow() throws Exception {
         final MkContainer container = new MkGrizzlyContainer().next(
             new MkAnswer.Simple("")
                 .withHeader(HttpHeaders.SET_COOKIE, "first=A; path=/")

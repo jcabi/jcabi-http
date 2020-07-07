@@ -38,7 +38,7 @@ import java.net.HttpURLConnection;
 import javax.ws.rs.core.HttpHeaders;
 import org.hamcrest.MatcherAssert;
 import org.hamcrest.Matchers;
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
 
 /**
  * Test case for {@link UserAgentWire}.
@@ -51,7 +51,7 @@ public final class UserAgentWireTest {
      * @throws Exception If something goes wrong inside
      */
     @Test
-    public void addsUserAgentHeader() throws Exception {
+    void addsUserAgentHeader() throws Exception {
         final MkContainer container = new MkGrizzlyContainer().next(
             new MkAnswer.Simple("")
         ).start();

@@ -32,7 +32,7 @@ package com.jcabi.http.mock;
 import java.util.Collections;
 import org.hamcrest.MatcherAssert;
 import org.hamcrest.Matchers;
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
 import org.mockito.Mockito;
 
 /**
@@ -45,7 +45,7 @@ public final class MkAnswerMatchersTest {
      * MkAnswerMatchers should be able to match MkAnswer body.
      */
     @Test
-    public void canMatchBody() {
+    void canMatchBody() {
         final String body = "Hello \u20ac!";
         final MkAnswer query = Mockito.mock(MkAnswer.class);
         Mockito.doReturn(body).when(query).body();
@@ -61,7 +61,7 @@ public final class MkAnswerMatchersTest {
      * MkAnswerMatchers can match MkAnswer body bytes.
      */
     @Test
-    public void canMatchBodyBytes() {
+    void canMatchBodyBytes() {
         final byte[] body = {0x01, 0x45, 0x21};
         final MkAnswer query = Mockito.mock(MkAnswer.class);
         Mockito.doReturn(body).when(query).bodyBytes();
@@ -77,7 +77,7 @@ public final class MkAnswerMatchersTest {
      * MkAnswerMatchers should be able to match MkAnswer header.
      */
     @Test
-    public void canMatchHeader() {
+    void canMatchHeader() {
         final String header = "Content-Type";
         final String value = "application/json";
         final MkAnswer query = Mockito.mock(MkAnswer.class);
