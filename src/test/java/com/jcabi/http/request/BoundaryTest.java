@@ -32,7 +32,7 @@ package com.jcabi.http.request;
 import java.util.Random;
 import org.hamcrest.MatcherAssert;
 import org.hamcrest.Matchers;
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
 
 /**
  * Test case {@link Boundary}.
@@ -45,7 +45,7 @@ public final class BoundaryTest {
      * @throws Exception If something goes wrong inside.
      */
     @Test
-    public void buildsExpectedBoundary() throws Exception {
+    void buildsExpectedBoundary() throws Exception {
         MatcherAssert.assertThat(
             new Boundary(new Random(0L)).value(),
             Matchers.is("PdAChx6AMjemBZYS_W0fi7l8H_-w-X")

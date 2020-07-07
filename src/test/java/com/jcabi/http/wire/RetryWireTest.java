@@ -35,7 +35,7 @@ import com.jcabi.http.mock.MkGrizzlyContainer;
 import com.jcabi.http.request.JdkRequest;
 import com.jcabi.http.response.RestResponse;
 import java.net.HttpURLConnection;
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
 
 /**
  * Test case for {@link RetryWire}.
@@ -48,7 +48,7 @@ public final class RetryWireTest {
      * @throws Exception If something goes wrong inside
      */
     @Test
-    public void makesMultipleRequests() throws Exception {
+    void makesMultipleRequests() throws Exception {
         final MkContainer container = new MkGrizzlyContainer()
             .next(new MkAnswer.Simple(HttpURLConnection.HTTP_INTERNAL_ERROR))
             .next(new MkAnswer.Simple(HttpURLConnection.HTTP_INTERNAL_ERROR))

@@ -35,7 +35,7 @@ import com.jcabi.xml.XML;
 import org.apache.commons.lang3.StringUtils;
 import org.hamcrest.MatcherAssert;
 import org.hamcrest.Matchers;
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
 
 /**
  * Test case for {@link XmlResponse}.
@@ -50,7 +50,7 @@ public final class XmlResponseTest {
      * @throws Exception If something goes wrong inside
      */
     @Test
-    public void findsDocumentNodesWithXpath() throws Exception {
+    void findsDocumentNodesWithXpath() throws Exception {
         final XmlResponse response = new XmlResponse(
             new FakeRequest()
                 .withBody("<r><a>\u0443\u0440\u0430!</a><a>B</a></r>")
@@ -71,7 +71,7 @@ public final class XmlResponseTest {
      * @throws Exception If something goes wrong inside
      */
     @Test
-    public void assertsWithXpath() throws Exception {
+    void assertsWithXpath() throws Exception {
         final Response resp = new FakeRequest()
             .withBody("<x a='1'><!-- hi --><y>\u0443\u0440\u0430!</y></x>")
             .fetch();
@@ -87,7 +87,7 @@ public final class XmlResponseTest {
      * @throws Exception If something goes wrong inside
      */
     @Test
-    public void assertsWithXpathAndNamespaces() throws Exception {
+    void assertsWithXpathAndNamespaces() throws Exception {
         final Response resp = new FakeRequest().withBody(
             StringUtils.join(
                 "<html xmlns='http://www.w3.org/1999/xhtml'>",
@@ -104,7 +104,7 @@ public final class XmlResponseTest {
      * @throws Exception If something goes wrong inside
      */
     @Test
-    public void assertsWithXpathWithCustomNamespace() throws Exception {
+    void assertsWithXpathWithCustomNamespace() throws Exception {
         final XmlResponse response = new XmlResponse(
             new FakeRequest()
                 .withBody("<a xmlns='urn:foo'><b>yes!</b></a>")
@@ -126,7 +126,7 @@ public final class XmlResponseTest {
      * @throws Exception If something goes wrong inside
      */
     @Test
-    public void findsDocumentNodesWithXpathAndReturnsThem() throws Exception {
+    void findsDocumentNodesWithXpathAndReturnsThem() throws Exception {
         final XmlResponse response = new XmlResponse(
             new FakeRequest()
                 .withBody("<root><a><x>1</x></a><a><x>2</x></a></root>")

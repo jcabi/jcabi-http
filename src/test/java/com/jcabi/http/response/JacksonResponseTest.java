@@ -36,7 +36,7 @@ import java.io.IOException;
 import org.hamcrest.MatcherAssert;
 import org.hamcrest.Matchers;
 import org.junit.Assert;
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
 
 /**
  * Test case for {@link JacksonResponse}.
@@ -64,7 +64,7 @@ public final class JacksonResponseTest {
      * @throws IOException If anything goes wrong when parsing.
      */
     @Test
-    public void canReadJsonDocument() throws IOException {
+    void canReadJsonDocument() throws IOException {
         final JacksonResponse response = new FakeRequest()
             .withBody("{\n\t\r\"foo-foo\":2,\n\"bar\":\"\u20ac\"}")
             .fetch().as(JacksonResponse.class);
@@ -84,7 +84,7 @@ public final class JacksonResponseTest {
      * @throws IOException If anything goes wrong when parsing.
      */
     @Test
-    public void canParseUnquotedControlCharacters() throws IOException {
+    void canParseUnquotedControlCharacters() throws IOException {
         final JacksonResponse response = new FakeRequest()
             .withBody("{\"test\":\n\"\u001Fblah\uFFFDcwhoa\u0000!\"}")
             .fetch().as(JacksonResponse.class);
@@ -101,7 +101,7 @@ public final class JacksonResponseTest {
      * @throws IOException If anything goes wrong.
      */
     @Test
-    public void invalidJsonErrorHandlingIsLeftToJackson() throws IOException {
+    void invalidJsonErrorHandlingIsLeftToJackson() throws IOException {
         final String body = "{test:[]}";
         final String err = "was expecting double-quote to start field name";
         final JacksonResponse response = new FakeRequest()
@@ -123,7 +123,7 @@ public final class JacksonResponseTest {
      * @throws IOException If anything goes wrong.
      */
     @Test
-    public void invalidJsonArrayErrorHandlingIsLeftToJackson()
+    void invalidJsonArrayErrorHandlingIsLeftToJackson()
         throws IOException {
         final JacksonResponse response = new FakeRequest()
             .withBody("{\"anInvalidArrayTest\":[}")
@@ -147,7 +147,7 @@ public final class JacksonResponseTest {
      * @throws IOException If anything goes wrong.
      */
     @Test
-    public void cannotReadJsonAsArrayIfNotOne() throws IOException {
+    void cannotReadJsonAsArrayIfNotOne() throws IOException {
         final JacksonResponse response = new FakeRequest()
             .withBody("{\"objectIsNotArray\": \"It's not!\"}")
             .fetch().as(JacksonResponse.class);
@@ -170,7 +170,7 @@ public final class JacksonResponseTest {
      * @throws IOException If anything goes wrong.
      */
     @Test
-    public void canReadAsArrayIfOne() throws IOException {
+    void canReadAsArrayIfOne() throws IOException {
         final JacksonResponse response = new FakeRequest()
             .withBody("[\"one\", \"two\"]")
             .fetch().as(JacksonResponse.class);
@@ -190,7 +190,7 @@ public final class JacksonResponseTest {
      * @throws IOException If anything goes wrong.
      */
     @Test
-    public void invalidJsonObjectErrorIsLeftToJackson() throws IOException {
+    void invalidJsonObjectErrorIsLeftToJackson() throws IOException {
         final JacksonResponse response = new FakeRequest()
             .withBody("{\"anInvalidObjectTest\":{}")
             .fetch().as(JacksonResponse.class);
@@ -213,7 +213,7 @@ public final class JacksonResponseTest {
      * @throws IOException If anything goes wrong.
      */
     @Test
-    public void cannotReadJsonAsObjectIfNotOne() throws IOException {
+    void cannotReadJsonAsObjectIfNotOne() throws IOException {
         final String body = "[\"arrayIsNotObject\", \"It's not!\"]";
         final JacksonResponse response = new FakeRequest()
             .withBody(body).fetch().as(JacksonResponse.class);
@@ -236,7 +236,7 @@ public final class JacksonResponseTest {
      * @throws IOException If anything goes wrong.
      */
     @Test
-    public void canReadAsObjectIfOne() throws IOException {
+    void canReadAsObjectIfOne() throws IOException {
         final JacksonResponse response = new FakeRequest()
             .withBody("{\"hooray\": \"Got milk?\"}")
             .fetch().as(JacksonResponse.class);

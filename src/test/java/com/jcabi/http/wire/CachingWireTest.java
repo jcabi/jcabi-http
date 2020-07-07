@@ -39,7 +39,7 @@ import com.jcabi.http.response.RestResponse;
 import java.net.HttpURLConnection;
 import org.hamcrest.MatcherAssert;
 import org.hamcrest.Matchers;
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
 
 /**
  * Test case for {@link CachingWire}.
@@ -52,7 +52,7 @@ public final class CachingWireTest {
      * @throws Exception If something goes wrong inside
      */
     @Test
-    public void cachesGetRequest() throws Exception {
+    void cachesGetRequest() throws Exception {
         final MkContainer container = new MkGrizzlyContainer().next(
             new MkAnswer.Simple("")
         ).start();
@@ -71,7 +71,7 @@ public final class CachingWireTest {
      * @throws Exception If something goes wrong inside
      */
     @Test
-    public void ignoresPutRequest() throws Exception {
+    void ignoresPutRequest() throws Exception {
         final MkContainer container = new MkGrizzlyContainer()
             .next(new MkAnswer.Simple(""))
             .next(new MkAnswer.Simple(""))
@@ -91,7 +91,7 @@ public final class CachingWireTest {
      * @throws Exception If something goes wrong inside
      */
     @Test
-    public void flushesOnRegularExpressionMatch() throws Exception {
+    void flushesOnRegularExpressionMatch() throws Exception {
         final MkContainer container = new MkGrizzlyContainer()
             .next(new MkAnswer.Simple("first response"))
             .next(new MkAnswer.Simple("second response"))

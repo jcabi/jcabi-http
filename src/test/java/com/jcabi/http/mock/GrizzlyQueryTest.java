@@ -37,7 +37,7 @@ import java.util.Arrays;
 import java.util.Collections;
 import org.hamcrest.MatcherAssert;
 import org.hamcrest.Matchers;
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
 import org.mockito.Mockito;
 
 /**
@@ -51,7 +51,7 @@ public final class GrizzlyQueryTest {
      * @throws Exception if something goes wrong.
      */
     @Test
-    public void returnsBinaryBody() throws Exception {
+    void returnsBinaryBody() throws Exception {
         final GrizzlyRequest request = Mockito.mock(GrizzlyRequest.class);
         Mockito.when(request.getRequestURI()).thenReturn("http://fake.com");
         Mockito.when(request.getHeaderNames()).thenReturn(

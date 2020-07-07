@@ -35,7 +35,7 @@ import com.jcabi.http.mock.MkGrizzlyContainer;
 import com.jcabi.http.request.JdkRequest;
 import com.jcabi.http.response.RestResponse;
 import java.net.HttpURLConnection;
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
 
 /**
  * Test case for {@link TrustedWire}.
@@ -48,7 +48,7 @@ public final class TrustedWireTest {
      * @throws Exception If something goes wrong inside
      */
     @Test
-    public void ignoresPkixErrors() throws Exception {
+    void ignoresPkixErrors() throws Exception {
         final MkContainer container = new MkGrizzlyContainer().next(
             new MkAnswer.Simple("")
         ).start();

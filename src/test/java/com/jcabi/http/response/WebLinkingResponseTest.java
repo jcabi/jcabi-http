@@ -33,7 +33,7 @@ import com.jcabi.http.request.FakeRequest;
 import java.net.URI;
 import org.hamcrest.MatcherAssert;
 import org.hamcrest.Matchers;
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
 
 /**
  * Test case for {@link WebLinkingResponse}.
@@ -52,7 +52,7 @@ public final class WebLinkingResponseTest {
      */
     @Test
     @SuppressWarnings("PMD.AvoidInstantiatingObjectsInLoops")
-    public void parsesLinksInHeaders() throws Exception {
+    void parsesLinksInHeaders() throws Exception {
         final String[] headers = {
             "</hey/foo>; title=\"Hi!\"; rel=foo",
             "</hey/foo>; title=\"\u20ac\"; rel=\"foo\"; media=\"text/xml\"",
@@ -84,7 +84,7 @@ public final class WebLinkingResponseTest {
      * @throws Exception If something goes wrong inside
      */
     @Test
-    public void followsLinksInHeaders() throws Exception {
+    void followsLinksInHeaders() throws Exception {
         final WebLinkingResponse response = new WebLinkingResponse(
             new FakeRequest().withHeader(
                 WebLinkingResponseTest.LINK,

@@ -39,7 +39,7 @@ import java.io.IOException;
 import java.net.HttpURLConnection;
 import javax.ws.rs.core.HttpHeaders;
 import org.hamcrest.Matchers;
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
 
 /**
  * Test case for {@link ETagCachingWire}.
@@ -52,7 +52,7 @@ public final class ETagCachingWireTest {
      * @throws IOException If something goes wrong inside
      */
     @Test
-    public void takesContentFromCache() throws IOException {
+    void takesContentFromCache() throws IOException {
         final String body = "sample content";
         final MkContainer container = new MkGrizzlyContainer()
             .next(
@@ -84,7 +84,7 @@ public final class ETagCachingWireTest {
      * @throws IOException If something goes wrong inside
      */
     @Test
-    public void detectsContentModification() throws IOException {
+    void detectsContentModification() throws IOException {
         final String before = "before change";
         final String after = "after change";
         final MkContainer container = new MkGrizzlyContainer()

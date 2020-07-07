@@ -32,7 +32,7 @@ package com.jcabi.http;
 import java.util.Map;
 import org.hamcrest.MatcherAssert;
 import org.hamcrest.Matchers;
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
 
 /**
  * Test case for {@link ImmutableHeader}.
@@ -45,7 +45,7 @@ public final class ImmutableHeaderTest {
      * @throws Exception If something goes wrong inside
      */
     @Test
-    public void normalizesHeaderKey() throws Exception {
+    void normalizesHeaderKey() throws Exception {
         final Map.Entry<String, String> header =
             new ImmutableHeader("content-type", "text/plain");
         MatcherAssert.assertThat(

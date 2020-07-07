@@ -34,7 +34,7 @@ import com.jcabi.http.response.RestResponse;
 import java.net.HttpURLConnection;
 import javax.ws.rs.core.HttpHeaders;
 import javax.ws.rs.core.MediaType;
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
 
 /**
  * Integration case for {@link TrustedWire}.
@@ -47,7 +47,7 @@ public final class TrustedWireITCase {
      * @throws Exception If something goes wrong inside
      */
     @Test
-    public void ignoresPkixErrors() throws Exception {
+    void ignoresPkixErrors() throws Exception {
         new JdkRequest("https://api.travis-ci.org/test")
             .header(HttpHeaders.CONTENT_TYPE, MediaType.APPLICATION_JSON)
             .header(HttpHeaders.ACCEPT, MediaType.APPLICATION_JSON)

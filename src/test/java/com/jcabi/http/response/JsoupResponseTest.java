@@ -34,7 +34,7 @@ import com.jcabi.http.Response;
 import com.jcabi.http.request.FakeRequest;
 import com.jcabi.matchers.XhtmlMatchers;
 import org.hamcrest.MatcherAssert;
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
 
 /**
  * Test case for {@link JsoupResponse}.
@@ -48,7 +48,7 @@ public final class JsoupResponseTest {
      * @throws Exception If a problem occurs.
      */
     @Test
-    public void normalizesHtml() throws Exception {
+    void normalizesHtml() throws Exception {
         final Response resp = new FakeRequest().withBody(
             Joiner.on(' ').join(
                 "<html xmlns='http://www.w3.org/1999/xhtml'>",
