@@ -9,6 +9,9 @@ env:
 install: |-
   sudo update-java-alternatives -s java-1.8.0-openjdk-amd64
   pdd --file=/dev/null
+architects:
+  - yegor256
+  - andreoss
 merge:
   script: |-
     mvn clean install -Pqulice --errors --settings ../settings.xml
