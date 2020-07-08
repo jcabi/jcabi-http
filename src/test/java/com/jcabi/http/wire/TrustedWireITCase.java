@@ -32,29 +32,33 @@ package com.jcabi.http.wire;
 import com.jcabi.http.request.JdkRequest;
 import com.jcabi.http.response.RestResponse;
 import java.net.HttpURLConnection;
-import javax.ws.rs.core.HttpHeaders;
-import javax.ws.rs.core.MediaType;
-import org.junit.jupiter.api.Test;
+import org.junit.jupiter.params.ParameterizedTest;
+import org.junit.jupiter.params.provider.CsvSource;
 
 /**
  * Integration case for {@link TrustedWire}.
+ *
  * @since 1.10.1
  */
 public final class TrustedWireITCase {
 
     /**
-     * TrustedWire can ignore PKIX errors.
+     * TrustedWire can ignore SSL verifications.
+     * @param url URL with SSL problems
      * @throws Exception If something goes wrong inside
      */
-    @Test
-    void ignoresPkixErrors() throws Exception {
-        new JdkRequest("https://api.travis-ci.org/test")
-            .header(HttpHeaders.CONTENT_TYPE, MediaType.APPLICATION_JSON)
-            .header(HttpHeaders.ACCEPT, MediaType.APPLICATION_JSON)
+    @ParameterizedTest
+    @CsvSource({
+        "https://expired.badssl.com/",
+        "https://self-signed.badssl.com/",
+        "https://untrusted-root.badssl.com/"
+    })
+    void ignoresSslCertProblems(final String url) throws Exception {
+        new JdkRequest(url)
             .through(TrustedWire.class)
             .fetch()
             .as(RestResponse.class)
-            .assertStatus(HttpURLConnection.HTTP_NOT_FOUND);
+            .assertStatus(HttpURLConnection.HTTP_OK);
     }
 
 }
