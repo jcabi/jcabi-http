@@ -32,14 +32,16 @@ package com.jcabi.http.mock;
 import com.jcabi.aspects.Loggable;
 import com.jcabi.aspects.RetryOnFailure;
 import com.jcabi.log.Logger;
-import com.sun.grizzly.http.embed.GrizzlyWebServer;
+import lombok.EqualsAndHashCode;
+import org.glassfish.grizzly.PortRange;
+import org.glassfish.grizzly.http.server.HttpServer;
+import org.glassfish.grizzly.http.server.NetworkListener;
+import org.hamcrest.Matcher;
+import org.hamcrest.core.IsAnything;
 import java.io.IOException;
 import java.net.ServerSocket;
 import java.net.URI;
 import java.util.Collection;
-import lombok.EqualsAndHashCode;
-import org.hamcrest.Matcher;
-import org.hamcrest.core.IsAnything;
 
 /**
  * Implementation of {@link MkContainer} based on Grizzly Server.
@@ -48,7 +50,7 @@ import org.hamcrest.core.IsAnything;
  * @see MkContainer
  */
 @SuppressWarnings("PMD.TooManyMethods")
-@EqualsAndHashCode(of = { "adapter", "gws", "port" })
+@EqualsAndHashCode(of = {"adapter", "gws", "port"})
 @Loggable(Loggable.DEBUG)
 public final class MkGrizzlyContainer implements MkContainer {
 
@@ -61,7 +63,7 @@ public final class MkGrizzlyContainer implements MkContainer {
     /**
      * Grizzly container.
      */
-    private transient GrizzlyWebServer gws;
+    private transient HttpServer gws;
 
     /**
      * Port where it works.
@@ -74,14 +76,18 @@ public final class MkGrizzlyContainer implements MkContainer {
     }
 
     @Override
-    public MkContainer next(final MkAnswer answer,
-        final Matcher<MkQuery> condition) {
+    public MkContainer next(
+        final MkAnswer answer,
+        final Matcher<MkQuery> condition
+    ) {
         return this.next(answer, condition, 1);
     }
 
     @Override
-    public MkContainer next(final MkAnswer answer,
-        final Matcher<MkQuery> condition, final int count) {
+    public MkContainer next(
+        final MkAnswer answer,
+        final Matcher<MkQuery> condition, final int count
+    ) {
         this.adapter.next(answer, condition, count);
         return this;
     }
@@ -122,8 +128,16 @@ public final class MkGrizzlyContainer implements MkContainer {
             );
         }
         this.port = prt;
-        this.gws = new GrizzlyWebServer(this.port);
-        this.gws.addGrizzlyAdapter(this.adapter, new String[] {"/"});
+        this.gws = new HttpServer();
+        this.gws.addListener(
+            new NetworkListener("grizzly",
+                NetworkListener.DEFAULT_NETWORK_HOST,
+                new PortRange(this.port)
+            )
+        );
+        this.gws.getServerConfiguration().addHttpHandler(this.adapter,
+            "/"
+        );
         this.gws.start();
         Logger.info(this, "started on port #%s", prt);
         return this;
@@ -132,7 +146,7 @@ public final class MkGrizzlyContainer implements MkContainer {
     @Override
     public void stop() {
         if (this.gws != null) {
-            this.gws.stop();
+            this.gws.shutdown();
         }
         Logger.info(this, "stopped on port #%s", this.port);
         this.port = 0;

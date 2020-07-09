@@ -30,9 +30,6 @@
 package com.jcabi.http.mock;
 
 import com.jcabi.log.Logger;
-import com.sun.grizzly.tcp.http11.GrizzlyAdapter;
-import com.sun.grizzly.tcp.http11.GrizzlyRequest;
-import com.sun.grizzly.tcp.http11.GrizzlyResponse;
 import java.io.OutputStreamWriter;
 import java.io.PrintWriter;
 import java.io.UnsupportedEncodingException;
@@ -47,6 +44,9 @@ import java.util.concurrent.atomic.AtomicInteger;
 import lombok.EqualsAndHashCode;
 import lombok.RequiredArgsConstructor;
 import org.apache.http.HttpHeaders;
+import org.glassfish.grizzly.http.server.HttpHandler;
+import org.glassfish.grizzly.http.server.Request;
+import org.glassfish.grizzly.http.server.Response;
 import org.hamcrest.Matcher;
 
 /**
@@ -56,7 +56,7 @@ import org.hamcrest.Matcher;
  * @checkstyle ClassDataAbstractionCouplingCheck (300 lines)
  */
 @SuppressWarnings("PMD.TooManyMethods")
-final class MkGrizzlyAdapter extends GrizzlyAdapter {
+final class MkGrizzlyAdapter extends HttpHandler {
 
     /**
      * The encoding to use.
@@ -85,8 +85,10 @@ final class MkGrizzlyAdapter extends GrizzlyAdapter {
                 "rawtypes"
             }
         )
-    public void service(final GrizzlyRequest request,
-        final GrizzlyResponse response) {
+    public void service(
+        final Request request,
+        final Response response
+    ) {
         try {
             final MkQuery query = new GrizzlyQuery(request);
             final Iterator<Conditional> iter = this.conditionals.iterator();
@@ -113,7 +115,7 @@ final class MkGrizzlyAdapter extends GrizzlyAdapter {
                     );
                     response.setStatus(answer.status());
                     final byte[] body = answer.bodyBytes();
-                    response.getStream().write(body);
+                    response.createOutputStream().write(body);
                     response.setContentLength(body.length);
                     if (cond.decrement() == 0) {
                         iter.remove();
@@ -138,8 +140,10 @@ final class MkGrizzlyAdapter extends GrizzlyAdapter {
      * @param count The number of times this answer can be returned for matching
      *  requests
      */
-    public void next(final MkAnswer answer, final Matcher<MkQuery> query,
-        final int count) {
+    public void next(
+        final MkAnswer answer, final Matcher<MkQuery> query,
+        final int count
+    ) {
         this.conditionals.add(new Conditional(answer, query, count));
     }
 
@@ -208,14 +212,16 @@ final class MkGrizzlyAdapter extends GrizzlyAdapter {
      * @param response The response to notify
      * @param failure The failure just happened
      */
-    private static void fail(final GrizzlyResponse<?> response,
-        final Throwable failure) {
+    private static void fail(
+        final Response response,
+        final Throwable failure
+    ) {
         response.setStatus(HttpURLConnection.HTTP_INTERNAL_ERROR);
         final PrintWriter writer;
         try {
             writer = new PrintWriter(
                 new OutputStreamWriter(
-                    response.getStream(),
+                    response.createOutputStream(),
                     MkGrizzlyAdapter.ENCODING
                 )
             );
@@ -257,8 +263,10 @@ final class MkGrizzlyAdapter extends GrizzlyAdapter {
          * @param matcher The matcher.
          * @param times Number of times the answer should appear.
          */
-        Conditional(final MkAnswer ans, final Matcher<MkQuery> matcher,
-            final int times) {
+        Conditional(
+            final MkAnswer ans, final Matcher<MkQuery> matcher,
+            final int times
+        ) {
             this.answr = ans;
             this.condition = matcher;
             this.count = Conditional.positiveAtomic(times);

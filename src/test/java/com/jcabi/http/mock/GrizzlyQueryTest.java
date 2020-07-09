@@ -29,16 +29,13 @@
  */
 package com.jcabi.http.mock;
 
-import com.sun.grizzly.tcp.http11.GrizzlyInputBuffer;
-import com.sun.grizzly.tcp.http11.GrizzlyInputStream;
-import com.sun.grizzly.tcp.http11.GrizzlyRequest;
-import java.io.IOException;
-import java.util.Arrays;
-import java.util.Collections;
+import org.glassfish.grizzly.http.server.Request;
 import org.hamcrest.MatcherAssert;
 import org.hamcrest.Matchers;
 import org.junit.jupiter.api.Test;
 import org.mockito.Mockito;
+import java.io.ByteArrayInputStream;
+import java.util.Collections;
 
 /**
  * Test case for {@link GrizzlyQuery}.
@@ -52,14 +49,14 @@ public final class GrizzlyQueryTest {
      */
     @Test
     void returnsBinaryBody() throws Exception {
-        final GrizzlyRequest request = Mockito.mock(GrizzlyRequest.class);
+        final Request request = Mockito.mock(Request.class);
         Mockito.when(request.getRequestURI()).thenReturn("http://fake.com");
         Mockito.when(request.getHeaderNames()).thenReturn(
-            Collections.emptyEnumeration()
+            Collections.<String>emptyList()
         );
         final byte[] body = "body".getBytes();
         Mockito.when(request.getInputStream()).thenReturn(
-            new GrizzlyQueryTest.MkGrizzlyInputStream(body)
+            new ByteArrayInputStream(body)
         );
         MatcherAssert.assertThat(
             new GrizzlyQuery(request).binary(),
@@ -67,40 +64,4 @@ public final class GrizzlyQueryTest {
         );
     }
 
-    /**
-     * Mock for GrizzlyInputStream, which returns desired byte array.
-     *
-     * @since 1.13
-     */
-    private static class MkGrizzlyInputStream extends GrizzlyInputStream {
-        /**
-         * Bytes to be returned by the stream.
-         */
-        private final transient byte[] bytes;
-
-        /**
-         * Is it empty?
-         */
-        private transient boolean empty;
-
-        /**
-         * Ctor.
-         * @param bts Bytes
-         */
-        MkGrizzlyInputStream(final byte[] bts) {
-            super(new GrizzlyInputBuffer());
-            this.bytes = Arrays.copyOf(bts, bts.length);
-        }
-
-        @Override
-        public int read(final byte[] bts) throws IOException {
-            int length = -1;
-            if (!this.empty) {
-                System.arraycopy(this.bytes, 0, bts, 0, this.bytes.length);
-                length = this.bytes.length;
-                this.empty = true;
-            }
-            return length;
-        }
-    }
 }
