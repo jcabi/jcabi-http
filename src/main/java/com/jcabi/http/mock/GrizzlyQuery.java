@@ -32,8 +32,6 @@ package com.jcabi.http.mock;
 import com.jcabi.aspects.Immutable;
 import com.jcabi.http.ImmutableHeader;
 import com.jcabi.immutable.ArrayMap;
-import org.glassfish.grizzly.http.Method;
-import org.glassfish.grizzly.http.server.Request;
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
@@ -46,6 +44,8 @@ import java.util.List;
 import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.ConcurrentMap;
+import org.glassfish.grizzly.http.Method;
+import org.glassfish.grizzly.http.server.Request;
 
 /**
  * Mock HTTP query/request.
@@ -135,7 +135,8 @@ final class GrizzlyQuery implements MkQuery {
      * @return Headers
      */
     private static ArrayMap<String, List<String>> headers(
-        final Request request) {
+        final Request request
+    ) {
         final ConcurrentMap<String, List<String>> headers =
             new ConcurrentHashMap<>(0);
         final Iterable<String> names = request.getHeaderNames();
@@ -155,7 +156,8 @@ final class GrizzlyQuery implements MkQuery {
      * @return List of values
      */
     private static List<String> headers(
-        final Request request, final String name) {
+        final Request request, final String name
+    ) {
         final List<String> list = new LinkedList<>();
         final Iterable<?> values = request.getHeaders(name);
         for (final Object value : values) {

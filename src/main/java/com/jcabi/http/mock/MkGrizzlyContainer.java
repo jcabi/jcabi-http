@@ -32,16 +32,16 @@ package com.jcabi.http.mock;
 import com.jcabi.aspects.Loggable;
 import com.jcabi.aspects.RetryOnFailure;
 import com.jcabi.log.Logger;
+import java.io.IOException;
+import java.net.ServerSocket;
+import java.net.URI;
+import java.util.Collection;
 import lombok.EqualsAndHashCode;
 import org.glassfish.grizzly.PortRange;
 import org.glassfish.grizzly.http.server.HttpServer;
 import org.glassfish.grizzly.http.server.NetworkListener;
 import org.hamcrest.Matcher;
 import org.hamcrest.core.IsAnything;
-import java.io.IOException;
-import java.net.ServerSocket;
-import java.net.URI;
-import java.util.Collection;
 
 /**
  * Implementation of {@link MkContainer} based on Grizzly Server.
@@ -130,12 +130,14 @@ public final class MkGrizzlyContainer implements MkContainer {
         this.port = prt;
         this.gws = new HttpServer();
         this.gws.addListener(
-            new NetworkListener("grizzly",
+            new NetworkListener(
+                "grizzly",
                 NetworkListener.DEFAULT_NETWORK_HOST,
                 new PortRange(this.port)
             )
         );
-        this.gws.getServerConfiguration().addHttpHandler(this.adapter,
+        this.gws.getServerConfiguration().addHttpHandler(
+            this.adapter,
             "/"
         );
         this.gws.start();

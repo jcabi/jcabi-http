@@ -29,13 +29,13 @@
  */
 package com.jcabi.http.mock;
 
+import java.io.ByteArrayInputStream;
+import java.util.Collections;
 import org.glassfish.grizzly.http.server.Request;
 import org.hamcrest.MatcherAssert;
 import org.hamcrest.Matchers;
 import org.junit.jupiter.api.Test;
 import org.mockito.Mockito;
-import java.io.ByteArrayInputStream;
-import java.util.Collections;
 
 /**
  * Test case for {@link GrizzlyQuery}.
