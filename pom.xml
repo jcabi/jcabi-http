@@ -148,11 +148,8 @@ OF THE POSSIBILITY OF SUCH DAMAGE.
     </dependency>
     <dependency>
       <!--
-      @todo #195:30m Migrate the rest of tests to Junit 5.
-       For the sake of smaller PRs, migration can be done in steps
-       1) Parameterized tests classes
-       2) Tests dependent on ExpectedException, or @Test(expected= ...)
-       After all tests are run by Junit 5 remove this dependency.
+      @todo #199:30m Migrate Junit 5 tests dependent on ExpectedException to
+       Junit 5. After all tests are run by Junit 5 remove this dependency.
       -->
       <groupId>org.junit.vintage</groupId>
       <artifactId>junit-vintage-engine</artifactId>
