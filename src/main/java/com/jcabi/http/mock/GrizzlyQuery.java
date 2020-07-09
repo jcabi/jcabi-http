@@ -32,7 +32,6 @@ package com.jcabi.http.mock;
 import com.jcabi.aspects.Immutable;
 import com.jcabi.http.ImmutableHeader;
 import com.jcabi.immutable.ArrayMap;
-import com.sun.grizzly.tcp.http11.GrizzlyRequest;
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
@@ -40,12 +39,13 @@ import java.net.URI;
 import java.nio.charset.StandardCharsets;
 import java.util.Arrays;
 import java.util.Collections;
-import java.util.Enumeration;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.ConcurrentMap;
+import org.glassfish.grizzly.http.Method;
+import org.glassfish.grizzly.http.server.Request;
 
 /**
  * Mock HTTP query/request.
@@ -58,7 +58,7 @@ final class GrizzlyQuery implements MkQuery {
     /**
      * HTTP request method.
      */
-    private final transient String mtd;
+    private final transient Method mtd;
 
     /**
      * HTTP request content.
@@ -82,7 +82,7 @@ final class GrizzlyQuery implements MkQuery {
      * @throws IOException If fails
      */
     @SuppressWarnings("PMD.ConstructorOnlyInitializesOrCallOtherConstructors")
-    GrizzlyQuery(final GrizzlyRequest request) throws IOException {
+    GrizzlyQuery(final Request request) throws IOException {
         request.setCharacterEncoding(StandardCharsets.UTF_8.toString());
         this.home = GrizzlyQuery.uri(request);
         this.mtd = request.getMethod();
@@ -97,7 +97,7 @@ final class GrizzlyQuery implements MkQuery {
 
     @Override
     public String method() {
-        return this.mtd;
+        return this.mtd.getMethodString();
     }
 
     @Override
@@ -120,7 +120,7 @@ final class GrizzlyQuery implements MkQuery {
      * @param request Request
      * @return URI
      */
-    private static String uri(final GrizzlyRequest request) {
+    private static String uri(final Request request) {
         final StringBuilder uri = new StringBuilder(request.getRequestURI());
         final String query = request.getQueryString();
         if (query != null && !query.isEmpty()) {
@@ -135,12 +135,12 @@ final class GrizzlyQuery implements MkQuery {
      * @return Headers
      */
     private static ArrayMap<String, List<String>> headers(
-        final GrizzlyRequest request) {
+        final Request request
+    ) {
         final ConcurrentMap<String, List<String>> headers =
             new ConcurrentHashMap<>(0);
-        final Enumeration<?> names = request.getHeaderNames();
-        while (names.hasMoreElements()) {
-            final String name = names.nextElement().toString();
+        final Iterable<String> names = request.getHeaderNames();
+        for (final String name : names) {
             headers.put(
                 ImmutableHeader.normalize(name),
                 GrizzlyQuery.headers(request, name)
@@ -156,11 +156,12 @@ final class GrizzlyQuery implements MkQuery {
      * @return List of values
      */
     private static List<String> headers(
-        final GrizzlyRequest request, final String name) {
+        final Request request, final String name
+    ) {
         final List<String> list = new LinkedList<>();
-        final Enumeration<?> values = request.getHeaders(name);
-        while (values.hasMoreElements()) {
-            list.add(values.nextElement().toString());
+        final Iterable<?> values = request.getHeaders(name);
+        for (final Object value : values) {
+            list.add(value.toString());
         }
         return list;
     }
@@ -171,7 +172,7 @@ final class GrizzlyQuery implements MkQuery {
      * @return Bytes of input
      * @throws IOException If fails
      */
-    private static byte[] input(final GrizzlyRequest req) throws IOException {
+    private static byte[] input(final Request req) throws IOException {
         // @checkstyle MagicNumber (1 line)
         final byte[] buffer = new byte[8192];
         final InputStream input = req.getInputStream();

@@ -190,9 +190,9 @@ OF THE POSSIBILITY OF SUCH DAMAGE.
       <scope>provided</scope>
     </dependency>
     <dependency>
-      <groupId>com.sun.grizzly</groupId>
-      <artifactId>grizzly-servlet-webserver</artifactId>
-      <version>1.9.64</version>
+      <groupId>org.glassfish.grizzly</groupId>
+      <artifactId>grizzly-http-servlet-server</artifactId>
+      <version>2.4.4</version>
       <scope>provided</scope>
       <optional>true</optional>
       <exclusions>
