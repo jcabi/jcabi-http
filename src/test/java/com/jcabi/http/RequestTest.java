@@ -34,8 +34,6 @@ import com.jcabi.http.mock.MkAnswer;
 import com.jcabi.http.mock.MkContainer;
 import com.jcabi.http.mock.MkGrizzlyContainer;
 import com.jcabi.http.mock.MkQuery;
-import com.jcabi.http.request.ApacheRequest;
-import com.jcabi.http.request.JdkRequest;
 import com.jcabi.http.response.RestResponse;
 import com.jcabi.http.response.XmlResponse;
 import com.jcabi.http.wire.BasicAuthWire;
@@ -47,16 +45,14 @@ import java.net.URI;
 import java.net.URLDecoder;
 import java.net.URLEncoder;
 import java.nio.charset.StandardCharsets;
-import java.util.Arrays;
-import java.util.Collection;
 import javax.ws.rs.core.HttpHeaders;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.UriBuilder;
 import org.hamcrest.MatcherAssert;
 import org.hamcrest.Matchers;
-import org.junit.Test;
-import org.junit.runner.RunWith;
-import org.junit.runners.Parameterized;
+import org.junit.jupiter.api.Assertions;
+import org.junit.jupiter.api.function.Executable;
+import org.junit.jupiter.params.ParameterizedTest;
 
 /**
  * Test case for {@link Request} and its implementations.
@@ -65,45 +61,25 @@ import org.junit.runners.Parameterized;
 @SuppressWarnings(
     {
         "PMD.TooManyMethods",
-        "PMD.AvoidDuplicateLiterals"
+        "PMD.AvoidDuplicateLiterals",
+        "PMD.TestClassWithoutTestCases"
     })
-@RunWith(Parameterized.class)
-public final class RequestTest {
-    /**
-     * Type of request.
-     */
-    private final transient Class<? extends Request> type;
-
-    /**
-     * Public ctor.
-     * @param req Request type
-     */
-    public RequestTest(final Class<? extends Request> req) {
-        this.type = req;
-    }
-
-    /**
-     * Parameters.
-     * @return Array of args
-     */
-    @Parameterized.Parameters
-    public static Collection<Object[]> primeNumbers() {
-        return Arrays.asList(
-            new Object[]{ApacheRequest.class},
-            new Object[]{JdkRequest.class}
-        );
-    }
+final class RequestTest extends RequestTestTemplate {
 
     /**
      * BaseRequest can fetch HTTP request and process HTTP response.
      * @throws Exception If something goes wrong inside
+     * @param type Request type
      */
-    @Test
-    public void sendsHttpRequestAndProcessesHttpResponse() throws Exception {
+    @Values
+    @ParameterizedTest
+    void sendsHttpRequestAndProcessesHttpResponse(
+        final Class<? extends Request> type
+    ) throws Exception {
         final MkContainer container = new MkGrizzlyContainer().next(
             new MkAnswer.Simple("\u20ac! hello!")
         ).start();
-        this.request(container.home())
+        RequestTestTemplate.request(container.home(), type)
             .uri().path("/helloall").back()
             .method(Request.GET)
             .fetch().as(RestResponse.class)
@@ -125,13 +101,17 @@ public final class RequestTest {
     /**
      * BaseRequest can fetch HTTP headers.
      * @throws Exception If something goes wrong inside
+     * @param type Request type
      */
-    @Test
-    public void sendsHttpRequestWithHeaders() throws Exception {
+    @Values
+    @ParameterizedTest
+    void sendsHttpRequestWithHeaders(
+        final Class<? extends Request> type
+    ) throws Exception {
         final MkContainer container = new MkGrizzlyContainer().next(
             new MkAnswer.Simple("")
         ).start();
-        this.request(container.home())
+        RequestTestTemplate.request(container.home(), type)
             .through(UserAgentWire.class)
             .uri().path("/foo1").back()
             .method(Request.GET)
@@ -158,14 +138,18 @@ public final class RequestTest {
     /**
      * BaseRequest can fetch GET request with query params.
      * @throws Exception If something goes wrong inside
+     * @param type Request type
      */
-    @Test
-    public void sendsTextWithGetParameters() throws Exception {
+    @Values
+    @ParameterizedTest
+    void sendsTextWithGetParameters(
+        final Class<? extends Request> type
+    ) throws Exception {
         final MkContainer container = new MkGrizzlyContainer().next(
             new MkAnswer.Simple("")
         ).start();
         final String value = "some value of this param &^%*;'\"\u20ac\"";
-        this.request(container.home())
+        RequestTestTemplate.request(container.home(), type)
             .uri().queryParam("q", value).back()
             .method(Request.GET)
             .header(HttpHeaders.ACCEPT, MediaType.TEXT_XML)
@@ -185,14 +169,18 @@ public final class RequestTest {
     /**
      * BaseRequest can fetch body with HTTP POST request.
      * @throws Exception If something goes wrong inside
+     * @param type Request type
      */
-    @Test
-    public void sendsTextWithPostRequestMatchParam() throws Exception {
+    @Values
+    @ParameterizedTest
+    void sendsTextWithPostRequestMatchParam(
+        final Class<? extends Request> type
+    ) throws Exception {
         final MkContainer container = new MkGrizzlyContainer().next(
             new MkAnswer.Simple("")
         ).start();
         final String value = "some random value of \u20ac param \"&^%*;'\"";
-        this.request(container.home())
+        RequestTestTemplate.request(container.home(), type)
             .method(Request.POST)
             .body().formParam("p", value).back()
             .header(
@@ -212,15 +200,19 @@ public final class RequestTest {
     /**
      * BaseRequest can fetch body with HTTP POST request with params.
      * @throws Exception If something goes wrong inside
+     * @param type Request type
      */
-    @Test
-    public void sendsTextWithPostRequestMatchMultipleParams() throws Exception {
+    @Values
+    @ParameterizedTest
+    void sendsTextWithPostRequestMatchMultipleParams(
+        final Class<? extends Request> type
+    ) throws Exception {
         final MkContainer container = new MkGrizzlyContainer().next(
             new MkAnswer.Simple("")
         ).start();
         final String value = "some value of \u20ac param \"&^%*;'\"";
         final String follow = "other value of \u20ac param \"&^%*;'\"";
-        this.request(container.home())
+        RequestTestTemplate.request(container.home(), type)
             .method(Request.POST)
             .body()
             .formParam("a", value)
@@ -247,14 +239,18 @@ public final class RequestTest {
      * with single byte param.
      * @throws Exception If something goes wrong inside
      * @checkstyle LineLength (30 lines)
+     * @param type Request type
      */
-    @Test
-    public void sendsMultipartPostRequestMatchByteParam() throws Exception {
+    @Values
+    @ParameterizedTest
+    void sendsMultipartPostRequestMatchByteParam(
+        final Class<? extends Request> type
+    ) throws Exception {
         final MkContainer container = new MkGrizzlyContainer().next(
             new MkAnswer.Simple("")
         ).start();
-        final byte[] value = new byte[]{Byte.valueOf("-122")};
-        this.request(container.home())
+        final byte[] value = new byte[]{Byte.parseByte("-122")};
+        RequestTestTemplate.request(container.home(), type)
             .method(Request.POST)
             .header(
                 HttpHeaders.CONTENT_TYPE,
@@ -289,14 +285,18 @@ public final class RequestTest {
      * with single param.
      * @throws Exception If something goes wrong inside
      * @checkstyle LineLength (30 lines)
+     * @param type Request type
      */
-    @Test
-    public void sendsMultipartPostRequestMatchSingleParam() throws Exception {
+    @Values
+    @ParameterizedTest
+    void sendsMultipartPostRequestMatchSingleParam(
+        final Class<? extends Request> type
+    ) throws Exception {
         final MkContainer container = new MkGrizzlyContainer().next(
             new MkAnswer.Simple("")
         ).start();
         final String value = "value of \u20ac part param \"&^%*;'\"";
-        this.request(container.home())
+        RequestTestTemplate.request(container.home(), type)
             .method(Request.POST)
             .header(
                 HttpHeaders.CONTENT_TYPE,
@@ -331,15 +331,19 @@ public final class RequestTest {
      * with two params.
      * @throws Exception If something goes wrong inside
      * @checkstyle LineLength (40 lines)
+     * @param type Request type
      */
-    @Test
-    public void sendsMultipartPostRequestMatchTwoParams() throws Exception {
+    @Values
+    @ParameterizedTest
+    void sendsMultipartPostRequestMatchTwoParams(
+        final Class<? extends Request> type
+    ) throws Exception {
         final MkContainer container = new MkGrizzlyContainer().next(
             new MkAnswer.Simple("")
         ).start();
         final String value = "value of \u20ac one param \"&^%*;'\"";
         final String other = "value of \u20ac two param \"&^%*;'\"";
-        this.request(container.home())
+        RequestTestTemplate.request(container.home(), type)
             .method(Request.POST)
             .header(
                 HttpHeaders.CONTENT_TYPE,
@@ -379,14 +383,18 @@ public final class RequestTest {
     /**
      * BaseRequest can fetch body with HTTP POST request.
      * @throws Exception If something goes wrong inside
+     * @param type Request type
      */
-    @Test
-    public void sendsTextWithPostRequestMatchBody() throws Exception {
+    @Values
+    @ParameterizedTest
+    void sendsTextWithPostRequestMatchBody(
+        final Class<? extends Request> type
+    ) throws Exception {
         final MkContainer container = new MkGrizzlyContainer().next(
             new MkAnswer.Simple("")
         ).start();
         final String value = "\u20ac some body value with \"&^%*;'\"";
-        this.request(container.home())
+        RequestTestTemplate.request(container.home(), type)
             .method(Request.POST)
             .header(
                 HttpHeaders.CONTENT_TYPE,
@@ -408,13 +416,17 @@ public final class RequestTest {
     /**
      * BaseRequest can assert HTTP status code value.
      * @throws Exception If something goes wrong inside.
+     * @param type Request type
      */
-    @Test
-    public void assertsHttpStatus() throws Exception {
+    @Values
+    @ParameterizedTest
+    void assertsHttpStatus(
+        final Class<? extends Request> type
+    ) throws Exception {
         final MkContainer container = new MkGrizzlyContainer().next(
             new MkAnswer.Simple(HttpURLConnection.HTTP_NOT_FOUND, "")
         ).start();
-        this.request(container.home())
+        RequestTestTemplate.request(container.home(), type)
             .method(Request.GET)
             .fetch().as(RestResponse.class)
             .assertStatus(HttpURLConnection.HTTP_NOT_FOUND)
@@ -427,13 +439,17 @@ public final class RequestTest {
     /**
      * BaseRequest can assert response body.
      * @throws Exception If something goes wrong inside.
+     * @param type Request type
      */
-    @Test
-    public void assertsHttpResponseBody() throws Exception {
+    @Values
+    @ParameterizedTest
+    void assertsHttpResponseBody(
+        final Class<? extends Request> type
+    ) throws Exception {
         final MkContainer container = new MkGrizzlyContainer().next(
             new MkAnswer.Simple("some text \u20ac")
         ).start();
-        this.request(container.home())
+        RequestTestTemplate.request(container.home(), type)
             .method(Request.GET)
             .fetch().as(RestResponse.class)
             .assertBody(Matchers.containsString("text \u20ac"))
@@ -444,15 +460,19 @@ public final class RequestTest {
     /**
      * BaseRequest can assert HTTP headers in response.
      * @throws Exception If something goes wrong inside.
+     * @param type Request type
      */
-    @Test
-    public void assertsHttpHeaders() throws Exception {
+    @Values
+    @ParameterizedTest
+    void assertsHttpHeaders(
+        final Class<? extends Request> type
+    ) throws Exception {
         final MkContainer container = new MkGrizzlyContainer().next(
             new MkAnswer.Simple("").withHeader(
                 HttpHeaders.CONTENT_TYPE, MediaType.TEXT_PLAIN
             )
         ).start();
-        this.request(container.home())
+        RequestTestTemplate.request(container.home(), type)
             .method(Request.GET)
             .fetch().as(RestResponse.class)
             .assertStatus(HttpURLConnection.HTTP_OK)
@@ -462,7 +482,7 @@ public final class RequestTest {
             )
             .assertHeader(
                 HttpHeaders.CONTENT_TYPE,
-                Matchers.<String>everyItem(
+                Matchers.everyItem(
                     Matchers.containsString(MediaType.TEXT_PLAIN)
                 )
             );
@@ -472,13 +492,17 @@ public final class RequestTest {
     /**
      * BaseRequest can assert response body content with XPath query.
      * @throws Exception If something goes wrong inside.
+     * @param type Request type
      */
-    @Test
-    public void assertsResponseBodyWithXpathQuery() throws Exception {
+    @Values
+    @ParameterizedTest
+    void assertsResponseBodyWithXpathQuery(
+        final Class<? extends Request> type
+    ) throws Exception {
         final MkContainer container = new MkGrizzlyContainer().next(
             new MkAnswer.Simple("<root><a>\u0443\u0440\u0430!</a></root>")
         ).start();
-        this.request(container.home())
+        RequestTestTemplate.request(container.home(), type)
             .method(Request.GET)
             .fetch().as(RestResponse.class)
             .assertStatus(HttpURLConnection.HTTP_OK)
@@ -491,8 +515,9 @@ public final class RequestTest {
      * BaseRequest can work with URL returned by ContainerMocker.
      * @throws Exception If something goes wrong inside
      */
-    @Test
-    public void mockedUrlIsInCorrectFormat() throws Exception {
+    @Values
+    @ParameterizedTest
+    void mockedUrlIsInCorrectFormat() throws Exception {
         final MkContainer container = new MkGrizzlyContainer().next(
             new MkAnswer.Simple("")
         ).start();
@@ -507,15 +532,19 @@ public final class RequestTest {
     /**
      * BaseRequest can handle unicode in plain text response.
      * @throws Exception If something goes wrong inside
+     * @param type Request type
      */
-    @Test
-    public void acceptsUnicodeInPlainText() throws Exception {
+    @Values
+    @ParameterizedTest
+    void acceptsUnicodeInPlainText(
+        final Class<? extends Request> type
+    ) throws Exception {
         final MkContainer container = new MkGrizzlyContainer().next(
             new MkAnswer.Simple("\u0443\u0440\u0430!").withHeader(
                 HttpHeaders.CONTENT_TYPE, "text/plain;charset=utf-8"
             )
         ).start();
-        this.request(container.home())
+        RequestTestTemplate.request(container.home(), type)
             .method(Request.GET)
             .uri().path("/abcdefff").back()
             .fetch().as(RestResponse.class)
@@ -527,15 +556,19 @@ public final class RequestTest {
     /**
      * BaseRequest can handle unicode in XML response.
      * @throws Exception If something goes wrong inside
+     * @param type Request type
      */
-    @Test
-    public void acceptsUnicodeInXml() throws Exception {
+    @Values
+    @ParameterizedTest
+    void acceptsUnicodeInXml(
+        final Class<? extends Request> type
+    ) throws Exception {
         final MkContainer container = new MkGrizzlyContainer().next(
             new MkAnswer.Simple("<text>\u0443\u0440\u0430!</text>").withHeader(
                 HttpHeaders.CONTENT_TYPE, "text/xml;charset=utf-8"
             )
         ).start();
-        this.request(container.home())
+        RequestTestTemplate.request(container.home(), type)
             .method(Request.GET)
             .uri().path("/barbar").back()
             .fetch().as(XmlResponse.class)
@@ -546,15 +579,19 @@ public final class RequestTest {
     /**
      * BaseRequest can use basic authentication scheme.
      * @throws Exception If something goes wrong inside
+     * @param type Request type
      */
-    @Test
-    public void sendsBasicAuthenticationHeader() throws Exception {
+    @ParameterizedTest
+    @Values
+    void sendsBasicAuthenticationHeader(
+        final Class<? extends Request> type
+    ) throws Exception {
         final MkContainer container = new MkGrizzlyContainer().next(
             new MkAnswer.Simple("")
         ).start();
         final URI uri = UriBuilder.fromUri(container.home())
             .userInfo("user:\u20ac\u20ac").build();
-        this.request(uri)
+        RequestTestTemplate.request(uri, type)
             .through(BasicAuthWire.class)
             .method(Request.GET)
             .uri().path("/abcde").back()
@@ -574,15 +611,19 @@ public final class RequestTest {
     /**
      * BaseRequest can fetch GET request twice.
      * @throws Exception If something goes wrong inside
+     * @param type Request type
      */
-    @Test
-    public void sendsIdenticalHttpRequestTwice() throws Exception {
+    @Values
+    @ParameterizedTest
+    void sendsIdenticalHttpRequestTwice(
+        final Class<? extends Request> type
+    ) throws Exception {
         final MkContainer container = new MkGrizzlyContainer()
             .next(new MkAnswer.Simple(""))
             .next(new MkAnswer.Simple(""))
             .next(new MkAnswer.Simple(""))
             .start();
-        final Request req = this.request(container.home())
+        final Request req = RequestTestTemplate.request(container.home(), type)
             .uri().path("/foo-X").back()
             .header(HttpHeaders.CONTENT_TYPE, MediaType.TEXT_XML);
         req.method(Request.GET).fetch().as(RestResponse.class)
@@ -602,15 +643,19 @@ public final class RequestTest {
      * BaseRequest can return redirect status (without redirecting).
      * @throws Exception If something goes wrong inside
      * @since 0.10
+     * @param type Request type
      */
-    @Test
-    public void doesntRedirectWithoutRequest() throws Exception {
+    @Values
+    @ParameterizedTest
+    void doesntRedirectWithoutRequest(
+        final Class<? extends Request> type
+    ) throws Exception {
         final MkContainer container = new MkGrizzlyContainer().next(
             new MkAnswer.Simple("")
                 .withStatus(HttpURLConnection.HTTP_SEE_OTHER)
                 .withHeader(HttpHeaders.LOCATION, "http://www.google.com")
         ).start();
-        this.request(container.home())
+        RequestTestTemplate.request(container.home(), type)
             .fetch().as(RestResponse.class)
             .assertStatus(HttpURLConnection.HTTP_SEE_OTHER);
         container.stop();
@@ -619,16 +664,20 @@ public final class RequestTest {
     /**
      * BaseRequest can fetch body with HTTP POST request.
      * @throws Exception If something goes wrong inside
+     * @param type Request type
      */
-    @Test
-    public void sendsRequestBodyAsInputStream() throws Exception {
+    @Values
+    @ParameterizedTest
+    void sendsRequestBodyAsInputStream(
+        final Class<? extends Request> type
+    ) throws Exception {
         final MkContainer container = new MkGrizzlyContainer().next(
             new MkAnswer.Simple("")
         ).start();
         final String value = "\u20ac body as stream \"&^%*;'\"";
         final ByteArrayInputStream stream =
             new ByteArrayInputStream(value.getBytes(StandardCharsets.UTF_8));
-        this.request(container.home())
+        RequestTestTemplate.request(container.home(), type)
             .method(Request.POST)
             .header(
                 HttpHeaders.CONTENT_TYPE,
@@ -647,26 +696,32 @@ public final class RequestTest {
     /**
      * BaseRequest.fetch(InputStream) throws an exception if the body has been
      * previously set.
-     * @throws Exception If something goes wrong inside
+     * @param type Request type
      */
-    @Test(expected = IllegalStateException.class)
-    public void fetchThrowsExceptionWhenBodyIsNotEmpty() throws Exception {
-        this.request(new URI("http://localhost:78787"))
-            .method(Request.GET)
-            .body().set("already set").back()
-            .fetch(
-                new ByteArrayInputStream("ba".getBytes(StandardCharsets.UTF_8))
-            );
-    }
-
-    /**
-     * Make a request.
-     * @param uri URI to start with
-     * @return Request
-     * @throws Exception If fails
-     */
-    private Request request(final URI uri) throws Exception {
-        return this.type.getDeclaredConstructor(URI.class).newInstance(uri);
+    @Values
+    @ParameterizedTest
+    void fetchThrowsExceptionWhenBodyIsNotEmpty(
+        final Class<? extends Request> type
+    ) {
+        Assertions.assertThrows(
+            IllegalStateException.class,
+            new Executable() {
+                @Override
+                public void execute() throws Throwable {
+                    RequestTestTemplate.request(
+                        new URI("http://localhost:78787"),
+                        type
+                    )
+                        .method(Request.GET)
+                        .body().set("already set").back()
+                        .fetch(
+                            new ByteArrayInputStream(
+                                "ba".getBytes(StandardCharsets.UTF_8)
+                            )
+                        );
+                }
+            }
+        );
     }
 
     /**
