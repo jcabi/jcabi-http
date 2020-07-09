@@ -170,6 +170,10 @@ public final class MkGrizzlyContainer implements MkContainer {
      * Reserve port.
      * @return Reserved TCP port
      * @throws IOException If fails
+     * @todo #126:30m Grizzly Server has native mechanism for port reservation.
+     *  See https://github.com/eclipse-ee4j/grizzly/issues/1001.
+     *  Use it and remove this method, field for port probably can be removed as
+     *  well. This should eventually close jcabi-http#116.
      */
     @RetryOnFailure
     private static int reserve() throws IOException {
