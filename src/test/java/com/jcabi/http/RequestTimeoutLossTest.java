@@ -30,22 +30,18 @@
 
 package com.jcabi.http;
 
-import com.google.common.base.Supplier;
-import com.jcabi.http.request.ApacheRequest;
 import com.jcabi.http.request.BaseRequest;
-import com.jcabi.http.request.JdkRequest;
 import java.io.IOException;
 import java.io.InputStream;
 import java.net.URI;
-import java.util.Arrays;
 import java.util.Collection;
 import java.util.Map;
 import java.util.concurrent.Callable;
+import java.util.function.Supplier;
 import org.hamcrest.MatcherAssert;
 import org.hamcrest.Matchers;
-import org.junit.Test;
-import org.junit.runner.RunWith;
-import org.junit.runners.Parameterized;
+import org.junit.jupiter.api.Test;
+import org.junit.jupiter.params.ParameterizedTest;
 import org.mockito.ArgumentCaptor;
 import org.mockito.ArgumentMatchers;
 import org.mockito.Mockito;
@@ -55,8 +51,7 @@ import org.mockito.Mockito;
  * @since 1.17.3
  */
 @SuppressWarnings("PMD.TooManyMethods")
-@RunWith(Parameterized.class)
-public final class RequestTimeoutLossTest {
+public final class RequestTimeoutLossTest extends RequestTestTemplate {
     /**
      * Placeholder URL used for testing purposes only.
      */
@@ -78,43 +73,22 @@ public final class RequestTimeoutLossTest {
     private static final int READ_TIMEOUT = 2345;
 
     /**
-     * Type of request.
-     */
-    private final transient Class<? extends Request> type;
-
-    /**
-     * Public ctor.
-     * @param req Request type
-     */
-    public RequestTimeoutLossTest(final Class<? extends Request> req) {
-        this.type = req;
-    }
-
-    /**
-     * Parameters.
-     * @return Array of args
-     */
-    @Parameterized.Parameters
-    public static Collection<Object[]> primeNumbers() {
-        return Arrays.asList(
-            new Object[]{ApacheRequest.class},
-            new Object[]{JdkRequest.class}
-        );
-    }
-
-    /**
      * The connect and read timeouts are properly set no matter in which order
      * <code>Request.timeout</code> is called.
      *
      * @throws Exception If something goes wrong inside
+     * @param type Type of Request
      */
-    @Test
-    public void testTimeoutOrderDoesntMatterBeforeBody()
+    @ParameterizedTest
+    @Values
+    void testTimeoutOrderDoesntMatterBeforeBody(
+        final Class<? extends Request> type
+    )
         throws Exception {
         final Callable<Response> execution = new Callable<Response>() {
             @Override
             public Response call() throws Exception {
-                return RequestTimeoutLossTest.this.request()
+                return RequestTimeoutLossTest.request(type)
                     .through(MockWire.class)
                     .method(Request.GET)
                     .timeout(
@@ -134,14 +108,18 @@ public final class RequestTimeoutLossTest {
      * <code>Request.timeout</code> is called.
      *
      * @throws Exception If something goes wrong inside
+     * @param type Type of Request
      */
-    @Test
-    public void testTimeoutOrderDoesntMatterBeforeFetch()
+    @ParameterizedTest
+    @Values
+    void testTimeoutOrderDoesntMatterBeforeFetch(
+        final Class<? extends Request> type
+    )
         throws Exception {
         final Callable<Response> execution = new Callable<Response>() {
             @Override
             public Response call() throws Exception {
-                return RequestTimeoutLossTest.this.request()
+                return RequestTimeoutLossTest.request(type)
                     .through(MockWire.class)
                     .method(Request.GET)
                     .timeout(
@@ -159,14 +137,18 @@ public final class RequestTimeoutLossTest {
      * <code>Request.timeout</code> is called.
      *
      * @throws Exception If something goes wrong inside
+     * @param type Type of Request
      */
-    @Test
-    public void testTimeoutOrderDoesntMatterBeforeHeader()
+    @ParameterizedTest
+    @Values
+    void testTimeoutOrderDoesntMatterBeforeHeader(
+        final Class<? extends Request> type
+    )
         throws Exception {
         final Callable<Response> execution = new Callable<Response>() {
             @Override
             public Response call() throws Exception {
-                return RequestTimeoutLossTest.this.request()
+                return RequestTimeoutLossTest.request(type)
                     .through(MockWire.class)
                     .method(Request.GET)
                     .timeout(
@@ -188,14 +170,18 @@ public final class RequestTimeoutLossTest {
      * <code>Request.timeout</code> is called.
      *
      * @throws Exception If something goes wrong inside
+     * @param type Type of Request
      */
-    @Test
-    public void testTimeoutOrderDoesntMatterBeforeMethod()
+    @ParameterizedTest
+    @Values
+    void testTimeoutOrderDoesntMatterBeforeMethod(
+        final Class<? extends Request> type
+    )
         throws Exception {
         final Callable<Response> execution = new Callable<Response>() {
             @Override
             public Response call() throws Exception {
-                return RequestTimeoutLossTest.this.request()
+                return RequestTimeoutLossTest.request(type)
                     .through(MockWire.class)
                     .timeout(
                         RequestTimeoutLossTest.CONNECT_TIMEOUT,
@@ -213,14 +199,18 @@ public final class RequestTimeoutLossTest {
      * <code>Request.timeout</code> is called.
      *
      * @throws Exception If something goes wrong inside
+     * @param type Type of Request
      */
-    @Test
-    public void testTimeoutOrderDoesntMatterBeforeMultipartBody()
+    @ParameterizedTest
+    @Values
+    void testTimeoutOrderDoesntMatterBeforeMultipartBody(
+        final Class<? extends Request> type
+    )
         throws Exception {
         final Callable<Response> execution = new Callable<Response>() {
             @Override
             public Response call() throws Exception {
-                return RequestTimeoutLossTest.this.request()
+                return RequestTimeoutLossTest.request(type)
                     .through(MockWire.class)
                     .method(Request.GET)
                     .timeout(
@@ -240,14 +230,18 @@ public final class RequestTimeoutLossTest {
      * <code>Request.timeout</code> is called.
      *
      * @throws Exception If something goes wrong inside
+     * @param type Type of Request
      */
-    @Test
-    public void testTimeoutOrderDoesntMatterBeforeReset()
+    @ParameterizedTest
+    @Values
+    void testTimeoutOrderDoesntMatterBeforeReset(
+        final Class<? extends Request> type
+    )
         throws Exception {
         final Callable<Response> execution = new Callable<Response>() {
             @Override
             public Response call() throws Exception {
-                return RequestTimeoutLossTest.this.request()
+                return RequestTimeoutLossTest.request(type)
                     .through(MockWire.class)
                     .method(Request.GET)
                     .timeout(
@@ -266,15 +260,19 @@ public final class RequestTimeoutLossTest {
      * <code>Request.timeout</code> is called.
      *
      * @throws Exception If something goes wrong inside
+     * @param type Type of Request
      */
-    @Test
-    public void testTimeoutOrderDoesntMatterBeforeUriBack()
+    @ParameterizedTest
+    @Values
+    void testTimeoutOrderDoesntMatterBeforeUriBack(
+        final Class<? extends Request> type
+    )
         throws Exception {
         this.testTimeoutOrderDoesntMatter(
             new Callable<Response>() {
                 @Override
                 public Response call() throws Exception {
-                    return RequestTimeoutLossTest.this.request()
+                    return RequestTimeoutLossTest.request(type)
                         .through(MockWire.class)
                         .method(Request.GET)
                         .timeout(
@@ -296,7 +294,7 @@ public final class RequestTimeoutLossTest {
      * @throws IOException On error
      */
     @Test
-    public void passesThroughWire() throws IOException {
+    void passesThroughWire() throws IOException {
         final Wire original = Mockito.mock(Wire.class);
         final Wire wire = Mockito.mock(Wire.class);
         final Response response = Mockito.mock(Response.class);
@@ -391,23 +389,16 @@ public final class RequestTimeoutLossTest {
     }
 
     /**
-     * Make a request.
-     * @param uri URI to start with
-     * @return Request
-     * @throws Exception If fails
-     */
-    private Request request(final URI uri) throws Exception {
-        return this.type.getDeclaredConstructor(URI.class).newInstance(uri);
-    }
-
-    /**
      * Make a request with default url.
+     * @param type Type of Request
      * @return Request
      * @throws Exception If fails
      */
-    private Request request() throws Exception {
-        return this.request(
-            new URI(RequestTimeoutLossTest.LOCALHOST_URL)
+    private static Request request(final Class<? extends Request> type)
+        throws Exception {
+        return RequestTestTemplate.request(
+            new URI(RequestTimeoutLossTest.LOCALHOST_URL),
+            type
         );
     }
 
