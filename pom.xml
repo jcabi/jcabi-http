@@ -147,16 +147,6 @@ OF THE POSSIBILITY OF SUCH DAMAGE.
       <optional>true</optional>
     </dependency>
     <dependency>
-      <!--
-      @todo #199:30m Migrate Junit 5 tests dependent on ExpectedException to
-       Junit 5. After all tests are run by Junit 5 remove this dependency.
-      -->
-      <groupId>org.junit.vintage</groupId>
-      <artifactId>junit-vintage-engine</artifactId>
-      <version>${junit-platform.version}</version>
-      <scope>test</scope>
-    </dependency>
-    <dependency>
       <groupId>org.junit.jupiter</groupId>
       <artifactId>junit-jupiter-params</artifactId>
       <version>${junit-platform.version}</version>
