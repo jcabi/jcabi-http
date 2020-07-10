@@ -30,14 +30,11 @@
 package com.jcabi.http.mock;
 
 import com.jcabi.aspects.Loggable;
-import com.jcabi.aspects.RetryOnFailure;
 import com.jcabi.log.Logger;
 import java.io.IOException;
-import java.net.ServerSocket;
 import java.net.URI;
 import java.util.Collection;
 import lombok.EqualsAndHashCode;
-import org.glassfish.grizzly.PortRange;
 import org.glassfish.grizzly.http.server.HttpServer;
 import org.glassfish.grizzly.http.server.NetworkListener;
 import org.hamcrest.Matcher;
@@ -114,7 +111,7 @@ public final class MkGrizzlyContainer implements MkContainer {
 
     @Override
     public MkContainer start() throws IOException {
-        return this.start(MkGrizzlyContainer.reserve());
+        return this.start(0);
     }
 
     @Override
@@ -127,21 +124,20 @@ public final class MkGrizzlyContainer implements MkContainer {
                 )
             );
         }
-        this.port = prt;
         this.gws = new HttpServer();
-        this.gws.addListener(
-            new NetworkListener(
-                "grizzly",
-                NetworkListener.DEFAULT_NETWORK_HOST,
-                new PortRange(this.port)
-            )
+        final NetworkListener listener = new NetworkListener(
+            "grizzly",
+            NetworkListener.DEFAULT_NETWORK_HOST,
+            prt
         );
+        this.gws.addListener(listener);
         this.gws.getServerConfiguration().addHttpHandler(
             this.adapter,
             "/"
         );
         this.gws.start();
-        Logger.info(this, "started on port #%s", prt);
+        this.port = listener.getPort();
+        Logger.info(this, "started on port #%s", this.port);
         return this;
     }
 
@@ -166,21 +162,4 @@ public final class MkGrizzlyContainer implements MkContainer {
         this.stop();
     }
 
-    /**
-     * Reserve port.
-     * @return Reserved TCP port
-     * @throws IOException If fails
-     * @todo #126:30m Grizzly Server has native mechanism for port reservation.
-     *  See https://github.com/eclipse-ee4j/grizzly/issues/1001.
-     *  Use it and remove this method, field for port probably can be removed as
-     *  well. This should eventually close jcabi-http#116.
-     */
-    @RetryOnFailure
-    private static int reserve() throws IOException {
-        final int reserved;
-        try (ServerSocket socket = new ServerSocket(0)) {
-            reserved = socket.getLocalPort();
-        }
-        return reserved;
-    }
 }
