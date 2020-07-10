@@ -35,7 +35,7 @@ import com.jcabi.http.request.FakeRequest;
 import java.io.IOException;
 import org.hamcrest.MatcherAssert;
 import org.hamcrest.Matchers;
-import org.junit.Assert;
+import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 
 /**
@@ -43,16 +43,16 @@ import org.junit.jupiter.api.Test;
  *
  * @since 1.17
  */
-public final class JacksonResponseTest {
+final class JacksonResponseTest {
     /**
-     * Assert.fail() message constant used with #readArray() calls.
+     * Assertions.fail() message constant used with #readArray() calls.
      */
     @SuppressWarnings("PMD.LongVariable")
     private static final String NO_READ_ARRAY_FAILURE =
         "readArray() should have thrown IOException.";
 
     /**
-     * Assert.fail() message constant used with #readObject calls.
+     * Assertions.fail() message constant used with #readObject calls.
      */
     @SuppressWarnings("PMD.LongVariable")
     private static final String NO_READ_OBJECT_FAILURE =
@@ -108,7 +108,7 @@ public final class JacksonResponseTest {
             .withBody(body).fetch().as(JacksonResponse.class);
         try {
             response.json().read();
-            Assert.fail("read() should have thrown IOException.");
+            Assertions.fail("read() should have thrown IOException.");
         } catch (final IOException ex) {
             MatcherAssert.assertThat(
                 ex.getLocalizedMessage(), Matchers.containsString(err)
@@ -130,7 +130,7 @@ public final class JacksonResponseTest {
             .fetch().as(JacksonResponse.class);
         try {
             response.json().readArray();
-            Assert.fail(JacksonResponseTest.NO_READ_ARRAY_FAILURE);
+            Assertions.fail(JacksonResponseTest.NO_READ_ARRAY_FAILURE);
         } catch (final IOException ex) {
             MatcherAssert.assertThat(
                 ex.getLocalizedMessage(),
@@ -153,7 +153,7 @@ public final class JacksonResponseTest {
             .fetch().as(JacksonResponse.class);
         try {
             response.json().readArray();
-            Assert.fail(JacksonResponseTest.NO_READ_ARRAY_FAILURE);
+            Assertions.fail(JacksonResponseTest.NO_READ_ARRAY_FAILURE);
         } catch (final IOException ex) {
             MatcherAssert.assertThat(
                 ex.getLocalizedMessage(),
@@ -196,7 +196,7 @@ public final class JacksonResponseTest {
             .fetch().as(JacksonResponse.class);
         try {
             response.json().readObject();
-            Assert.fail(JacksonResponseTest.NO_READ_OBJECT_FAILURE);
+            Assertions.fail(JacksonResponseTest.NO_READ_OBJECT_FAILURE);
         } catch (final IOException ex) {
             MatcherAssert.assertThat(
                 ex.getLocalizedMessage(),
@@ -219,7 +219,7 @@ public final class JacksonResponseTest {
             .withBody(body).fetch().as(JacksonResponse.class);
         try {
             response.json().readObject();
-            Assert.fail(JacksonResponseTest.NO_READ_OBJECT_FAILURE);
+            Assertions.fail(JacksonResponseTest.NO_READ_OBJECT_FAILURE);
         } catch (final IOException ex) {
             MatcherAssert.assertThat(
                 ex.getLocalizedMessage(),
