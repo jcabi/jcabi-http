@@ -34,12 +34,15 @@ import com.jcabi.http.request.FakeRequest;
 import javax.json.stream.JsonParsingException;
 import org.hamcrest.MatcherAssert;
 import org.hamcrest.Matchers;
-import org.junit.Assert;
+import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 
 /**
  * Test case for {@link JsonResponse}.
  * @since 1.1
+ * @todo #206:30m Use assertThrows instead of try/catch/match.
+ *  Some of the tests use try/catch in orted to test caught Exception.
+ *  Replace them with assertThrows.
  */
 public final class JsonResponseTest {
 
@@ -90,7 +93,9 @@ public final class JsonResponseTest {
         final Response resp = new FakeRequest().withBody(body).fetch();
         try {
             new JsonResponse(resp).json().readObject();
-            Assert.fail("readObject() should have thrown JsonParsingException");
+            Assertions.fail(
+                "readObject() should have thrown JsonParsingException"
+            );
         } catch (final JsonParsingException ex) {
             MatcherAssert.assertThat(
                 ex.getLocalizedMessage(),
@@ -110,7 +115,9 @@ public final class JsonResponseTest {
         final Response resp = new FakeRequest().withBody(body).fetch();
         try {
             new JsonResponse(resp).json().readArray();
-            Assert.fail("readArray() should have thrown JsonParsingException");
+            Assertions.fail(
+                "readArray() should have thrown JsonParsingException"
+            );
         } catch (final JsonParsingException ex) {
             MatcherAssert.assertThat(
                 ex.getLocalizedMessage(),
@@ -130,7 +137,7 @@ public final class JsonResponseTest {
         final Response resp = new FakeRequest().withBody(body).fetch();
         try {
             new JsonResponse(resp).json().read();
-            Assert.fail(
+            Assertions.fail(
                 "readStructure() should have thrown JsonParsingException"
             );
         } catch (final JsonParsingException ex) {
