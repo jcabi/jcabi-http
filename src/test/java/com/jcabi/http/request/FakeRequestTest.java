@@ -39,21 +39,22 @@ import javax.ws.rs.core.HttpHeaders;
 import javax.ws.rs.core.MediaType;
 import org.hamcrest.MatcherAssert;
 import org.hamcrest.Matchers;
-import org.junit.Ignore;
-import org.junit.Test;
+import org.junit.jupiter.api.Assertions;
+import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.function.Executable;
 
 /**
  * Test case for {@link FakeRequest}.
  * @since 1.0
  */
-public final class FakeRequestTest {
+final class FakeRequestTest {
 
     /**
      * FakeRequest can fetch a fake response.
      * @throws Exception If something goes wrong inside
      */
     @Test
-    public void sendsHttpRequestAndProcessesHttpResponse() throws Exception {
+    void sendsHttpRequestAndProcessesHttpResponse() throws Exception {
         this.generateMainRequest()
             .withBody("how are you?")
             .uri().path("/helloall").back()
@@ -69,7 +70,7 @@ public final class FakeRequestTest {
      * @throws Exception If something goes wrong inside.
      */
     @Test
-    public void sendsHttpRequestAndProcessesHttpBinaryResponse()
+    void sendsHttpRequestAndProcessesHttpBinaryResponse()
         throws Exception {
         final byte[] content = "Binary body content".getBytes();
         this.generateMainRequest()
@@ -87,7 +88,7 @@ public final class FakeRequestTest {
      * @throws Exception If something goes wrong inside
      */
     @Test
-    public void changesUri() throws Exception {
+    void changesUri() throws Exception {
         MatcherAssert.assertThat(
             new FakeRequest()
                 .uri().set(new URI("http://facebook.com")).back()
@@ -101,7 +102,7 @@ public final class FakeRequestTest {
      * @throws Exception If something goes wrong inside
      */
     @Test
-    public void changesUriInResponse() throws Exception {
+    void changesUriInResponse() throws Exception {
         MatcherAssert.assertThat(
             new FakeRequest()
                 .uri().set(new URI("http://google.com")).back()
@@ -114,16 +115,25 @@ public final class FakeRequestTest {
     /**
      * FakeRequest.fetch(InputStream) throws an exception if a non-empty body
      * has been previously set.
-     * @throws Exception If something goes wrong inside
      */
-    @Test(expected = IllegalStateException.class)
-    public void fetchThrowsExceptionWhenBodyIsNotEmpty() throws Exception {
-        new FakeRequest()
-            .withStatus(HttpURLConnection.HTTP_OK)
-            .withBody("blah")
-            .fetch(
-                new ByteArrayInputStream("foo".getBytes(StandardCharsets.UTF_8))
-            );
+    @Test
+    void fetchThrowsExceptionWhenBodyIsNotEmpty() {
+        Assertions.assertThrows(
+            IllegalStateException.class,
+            new Executable() {
+                @Override
+                public void execute() throws Throwable {
+                    new FakeRequest()
+                        .withStatus(HttpURLConnection.HTTP_OK)
+                        .withBody("blah")
+                        .fetch(
+                            new ByteArrayInputStream(
+                                "foo".getBytes(StandardCharsets.UTF_8)
+                            )
+                        );
+                }
+            }
+        );
     }
 
     /**
@@ -132,7 +142,7 @@ public final class FakeRequestTest {
      * @link https://github.com/jcabi/jcabi-http/issues/47
      */
     @Test
-    public void fakeRequestReturnsResponseBody() throws Exception {
+    void fakeRequestReturnsResponseBody() throws Exception {
         final String response = "the response body";
         final String request = "the request body";
         new FakeRequest().withBody(response)
@@ -149,10 +159,9 @@ public final class FakeRequestTest {
 
     /**
      * FakeRequest can identify itself uniquely.
-     * @throws Exception If something goes wrong inside.
      */
     @Test
-    public void identifiesUniquely() throws Exception {
+    void identifiesUniquely() {
         MatcherAssert.assertThat(
             new FakeRequest().header("header-1", "value-1"),
             Matchers.not(
@@ -170,10 +179,8 @@ public final class FakeRequestTest {
     /**
      * Helper method that generates a FakeRequest.
      * @return An instance of FakeRequest.
-     * @throws Exception If something goes wrong inside.
      */
-    @Ignore
-    private FakeRequest generateMainRequest() throws Exception {
+    private FakeRequest generateMainRequest() {
         return new FakeRequest()
             .withStatus(HttpURLConnection.HTTP_OK)
             .withReason("OK")
