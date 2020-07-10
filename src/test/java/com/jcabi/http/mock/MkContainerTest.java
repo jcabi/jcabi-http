@@ -40,20 +40,22 @@ import javax.ws.rs.core.MediaType;
 import org.hamcrest.MatcherAssert;
 import org.hamcrest.Matchers;
 import org.hamcrest.core.IsAnything;
-import org.junit.Test;
+import org.junit.jupiter.api.Assertions;
+import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.function.Executable;
 
 /**
  * Test case for {@link MkContainer}.
  * @since 1.0
  */
-public final class MkContainerTest {
+final class MkContainerTest {
 
     /**
      * MkContainer can return required answers.
      * @throws Exception If something goes wrong inside
      */
     @Test
-    public void worksAsServletContainer() throws Exception {
+    void worksAsServletContainer() throws Exception {
         try (MkContainer container = new MkGrizzlyContainer()) {
             container.next(
                 new MkAnswer.Simple(HttpURLConnection.HTTP_OK, "works fine!")
@@ -75,7 +77,7 @@ public final class MkContainerTest {
      * @throws Exception If something goes wrong inside
      */
     @Test
-    public void understandsDuplicateHeaders() throws Exception {
+    void understandsDuplicateHeaders() throws Exception {
         try (MkContainer container = new MkGrizzlyContainer()) {
             container.next(new MkAnswer.Simple("")).start();
             final String header = "X-Something";
@@ -98,7 +100,7 @@ public final class MkContainerTest {
      * @throws Exception If something goes wrong inside.
      */
     @Test
-    public void answersConditionally() throws Exception {
+    void answersConditionally() throws Exception {
         final String match = "matching";
         final String mismatch = "not matching";
         try (MkContainer container = new MkGrizzlyContainer()) {
@@ -125,7 +127,7 @@ public final class MkContainerTest {
      * @throws Exception If something goes wrong inside.
      */
     @Test
-    public void answersBinary() throws Exception {
+    void answersBinary() throws Exception {
         final byte[] body = {0x00, 0x01, 0x45, 0x21, (byte) 0xFF};
         try (MkContainer container = new MkGrizzlyContainer()) {
             container.next(
@@ -142,21 +144,31 @@ public final class MkContainerTest {
 
     /**
      * MkContainer returns HTTP 500 if no answers match.
-     * @throws Exception If something goes wrong inside
      */
-    @Test(expected = NoSuchElementException.class)
-    public void returnsErrorIfNoMatches() throws Exception {
-        try (MkContainer container = new MkGrizzlyContainer()) {
-            container.next(
-                new MkAnswer.Simple("not supposed to match"),
-                Matchers.not(new IsAnything<MkQuery>())
-            ).start();
-            new JdkRequest(container.home())
-                .through(VerboseWire.class)
-                .fetch().as(RestResponse.class)
-                .assertStatus(HttpURLConnection.HTTP_INTERNAL_ERROR);
-            container.take();
-        }
+    @Test
+    void returnsErrorIfNoMatches() {
+        Assertions.assertThrows(
+            NoSuchElementException.class,
+            new Executable() {
+                @Override
+                public void execute() throws Throwable {
+                    try (MkContainer container = new MkGrizzlyContainer()) {
+                        container.next(
+                            new MkAnswer.Simple("not supposed to match"),
+                            Matchers.not(new IsAnything<MkQuery>())
+                        ).start();
+                        new JdkRequest(container.home())
+                            .through(VerboseWire.class)
+                            .fetch()
+                            .as(RestResponse.class)
+                            .assertStatus(
+                                HttpURLConnection.HTTP_INTERNAL_ERROR
+                            );
+                        container.take();
+                    }
+                }
+            }
+        );
     }
 
     /**
@@ -164,7 +176,7 @@ public final class MkContainerTest {
      * @throws Exception If something goes wrong inside
      */
     @Test
-    public void canAnswerMultipleTimes() throws Exception {
+    void canAnswerMultipleTimes() throws Exception {
         final String body = "multiple";
         final int times = 5;
         try (MkContainer container = new MkGrizzlyContainer()) {
@@ -189,7 +201,7 @@ public final class MkContainerTest {
      * @throws Exception If something goes wrong inside.
      */
     @Test
-    public void prioritizesMatchingAnswers() throws Exception {
+    void prioritizesMatchingAnswers() throws Exception {
         final String first = "first";
         final String second = "second";
         try (MkContainer container = new MkGrizzlyContainer()) {
@@ -215,7 +227,7 @@ public final class MkContainerTest {
      * @throws Exception If something goes wrong inside
      */
     @Test
-    public void takesMatchingQuery() throws Exception {
+    void takesMatchingQuery() throws Exception {
         final String request = "reqBodyMatches";
         final String response = "respBodyMatches";
         try (MkContainer container = new MkGrizzlyContainer()) {
@@ -248,7 +260,7 @@ public final class MkContainerTest {
      */
     @Test
     @SuppressWarnings("unchecked")
-    public void takesAllMatchingQueries() throws Exception {
+    void takesAllMatchingQueries() throws Exception {
         final String match = "multipleRequestMatches";
         final String mismatch = "multipleRequestNotMatching";
         final String response = "multipleResponseMatches";
