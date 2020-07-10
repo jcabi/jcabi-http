@@ -36,37 +36,34 @@ import javax.ws.rs.core.HttpHeaders;
 import javax.ws.rs.core.MediaType;
 import org.hamcrest.MatcherAssert;
 import org.hamcrest.Matchers;
-import org.junit.Rule;
-import org.junit.Test;
-import org.junit.rules.ExpectedException;
+import org.junit.jupiter.api.Assertions;
+import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.function.Executable;
 import org.mockito.Mockito;
 
 /**
  * Test case for {@link BaseRequest}.
+ *
  * @since 1.0
  */
-public final class BaseRequestTest {
+final class BaseRequestTest {
 
     /**
-     * Expected exception.
-     * @checkstyle VisibilityModifier (3 lines)
+     * Property name of Exception.
      */
-    @Rule
-    public final transient ExpectedException thrown = ExpectedException.none();
+    private static final String MESSAGE = "message";
 
     /**
      * BaseRequest can build the right destination URI.
-     * @throws Exception If something goes wrong inside
      */
     @Test
-    public void buildsDestinationUri() throws Exception {
+    void buildsDestinationUri() {
         final Wire wire = Mockito.mock(Wire.class);
         MatcherAssert.assertThat(
             new BaseRequest(wire, "http://localhost:88/t/f")
                 .uri().path("/bar").queryParam("u1", "\u20ac")
                 .queryParams(new ArrayMap<String, String>().with("u2", ""))
-                .userInfo("hey:\u20ac")
-                .back().uri().get(),
+                .userInfo("hey:\u20ac").back().uri().get(),
             Matchers.hasToString(
                 "http://hey:%E2%82%AC@localhost:88/t/f/bar?u1=%E2%82%AC&u2="
             )
@@ -75,10 +72,9 @@ public final class BaseRequestTest {
 
     /**
      * BaseRequest can set body to JSON.
-     * @throws Exception If something goes wrong inside
      */
     @Test
-    public void printsJsonInBody() throws Exception {
+    void printsJsonInBody() {
         final Wire wire = Mockito.mock(Wire.class);
         MatcherAssert.assertThat(
             new BaseRequest(wire, "http://localhost:88/x").body().set(
@@ -90,10 +86,9 @@ public final class BaseRequestTest {
 
     /**
      * BaseRequest can include the port number.
-     * @throws Exception If something goes wrong inside
      */
     @Test
-    public void includesPort() throws Exception {
+    void includesPort() {
         final Wire wire = Mockito.mock(Wire.class);
         MatcherAssert.assertThat(
             // @checkstyle MagicNumber (2 lines)
@@ -105,10 +100,9 @@ public final class BaseRequestTest {
 
     /**
      * FakeRequest can identify itself uniquely.
-     * @throws Exception If something goes wrong inside.
      */
     @Test
-    public void identifiesUniquely() throws Exception {
+    void identifiesUniquely() {
         final Wire wire = Mockito.mock(Wire.class);
         MatcherAssert.assertThat(
             new BaseRequest(wire, "").header("header-1", "value-1"),
@@ -125,47 +119,64 @@ public final class BaseRequestTest {
     }
 
     /**
-     * Throws exception when using formParam on multipartbody without
+     * Throws exception when using formParam on multipart-body without
      * content-type defined.
-     * @throws Exception If something goes wrong inside.
      */
     @Test
-    public void exceptionWhenMissingContentType() throws Exception {
+    void exceptionWhenMissingContentType() {
         final Wire wire = Mockito.mock(Wire.class);
-        this.thrown.expect(IllegalStateException.class);
-        this.thrown.expectMessage(
-            BaseRequestTest.boundaryErrorMesg()
+        MatcherAssert.assertThat(
+            Assertions.assertThrows(
+                IllegalStateException.class,
+                new Executable() {
+                    @Override
+                    public void execute() throws Throwable {
+                        new BaseRequest(wire, "")
+                            .multipartBody()
+                            .formParam("a", "value")
+                            .back();
+                    }
+                }
+            ),
+            Matchers.hasProperty(
+                BaseRequestTest.MESSAGE,
+                Matchers.is(BaseRequestTest.boundaryErrorMesg())
+            )
         );
-        new BaseRequest(wire, "")
-            .multipartBody()
-            .formParam("a", "value")
-            .back();
     }
 
     /**
-     * Throws exception when using formParam on multipartbody without
-     * boundary provided in content-type defined.
-     * @throws Exception If something goes wrong inside.
+     * Throws exception when using formParam on multipartbody without boundary
+     * provided in content-type defined.
      */
     @Test
-    public void exceptionWhenMissingBoundary() throws Exception {
+    void exceptionWhenMissingBoundary() {
         final Wire wire = Mockito.mock(Wire.class);
-        this.thrown.expect(IllegalStateException.class);
-        this.thrown.expectMessage(
-            BaseRequestTest.boundaryErrorMesg()
-        );
-        new BaseRequest(wire, "")
-            .header(
-                HttpHeaders.CONTENT_TYPE,
-                MediaType.MULTIPART_FORM_DATA
+        MatcherAssert.assertThat(
+            Assertions.assertThrows(
+                IllegalStateException.class,
+                new Executable() {
+                    @Override
+                    public void execute() throws Throwable {
+                        new BaseRequest(wire, "")
+                            .header(
+                                HttpHeaders.CONTENT_TYPE,
+                                MediaType.MULTIPART_FORM_DATA
+                            )
+                            .multipartBody().formParam("b", "val").back();
+                    }
+                }
+            ),
+            Matchers.hasProperty(
+                BaseRequestTest.MESSAGE,
+                Matchers.is(BaseRequestTest.boundaryErrorMesg())
             )
-            .multipartBody()
-            .formParam("b", "val")
-            .back();
+        );
     }
 
     /**
      * Boundary error message.
+     *
      * @return Message error as String.
      */
     private static String boundaryErrorMesg() {
