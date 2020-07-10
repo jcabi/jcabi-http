@@ -37,7 +37,9 @@ import javax.ws.rs.core.HttpHeaders;
 import org.hamcrest.Matcher;
 import org.hamcrest.MatcherAssert;
 import org.hamcrest.Matchers;
-import org.junit.Test;
+import org.junit.jupiter.api.Assertions;
+import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.function.Executable;
 
 /**
  * Test case for {@link RestResponse}.
@@ -47,13 +49,22 @@ public final class RestResponseTest {
 
     /**
      * RestResponse can assert HTTP status.
-     * @throws Exception If something goes wrong inside
      */
-    @Test(expected = AssertionError.class)
-    public void assertsHttpStatusCode() throws Exception {
-        new RestResponse(
-            new FakeRequest().withStatus(HttpURLConnection.HTTP_OK).fetch()
-        ).assertStatus(HttpURLConnection.HTTP_NOT_FOUND);
+    @Test
+    void assertsHttpStatusCode() {
+        Assertions.assertThrows(
+            AssertionError.class,
+            new Executable() {
+                @Override
+                public void execute() throws Throwable {
+                    new RestResponse(
+                        new FakeRequest()
+                            .withStatus(HttpURLConnection.HTTP_OK)
+                            .fetch()
+                    ).assertStatus(HttpURLConnection.HTTP_NOT_FOUND);
+                }
+            }
+        );
     }
 
     /**
@@ -62,7 +73,7 @@ public final class RestResponseTest {
      */
     @Test
     @SuppressWarnings("unchecked")
-    public void assertsHttpHeaders() throws Exception {
+    void assertsHttpHeaders() throws Exception {
         final String name = "Abc";
         final String value = "t66";
         final Response rsp = new FakeRequest().withHeader(name, value).fetch();
@@ -84,7 +95,7 @@ public final class RestResponseTest {
      * @throws Exception If something goes wrong inside
      */
     @Test
-    public void retrievesCookieByName() throws Exception {
+    void retrievesCookieByName() throws Exception {
         final RestResponse response = new RestResponse(
             new FakeRequest()
                 .withBody("<hello/>")
@@ -108,7 +119,7 @@ public final class RestResponseTest {
      * @throws Exception If something goes wrong inside
      */
     @Test
-    public void jumpsToRelativeUrls() throws Exception {
+    void jumpsToRelativeUrls() throws Exception {
         MatcherAssert.assertThat(
             new RestResponse(
                 new FakeRequest()
