@@ -34,6 +34,7 @@ import com.jcabi.http.mock.MkAnswer;
 import com.jcabi.http.mock.MkContainer;
 import com.jcabi.http.mock.MkGrizzlyContainer;
 import com.jcabi.http.mock.MkQuery;
+import com.jcabi.http.mock.MkQueryMatchers;
 import com.jcabi.http.response.RestResponse;
 import com.jcabi.http.response.XmlResponse;
 import com.jcabi.http.wire.BasicAuthWire;
@@ -88,8 +89,8 @@ final class RequestTest extends RequestTestTemplate {
             .assertStatus(HttpURLConnection.HTTP_OK);
         final MkQuery query = container.take();
         MatcherAssert.assertThat(
-            query.uri(),
-            Matchers.hasToString(Matchers.containsString("helloall"))
+            query,
+            MkQueryMatchers.hasPath(Matchers.containsString("helloall"))
         );
         MatcherAssert.assertThat(
             query.method(),
@@ -634,8 +635,8 @@ final class RequestTest extends RequestTestTemplate {
             .assertStatus(HttpURLConnection.HTTP_OK);
         container.stop();
         MatcherAssert.assertThat(
-            container.take().uri().toString(),
-            Matchers.endsWith("foo-X")
+            container.take(),
+            MkQueryMatchers.hasPath(Matchers.endsWith("foo-X"))
         );
     }
 
