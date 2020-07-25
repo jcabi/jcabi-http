@@ -65,6 +65,9 @@ import lombok.ToString;
  *
  * @since 0.10
  * @see <a href="http://tools.ietf.org/html/rfc2617">RFC 2617 "HTTP Authentication: Basic and Digest Access Authentication"</a>
+ * @todo #97:30m Strip user info from URI after Auth header is added.
+ *  Consider adding warnings about the wire applied for Request with header, and
+ *  without user info.
  */
 @Immutable
 @ToString(of = "origin")
