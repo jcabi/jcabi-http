@@ -33,7 +33,7 @@ OF THE POSSIBILITY OF SUCH DAMAGE.
   <parent>
     <groupId>com.jcabi</groupId>
     <artifactId>jcabi</artifactId>
-    <version>1.25.1</version>
+    <version>1.25.2</version>
   </parent>
   <artifactId>jcabi-http</artifactId>
   <version>2.0-SNAPSHOT</version>
@@ -202,24 +202,11 @@ OF THE POSSIBILITY OF SUCH DAMAGE.
       <optional>true</optional>
     </dependency>
     <dependency>
-      <groupId>com.sun.jersey</groupId>
+      <groupId>org.glassfish.jersey.core</groupId>
       <artifactId>jersey-client</artifactId>
-      <version>1.19</version>
       <scope>provided</scope>
       <optional>true</optional>
-    </dependency>
-    <dependency>
-      <groupId>com.sun.jersey</groupId>
-      <artifactId>jersey-core</artifactId>
-      <version>1.19</version>
-      <scope>provided</scope>
-      <optional>true</optional>
-      <exclusions>
-        <exclusion>
-          <groupId>javax.activation</groupId>
-          <artifactId>activation</artifactId>
-        </exclusion>
-      </exclusions>
+      <version>2.25.1</version>
     </dependency>
     <dependency>
       <groupId>org.apache.httpcomponents</groupId>
@@ -242,9 +229,9 @@ OF THE POSSIBILITY OF SUCH DAMAGE.
       <optional>true</optional>
     </dependency>
     <dependency>
-      <groupId>com.sun.jersey</groupId>
+      <groupId>org.glassfish.jersey.core</groupId>
       <artifactId>jersey-server</artifactId>
-      <version>1.19</version>
+      <version>2.25.1</version>
       <scope>test</scope>
       <optional>true</optional>
     </dependency>
