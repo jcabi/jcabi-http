@@ -71,7 +71,7 @@ public final class RetryWireTest {
     }
 
     /**
-     * RetryWire should strip user info when logging URL
+     * RetryWire should strip user info when logging URL.
      * @throws Exception If something goes wrong inside
      */
     @Test

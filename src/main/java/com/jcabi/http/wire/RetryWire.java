@@ -110,8 +110,10 @@ public final class RetryWire implements Wire {
                         UriBuilder.fromUri(uri).userInfo("").toString();
                     String authinfo = "";
                     if (uri.getUserInfo() != null) {
-                        authinfo = Logger.format(" (auth: %[secret]s)",
-                            uri.getUserInfo());
+                        authinfo = Logger.format(
+                            " (auth: %[secret]s)",
+                            uri.getUserInfo()
+                        );
                     }
                     Logger.warn(
                         this, "%s %s%s returns %d status (attempt #%d)",
