@@ -38,8 +38,10 @@ import com.jcabi.log.Logger;
 import java.io.IOException;
 import java.io.InputStream;
 import java.net.HttpURLConnection;
+import java.net.URI;
 import java.util.Collection;
 import java.util.Map;
+import javax.ws.rs.core.UriBuilder;
 import lombok.EqualsAndHashCode;
 import lombok.ToString;
 
@@ -103,9 +105,17 @@ public final class RetryWire implements Wire {
                     return rsp;
                 }
                 if (Logger.isWarnEnabled(this)) {
+                    final URI uri = URI.create(home);
+                    final String noauth =
+                        UriBuilder.fromUri(uri).userInfo("").toString();
+                    String authinfo = "";
+                    if (uri.getUserInfo() != null) {
+                        authinfo = Logger.format(" (auth: %[secret]s)",
+                            uri.getUserInfo());
+                    }
                     Logger.warn(
-                        this, "%s %s returns %d status (attempt #%d)",
-                        method, home, rsp.status(), attempt + 1
+                        this, "%s %s%s returns %d status (attempt #%d)",
+                        method, noauth, authinfo, rsp.status(), attempt + 1
                     );
                 }
             } catch (final IOException ex) {
