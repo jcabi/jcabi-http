@@ -29,56 +29,41 @@
  */
 package com.jcabi.http.mock;
 
+import org.hamcrest.Description;
 import org.hamcrest.Matcher;
+import org.hamcrest.TypeSafeDiagnosingMatcher;
 
 /**
- * Convenient set of matchers for {@link MkQuery}.
- * @since 1.5
+ * Matcher for checking {@link MkQuery#uri()} contents.
+ *
+ * @since 1.17.4
+ * @checkstyle ProtectedMethodInFinalClassCheck (50 lines)
  */
-@SuppressWarnings("PMD.ProhibitPublicStaticMethods")
-public final class MkQueryMatchers {
+public final class MkQueryPathMatcher extends TypeSafeDiagnosingMatcher<MkQuery> {
+    /**
+     * Path to match.
+     */
+    private final transient Matcher<String> path;
 
     /**
-     * Private ctor.
+     * Constructor.
+     * @param pth Path to match.
      */
-    private MkQueryMatchers() {
-        // Utility class - cannot instantiate
+    MkQueryPathMatcher(final Matcher<String> pth) {
+        super();
+        this.path = pth;
     }
 
-    /**
-     * Matches the value of the MkQuery's body against the given matcher.
-     *
-     * @param matcher The matcher to use.
-     * @return Matcher for checking the body of MkQuery
-     */
-    public static Matcher<MkQuery> hasBody(final Matcher<String> matcher) {
-        return new MkQueryBodyMatcher(matcher);
+    @Override
+    public void describeTo(final Description desc) {
+        desc.appendDescriptionOf(this.path);
     }
 
-    /**
-     * Matches the content of the MkQuery's header against the given
-     * matcher. Note that for a valid match to occur, the header entry must
-     * exist <i>and</i> its value(s) must match the given matcher.
-     *
-     * @param header The header to check.
-     * @param matcher The matcher to use.
-     * @return Matcher for checking the body of MkQuery
-     */
-    public static Matcher<MkQuery> hasHeader(
-        final String header,
-        final Matcher<Iterable<? extends String>> matcher
+    @Override
+    protected boolean matchesSafely(
+        final MkQuery item, final Description desc
     ) {
-        return new MkQueryHeaderMatcher(header, matcher);
+        desc.appendText("actual path ").appendValue(item.uri().getRawPath());
+        return this.path.matches(item.uri().getRawPath());
     }
-
-    /**
-     * Matches the path of the MkQuery.
-     *
-     * @param path The path to check.
-     * @return Matcher for checking the path of MkQuery
-     */
-    public static Matcher<MkQuery> hasPath(final Matcher<String> path) {
-        return new MkQueryPathMatcher(path);
-    }
-
 }
