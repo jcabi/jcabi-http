@@ -36,13 +36,11 @@ import org.hamcrest.MatcherAssert;
 import org.hamcrest.Matchers;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.function.Executable;
 
 /**
  * Test case for {@link JsonResponse}.
  * @since 1.1
- * @todo #206:30m Use assertThrows instead of try/catch/match.
- *  Some of the tests use try/catch in orted to test caught Exception.
- *  Replace them with assertThrows.
  */
 public final class JsonResponseTest {
 
@@ -91,17 +89,19 @@ public final class JsonResponseTest {
     void logsForInvalidJsonObject() throws Exception {
         final String body = "{\"test\": \"logged!\"$@%#^&%@$#}";
         final Response resp = new FakeRequest().withBody(body).fetch();
-        try {
-            new JsonResponse(resp).json().readObject();
-            Assertions.fail(
+        MatcherAssert.assertThat(
+            Assertions.assertThrows(
+                JsonParsingException.class,
+                new Executable() {
+                    @Override
+                    public void execute() throws Throwable {
+                        new JsonResponse(resp).json().readObject();
+                    }
+                },
                 "readObject() should have thrown JsonParsingException"
-            );
-        } catch (final JsonParsingException ex) {
-            MatcherAssert.assertThat(
-                ex.getLocalizedMessage(),
-                Matchers.containsString(body)
-            );
-        }
+            ),
+            Matchers.hasToString(Matchers.containsString(body))
+        );
     }
 
     /**
@@ -113,17 +113,23 @@ public final class JsonResponseTest {
     void logsForInvalidJsonArray() throws Exception {
         final String body = "[\"test\": \"logged!\"$@%#^&%@$#]";
         final Response resp = new FakeRequest().withBody(body).fetch();
-        try {
-            new JsonResponse(resp).json().readArray();
-            Assertions.fail(
+        MatcherAssert.assertThat(
+            Assertions.assertThrows(
+                JsonParsingException.class,
+                new Executable() {
+                    @Override
+                    public void execute() throws Throwable {
+                        new JsonResponse(resp).json().readArray();
+                    }
+                },
                 "readArray() should have thrown JsonParsingException"
-            );
-        } catch (final JsonParsingException ex) {
-            MatcherAssert.assertThat(
-                ex.getLocalizedMessage(),
-                Matchers.containsString(body)
-            );
-        }
+            ),
+            Matchers.hasToString(
+                Matchers.containsString(
+                    body
+                )
+            )
+        );
     }
 
     /**
@@ -135,17 +141,23 @@ public final class JsonResponseTest {
     void logsForInvalidJson() throws Exception {
         final String body = "{test:[]}}}";
         final Response resp = new FakeRequest().withBody(body).fetch();
-        try {
-            new JsonResponse(resp).json().read();
-            Assertions.fail(
+        MatcherAssert.assertThat(
+            Assertions.assertThrows(
+                JsonParsingException.class,
+                new Executable() {
+                    @Override
+                    public void execute() throws Throwable {
+                        new JsonResponse(resp).json().read();
+                    }
+                },
                 "readStructure() should have thrown JsonParsingException"
-            );
-        } catch (final JsonParsingException ex) {
-            MatcherAssert.assertThat(
-                ex.getLocalizedMessage(),
-                Matchers.containsString(body)
-            );
-        }
+            ),
+            Matchers.<JsonParsingException>hasToString(
+                Matchers.containsString(
+                    body
+                )
+            )
+        );
     }
 
 }
