@@ -81,4 +81,14 @@ public final class MkQueryMatchers {
         return new MkQueryPathMatcher(path);
     }
 
+    /**
+     * Matches the query of the MkQuery.
+     *
+     * @param query The query to check.
+     * @return Matcher for checking the query of MkQuery
+     */
+    public static Matcher<MkQuery> hasQuery(final Matcher<String> query) {
+        return new MkQueryQueryMatcher(query);
+    }
+
 }
