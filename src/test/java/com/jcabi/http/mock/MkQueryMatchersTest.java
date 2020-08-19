@@ -29,6 +29,7 @@
  */
 package com.jcabi.http.mock;
 
+import java.net.URI;
 import java.util.Collections;
 import org.hamcrest.MatcherAssert;
 import org.hamcrest.Matchers;
@@ -37,6 +38,7 @@ import org.mockito.Mockito;
 
 /**
  * Test case for {@link MkQueryMatchers}.
+ *
  * @since 1.5
  */
 public final class MkQueryMatchersTest {
@@ -73,6 +75,38 @@ public final class MkQueryMatchersTest {
             MkQueryMatchers.hasHeader(
                 header,
                 Matchers.contains(value)
+            )
+        );
+    }
+
+    /**
+     * MkQueryMatchers should be able to match MkQuery raw path.
+     */
+    @Test
+    void canMatchPath() {
+        final URI body = URI.create("http://example.com/index.html?y=x");
+        final MkQuery query = Mockito.mock(MkQuery.class);
+        Mockito.doReturn(body).when(query).uri();
+        MatcherAssert.assertThat(
+            query,
+            MkQueryMatchers.hasPath(
+                Matchers.is("/index.html")
+            )
+        );
+    }
+
+    /**
+     * MkQueryMatchers should be able to match MkQuery raw query.
+     */
+    @Test
+    void canMatchQuery() {
+        final URI body = URI.create("http://example.com/?x=10");
+        final MkQuery query = Mockito.mock(MkQuery.class);
+        Mockito.doReturn(body).when(query).uri();
+        MatcherAssert.assertThat(
+            query,
+            MkQueryMatchers.hasQuery(
+                Matchers.is("x=10")
             )
         );
     }
