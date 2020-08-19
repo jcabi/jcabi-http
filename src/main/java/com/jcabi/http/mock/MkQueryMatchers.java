@@ -89,23 +89,13 @@ public final class MkQueryMatchers {
     /**
      * Matches the query of the MkQuery.
      *
-     * @param path The path to check.
-     * @return Matcher for checking the query part of MkQuery
-     */
-    public static Matcher<MkQuery> hasQuery(final Matcher<String> path) {
-        return new MkQueryUriMatcher(
-            Matchers.<URI>hasProperty("rawQuery", path)
-        );
-    }
-
-    /**
-     * Matches the query of the MkQuery.
-     *
      * @param query The query to check.
      * @return Matcher for checking the query of MkQuery
      */
     public static Matcher<MkQuery> hasQuery(final Matcher<String> query) {
-        return new MkQueryQueryMatcher(query);
+        return new MkQueryUriMatcher(
+            Matchers.<URI>hasProperty("rawQuery", query)
+        );
     }
 
 }
