@@ -32,17 +32,22 @@ package com.jcabi.http.wire;
 import com.jcabi.http.mock.MkAnswer;
 import com.jcabi.http.mock.MkContainer;
 import com.jcabi.http.mock.MkGrizzlyContainer;
+import com.jcabi.http.mock.MkQueryMatchers;
 import com.jcabi.http.request.JdkRequest;
 import com.jcabi.http.response.RestResponse;
 import java.net.HttpURLConnection;
 import java.net.URI;
 import java.net.URLEncoder;
 import java.nio.charset.StandardCharsets;
+import javax.net.ssl.HttpsURLConnection;
 import javax.ws.rs.core.HttpHeaders;
 import javax.ws.rs.core.UriBuilder;
 import javax.xml.bind.DatatypeConverter;
 import org.hamcrest.MatcherAssert;
 import org.hamcrest.Matchers;
+import org.junit.jupiter.api.Assertions;
+import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.function.Executable;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.CsvSource;
 
@@ -98,6 +103,48 @@ final class BasicAuthWireTest {
             container.take().headers().get(HttpHeaders.AUTHORIZATION).get(0),
             Matchers.equalTo(expected)
         );
+    }
+
+    /**
+     * Tests if the wire strips user info from URI, after the header was added.
+     *
+     * @throws Exception If something goes wrong
+     */
+    @Test
+    void shouldStripUserInfo() throws Exception {
+        final MkContainer container = new MkGrizzlyContainer().next(
+            new MkAnswer.Simple(HttpsURLConnection.HTTP_NOT_FOUND),
+            MkQueryMatchers.hasHeader(
+                "Authorization", Matchers.contains(
+                    BasicAuthWireTest.expectHeader("foo", "bar")
+                )
+            )
+        ).start();
+        final String userinfo = "foo:bar";
+        final URI uri = UriBuilder.fromUri(container.home()).userInfo(
+            userinfo
+        ).build();
+        MatcherAssert.assertThat(
+            Assertions.assertThrows(
+                AssertionError.class,
+                new Executable() {
+                    @Override
+                    public void execute() throws Throwable {
+                        new JdkRequest(uri)
+                            .through(BasicAuthWire.class)
+                            .fetch()
+                            .as(RestResponse.class)
+                            .assertStatus(HttpURLConnection.HTTP_OK);
+                    }
+                }
+            ),
+            Matchers.<AssertionError>hasToString(
+                Matchers.not(
+                    Matchers.containsString(userinfo)
+                )
+            )
+        );
+        container.stop();
     }
 
     /**

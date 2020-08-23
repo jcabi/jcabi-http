@@ -39,6 +39,7 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.net.URI;
 import java.nio.charset.Charset;
+import java.nio.charset.StandardCharsets;
 import java.util.Collection;
 import java.util.LinkedList;
 import java.util.Map;
@@ -65,9 +66,6 @@ import lombok.ToString;
  *
  * @since 0.10
  * @see <a href="http://tools.ietf.org/html/rfc2617">RFC 2617 "HTTP Authentication: Basic and Digest Access Authentication"</a>
- * @todo #97:30m Strip user info from URI after Auth header is added.
- *  Consider adding warnings about the wire applied for Request with header, and
- *  without user info.
  */
 @Immutable
 @ToString(of = "origin")
@@ -75,15 +73,9 @@ import lombok.ToString;
 public final class BasicAuthWire implements Wire {
 
     /**
-     * The encoding to use.
-     */
-    private static final String ENCODING = "UTF-8";
-
-    /**
      * The Charset to use.
      */
-    private static final Charset CHARSET =
-        Charset.forName(BasicAuthWire.ENCODING);
+    private static final Charset CHARSET = StandardCharsets.UTF_8;
 
     /**
      * Original wire.
@@ -111,6 +103,11 @@ public final class BasicAuthWire implements Wire {
         boolean absent = true;
         for (final Map.Entry<String, String> header : headers) {
             if (header.getKey().equals(HttpHeaders.AUTHORIZATION)) {
+                Logger.warn(
+                    this,
+                    "Request already contains %s header",
+                    HttpHeaders.AUTHORIZATION
+                );
                 absent = false;
             }
             hdrs.add(header);
@@ -135,7 +132,13 @@ public final class BasicAuthWire implements Wire {
             );
         }
         return this.origin.send(
-            req, home, method, hdrs, content, connect, read
+            req.uri().userInfo(null).back(),
+            home,
+            method,
+            hdrs,
+            content,
+            connect,
+            read
         );
     }
 }
