@@ -29,6 +29,7 @@
  */
 package com.jcabi.http.request;
 
+import com.fasterxml.jackson.databind.util.ClassUtil;
 import com.google.common.base.Joiner;
 import com.jcabi.aspects.Immutable;
 import com.jcabi.aspects.Loggable;
@@ -283,13 +284,17 @@ public final class BaseRequest implements Request {
         final Object... args) {
         Constructor<?> ctor = null;
         for (final Constructor<?> opt : type.getDeclaredConstructors()) {
-            if (opt.getParameterTypes().length == args.length + 1) {
-                final Class<?>[] types = opt.getParameterTypes();
-                boolean allmatch = true;
-                for (int i = 1; i < types.length && allmatch; i++) {
-                    allmatch &= types[i].isAssignableFrom(args[i - 1].getClass());
+            final Class<?>[] types = opt.getParameterTypes();
+            if (types.length == args.length + 1) {
+                boolean match = true;
+                for (int i = 1; i < types.length && match; i++) {
+                    Class<?> arg = types[i];
+                    if (types[i].isPrimitive()) {
+                        arg = ClassUtil.wrapperType(arg);
+                    }
+                    match = arg.isAssignableFrom(args[i - 1].getClass());
                 }
-                if (allmatch) {
+                if (match) {
                     ctor = opt;
                     break;
                 }
