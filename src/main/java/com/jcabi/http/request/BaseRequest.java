@@ -284,8 +284,15 @@ public final class BaseRequest implements Request {
         Constructor<?> ctor = null;
         for (final Constructor<?> opt : type.getDeclaredConstructors()) {
             if (opt.getParameterTypes().length == args.length + 1) {
-                ctor = opt;
-                break;
+                final Class<?>[] types = opt.getParameterTypes();
+                boolean allmatch = true;
+                for (int i = 1; i < types.length && allmatch; i++) {
+                    allmatch &= types[i].isAssignableFrom(args[i - 1].getClass());
+                }
+                if (allmatch) {
+                    ctor = opt;
+                    break;
+                }
             }
         }
         if (ctor == null) {
