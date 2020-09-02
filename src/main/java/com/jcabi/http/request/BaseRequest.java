@@ -280,45 +280,11 @@ public final class BaseRequest implements Request {
     }
 
     @Override
-    public <T extends Wire> Request through(final Class<T> type,
-        final Object... args) {
-        Constructor<?> ctor = null;
-        for (final Constructor<?> opt : type.getDeclaredConstructors()) {
-            final Class<?>[] types = opt.getParameterTypes();
-            if (types.length == args.length + 1) {
-                boolean match = true;
-                for (int i = 1; i < types.length && match; i++) {
-                    Class<?> arg = types[i];
-                    if (types[i].isPrimitive()) {
-                        arg = ClassUtil.wrapperType(arg);
-                    }
-                    match = arg.isAssignableFrom(args[i - 1].getClass());
-                }
-                if (match) {
-                    ctor = opt;
-                    break;
-                }
-            }
-        }
-        if (ctor == null) {
-            throw new IllegalArgumentException(
-                String.format(
-                    "class %s doesn't have a ctor with %d argument(s)",
-                    type.getName(), args.length
-                )
-            );
-        }
-        final Object[] params = new Object[args.length + 1];
-        params[0] = this.wire;
-        System.arraycopy(args, 0, params, 1, args.length);
-        final Wire decorated;
-        try {
-            decorated = Wire.class.cast(ctor.newInstance(params));
-        } catch (final InstantiationException
-            | IllegalAccessException | InvocationTargetException ex) {
-            throw new IllegalStateException(ex);
-        }
-        return this.through(decorated);
+    public <T extends Wire> Request through(
+        final Class<T> type,
+        final Object... args
+    ) {
+        return this.through(this.mkWire(type, args));
     }
 
     @Override
@@ -356,6 +322,32 @@ public final class BaseRequest implements Request {
         return text.append('\n')
             .append(new RequestBody.Printable(this.content).toString())
             .toString();
+    }
+
+    /**
+     * Create an instance of Wire.
+     *
+     * @param type Type of Wire.
+     * @param args Ctor arguments.
+     * @param <T> Type of Wire.
+     * @return An instance of Wire
+     */
+    private <T extends Wire> Wire mkWire(
+        final Class<T> type,
+        final Object... args
+    ) {
+        final Constructor<?> ctor = BaseRequest.findCtor(type, args);
+        final Object[] params = new Object[args.length + 1];
+        params[0] = this.wire;
+        System.arraycopy(args, 0, params, 1, args.length);
+        final Wire decorated;
+        try {
+            decorated = Wire.class.cast(ctor.newInstance(params));
+        } catch (final InstantiationException
+            | IllegalAccessException | InvocationTargetException ex) {
+            throw new IllegalStateException(ex);
+        }
+        return decorated;
     }
 
     /**
@@ -401,6 +393,56 @@ public final class BaseRequest implements Request {
             addr = UriBuilder.fromUri(addr).path("/").build();
         }
         return addr;
+    }
+
+    /**
+     * Find a ctor which match arguments.
+     * @param type A type.
+     * @param args Ctor arguments.
+     * @param <T> Type of object
+     * @return A proper ctor for args.
+     */
+    private static <T extends Wire> Constructor<?> findCtor(
+        final Class<T> type, final Object... args
+    ) {
+        Constructor<?> ctor = null;
+        for (final Constructor<?> opt : type.getDeclaredConstructors()) {
+            final Class<?>[] types = opt.getParameterTypes();
+            if (types.length == args.length + 1) {
+                boolean match = true;
+                for (int inx = 1; inx < types.length && match; ++inx) {
+                    match = BaseRequest
+                        .wrappedIfNeeded(types[inx])
+                        .isAssignableFrom(args[inx - 1].getClass());
+                }
+                if (match) {
+                    ctor = opt;
+                    break;
+                }
+            }
+        }
+        if (ctor == null) {
+            throw new IllegalArgumentException(
+                String.format(
+                    "class %s doesn't have a ctor with %d argument(s)",
+                    type.getName(), args.length
+                )
+            );
+        }
+        return ctor;
+    }
+
+    /**
+     * Wrap primitive types.
+     * @param type A type which could be primitive
+     * @return Wrapped type if it was a primitive
+     */
+    private static Class<?> wrappedIfNeeded(final Class<?> type) {
+        Class<?> arg = type;
+        if (arg.isPrimitive()) {
+            arg = ClassUtil.wrapperType(arg);
+        }
+        return arg;
     }
 
     /**
