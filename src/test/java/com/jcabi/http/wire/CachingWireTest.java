@@ -29,14 +29,19 @@
  */
 package com.jcabi.http.wire;
 
+import com.google.common.cache.CacheBuilder;
+import com.google.common.cache.CacheLoader;
+import com.google.common.cache.LoadingCache;
 import com.jcabi.aspects.Tv;
 import com.jcabi.http.Request;
+import com.jcabi.http.Response;
 import com.jcabi.http.mock.MkAnswer;
 import com.jcabi.http.mock.MkContainer;
 import com.jcabi.http.mock.MkGrizzlyContainer;
 import com.jcabi.http.request.JdkRequest;
 import com.jcabi.http.response.RestResponse;
 import java.net.HttpURLConnection;
+import java.util.concurrent.Callable;
 import org.hamcrest.MatcherAssert;
 import org.hamcrest.Matchers;
 import org.junit.jupiter.api.Test;
@@ -45,7 +50,7 @@ import org.junit.jupiter.api.Test;
  * Test case for {@link CachingWire}.
  * @since 1.0
  */
-public final class CachingWireTest {
+final class CachingWireTest {
 
     /**
      * CachingWire can cache GET requests.
@@ -115,6 +120,39 @@ public final class CachingWireTest {
             container.queries(),
             Matchers.equalTo(Tv.THREE)
         );
+    }
+
+    /**
+     * CachingWire can use custom cache.
+     * @throws Exception If something goes wrong inside
+     */
+    @Test
+    void cachesGetRequestWithCustomCache() throws Exception {
+        final MkContainer container = new MkGrizzlyContainer().next(
+            new MkAnswer.Simple("")
+        ).next(
+            new MkAnswer.Simple(HttpURLConnection.HTTP_BAD_GATEWAY)
+        ).start();
+        final LoadingCache<Callable<Response>, Response> cache =
+            CacheBuilder
+                .newBuilder()
+                .build(
+                    new CacheLoader<Callable<Response>, Response>() {
+                        @Override
+                        public Response load(final Callable<Response> query)
+                            throws Exception {
+                            return query.call();
+                        }
+                    }
+                );
+        final Request req = new JdkRequest(container.home())
+            .through(CachingWire.class, cache);
+        for (int idx = 0; idx < Tv.TEN; ++idx) {
+            req.fetch().as(RestResponse.class)
+                .assertStatus(HttpURLConnection.HTTP_OK);
+        }
+        container.stop();
+        MatcherAssert.assertThat(container.queries(), Matchers.equalTo(1));
     }
 
 }
