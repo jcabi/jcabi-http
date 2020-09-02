@@ -67,12 +67,25 @@ import lombok.ToString;
  *   .uri().path("/save/123").back()
  *   .fetch();</pre>
  *
+ * <p>Since 1.17.3, you can pass a {@see LoadingCache} alongside the wire.
+ *
+ * <pre>{@code
+ * final LoadingCache<Callable<Response>, Response> cache = ...;
+ * new JdkRequest(uri)
+ *   .through(CachingWire.class, cache)
+ *   .uri().path("/save/123").back()
+ *   .fetch();
+ *  }</pre>
+ *
  * <p>The regular expression provided will be used against a string
  * constructed as an HTTP method, space, path of the URI together with
  * query part.
  *
  * <p>The class is immutable and thread-safe.
- *
+ * @todo #179:30m This implementation depends on Guava. Investigate for a
+ *  possible shared interface between this class and other implementations for
+ *  caching. If this shared interface is possible replace this task with a task
+ *  for implementing it.
  * @since 1.0
  */
 @Immutable
