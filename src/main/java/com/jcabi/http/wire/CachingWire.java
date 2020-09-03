@@ -42,6 +42,7 @@ import java.io.InputStream;
 import java.net.URI;
 import java.util.Collection;
 import java.util.Map;
+import java.util.concurrent.Callable;
 import java.util.concurrent.ExecutionException;
 import lombok.EqualsAndHashCode;
 import lombok.ToString;
@@ -66,34 +67,49 @@ import lombok.ToString;
  *   .uri().path("/save/123").back()
  *   .fetch();</pre>
  *
+ * <p>Since 1.17.3, you can pass a {@see LoadingCache} alongside the wire.
+ *
+ * <pre>{@code
+ * final LoadingCache<Callable<Response>, Response> cache = ...;
+ * new JdkRequest(uri)
+ *   .through(CachingWire.class, cache)
+ *   .uri().path("/save/123").back()
+ *   .fetch();
+ *  }</pre>
+ *
  * <p>The regular expression provided will be used against a string
  * constructed as an HTTP method, space, path of the URI together with
  * query part.
  *
  * <p>The class is immutable and thread-safe.
- *
+ * @todo #179:30m This implementation depends on Guava. Investigate for a
+ *  possible shared interface between this class and other implementations for
+ *  caching. If this shared interface is possible replace this task with a task
+ *  for implementing it.
  * @since 1.0
  */
 @Immutable
 @ToString
 @EqualsAndHashCode(of = {"origin", "regex"})
+@SuppressWarnings("PMD.OnlyOneConstructorShouldDoInitialization")
 public final class CachingWire implements Wire {
 
     /**
      * Loader.
      */
     private static final CacheLoader<Wire,
-        LoadingCache<CachingWire.Query, Response>> LOADER =
-        new CacheLoader<Wire, LoadingCache<CachingWire.Query, Response>>() {
+        LoadingCache<Callable<Response>, Response>> LOADER =
+        new CacheLoader<Wire, LoadingCache<Callable<Response>, Response>>() {
             @Override
-            public LoadingCache<CachingWire.Query, Response> load(
-                final Wire key) {
+            public LoadingCache<Callable<Response>, Response> load(
+                final Wire key
+            ) {
                 return CacheBuilder.newBuilder().build(
-                    new CacheLoader<CachingWire.Query, Response>() {
+                    new CacheLoader<Callable<Response>, Response>() {
                         @Override
-                        public Response load(final CachingWire.Query query)
-                            throws IOException {
-                            return query.fetch();
+                        public Response load(final Callable<Response> query)
+                            throws Exception {
+                            return query.call();
                         }
                     }
                 );
@@ -101,11 +117,16 @@ public final class CachingWire implements Wire {
         };
 
     /**
-     * Cache.
+     * Default cache.
      */
     private static final LoadingCache<Wire,
-        LoadingCache<CachingWire.Query, Response>> CACHE =
+        LoadingCache<Callable<Response>, Response>> CACHE =
         CacheBuilder.newBuilder().build(CachingWire.LOADER);
+
+    /**
+     * Default flushing regex.
+     */
+    private static final String NEVER = "$never";
 
     /**
      * Original wire.
@@ -118,11 +139,16 @@ public final class CachingWire implements Wire {
     private final transient String regex;
 
     /**
+     * Cache.
+     */
+    private final LoadingCache<Callable<Response>, Response> cache;
+
+    /**
      * Public ctor.
      * @param wire Original wire
      */
     public CachingWire(final Wire wire) {
-        this(wire, "$never");
+        this(wire, CachingWire.NEVER);
     }
 
     /**
@@ -134,16 +160,49 @@ public final class CachingWire implements Wire {
     public CachingWire(final Wire wire, final String flsh) {
         this.origin = wire;
         this.regex = flsh;
+        this.cache = CACHE.getUnchecked(this);
+    }
+
+    /**
+     * Public ctor.
+     * @param wire Original wire
+     * @param storage Cache
+     * @since 1.17.4
+     */
+    public CachingWire(
+        final Wire wire,
+        final LoadingCache<Callable<Response>, Response> storage
+    ) {
+        this(wire, CachingWire.NEVER, storage);
+    }
+
+    /**
+     * Public ctor.
+     * @param wire Original wire
+     * @param flsh Flushing regular expression
+     * @param storage Cache
+     * @since 1.17.4
+     */
+    public CachingWire(
+        final Wire wire,
+        final String flsh,
+        final LoadingCache<Callable<Response>, Response> storage
+    ) {
+        this.origin = wire;
+        this.regex = flsh;
+        this.cache = storage;
     }
 
     // @checkstyle ParameterNumber (5 lines)
     @Override
-    public Response send(final Request req, final String home,
+    public Response send(
+        final Request req, final String home,
         final String method,
         final Collection<Map.Entry<String, String>> headers,
         final InputStream content,
         final int connect,
-        final int read) throws IOException {
+        final int read
+    ) throws IOException {
         final URI uri = req.uri().get();
         final StringBuilder label = new StringBuilder(Tv.HUNDRED)
             .append(method).append(' ').append(uri.getPath());
@@ -151,16 +210,12 @@ public final class CachingWire implements Wire {
             label.append('?').append(uri.getQuery());
         }
         if (label.toString().matches(this.regex)) {
-            try {
-                CachingWire.CACHE.get(this).invalidateAll();
-            } catch (final ExecutionException ex) {
-                throw new IllegalStateException(ex);
-            }
+            this.cache.invalidateAll();
         }
         final Response rsp;
         if (method.equals(Request.GET)) {
             try {
-                rsp = CachingWire.CACHE.get(this).get(
+                rsp = this.cache.get(
                     new CachingWire.Query(
                         this.origin, req, home, headers, content,
                         connect, read
@@ -194,7 +249,7 @@ public final class CachingWire implements Wire {
      */
     @ToString
     @EqualsAndHashCode(of = {"origin", "request", "uri", "headers"})
-    private static final class Query {
+    private static final class Query implements Callable<Response> {
         /**
          * Origin wire.
          */
@@ -241,10 +296,12 @@ public final class CachingWire implements Wire {
          * @param rdd Read timeout
          * @checkstyle ParameterNumberCheck (5 lines)
          */
-        Query(final Wire wire, final Request req, final String home,
+        Query(
+            final Wire wire, final Request req, final String home,
             final Collection<Map.Entry<String, String>> hdrs,
             final InputStream input, final int cnct,
-            final int rdd) {
+            final int rdd
+        ) {
             this.origin = wire;
             this.request = req;
             this.uri = home;
@@ -254,12 +311,8 @@ public final class CachingWire implements Wire {
             this.read = rdd;
         }
 
-        /**
-         * Fetch.
-         * @return Response
-         * @throws IOException If fails
-         */
-        public Response fetch() throws IOException {
+        @Override
+        public Response call() throws IOException {
             return this.origin.send(
                 this.request, this.uri, Request.GET, this.headers, this.body,
                 this.connect, this.read
