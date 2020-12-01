@@ -52,4 +52,4 @@ Please run Maven build before submitting a pull request:
 $ mvn clean install -Pqulice
 ```
 
-Make sure you're using Maven 3.2+ and Java7+.
+Make sure you're using Maven 3.6+ and Java 8+.
