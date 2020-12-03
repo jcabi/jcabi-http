@@ -180,8 +180,10 @@ public final class RestResponse extends AbstractResponse {
      * @param matcher The matcher to use
      * @return This object
      */
-    public RestResponse assertHeader(final String name,
-        final Matcher<Iterable<String>> matcher) {
+    public RestResponse assertHeader(
+        final String name,
+        final Matcher<Iterable<String>> matcher
+    ) {
         Iterable<String> values = this.headers().get(name);
         if (values == null) {
             values = Collections.emptyList();
@@ -260,33 +262,23 @@ public final class RestResponse extends AbstractResponse {
             "cookies should be set in HTTP header",
             headers.containsKey(HttpHeaders.SET_COOKIE)
         );
-        final Iterator<String> iterator =
-            headers.get(HttpHeaders.SET_COOKIE).iterator();
-        final Object first = iterator.next();
-        // @checkstyle MagicNumber (1 line)
-        final StringBuilder buf = new StringBuilder(256);
-        if (first != null) {
-            buf.append(first);
-        }
-        while (iterator.hasNext()) {
-            buf.append(',');
-            final Object obj = iterator.next();
-            if (obj != null) {
-                buf.append(obj);
-            }
-        }
-        final String header = buf.toString();
+        final List<String> cookies = headers.get(HttpHeaders.SET_COOKIE);
+        final Iterator<String> iterator = cookies.iterator();
         Cookie cookie = null;
-        for (final HttpCookie candidate : HttpCookie.parse(header)) {
-            if (candidate.getName().equals(name)) {
-                cookie = RestResponse.cookie(candidate);
-                break;
+        while (iterator.hasNext()) {
+            final String obj = iterator.next();
+            for (final HttpCookie candidate : HttpCookie.parse(obj)) {
+                if (candidate.getName().equals(name)) {
+                    cookie = RestResponse.cookie(candidate);
+                    break;
+                }
             }
         }
         MatcherAssert.assertThat(
             Logger.format(
                 "cookie '%s' not found in Set-Cookie header: '%s'",
-                name, header
+                name,
+                cookies
             ),
             cookie,
             Matchers.notNullValue()
