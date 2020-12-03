@@ -45,7 +45,8 @@ import org.junit.jupiter.api.function.Executable;
  * Test case for {@link RestResponse}.
  * @since 1.1
  */
-public final class RestResponseTest {
+@SuppressWarnings("PMD.AvoidDuplicateLiterals")
+final class RestResponseTest {
 
     /**
      * RestResponse can assert HTTP status.
@@ -110,6 +111,35 @@ public final class RestResponseTest {
             Matchers.allOf(
                 Matchers.hasProperty("value", Matchers.equalTo("foo1")),
                 Matchers.hasProperty("path", Matchers.equalTo("/"))
+            )
+        );
+    }
+
+    /**
+     * RestResponse can retrieve a cookie by name if header occurs several
+     * times.
+     * @throws Exception If something goes wrong inside
+     */
+    @Test
+    void retrievesCookieByNameSeveralValues() throws Exception {
+        final RestResponse response = new RestResponse(
+            new FakeRequest()
+                .withHeader(HttpHeaders.SET_COOKIE, "foo=bar; path=/i;")
+                .withHeader(HttpHeaders.SET_COOKIE, "baz=goo; path=/l;")
+                .fetch()
+        );
+        MatcherAssert.assertThat(
+            response.cookie("baz"),
+            Matchers.allOf(
+                Matchers.hasProperty("value", Matchers.equalTo("goo")),
+                Matchers.hasProperty("path", Matchers.equalTo("/l"))
+            )
+        );
+        MatcherAssert.assertThat(
+            response.cookie("foo"),
+            Matchers.allOf(
+                Matchers.hasProperty("value", Matchers.equalTo("bar")),
+                Matchers.hasProperty("path", Matchers.equalTo("/i"))
             )
         );
     }
