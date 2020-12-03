@@ -30,19 +30,19 @@
 package com.jcabi.http.response;
 
 import com.jcabi.http.request.JdkRequest;
+import java.io.IOException;
 import org.hamcrest.MatcherAssert;
 import org.hamcrest.Matchers;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.function.Executable;
-import java.io.IOException;
 
 /**
  * Integration test for {@link RestResponse}.
  *
  * @since 1.17.5
  */
-final class RestResponseITCase {
+@SuppressWarnings("PMD.AvoidDuplicateLiterals") final class RestResponseITCase {
     @Test
     void readsCookiesSeveralValues() throws IOException {
         final RestResponse resp = new JdkRequest(
