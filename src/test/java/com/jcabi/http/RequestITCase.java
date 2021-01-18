@@ -29,12 +29,22 @@
  */
 package com.jcabi.http;
 
+import com.jcabi.http.mock.MkAnswer;
+import com.jcabi.http.mock.MkContainer;
+import com.jcabi.http.mock.MkGrizzlyContainer;
+import com.jcabi.http.mock.MkQuery;
+import com.jcabi.http.request.ApacheRequest;
+import com.jcabi.http.response.JsonResponse;
 import com.jcabi.http.response.RestResponse;
 import com.jcabi.http.response.XmlResponse;
 import java.io.IOException;
 import java.net.HttpURLConnection;
 import java.net.URI;
+import javax.json.Json;
+import org.hamcrest.MatcherAssert;
+import org.hamcrest.Matchers;
 import org.junit.jupiter.api.Assertions;
+import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.function.Executable;
 import org.junit.jupiter.params.ParameterizedTest;
 
@@ -42,7 +52,8 @@ import org.junit.jupiter.params.ParameterizedTest;
  * Integration case for {@link com.jcabi.http.request.ApacheRequest}.
  * @since 1.1
  */
-class RequestITCase extends RequestTestTemplate {
+@SuppressWarnings("PMD.AvoidDuplicateLiterals")
+final class RequestITCase extends RequestTestTemplate {
 
     /**
      * BaseRequest can fetch HTTP request and process HTTP response.
@@ -97,4 +108,75 @@ class RequestITCase extends RequestTestTemplate {
         );
     }
 
+    @Test
+    void handlesGet() throws Exception {
+        try (MkContainer container = new MkGrizzlyContainer()
+            .next(
+                new MkAnswer.Simple(
+                    HttpURLConnection.HTTP_OK,
+                    Json.createObjectBuilder().toString()
+                )
+            ).start()) {
+            new ApacheRequest(container.home())
+                .method(Request.GET)
+                .fetch()
+                .as(RestResponse.class)
+                .assertStatus(HttpURLConnection.HTTP_OK);
+            final MkQuery query = container.take();
+            MatcherAssert.assertThat(
+                query.method(),
+                Matchers.is("GET")
+            );
+        }
+    }
+
+    @Test
+    void handlesDelete() throws Exception {
+        try (MkContainer container = new MkGrizzlyContainer()
+            .next(
+                new MkAnswer.Simple(
+                    HttpURLConnection.HTTP_OK,
+                    Json.createObjectBuilder().toString()
+                )
+            ).start()) {
+            new ApacheRequest(container.home())
+                .method(Request.DELETE)
+                .fetch()
+                .as(RestResponse.class)
+                .assertStatus(HttpURLConnection.HTTP_OK);
+            MatcherAssert.assertThat(
+                container.take().method(),
+                Matchers.is("DELETE")
+            );
+        }
+    }
+
+    @Test
+    void handlesDeleteWithBody() throws Exception {
+        try (MkContainer container = new MkGrizzlyContainer()
+            .next(
+                new MkAnswer.Simple(
+                    HttpURLConnection.HTTP_OK,
+                    Json.createObjectBuilder().toString()
+                )
+            ).start()) {
+            new ApacheRequest(container.home())
+                .method(Request.DELETE)
+                .body().set("{}").back()
+                .fetch()
+                .as(RestResponse.class)
+                .assertStatus(HttpURLConnection.HTTP_OK)
+                .as(JsonResponse.class)
+                .json();
+            final MkQuery take = container.take();
+            MatcherAssert.assertThat(
+                take.method(),
+                Matchers.is("DELETE")
+            );
+            MatcherAssert.assertThat(
+                take.body(),
+                Matchers.is("{}")
+            );
+        }
+    }
 }

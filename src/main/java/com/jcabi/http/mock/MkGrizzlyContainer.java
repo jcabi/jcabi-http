@@ -131,6 +131,8 @@ public final class MkGrizzlyContainer implements MkContainer {
             prt
         );
         this.gws.addListener(listener);
+        this.gws.getServerConfiguration()
+            .setAllowPayloadForUndefinedHttpMethods(true);
         this.gws.getServerConfiguration().addHttpHandler(
             this.adapter,
             "/"
