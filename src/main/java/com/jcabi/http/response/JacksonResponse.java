@@ -29,7 +29,7 @@
  */
 package com.jcabi.http.response;
 
-import com.fasterxml.jackson.core.JsonParser;
+import com.fasterxml.jackson.core.json.JsonReadFeature;
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.node.ArrayNode;
@@ -79,7 +79,7 @@ public final class JacksonResponse extends AbstractResponse {
          * parsing by default.
          */
         private static final ObjectMapper MAPPER = new ObjectMapper()
-            .configure(JsonParser.Feature.ALLOW_UNQUOTED_CONTROL_CHARS, true);
+            .enable(JsonReadFeature.ALLOW_UNESCAPED_CONTROL_CHARS.mappedFeature());
 
         /**
          * Response body.

@@ -208,7 +208,7 @@ final class JacksonResponseTest {
             ),
             Matchers.<IOException>hasToString(
                 Matchers.containsString(
-                    "Unexpected end-of-input: expected close marker for OBJECT"
+                    "Unexpected end-of-input: expected close marker for Object"
                 )
             )
         );
