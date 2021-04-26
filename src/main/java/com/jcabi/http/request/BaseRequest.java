@@ -721,31 +721,15 @@ public final class BaseRequest implements Request {
         private final transient BaseRequest owner;
 
         /**
-         * URL form character to prepend.
-         */
-        private final transient String prepend;
-
-        /**
          * Public ctor.
          * @param req Request
          * @param body Text to encapsulate
-         */
-        FormEncodedBody(final BaseRequest req, final byte[] body) {
-            this(req, body, "");
-        }
-
-        /**
-         * Public ctor.
-         * @param req Request
-         * @param body Text to encapsulate
-         * @param pre Character to prepend
          */
         FormEncodedBody(
-            final BaseRequest req, final byte[] body, final String pre
+            final BaseRequest req, final byte[] body
         ) {
             this.owner = req;
             this.text = body.clone();
-            this.prepend = pre;
         }
 
         @Override
@@ -791,10 +775,13 @@ public final class BaseRequest implements Request {
         @Override
         public RequestBody formParam(final String name, final Object value) {
             try {
+                final StringBuilder builder = new StringBuilder(this.get());
+                if (!builder.toString().isEmpty()) {
+                    builder.append('&');
+                }
                 return new BaseRequest.FormEncodedBody(
                     this.owner,
-                    new StringBuilder(this.get())
-                        .append(this.prepend)
+                    builder
                         .append(name)
                         .append('=')
                         .append(
@@ -804,8 +791,7 @@ public final class BaseRequest implements Request {
                             )
                         )
                         .toString()
-                        .getBytes(BaseRequest.CHARSET),
-                    "&"
+                        .getBytes(BaseRequest.CHARSET)
                 );
             } catch (final UnsupportedEncodingException ex) {
                 throw new IllegalStateException(ex);

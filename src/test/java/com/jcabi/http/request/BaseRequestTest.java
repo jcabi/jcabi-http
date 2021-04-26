@@ -29,8 +29,13 @@
  */
 package com.jcabi.http.request;
 
+import com.jcabi.http.Request;
 import com.jcabi.http.Wire;
+import com.jcabi.http.mock.MkAnswer;
+import com.jcabi.http.mock.MkContainer;
+import com.jcabi.http.mock.MkGrizzlyContainer;
 import com.jcabi.immutable.ArrayMap;
+import java.io.IOException;
 import javax.json.Json;
 import javax.ws.rs.core.HttpHeaders;
 import javax.ws.rs.core.MediaType;
@@ -171,6 +176,29 @@ final class BaseRequestTest {
                 BaseRequestTest.MESSAGE,
                 Matchers.is(BaseRequestTest.boundaryErrorMesg())
             )
+        );
+    }
+
+    @Test
+    void shouldHaveCorrectFormParameters() throws IOException {
+        final MkContainer srv = new MkGrizzlyContainer()
+            .next(new MkAnswer.Simple("OK")).start();
+        new JdkRequest(srv.home())
+            .body()
+            .formParam("foo1", "bar1")
+            .back()
+            .body()
+            .formParam("foo2", "bar2")
+            .back()
+            .body()
+            .formParam("foo3", "bar3")
+            .formParam("foo4", "bar4")
+            .back()
+            .method(Request.POST)
+            .fetch();
+        MatcherAssert.assertThat(
+            srv.take().body(),
+            Matchers.is("foo1=bar1&foo2=bar2&foo3=bar3&foo4=bar4")
         );
     }
 
