@@ -42,6 +42,7 @@ import java.util.LinkedList;
 import java.util.Map;
 import javax.ws.rs.core.HttpHeaders;
 import lombok.EqualsAndHashCode;
+import lombok.RequiredArgsConstructor;
 import lombok.ToString;
 
 /**
@@ -69,29 +70,33 @@ import lombok.ToString;
 @Immutable
 @ToString(of = "origin")
 @EqualsAndHashCode(of = "origin")
+@RequiredArgsConstructor
 public final class UserAgentWire implements Wire {
-
-    /**
-     * Default user agent.
-     */
-    private static final String AGENT = String.format(
-        "jcabi-%s/%s Java/%s",
-        Manifests.read("JCabi-Version"),
-        Manifests.read("JCabi-Build"),
-        System.getProperty("java.version")
-    );
 
     /**
      * Original wire.
      */
-    private final transient Wire origin;
+    private final Wire origin;
+
+    /**
+     * Agent.
+     */
+    private final String agent;
 
     /**
      * Public ctor.
      * @param wire Original wire
      */
     public UserAgentWire(final Wire wire) {
-        this.origin = wire;
+        this(
+            wire,
+            String.format(
+                "jcabi-%s/%s Java/%s",
+                Manifests.read("JCabi-Version"),
+                Manifests.read("JCabi-Build"),
+                System.getProperty("java.version")
+            )
+        );
     }
 
     // @checkstyle ParameterNumber (7 lines)
@@ -115,7 +120,7 @@ public final class UserAgentWire implements Wire {
             hdrs.add(
                 new ImmutableHeader(
                     HttpHeaders.USER_AGENT,
-                    UserAgentWire.AGENT
+                    this.agent
                 )
             );
         }
