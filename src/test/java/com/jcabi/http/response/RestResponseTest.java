@@ -31,9 +31,9 @@ package com.jcabi.http.response;
 
 import com.jcabi.http.Response;
 import com.jcabi.http.request.FakeRequest;
+import jakarta.ws.rs.core.HttpHeaders;
 import java.net.HttpURLConnection;
 import java.net.URI;
-import javax.ws.rs.core.HttpHeaders;
 import org.hamcrest.Matcher;
 import org.hamcrest.MatcherAssert;
 import org.hamcrest.Matchers;

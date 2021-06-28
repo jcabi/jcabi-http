@@ -31,7 +31,7 @@ package com.jcabi.http.wire;
 
 import com.jcabi.aspects.Immutable;
 import com.jcabi.http.Wire;
-import javax.ws.rs.core.HttpHeaders;
+import jakarta.ws.rs.core.HttpHeaders;
 import lombok.ToString;
 
 /**
