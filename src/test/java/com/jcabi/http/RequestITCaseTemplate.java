@@ -30,6 +30,7 @@
 package com.jcabi.http;
 
 import com.jcabi.aspects.Tv;
+import com.jcabi.http.request.ApacheRequest;
 import com.jcabi.http.request.JdkRequest;
 import com.jcabi.http.response.JsonResponse;
 import com.jcabi.http.response.RestResponse;
@@ -41,6 +42,7 @@ import com.jcabi.xml.XML;
 import java.io.IOException;
 import java.net.HttpURLConnection;
 import java.net.URI;
+import java.util.Collections;
 import java.util.Locale;
 import javax.json.Json;
 import javax.json.JsonObject;
@@ -178,6 +180,63 @@ public abstract class RequestITCaseTemplate {
     }
 
     @Test
+    final void sendsQueryParams() throws Exception {
+        MatcherAssert.assertThat(
+            "Must parse Json response",
+            this.request("/anything")
+                .uri()
+                .queryParams(Collections.singletonMap("foo", "bar"))
+                .queryParams(Collections.singletonMap("fee", "baz"))
+                .back()
+                .fetch()
+                .as(JsonResponse.class)
+                .json()
+                .readObject()
+                .getJsonObject("args"),
+            Matchers.allOf(
+                Matchers.hasEntry(
+                    Matchers.is("foo"),
+                    Matchers.is(Json.createValue("bar"))
+                ),
+                Matchers.hasEntry(
+                    Matchers.is("fee"),
+                    Matchers.is(Json.createValue("baz"))
+                )
+            )
+        );
+    }
+
+
+    @Test
+    @DisabledIf("isApacheRequest")
+    final void sendsFormParams() throws Exception {
+        MatcherAssert.assertThat(
+            "Must parse Json response",
+            this.request("/anything")
+                .method(Request.POST)
+                .body()
+                .formParam("a", Tv.THREE)
+                .formParam("b", Tv.FOUR)
+                .back()
+                .fetch()
+                .as(JsonResponse.class)
+                .json()
+                .readObject()
+                .getJsonObject("form"),
+            Matchers.allOf(
+                Matchers.hasEntry(
+                    Matchers.is("a"),
+                    Matchers.is(Json.createValue(String.valueOf(Tv.THREE)))
+                ),
+                Matchers.hasEntry(
+                    Matchers.is("b"),
+                    Matchers.is(Json.createValue(String.valueOf(Tv.FOUR)))
+                )
+            )
+        );
+    }
+
+    @Test
     @DisabledIf("isJdkRequest")
     final void readsDeflatedJsonResponse() throws Exception {
         MatcherAssert.assertThat(
@@ -239,6 +298,15 @@ public abstract class RequestITCaseTemplate {
                 .xml(),
             Matchers.notNullValue(XML.class)
         );
+    }
+
+    /**
+     * Is ApacheRequest being tested?
+     * @return True if so.
+     */
+    @SuppressWarnings("PMD.UnusedPrivateMethod")
+    private boolean isApacheRequest() {
+        return ApacheRequest.class.equals(this.type);
     }
 
     /**
