@@ -30,10 +30,10 @@
 package com.jcabi.http.request;
 
 import com.jcabi.aspects.Tv;
+import jakarta.ws.rs.HttpMethod;
 import java.io.IOException;
 import java.net.MalformedURLException;
 import java.net.URI;
-import javax.ws.rs.HttpMethod;
 import org.apache.commons.lang3.StringUtils;
 import org.hamcrest.MatcherAssert;
 import org.hamcrest.Matchers;

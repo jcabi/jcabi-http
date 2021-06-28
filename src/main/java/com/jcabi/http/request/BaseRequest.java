@@ -41,6 +41,10 @@ import com.jcabi.http.Response;
 import com.jcabi.http.Wire;
 import com.jcabi.immutable.Array;
 import com.jcabi.log.Logger;
+import jakarta.json.Json;
+import jakarta.json.JsonStructure;
+import jakarta.ws.rs.core.HttpHeaders;
+import jakarta.ws.rs.core.UriBuilder;
 import java.io.ByteArrayInputStream;
 import java.io.IOException;
 import java.io.InputStream;
@@ -55,10 +59,6 @@ import java.util.Arrays;
 import java.util.Collection;
 import java.util.LinkedList;
 import java.util.Map;
-import javax.json.Json;
-import javax.json.JsonStructure;
-import javax.ws.rs.core.HttpHeaders;
-import javax.ws.rs.core.UriBuilder;
 import lombok.EqualsAndHashCode;
 
 /**

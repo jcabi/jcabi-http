@@ -35,9 +35,9 @@ import com.jcabi.http.mock.MkContainer;
 import com.jcabi.http.mock.MkGrizzlyContainer;
 import com.jcabi.http.request.JdkRequest;
 import com.jcabi.http.response.RestResponse;
+import jakarta.ws.rs.core.HttpHeaders;
 import java.io.IOException;
 import java.net.HttpURLConnection;
-import javax.ws.rs.core.HttpHeaders;
 import org.hamcrest.Matchers;
 import org.junit.jupiter.api.Test;
 

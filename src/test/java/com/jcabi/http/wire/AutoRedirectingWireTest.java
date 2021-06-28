@@ -36,7 +36,7 @@ import com.jcabi.http.mock.MkGrizzlyContainer;
 import com.jcabi.http.mock.MkQuery;
 import com.jcabi.http.request.JdkRequest;
 import com.jcabi.http.response.RestResponse;
-import javax.ws.rs.core.HttpHeaders;
+import jakarta.ws.rs.core.HttpHeaders;
 import org.apache.http.HttpStatus;
 import org.hamcrest.MatcherAssert;
 import org.hamcrest.Matchers;

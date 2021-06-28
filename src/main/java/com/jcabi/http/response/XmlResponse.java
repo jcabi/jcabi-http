@@ -97,8 +97,10 @@ public final class XmlResponse extends AbstractResponse {
      * @param resp Response
      * @param map Map of namespaces
      */
-    private XmlResponse(final Response resp,
-        final ArrayMap<String, String> map) {
+    private XmlResponse(
+        final Response resp,
+        final ArrayMap<String, String> map
+    ) {
         super(resp);
         this.namespaces = map;
     }

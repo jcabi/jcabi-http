@@ -31,16 +31,16 @@ package com.jcabi.http.response;
 
 import com.jcabi.aspects.Immutable;
 import com.jcabi.http.Response;
+import jakarta.json.Json;
+import jakarta.json.JsonArray;
+import jakarta.json.JsonObject;
+import jakarta.json.JsonReader;
+import jakarta.json.JsonStructure;
+import jakarta.json.stream.JsonParsingException;
 import java.io.StringReader;
 import java.nio.charset.StandardCharsets;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
-import javax.json.Json;
-import javax.json.JsonArray;
-import javax.json.JsonObject;
-import javax.json.JsonReader;
-import javax.json.JsonStructure;
-import javax.json.stream.JsonParsingException;
 import lombok.EqualsAndHashCode;
 
 /**
