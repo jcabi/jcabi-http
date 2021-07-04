@@ -658,7 +658,7 @@ public final class BaseRequest implements Request {
             final byte[] footer = String.format(
                 "%s%s%s", dashes, boundary, dashes
             ).getBytes(BaseRequest.CHARSET);
-            final MultipartBodyBuilder neww = new MultipartBodyBuilder()
+            final StringBuilder neww = new StringBuilder()
                 .appendLine(old)
                 .appendLine(disposition)
                 .appendLine(type)
