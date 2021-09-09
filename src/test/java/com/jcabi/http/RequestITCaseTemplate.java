@@ -156,6 +156,15 @@ public abstract class RequestITCaseTemplate {
     }
 
     @Test
+    final void followsLocationHeaderRelativeRedirect() throws IOException {
+        this.request("/relative-redirect/5")
+            .through(AutoRedirectingWire.class, Tv.SIX)
+            .fetch()
+            .as(RestResponse.class)
+            .assertStatus(HttpURLConnection.HTTP_OK);
+    }
+
+    @Test
     final void failsOnTimeout() {
         Assertions.assertThrows(
             IOException.class,

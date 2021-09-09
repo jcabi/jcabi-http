@@ -8,7 +8,7 @@
 [![Build Status](https://travis-ci.org/jcabi/jcabi-http.svg?branch=master)](https://travis-ci.org/jcabi/jcabi-http)
 [![PDD status](http://www.0pdd.com/svg?name=jcabi/jcabi-http)](http://www.0pdd.com/p?name=jcabi/jcabi-http)
 [![Build status](https://ci.appveyor.com/api/projects/status/a87rxtuvvek647fs/branch/master?svg=true)](https://ci.appveyor.com/project/yegor256/jcabi-http/branch/master)
-[![Coverage Status](https://coveralls.io/repos/jcabi/jcabi-http/badge.svg?branch=__rultor&service=github)](https://coveralls.io/github/jcabi/jcabi-http?branch=__rultor)
+[![codecov](https://codecov.io/gh/jcabi/jcabi-http/branch/master/graph/badge.svg?token=TWye97XBJ8)](https://codecov.io/gh/jcabi/jcabi-http)
 [![Javadoc](https://javadoc.io/badge/com.jcabi/jcabi-http.svg)](http://www.javadoc.io/doc/com.jcabi/jcabi-http)
 
 [![jpeek report](https://i.jpeek.org/com.jcabi/jcabi-http/badge.svg)](https://i.jpeek.org/com.jcabi/jcabi-http/)

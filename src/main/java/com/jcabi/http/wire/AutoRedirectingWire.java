@@ -125,7 +125,7 @@ public final class AutoRedirectingWire implements Wire {
             }
             URI location = URI.create(locations.get(0));
             if (!location.isAbsolute()) {
-                location = uri.resolve(uri);
+                location = uri.resolve(location);
             }
             response = this.origin.send(
                 req, location.toString(),
