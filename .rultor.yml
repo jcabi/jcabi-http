@@ -6,7 +6,6 @@ assets:
   secring.gpg: yegor256/home#assets/secring.gpg
   pubring.gpg: yegor256/home#assets/pubring.gpg
 install: |
-  sudo update-java-alternatives -s java-1.8.0-openjdk-amd64
   pdd --file=/dev/null
 merge:
   script: |
@@ -14,6 +13,8 @@ merge:
 release:
   pre: false
   script: |-
+    env
+    export JAVA_HOME=/usr/lib/jvm/default-java
     mvn versions:set "-DnewVersion=${tag}" --batch-mode
     git commit -am "${tag}"
     mvn clean deploy -Pqulice -Psonatype -Pjcabi --batch-mode --errors --settings ../settings.xml
