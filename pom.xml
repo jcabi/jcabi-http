@@ -206,7 +206,7 @@ OF THE POSSIBILITY OF SUCH DAMAGE.
       <artifactId>jersey-client</artifactId>
       <scope>provided</scope>
       <optional>true</optional>
-      <version>2.25.1</version>
+      <version>3.0.5</version>
     </dependency>
     <dependency>
       <groupId>org.apache.httpcomponents</groupId>
