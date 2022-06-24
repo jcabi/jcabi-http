@@ -105,7 +105,7 @@ OF THE POSSIBILITY OF SUCH DAMAGE.
     <dependency>
       <groupId>com.google.guava</groupId>
       <artifactId>guava</artifactId>
-      <version>31.0.1-jre</version>
+      <version>31.1-jre</version>
       <scope>provided</scope>
       <optional>true</optional>
     </dependency>
