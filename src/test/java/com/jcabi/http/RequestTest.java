@@ -353,8 +353,8 @@ final class RequestTest extends RequestTestTemplate {
                 )
             )
             .multipartBody()
-            .formParam("d", value)
-            .formParam("e", other)
+            .formParam("d", value, "d.txt")
+            .formParam("e", other, "e.txt")
             .back()
             .fetch().as(RestResponse.class)
             .assertStatus(HttpURLConnection.HTTP_OK);
@@ -365,12 +365,12 @@ final class RequestTest extends RequestTestTemplate {
             Matchers.is(
                 Joiner.on(Constants.CRLF).join(
                     separator,
-                    "Content-Disposition: form-data; name=\"d\"; filename=\"binary\"",
+                    "Content-Disposition: form-data; name=\"d\"; filename=\"d.txt\"",
                     RequestTest.steamContentType(),
                     "",
                     "value of € one param \"&^%*;'\"",
                     separator,
-                    "Content-Disposition: form-data; name=\"e\"; filename=\"binary\"",
+                    "Content-Disposition: form-data; name=\"e\"; filename=\"e.txt\"",
                     RequestTest.steamContentType(),
                     "",
                     "value of € two param \"&^%*;'\"",

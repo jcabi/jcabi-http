@@ -625,9 +625,17 @@ public final class BaseRequest implements Request {
             return new BaseRequest.MultipartFormBody(this.owner, txt);
         }
 
+        /**
+         * Add form param.
+         * @param name Query param name
+         * @param value Value of the query param to set
+         * @param opt First value (a string) is the filename to be set in the request
+         * @return New alternated body
+         */
         @Override
-        public RequestBody formParam(final String name, final Object value) {
-            final String boundary = this.boundary();
+        public RequestBody formParam(final String name, final Object value,
+            final Object... opt) {
+            final String boundary = boundary();
             final String dashes = "--";
             final byte[] last = Arrays.copyOfRange(
                 this.text,
@@ -647,11 +655,17 @@ public final class BaseRequest implements Request {
             } else {
                 bytes = value.toString().getBytes(BaseRequest.CHARSET);
             }
+            final String filename;
+            if (opt.length == 0) {
+                filename = "binary";
+            } else {
+                filename = (String) opt[0];
+            }
             final byte[] disposition = Joiner.on("; ")
                 .join(
                     "Content-Disposition: form-data",
                     String.format("name=\"%s\"", name),
-                    "filename=\"binary\""
+                    String.format("filename=\"%s\"", filename)
                 ).getBytes(BaseRequest.CHARSET);
             final byte[] type = "Content-Type: application/octet-stream"
                 .getBytes(BaseRequest.CHARSET);
@@ -773,7 +787,8 @@ public final class BaseRequest implements Request {
         }
 
         @Override
-        public RequestBody formParam(final String name, final Object value) {
+        public RequestBody formParam(final String name, final Object value,
+            final Object... opt) {
             try {
                 final StringBuilder builder = new StringBuilder(this.get());
                 if (!builder.toString().isEmpty()) {

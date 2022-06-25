@@ -96,9 +96,10 @@ public interface RequestBody {
      * Add form param.
      * @param name Query param name
      * @param value Value of the query param to set
+     * @param opt Optional values of the query param to set
      * @return New alternated body
      */
-    RequestBody formParam(String name, Object value);
+    RequestBody formParam(String name, Object value, Object... opt);
 
     /**
      * Add form params.
