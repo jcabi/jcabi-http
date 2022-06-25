@@ -625,17 +625,10 @@ public final class BaseRequest implements Request {
             return new BaseRequest.MultipartFormBody(this.owner, txt);
         }
 
-        /**
-         * Add form param.
-         * @param name Query param name
-         * @param value Value of the query param to set
-         * @param opt First value (a string) is the filename to be set in the request
-         * @return New alternated body
-         */
         @Override
         public RequestBody formParam(final String name, final Object value,
             final Object... opt) {
-            final String boundary = boundary();
+            final String boundary = this.boundary();
             final String dashes = "--";
             final byte[] last = Arrays.copyOfRange(
                 this.text,
