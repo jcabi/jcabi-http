@@ -16,12 +16,10 @@ install:
   - cmd: SET JAVA_OPTS=-XX:MaxPermSize=2g -Xmx4g
   - cmd: mvn --version
   - cmd: java -version
-  - cmd: ruby --version
-  - cmd: gem install xcop
 build_script:
-  - mvn --batch-mode -Dmaven.test.skip=true clean package 
+  - mvn --batch-mode -Dmaven.test.skip=true clean package
 test_script:
-  - mvn --batch-mode -Pqulice clean install 
+  - mvn --batch-mode -Pqulice clean install
 cache:
   - C:\maven\
   - C:\Users\appveyor\.m2
