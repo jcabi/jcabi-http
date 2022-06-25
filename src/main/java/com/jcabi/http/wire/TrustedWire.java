@@ -1,4 +1,4 @@
-/**
+/*
  * Copyright (c) 2011-2017, jcabi.com
  * All rights reserved.
  *
@@ -61,8 +61,6 @@ import lombok.ToString;
  *
  * <p>The class is immutable and thread-safe.
  *
- * @author Yegor Bugayenko (yegor@tpc2.com)
- * @version $Id$
  * @since 1.10
  */
 @Immutable
@@ -78,11 +76,13 @@ public final class TrustedWire implements Wire {
         public X509Certificate[] getAcceptedIssuers() {
             return new X509Certificate[0];
         }
+
         @Override
         public void checkClientTrusted(final X509Certificate[] certs,
             final String type) {
             // nothing to check here
         }
+
         @Override
         public void checkServerTrusted(final X509Certificate[] certs,
             final String types) {
@@ -136,13 +136,11 @@ public final class TrustedWire implements Wire {
             final SSLContext ctx = SSLContext.getInstance("SSL");
             ctx.init(
                 null,
-                new TrustManager[] {TrustedWire.MANAGER},
+                new TrustManager[]{TrustedWire.MANAGER},
                 new SecureRandom()
             );
             return ctx;
-        } catch (final KeyManagementException ex) {
-            throw new IllegalStateException(ex);
-        } catch (final NoSuchAlgorithmException ex) {
+        } catch (final KeyManagementException | NoSuchAlgorithmException ex) {
             throw new IllegalStateException(ex);
         }
     }

@@ -1,4 +1,4 @@
-/**
+/*
  * Copyright (c) 2011-2017, jcabi.com
  * All rights reserved.
  *
@@ -29,34 +29,46 @@
  */
 package com.jcabi.http.request;
 
+import com.jcabi.http.Request;
 import com.jcabi.http.Wire;
+import com.jcabi.http.mock.MkAnswer;
+import com.jcabi.http.mock.MkContainer;
+import com.jcabi.http.mock.MkGrizzlyContainer;
 import com.jcabi.immutable.ArrayMap;
+import java.io.IOException;
 import javax.json.Json;
+import javax.ws.rs.core.HttpHeaders;
+import javax.ws.rs.core.MediaType;
 import org.hamcrest.MatcherAssert;
 import org.hamcrest.Matchers;
-import org.junit.Test;
+import org.junit.jupiter.api.Assertions;
+import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.function.Executable;
 import org.mockito.Mockito;
 
 /**
  * Test case for {@link BaseRequest}.
- * @author Yegor Bugayenko (yegor@tpc2.com)
- * @version $Id$
+ *
+ * @since 1.0
  */
-public final class BaseRequestTest {
+final class BaseRequestTest {
+
+    /**
+     * Property name of Exception.
+     */
+    private static final String MESSAGE = "message";
 
     /**
      * BaseRequest can build the right destination URI.
-     * @throws Exception If something goes wrong inside
      */
     @Test
-    public void buildsDestinationUri() throws Exception {
+    void buildsDestinationUri() {
         final Wire wire = Mockito.mock(Wire.class);
         MatcherAssert.assertThat(
             new BaseRequest(wire, "http://localhost:88/t/f")
                 .uri().path("/bar").queryParam("u1", "\u20ac")
                 .queryParams(new ArrayMap<String, String>().with("u2", ""))
-                .userInfo("hey:\u20ac")
-                .back().uri().get(),
+                .userInfo("hey:\u20ac").back().uri().get(),
             Matchers.hasToString(
                 "http://hey:%E2%82%AC@localhost:88/t/f/bar?u1=%E2%82%AC&u2="
             )
@@ -65,10 +77,9 @@ public final class BaseRequestTest {
 
     /**
      * BaseRequest can set body to JSON.
-     * @throws Exception If something goes wrong inside
      */
     @Test
-    public void printsJsonInBody() throws Exception {
+    void printsJsonInBody() {
         final Wire wire = Mockito.mock(Wire.class);
         MatcherAssert.assertThat(
             new BaseRequest(wire, "http://localhost:88/x").body().set(
@@ -80,10 +91,9 @@ public final class BaseRequestTest {
 
     /**
      * BaseRequest can include the port number.
-     * @throws Exception If something goes wrong inside
      */
     @Test
-    public void includesPort() throws Exception {
+    void includesPort() {
         final Wire wire = Mockito.mock(Wire.class);
         MatcherAssert.assertThat(
             // @checkstyle MagicNumber (2 lines)
@@ -95,10 +105,9 @@ public final class BaseRequestTest {
 
     /**
      * FakeRequest can identify itself uniquely.
-     * @throws Exception If something goes wrong inside.
      */
     @Test
-    public void identifiesUniquely() throws Exception {
+    void identifiesUniquely() {
         final Wire wire = Mockito.mock(Wire.class);
         MatcherAssert.assertThat(
             new BaseRequest(wire, "").header("header-1", "value-1"),
@@ -114,4 +123,91 @@ public final class BaseRequestTest {
         );
     }
 
+    /**
+     * Throws exception when using formParam on multipart-body without
+     * content-type defined.
+     */
+    @Test
+    void exceptionWhenMissingContentType() {
+        final Wire wire = Mockito.mock(Wire.class);
+        MatcherAssert.assertThat(
+            Assertions.assertThrows(
+                IllegalStateException.class,
+                new Executable() {
+                    @Override
+                    public void execute() throws Throwable {
+                        new BaseRequest(wire, "")
+                            .multipartBody()
+                            .formParam("a", "value")
+                            .back();
+                    }
+                }
+            ),
+            Matchers.hasProperty(
+                BaseRequestTest.MESSAGE,
+                Matchers.is(BaseRequestTest.boundaryErrorMesg())
+            )
+        );
+    }
+
+    /**
+     * Throws exception when using formParam on multipartbody without boundary
+     * provided in content-type defined.
+     */
+    @Test
+    void exceptionWhenMissingBoundary() {
+        final Wire wire = Mockito.mock(Wire.class);
+        MatcherAssert.assertThat(
+            Assertions.assertThrows(
+                IllegalStateException.class,
+                new Executable() {
+                    @Override
+                    public void execute() throws Throwable {
+                        new BaseRequest(wire, "")
+                            .header(
+                                HttpHeaders.CONTENT_TYPE,
+                                MediaType.MULTIPART_FORM_DATA
+                            )
+                            .multipartBody().formParam("b", "val").back();
+                    }
+                }
+            ),
+            Matchers.hasProperty(
+                BaseRequestTest.MESSAGE,
+                Matchers.is(BaseRequestTest.boundaryErrorMesg())
+            )
+        );
+    }
+
+    @Test
+    void shouldHaveCorrectFormParameters() throws IOException {
+        final MkContainer srv = new MkGrizzlyContainer()
+            .next(new MkAnswer.Simple("OK")).start();
+        new JdkRequest(srv.home())
+            .body()
+            .formParam("foo1", "bar1")
+            .back()
+            .body()
+            .formParam("foo2", "bar2")
+            .back()
+            .body()
+            .formParam("foo3", "bar3")
+            .formParam("foo4", "bar4")
+            .back()
+            .method(Request.POST)
+            .fetch();
+        MatcherAssert.assertThat(
+            srv.take().body(),
+            Matchers.is("foo1=bar1&foo2=bar2&foo3=bar3&foo4=bar4")
+        );
+    }
+
+    /**
+     * Boundary error message.
+     *
+     * @return Message error as String.
+     */
+    private static String boundaryErrorMesg() {
+        return "Content-Type: multipart/form-data requires boundary";
+    }
 }

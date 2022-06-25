@@ -1,4 +1,4 @@
-/**
+/*
  * Copyright (c) 2011-2017, jcabi.com
  * All rights reserved.
  *
@@ -36,8 +36,6 @@ import lombok.ToString;
 /**
  * Wire that caches requests based on Last-Modified
  * and If-Modified-Since headers.
- * @author Igor Piddubnyi (igor.piddubnyi@gmail.com)
- * @version $Id$
  * @since 1.15
  */
 @ToString

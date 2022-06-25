@@ -1,4 +1,4 @@
-/**
+/*
  * Copyright (c) 2011-2017, jcabi.com
  * All rights reserved.
  *
@@ -33,16 +33,18 @@ import com.jcabi.http.request.FakeRequest;
 import java.net.URI;
 import org.hamcrest.MatcherAssert;
 import org.hamcrest.Matchers;
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
 
 /**
  * Test case for {@link WebLinkingResponse}.
- * @author Yegor Bugayenko (yegor@tpc2.com)
- * @version $Id$
  * @since 0.9
- * @checkstyle MultipleStringLiterals (500 lines)
  */
 public final class WebLinkingResponseTest {
+
+    /**
+     * The Link header.
+     */
+    private static final String LINK = "Link";
 
     /**
      * WebLinkingResponse can recognize Links in headers.
@@ -50,14 +52,16 @@ public final class WebLinkingResponseTest {
      */
     @Test
     @SuppressWarnings("PMD.AvoidInstantiatingObjectsInLoops")
-    public void parsesLinksInHeaders() throws Exception {
+    void parsesLinksInHeaders() throws Exception {
         final String[] headers = {
             "</hey/foo>; title=\"Hi!\"; rel=foo",
             "</hey/foo>; title=\"\u20ac\"; rel=\"foo\"; media=\"text/xml\"",
         };
         for (final String header : headers) {
             final WebLinkingResponse response = new WebLinkingResponse(
-                new FakeRequest().withHeader("Link", header).fetch()
+                new FakeRequest()
+                    .withHeader(WebLinkingResponseTest.LINK, header)
+                    .fetch()
             );
             final WebLinkingResponse.Link link = response.links().get("foo");
             MatcherAssert.assertThat(
@@ -80,10 +84,10 @@ public final class WebLinkingResponseTest {
      * @throws Exception If something goes wrong inside
      */
     @Test
-    public void followsLinksInHeaders() throws Exception {
+    void followsLinksInHeaders() throws Exception {
         final WebLinkingResponse response = new WebLinkingResponse(
             new FakeRequest().withHeader(
-                "Link",
+                WebLinkingResponseTest.LINK,
                 "</a>; rel=\"first\", <http://localhost/o>; rel=\"second\""
             ).uri().set(new URI("http://localhost/test")).back().fetch()
         );

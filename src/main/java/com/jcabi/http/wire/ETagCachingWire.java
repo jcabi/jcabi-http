@@ -1,4 +1,4 @@
-/**
+/*
  * Copyright (c) 2011-2017, jcabi.com
  * All rights reserved.
  *
@@ -55,8 +55,6 @@ import lombok.ToString;
  *
  * <p>The class is immutable and thread-safe.
  *
- * @author Ievgen Degtiarenko (ievgen.degtiarenko@gmail.com)
- * @version $Id$
  * @since 2.0
  */
 @ToString

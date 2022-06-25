@@ -1,4 +1,4 @@
-/**
+/*
  * Copyright (c) 2011-2017, jcabi.com
  * All rights reserved.
  *
@@ -32,12 +32,11 @@ package com.jcabi.http;
 import java.util.Map;
 import org.hamcrest.MatcherAssert;
 import org.hamcrest.Matchers;
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
 
 /**
  * Test case for {@link ImmutableHeader}.
- * @author Yegor Bugayenko (yegor@tpc2.com)
- * @version $Id$
+ * @since 1.1
  */
 public final class ImmutableHeaderTest {
 
@@ -46,7 +45,7 @@ public final class ImmutableHeaderTest {
      * @throws Exception If something goes wrong inside
      */
     @Test
-    public void normalizesHeaderKey() throws Exception {
+    void normalizesHeaderKey() throws Exception {
         final Map.Entry<String, String> header =
             new ImmutableHeader("content-type", "text/plain");
         MatcherAssert.assertThat(

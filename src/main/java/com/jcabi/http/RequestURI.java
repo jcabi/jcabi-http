@@ -1,4 +1,4 @@
-/**
+/*
  * Copyright (c) 2011-2017, jcabi.com
  * All rights reserved.
  *
@@ -51,9 +51,8 @@ import java.util.Map;
  *
  * <p>Instances of this interface are immutable and thread-safe.
  *
- * @author Yegor Bugayenko (yegor@tpc2.com)
- * @version $Id$
  * @since 0.8
+ * @checkstyle AbbreviationAsWordInNameCheck (100 lines)
  */
 @Immutable
 public interface RequestURI {

@@ -1,4 +1,4 @@
-/**
+/*
  * Copyright (c) 2011-2017, jcabi.com
  * All rights reserved.
  *
@@ -37,8 +37,7 @@ import org.hamcrest.TypeSafeMatcher;
 
 /**
  * Matcher for checking {@link MkAnswer#body()} result.
- * @author Carlos Miranda (miranda.cma@gmail.com)
- * @version $Id$
+ * @since 1.5
  */
 @ToString
 @EqualsAndHashCode(callSuper = false, of = "matcher")
@@ -67,6 +66,5 @@ final class MkAnswerBodyMatcher extends TypeSafeMatcher<MkAnswer> {
     @Override
     public boolean matchesSafely(final MkAnswer item) {
         return this.matcher.matches(item.body());
-    };
-
+    }
 }

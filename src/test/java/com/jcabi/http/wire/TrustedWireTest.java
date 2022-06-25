@@ -1,4 +1,4 @@
-/**
+/*
  * Copyright (c) 2011-2017, jcabi.com
  * All rights reserved.
  *
@@ -35,12 +35,10 @@ import com.jcabi.http.mock.MkGrizzlyContainer;
 import com.jcabi.http.request.JdkRequest;
 import com.jcabi.http.response.RestResponse;
 import java.net.HttpURLConnection;
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
 
 /**
  * Test case for {@link TrustedWire}.
- * @author Yegor Bugayenko (yegor@tpc2.com)
- * @version $Id$
  * @since 1.10
  */
 public final class TrustedWireTest {
@@ -50,7 +48,7 @@ public final class TrustedWireTest {
      * @throws Exception If something goes wrong inside
      */
     @Test
-    public void ignoresPkixErrors() throws Exception {
+    void ignoresPkixErrors() throws Exception {
         final MkContainer container = new MkGrizzlyContainer().next(
             new MkAnswer.Simple("")
         ).start();

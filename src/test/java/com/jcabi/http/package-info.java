@@ -1,4 +1,4 @@
-/**
+/*
  * Copyright (c) 2011-2017, jcabi.com
  * All rights reserved.
  *
@@ -30,8 +30,5 @@
 
 /**
  * Test package, tests for it.
- *
- * @author Yegor Bugayenko (yegor@tpc2.com)
- * @version $Id$
  */
 package com.jcabi.http;

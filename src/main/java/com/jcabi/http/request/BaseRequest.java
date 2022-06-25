@@ -1,4 +1,4 @@
-/**
+/*
  * Copyright (c) 2011-2017, jcabi.com
  * All rights reserved.
  *
@@ -29,6 +29,8 @@
  */
 package com.jcabi.http.request;
 
+import com.fasterxml.jackson.databind.util.ClassUtil;
+import com.google.common.base.Joiner;
 import com.jcabi.aspects.Immutable;
 import com.jcabi.aspects.Loggable;
 import com.jcabi.http.ImmutableHeader;
@@ -49,36 +51,37 @@ import java.lang.reflect.InvocationTargetException;
 import java.net.URI;
 import java.net.URLEncoder;
 import java.nio.charset.Charset;
+import java.util.Arrays;
 import java.util.Collection;
 import java.util.LinkedList;
 import java.util.Map;
 import javax.json.Json;
 import javax.json.JsonStructure;
+import javax.ws.rs.core.HttpHeaders;
 import javax.ws.rs.core.UriBuilder;
 import lombok.EqualsAndHashCode;
 
 /**
  * Base implementation of {@link Request}.
  *
- * @author Yegor Bugayenko (yegor@tpc2.com)
- * @version $Id$
  * @since 0.8
- * @checkstyle ClassDataAbstractionCoupling (500 lines)
+ * // @checkstyle ClassDataAbstractionCoupling (500 lines)
  * @see Request
  * @see Response
- * @todo #87:30min Refactor this class to get rid of PMD.GodClass.
- *  This can be done if MultiPartFormBody and
- *  FormEncodedBody are pulled out. Also, the two
- *  share the same implementations for all methods besides formParam,
- *  so they can be refactored to extend an AbstractRequestBody.
- *  PMD.TooManyMethods might come together with getting rid of the
- *  first one, since maybe qulice is counting the methods in the inner
- *  classes too - if it doesn't, then it can be left.
  */
 @Immutable
-@EqualsAndHashCode(of = { "home", "mtd", "hdrs", "content" })
+@EqualsAndHashCode(of = {"home", "mtd", "hdrs", "content"})
 @Loggable(Loggable.DEBUG)
-@SuppressWarnings({"PMD.TooManyMethods", "PMD.GodClass"})
+// @todo #87:30min Refactor this class to get rid of PMD.GodClass.
+//  This can be done if MultiPartFormBody and
+//  FormEncodedBody are pulled out. Also, the two
+//  share the same implementations for all methods besides formParam,
+//  so they can be refactored to extend an AbstractRequestBody.
+//  PMD.TooManyMethods might come together with getting rid of the
+//  first one, since maybe qulice is counting the methods in the inner
+//  classes too - if it doesn't, then it can be left.
+//@checkstyle LineLength (1 line)
+@SuppressWarnings({"PMD.TooManyMethods", "PMD.GodClass", "PMD.ExcessiveImports"})
 public final class BaseRequest implements Request {
 
     /**
@@ -145,6 +148,7 @@ public final class BaseRequest implements Request {
             new Array<Map.Entry<String, String>>(),
             Request.GET, BaseRequest.EMPTY_BYTE_ARRAY
         );
+        //@checkstyle ParameterNumber (15 lines)
     }
 
     /**
@@ -154,12 +158,12 @@ public final class BaseRequest implements Request {
      * @param headers Headers
      * @param method HTTP method
      * @param body HTTP request body
-     * @checkstyle ParameterNumber (5 lines)
      */
     public BaseRequest(final Wire wre, final String uri,
         final Iterable<Map.Entry<String, String>> headers,
         final String method, final byte[] body) {
         this(wre, uri, headers, method, body, 0, 0);
+        //@checkstyle ParameterNumber (15 lines)
     }
 
     /**
@@ -171,19 +175,14 @@ public final class BaseRequest implements Request {
      * @param body HTTP request body
      * @param cnct Connect timeout for http connection
      * @param rdd Read timeout for http connection
-     * @checkstyle ParameterNumber (5 lines)
      */
     public BaseRequest(final Wire wre, final String uri,
         final Iterable<Map.Entry<String, String>> headers,
         final String method, final byte[] body,
         final int cnct, final int rdd) {
         this.wire = wre;
-        URI addr = URI.create(uri);
-        if (addr.getPath() != null && addr.getPath().isEmpty()) {
-            addr = UriBuilder.fromUri(addr).path("/").build();
-        }
-        this.home = addr.toString();
-        this.hdrs = new Array<Map.Entry<String, String>>(headers);
+        this.home = BaseRequest.createUri(uri).toString();
+        this.hdrs = new Array<>(headers);
         this.mtd = method;
         this.content = body.clone();
         this.connect = cnct;
@@ -192,7 +191,7 @@ public final class BaseRequest implements Request {
 
     @Override
     public RequestURI uri() {
-        return new BaseRequest.BaseURI(this, this.home);
+        return new BaseUri(this, this.home);
     }
 
     @Override
@@ -281,34 +280,11 @@ public final class BaseRequest implements Request {
     }
 
     @Override
-    public <T extends Wire> Request through(final Class<T> type,
-        final Object... args) {
-        Constructor<?> ctor = null;
-        for (final Constructor<?> opt : type.getDeclaredConstructors()) {
-            if (opt.getParameterTypes().length == args.length + 1) {
-                ctor = opt;
-                break;
-            }
-        }
-        if (ctor == null) {
-            throw new IllegalArgumentException(
-                String.format(
-                    "class %s doesn't have a ctor with %d argument(s)",
-                    type.getName(), args.length
-                )
-            );
-        }
-        final Object[] params = new Object[args.length + 1];
-        params[0] = this.wire;
-        System.arraycopy(args, 0, params, 1, args.length);
-        final Wire decorated;
-        try {
-            decorated = Wire.class.cast(ctor.newInstance(params));
-        } catch (final InstantiationException
-            | IllegalAccessException | InvocationTargetException ex) {
-            throw new IllegalStateException(ex);
-        }
-        return this.through(decorated);
+    public <T extends Wire> Request through(
+        final Class<T> type,
+        final Object... args
+    ) {
+        return this.through(this.mkWire(type, args));
     }
 
     @Override
@@ -349,6 +325,32 @@ public final class BaseRequest implements Request {
     }
 
     /**
+     * Create an instance of Wire.
+     *
+     * @param type Type of Wire.
+     * @param args Ctor arguments.
+     * @param <T> Type of Wire.
+     * @return An instance of Wire
+     */
+    private <T extends Wire> Wire mkWire(
+        final Class<T> type,
+        final Object... args
+    ) {
+        final Constructor<?> ctor = BaseRequest.findCtor(type, args);
+        final Object[] params = new Object[args.length + 1];
+        params[0] = this.wire;
+        System.arraycopy(args, 0, params, 1, args.length);
+        final Wire decorated;
+        try {
+            decorated = Wire.class.cast(ctor.newInstance(params));
+        } catch (final InstantiationException
+            | IllegalAccessException | InvocationTargetException ex) {
+            throw new IllegalStateException(ex);
+        }
+        return decorated;
+    }
+
+    /**
      * Fetch response from server.
      * @param stream The content to send.
      * @return The obtained response
@@ -363,49 +365,120 @@ public final class BaseRequest implements Request {
             this.read
         );
         final URI uri = URI.create(this.home);
-        Logger.info(
-            this,
-            "#fetch(%s %s%s %s): [%d %s] in %[ms]s",
-            this.mtd,
-            uri.getHost(),
-            // @checkstyle AvoidInlineConditionalsCheck (1 line)
-            uri.getPort() > 0 ? String.format(":%d", uri.getPort()) : "",
-            uri.getPath(),
-            response.status(),
-            response.reason(),
-            System.currentTimeMillis() - start
-        );
+        if (Logger.isInfoEnabled(this)) {
+            Logger.info(
+                this,
+                "#fetch(%s %s%s %s): [%d %s] in %[ms]s",
+                this.mtd,
+                uri.getHost(),
+                // @checkstyle AvoidInlineConditionalsCheck (1 line)
+                uri.getPort() > 0 ? String.format(":%d", uri.getPort()) : "",
+                uri.getPath(),
+                response.status(),
+                response.reason(),
+                System.currentTimeMillis() - start
+            );
+        }
         return response;
     }
 
     /**
+     * Create uri from String.
+     * @param uri String
+     * @return URI
+     */
+    private static URI createUri(final String uri) {
+        URI addr = URI.create(uri);
+        if (addr.getPath() != null && addr.getPath().isEmpty()) {
+            addr = UriBuilder.fromUri(addr).path("/").build();
+        }
+        return addr;
+    }
+
+    /**
+     * Find a ctor which match arguments.
+     * @param type A type.
+     * @param args Ctor arguments.
+     * @param <T> Type of object
+     * @return A proper ctor for args.
+     */
+    private static <T extends Wire> Constructor<?> findCtor(
+        final Class<T> type, final Object... args
+    ) {
+        Constructor<?> ctor = null;
+        for (final Constructor<?> opt : type.getDeclaredConstructors()) {
+            final Class<?>[] types = opt.getParameterTypes();
+            if (types.length == args.length + 1) {
+                boolean match = true;
+                for (int inx = 1; inx < types.length && match; ++inx) {
+                    match = BaseRequest
+                        .wrappedIfNeeded(types[inx])
+                        .isAssignableFrom(args[inx - 1].getClass());
+                }
+                if (match) {
+                    ctor = opt;
+                    break;
+                }
+            }
+        }
+        if (ctor == null) {
+            throw new IllegalArgumentException(
+                String.format(
+                    "class %s doesn't have a ctor with %d argument(s)",
+                    type.getName(), args.length
+                )
+            );
+        }
+        return ctor;
+    }
+
+    /**
+     * Wrap primitive types.
+     * @param type A type which could be primitive
+     * @return Wrapped type if it was a primitive
+     */
+    private static Class<?> wrappedIfNeeded(final Class<?> type) {
+        Class<?> arg = type;
+        if (arg.isPrimitive()) {
+            arg = ClassUtil.wrapperType(arg);
+        }
+        return arg;
+    }
+
+    /**
      * Base URI.
+     *
+     * @since 1.0
      */
     @Immutable
     @EqualsAndHashCode(of = "address")
     @Loggable(Loggable.DEBUG)
-    private static final class BaseURI implements RequestURI {
+    private static final class BaseUri implements RequestURI {
         /**
          * URI encapsulated.
          */
         private final transient String address;
+
         /**
          * Base request encapsulated.
          */
         private final transient BaseRequest owner;
+
         /**
          * Public ctor.
          * @param req Request
          * @param uri The URI to start with
          */
-        BaseURI(final BaseRequest req, final String uri) {
+        BaseUri(final BaseRequest req, final String uri) {
             this.owner = req;
             this.address = uri;
         }
+
         @Override
         public String toString() {
             return this.address;
         }
+
         @Override
         public Request back() {
             return new BaseRequest(
@@ -413,26 +486,32 @@ public final class BaseRequest implements Request {
                 this.address,
                 this.owner.hdrs,
                 this.owner.mtd,
-                this.owner.content
+                this.owner.content,
+                this.owner.connect,
+                this.owner.read
             );
         }
+
         @Override
         public URI get() {
             return URI.create(this.owner.home);
         }
+
         @Override
         public RequestURI set(final URI uri) {
-            return new BaseRequest.BaseURI(this.owner, uri.toString());
+            return new BaseUri(this.owner, uri.toString());
         }
+
         @Override
         public RequestURI queryParam(final String name, final Object value) {
-            return new BaseRequest.BaseURI(
+            return new BaseUri(
                 this.owner,
                 UriBuilder.fromUri(this.address)
                     .queryParam(name, "{value}")
                     .build(value).toString()
             );
         }
+
         @Override
         public RequestURI queryParams(final Map<String, String> map) {
             final UriBuilder uri = UriBuilder.fromUri(this.address);
@@ -443,32 +522,35 @@ public final class BaseRequest implements Request {
                 values[idx] = pair.getValue();
                 ++idx;
             }
-            return new BaseRequest.BaseURI(
+            return new BaseUri(
                 this.owner,
                 uri.build(values).toString()
             );
         }
+
         @Override
         public RequestURI path(final String segment) {
-            return new BaseRequest.BaseURI(
+            return new BaseUri(
                 this.owner,
                 UriBuilder.fromUri(this.address)
                     .path(segment)
                     .build().toString()
             );
         }
+
         @Override
         public RequestURI userInfo(final String info) {
-            return new BaseRequest.BaseURI(
+            return new BaseUri(
                 this.owner,
                 UriBuilder.fromUri(this.address)
                     .userInfo(info)
                     .build().toString()
             );
         }
+
         @Override
         public RequestURI port(final int num) {
-            return new BaseRequest.BaseURI(
+            return new BaseUri(
                 this.owner,
                 UriBuilder.fromUri(this.address)
                     .port(num).build().toString()
@@ -478,16 +560,10 @@ public final class BaseRequest implements Request {
 
     /**
      * Body of a request with a form that has attachments.
-     * @todo #87:1h Implement and unit test method formParam(String, Object)
-     *  Details <a href="http://stackoverflow.com/
-     *  questions/8659808/how-does-http-file-upload-work">here</a>
-     *  (second answer). <br> e.g. While FormEncodedBody.formParam adds
-     *  the param to a body with enctype application/x-www-form-urlencoded,
-     *  method MultipartFormBody.formParam should add it to a body with
-     *  enctype multipart/form-data.
+     *
+     * @since 1.17
      */
     private static final class MultipartFormBody implements RequestBody {
-
         /**
          * Content encapsulated.
          */
@@ -546,12 +622,53 @@ public final class BaseRequest implements Request {
 
         @Override
         public RequestBody set(final byte[] txt) {
-            return new BaseRequest.FormEncodedBody(this.owner, txt);
+            return new BaseRequest.MultipartFormBody(this.owner, txt);
         }
 
         @Override
         public RequestBody formParam(final String name, final Object value) {
-            throw new UnsupportedOperationException("Method not available");
+            final String boundary = this.boundary();
+            final String dashes = "--";
+            final byte[] last = Arrays.copyOfRange(
+                this.text,
+                Math.max(this.text.length - 2, 0),
+                this.text.length
+            );
+            final byte[] old;
+            if (Arrays.equals(last, dashes.getBytes(BaseRequest.CHARSET))) {
+                old = Arrays.copyOf(this.text, this.text.length - 2);
+            } else {
+                old = String.format("%s%s", dashes, boundary)
+                    .getBytes(BaseRequest.CHARSET);
+            }
+            final byte[] bytes;
+            if (value instanceof byte[]) {
+                bytes = (byte[]) value;
+            } else {
+                bytes = value.toString().getBytes(BaseRequest.CHARSET);
+            }
+            final byte[] disposition = Joiner.on("; ")
+                .join(
+                    "Content-Disposition: form-data",
+                    String.format("name=\"%s\"", name),
+                    "filename=\"binary\""
+                ).getBytes(BaseRequest.CHARSET);
+            final byte[] type = "Content-Type: application/octet-stream"
+                .getBytes(BaseRequest.CHARSET);
+            final byte[] footer = String.format(
+                "%s%s%s", dashes, boundary, dashes
+            ).getBytes(BaseRequest.CHARSET);
+            final MultipartBodyBuilder neww = new MultipartBodyBuilder()
+                .appendLine(old)
+                .appendLine(disposition)
+                .appendLine(type)
+                .appendLine(new byte[0])
+                .appendLine(bytes)
+                .append(footer);
+            return new BaseRequest.MultipartFormBody(
+                this.owner,
+                neww.asBytes()
+            );
         }
 
         @Override
@@ -562,11 +679,30 @@ public final class BaseRequest implements Request {
             }
             return body;
         }
+
+        /**
+         * Boundary value found.
+         * @return Boundary string.
+         */
+        private String boundary() {
+            for (final Map.Entry<String, String> hdr : this.owner.hdrs) {
+                if (hdr.getKey().equals(HttpHeaders.CONTENT_TYPE)
+                    && hdr.getValue().matches(".*;\\s*[bB]oundary=.*")) {
+                    return hdr.getValue()
+                        .replaceFirst(".*;\\s*[bB]oundary=", "");
+                }
+            }
+            throw new IllegalStateException(
+                "Content-Type: multipart/form-data requires boundary"
+            );
+        }
     }
 
     /**
      * Body of a request with a simple form.
      * (enctype application/x-www-form-urlencoded)
+     *
+     * @since 1.17
      */
     @Immutable
     @EqualsAndHashCode(of = "text")
@@ -585,31 +721,15 @@ public final class BaseRequest implements Request {
         private final transient BaseRequest owner;
 
         /**
-         * URL form character to prepend.
-         */
-        private final transient String prepend;
-
-        /**
          * Public ctor.
          * @param req Request
          * @param body Text to encapsulate
-         */
-        FormEncodedBody(final BaseRequest req, final byte[] body) {
-            this(req, body, "");
-        }
-
-        /**
-         * Public ctor.
-         * @param req Request
-         * @param body Text to encapsulate
-         * @param pre Character to prepend
          */
         FormEncodedBody(
-            final BaseRequest req, final byte[] body, final String pre
+            final BaseRequest req, final byte[] body
         ) {
             this.owner = req;
             this.text = body.clone();
-            this.prepend = pre;
         }
 
         @Override
@@ -655,10 +775,13 @@ public final class BaseRequest implements Request {
         @Override
         public RequestBody formParam(final String name, final Object value) {
             try {
+                final StringBuilder builder = new StringBuilder(this.get());
+                if (!builder.toString().isEmpty()) {
+                    builder.append('&');
+                }
                 return new BaseRequest.FormEncodedBody(
                     this.owner,
-                    new StringBuilder(this.get())
-                        .append(this.prepend)
+                    builder
                         .append(name)
                         .append('=')
                         .append(
@@ -668,8 +791,7 @@ public final class BaseRequest implements Request {
                             )
                         )
                         .toString()
-                        .getBytes(BaseRequest.CHARSET),
-                    "&"
+                        .getBytes(BaseRequest.CHARSET)
                 );
             } catch (final UnsupportedEncodingException ex) {
                 throw new IllegalStateException(ex);

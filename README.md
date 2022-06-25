@@ -8,12 +8,11 @@
 [![Build Status](https://travis-ci.org/jcabi/jcabi-http.svg?branch=master)](https://travis-ci.org/jcabi/jcabi-http)
 [![PDD status](http://www.0pdd.com/svg?name=jcabi/jcabi-http)](http://www.0pdd.com/p?name=jcabi/jcabi-http)
 [![Build status](https://ci.appveyor.com/api/projects/status/a87rxtuvvek647fs/branch/master?svg=true)](https://ci.appveyor.com/project/yegor256/jcabi-http/branch/master)
-[![Coverage Status](https://coveralls.io/repos/jcabi/jcabi-http/badge.svg?branch=__rultor&service=github)](https://coveralls.io/github/jcabi/jcabi-http?branch=__rultor)
+[![codecov](https://codecov.io/gh/jcabi/jcabi-http/branch/master/graph/badge.svg?token=TWye97XBJ8)](https://codecov.io/gh/jcabi/jcabi-http)
 [![Javadoc](https://javadoc.io/badge/com.jcabi/jcabi-http.svg)](http://www.javadoc.io/doc/com.jcabi/jcabi-http)
 
-[![jpeek report](http://i.jpeek.org/com.jcabi/jcabi-http/badge.svg)](http://i.jpeek.org/com.jcabi/jcabi-http/)
+[![jpeek report](https://i.jpeek.org/com.jcabi/jcabi-http/badge.svg)](https://i.jpeek.org/com.jcabi/jcabi-http/)
 [![Maven Central](https://maven-badges.herokuapp.com/maven-central/com.jcabi/jcabi-http/badge.svg)](https://maven-badges.herokuapp.com/maven-central/com.jcabi/jcabi-http)
-[![Dependencies](https://www.versioneye.com/user/projects/561a9e01a193340f32000eab/badge.svg?style=flat)](https://www.versioneye.com/user/projects/561a9e01a193340f32000eab)
 
 More details are here: [http.jcabi.com](https://http.jcabi.com/index.html).
 Also, read this blog post: [Fluent Java HTTP Client](http://www.yegor256.com/2014/04/11/jcabi-http-intro.html).
@@ -53,4 +52,4 @@ Please run Maven build before submitting a pull request:
 $ mvn clean install -Pqulice
 ```
 
-Make sure you're using Maven 3.2+ and Java7+.
+Make sure you're using Maven 3.6+ and Java 8+.

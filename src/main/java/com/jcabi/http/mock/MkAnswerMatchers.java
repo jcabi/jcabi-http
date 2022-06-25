@@ -1,4 +1,4 @@
-/**
+/*
  * Copyright (c) 2011-2017, jcabi.com
  * All rights reserved.
  *
@@ -33,9 +33,9 @@ import org.hamcrest.Matcher;
 
 /**
  * Convenient set of matchers for {@link MkAnswer}.
- * @author Carlos Miranda (miranda.cma@gmail.com)
- * @version $Id$
+ * @since 1.5
  */
+@SuppressWarnings("PMD.ProhibitPublicStaticMethods")
 public final class MkAnswerMatchers {
     /**
      * Private ctor.
@@ -61,7 +61,7 @@ public final class MkAnswerMatchers {
      * @return Matcher for checking the body of MkAnswer
      */
     public static Matcher<MkAnswer> hasBodyBytes(
-            final Matcher<byte[]> matcher) {
+        final Matcher<byte[]> matcher) {
         return new MkAnswerBodyBytesMatcher(matcher);
     }
 

@@ -1,4 +1,4 @@
-/**
+/*
  * Copyright (c) 2011-2017, jcabi.com
  * All rights reserved.
  *
@@ -40,8 +40,8 @@ import java.util.Map.Entry;
  * <p>
  * NOTE: This is not threadsafe and access to it should be synchronized.
  *
- * @version $Id$
- * @author Jakob Oswald (jakob.oswald@gmx.net)
+ * @since 1.17.1
+ * @checkstyle ParameterNumberCheck (50 lines)
  */
 public class MockWire implements Wire {
 
@@ -63,25 +63,19 @@ public class MockWire implements Wire {
         // Instantiated by a Request implementation, wire is ignored
     }
 
-    /**
-     * Overrides <code>Wire.send</code>.
-     *
-     * @checkstyle ParameterNumber (6 lines)
-     */
     @Override
     public final Response send(final Request req, final String home,
-            final String method,
-            final Collection<Entry<String, String>> headers,
-            final InputStream content, final int connect, final int read)
-            throws IOException {
+        final String method, final Collection<Entry<String, String>> headers,
+        final InputStream content, final int connect, final int read)
+        throws IOException {
         return mockDelegate.send(
-                req,
-                home,
-                method,
-                headers,
-                content,
-                connect,
-                read
+            req,
+            home,
+            method,
+            headers,
+            content,
+            connect,
+            read
         );
     }
 

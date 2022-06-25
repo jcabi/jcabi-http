@@ -1,4 +1,4 @@
-/**
+/*
  * Copyright (c) 2011-2017, jcabi.com
  * All rights reserved.
  *
@@ -29,59 +29,43 @@
  */
 package com.jcabi.http;
 
+import com.jcabi.http.mock.MkAnswer;
+import com.jcabi.http.mock.MkContainer;
+import com.jcabi.http.mock.MkGrizzlyContainer;
+import com.jcabi.http.mock.MkQuery;
 import com.jcabi.http.request.ApacheRequest;
-import com.jcabi.http.request.JdkRequest;
+import com.jcabi.http.response.JsonResponse;
 import com.jcabi.http.response.RestResponse;
 import com.jcabi.http.response.XmlResponse;
 import java.io.IOException;
 import java.net.HttpURLConnection;
 import java.net.URI;
-import java.util.Arrays;
-import java.util.Collection;
-import org.junit.Test;
-import org.junit.runner.RunWith;
-import org.junit.runners.Parameterized;
+import javax.json.Json;
+import org.hamcrest.MatcherAssert;
+import org.hamcrest.Matchers;
+import org.junit.jupiter.api.Assertions;
+import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.function.Executable;
+import org.junit.jupiter.params.ParameterizedTest;
 
 /**
  * Integration case for {@link com.jcabi.http.request.ApacheRequest}.
- * @author Yegor Bugayenko (yegor@tpc2.com)
- * @version $Id$
+ * @since 1.1
  */
-@RunWith(Parameterized.class)
-public final class RequestITCase {
-
-    /**
-     * Type of request.
-     */
-    private final transient Class<? extends Request> type;
-
-    /**
-     * Public ctor.
-     * @param req Request type
-     */
-    public RequestITCase(final Class<? extends Request> req) {
-        this.type = req;
-    }
-
-    /**
-     * Parameters.
-     * @return Array of args
-     */
-    @Parameterized.Parameters
-    public static Collection<Object[]> primeNumbers() {
-        return Arrays.asList(
-            new Object[]{ApacheRequest.class},
-            new Object[]{JdkRequest.class}
-        );
-    }
+@SuppressWarnings("PMD.AvoidDuplicateLiterals")
+final class RequestITCase extends RequestTestTemplate {
 
     /**
      * BaseRequest can fetch HTTP request and process HTTP response.
      * @throws Exception If something goes wrong inside
+     * @param type Request type
      */
-    @Test
-    public void sendsHttpRequestAndProcessesHttpResponse() throws Exception {
-        this.request(new URI("http://www.jare.io"))
+    @Values
+    @ParameterizedTest
+    void sendsHttpRequestAndProcessesHttpResponse(
+        final Class<? extends Request> type
+    ) throws Exception {
+        RequestTestTemplate.request(new URI("http://www.jare.io"), type)
             .fetch().as(RestResponse.class)
             .assertStatus(HttpURLConnection.HTTP_OK)
             .as(XmlResponse.class)
@@ -91,33 +75,108 @@ public final class RequestITCase {
     /**
      * BaseRequest can process not-OK response.
      * @throws Exception If something goes wrong inside
+     * @param type Request type
      */
-    @Test
-    public void processesNotOkHttpResponse() throws Exception {
-        this.request(new URI("http://www.jare.io/file-not-found.txt"))
+    @Values
+    @ParameterizedTest
+    void processesNotOkHttpResponse(
+        final Class<? extends Request> type
+    ) throws Exception {
+        RequestTestTemplate.request(new URI("http://www.jare.io/file-not-found.txt"), type)
             .fetch().as(RestResponse.class)
             .assertStatus(HttpURLConnection.HTTP_NOT_FOUND);
     }
 
     /**
      * BaseRequest can throw a correct exception on connection error.
-     * @throws Exception If something goes wrong inside
+     * @param type Request type
      */
-    @Test(expected = IOException.class)
-    public void continuesOnConnectionError() throws Exception {
-        this.request(new URI("http://localhost:6868/"))
-            .method(Request.GET)
-            .fetch();
+    @Values
+    @ParameterizedTest
+    void continuesOnConnectionError(final Class<? extends Request> type) {
+        Assertions.assertThrows(
+            IOException.class,
+            new Executable() {
+                @Override
+                public void execute() throws Throwable {
+                    RequestTestTemplate.request(
+                        new URI("http://localhost:6868/"),
+                        type
+                    ).method(Request.GET).fetch();
+                }
+            }
+        );
     }
 
-    /**
-     * Make a request.
-     * @param uri URI to start with
-     * @return Request
-     * @throws Exception If fails
-     */
-    private Request request(final URI uri) throws Exception {
-        return this.type.getDeclaredConstructor(URI.class).newInstance(uri);
+    @Test
+    void handlesGet() throws Exception {
+        try (MkContainer container = new MkGrizzlyContainer()
+            .next(
+                new MkAnswer.Simple(
+                    HttpURLConnection.HTTP_OK,
+                    Json.createObjectBuilder().toString()
+                )
+            ).start()) {
+            new ApacheRequest(container.home())
+                .method(Request.GET)
+                .fetch()
+                .as(RestResponse.class)
+                .assertStatus(HttpURLConnection.HTTP_OK);
+            final MkQuery query = container.take();
+            MatcherAssert.assertThat(
+                query.method(),
+                Matchers.is("GET")
+            );
+        }
     }
 
+    @Test
+    void handlesDelete() throws Exception {
+        try (MkContainer container = new MkGrizzlyContainer()
+            .next(
+                new MkAnswer.Simple(
+                    HttpURLConnection.HTTP_OK,
+                    Json.createObjectBuilder().toString()
+                )
+            ).start()) {
+            new ApacheRequest(container.home())
+                .method(Request.DELETE)
+                .fetch()
+                .as(RestResponse.class)
+                .assertStatus(HttpURLConnection.HTTP_OK);
+            MatcherAssert.assertThat(
+                container.take().method(),
+                Matchers.is("DELETE")
+            );
+        }
+    }
+
+    @Test
+    void handlesDeleteWithBody() throws Exception {
+        try (MkContainer container = new MkGrizzlyContainer()
+            .next(
+                new MkAnswer.Simple(
+                    HttpURLConnection.HTTP_OK,
+                    Json.createObjectBuilder().toString()
+                )
+            ).start()) {
+            new ApacheRequest(container.home())
+                .method(Request.DELETE)
+                .body().set("{}").back()
+                .fetch()
+                .as(RestResponse.class)
+                .assertStatus(HttpURLConnection.HTTP_OK)
+                .as(JsonResponse.class)
+                .json();
+            final MkQuery take = container.take();
+            MatcherAssert.assertThat(
+                take.method(),
+                Matchers.is("DELETE")
+            );
+            MatcherAssert.assertThat(
+                take.body(),
+                Matchers.is("{}")
+            );
+        }
+    }
 }

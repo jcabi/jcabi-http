@@ -1,4 +1,4 @@
-/**
+/*
  * Copyright (c) 2011-2017, jcabi.com
  * All rights reserved.
  *
@@ -39,12 +39,13 @@ import com.jcabi.immutable.Array;
 import com.jcabi.log.Logger;
 import java.io.ByteArrayInputStream;
 import java.io.File;
-import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
 import java.io.UnsupportedEncodingException;
 import java.net.URLEncoder;
+import java.nio.charset.StandardCharsets;
+import java.nio.file.Files;
 import java.util.AbstractMap;
 import java.util.Collection;
 import java.util.LinkedList;
@@ -62,15 +63,33 @@ import org.apache.commons.io.FileUtils;
 /**
  * Cache for FcWire.
  *
- * @author Yegor Bugayenko (yegor@tpc2.com)
- * @version $Id$
  * @since 1.16
- * @checkstyle MultipleStringLiteralsCheck (500 lines)
  */
 @Immutable
 @ToString
 @EqualsAndHashCode
+@SuppressWarnings("PMD.ExcessiveImports")
 final class FcCache {
+
+    /**
+     * Body key.
+     */
+    private static final String BODY = "body";
+
+    /**
+     * Status key.
+     */
+    private static final String STATUS = "status";
+
+    /**
+     * Reason key.
+     */
+    private static final String REASON = "reason";
+
+    /**
+     * Headers key.
+     */
+    private static final String HEADERS = "headers";
 
     /**
      * Directory to keep files in.
@@ -165,7 +184,7 @@ final class FcCache {
             )
         ).readObject();
         final List<Map.Entry<String, String>> map = new LinkedList<>();
-        final JsonObject headers = json.getJsonObject("headers");
+        final JsonObject headers = json.getJsonObject(FcCache.HEADERS);
         for (final String name : headers.keySet()) {
             for (final JsonString value
                 : headers.getJsonArray(name).getValuesAs(JsonString.class)) {
@@ -175,10 +194,10 @@ final class FcCache {
         Logger.debug(this, "cache loaded from %s", file);
         return new DefaultResponse(
             req,
-            json.getInt("status"),
-            json.getString("reason"),
+            json.getInt(FcCache.STATUS),
+            json.getString(FcCache.REASON),
             new Array<>(map),
-            json.getString("body").getBytes("UTF-8")
+            json.getString(FcCache.BODY).getBytes(StandardCharsets.UTF_8)
         );
     }
 
@@ -192,8 +211,8 @@ final class FcCache {
     private Response saved(final Response response, final File file)
         throws IOException {
         final JsonObjectBuilder json = Json.createObjectBuilder();
-        json.add("status", response.status());
-        json.add("reason", response.reason());
+        json.add(FcCache.STATUS, response.status());
+        json.add(FcCache.REASON, response.reason());
         final JsonObjectBuilder headers = Json.createObjectBuilder();
         for (final Map.Entry<String, List<String>> pair
             : response.headers().entrySet()) {
@@ -203,12 +222,12 @@ final class FcCache {
             }
             headers.add(pair.getKey(), array);
         }
-        json.add("headers", headers);
-        json.add("body", response.body());
+        json.add(FcCache.HEADERS, headers);
+        json.add(FcCache.BODY, response.body());
         if (file.getParentFile().mkdirs()) {
             Logger.debug(this, "directory created for %s", file);
         }
-        try (final OutputStream out = new FileOutputStream(file)) {
+        try (OutputStream out = Files.newOutputStream(file.toPath())) {
             Json.createWriter(out).write(json.build());
         }
         Logger.debug(this, "cache saved into %s", file);
@@ -224,7 +243,7 @@ final class FcCache {
         final String path;
         try {
             path = Joiner.on("/").join(
-                URLEncoder.encode(label, "UTF-8")
+                URLEncoder.encode(label, StandardCharsets.UTF_8.toString())
                     .replaceAll("_", "__")
                     .replaceAll("\\+", "_")
                     .replaceAll("%", "_")

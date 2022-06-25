@@ -1,4 +1,4 @@
-/**
+/*
  * Copyright (c) 2011-2017, jcabi.com
  * All rights reserved.
  *
@@ -42,8 +42,6 @@ import java.util.concurrent.ConcurrentHashMap;
 /**
  * This is the base class to handle http responses with 304 state.
  *
- * @author Ievgen Degtiarenko (ievgen.degtiarenko@gmail.com)
- * @version $Id$
  * @since 2.0
  */
 public abstract class AbstractHeaderBasedCachingWire implements Wire {
@@ -206,6 +204,7 @@ public abstract class AbstractHeaderBasedCachingWire implements Wire {
         );
         return map.entrySet();
     }
+
     /**
      * Check if the request send through this Wire has the cmch header.
      * @param headers The headers of the request.
@@ -214,13 +213,13 @@ public abstract class AbstractHeaderBasedCachingWire implements Wire {
     private boolean requestHasCmcHeader(
         final Collection<Map.Entry<String, String>> headers
     ) {
-        boolean requestHasCmch = false;
+        boolean result = false;
         for (final Map.Entry<String, String> header : headers) {
             if (header.getKey().equals(this.cmch)) {
-                requestHasCmch = true;
+                result = true;
                 break;
             }
         }
-        return requestHasCmch;
+        return result;
     }
 }

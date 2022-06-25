@@ -1,4 +1,4 @@
-/**
+/*
  * Copyright (c) 2011-2017, jcabi.com
  * All rights reserved.
  *
@@ -53,10 +53,8 @@ import lombok.EqualsAndHashCode;
  *
  * <p>The class is immutable and thread-safe.
  *
- * @author Yegor Bugayenko (yegor@tpc2.com)
- * @version $Id$
  * @since 0.9
- * @checkstyle ClassDataAbstractionCoupling (500 lines)
+ * // @checkstyle ClassDataAbstractionCoupling (500 lines)
  */
 @Immutable
 @EqualsAndHashCode(of = { "base", "code", "phrase", "hdrs", "content" })
@@ -111,6 +109,7 @@ public final class FakeRequest implements Request {
             Collections.<Map.Entry<String, String>>emptyList(),
             FakeRequest.EMPTY_BYTE_ARRAY
         );
+        //@checkstyle ParameterNumber (10 lines)
     }
 
     /**
@@ -119,7 +118,6 @@ public final class FakeRequest implements Request {
      * @param reason HTTP reason
      * @param headers HTTP headers
      * @param body HTTP body
-     * @checkstyle ParameterNumber (10 lines)
      */
     public FakeRequest(final int status, final String reason,
         final Collection<Map.Entry<String, String>> headers,

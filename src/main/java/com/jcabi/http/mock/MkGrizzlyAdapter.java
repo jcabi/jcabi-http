@@ -1,4 +1,4 @@
-/**
+/*
  * Copyright (c) 2011-2017, jcabi.com
  * All rights reserved.
  *
@@ -30,9 +30,6 @@
 package com.jcabi.http.mock;
 
 import com.jcabi.log.Logger;
-import com.sun.grizzly.tcp.http11.GrizzlyAdapter;
-import com.sun.grizzly.tcp.http11.GrizzlyRequest;
-import com.sun.grizzly.tcp.http11.GrizzlyResponse;
 import java.io.OutputStreamWriter;
 import java.io.PrintWriter;
 import java.io.UnsupportedEncodingException;
@@ -45,18 +42,21 @@ import java.util.Queue;
 import java.util.concurrent.ConcurrentLinkedQueue;
 import java.util.concurrent.atomic.AtomicInteger;
 import lombok.EqualsAndHashCode;
+import lombok.RequiredArgsConstructor;
 import org.apache.http.HttpHeaders;
+import org.glassfish.grizzly.http.server.HttpHandler;
+import org.glassfish.grizzly.http.server.Request;
+import org.glassfish.grizzly.http.server.Response;
 import org.hamcrest.Matcher;
 
 /**
  * Mocker of Java Servlet container.
  *
- * @author Yegor Bugayenko (yegor@tpc2.com)
- * @version $Id$
  * @since 0.10
+ * @checkstyle ClassDataAbstractionCouplingCheck (300 lines)
  */
 @SuppressWarnings("PMD.TooManyMethods")
-final class MkGrizzlyAdapter extends GrizzlyAdapter {
+final class MkGrizzlyAdapter extends HttpHandler {
 
     /**
      * The encoding to use.
@@ -67,13 +67,13 @@ final class MkGrizzlyAdapter extends GrizzlyAdapter {
      * Queries received.
      */
     private final transient Queue<QueryWithAnswer> queue =
-        new ConcurrentLinkedQueue<QueryWithAnswer>();
+        new ConcurrentLinkedQueue<>();
 
     /**
      * Answers to give conditionally.
      */
     private final transient Queue<Conditional> conditionals =
-        new ConcurrentLinkedQueue<Conditional>();
+        new ConcurrentLinkedQueue<>();
 
     // @checkstyle ExecutableStatementCount (55 lines)
     @Override
@@ -85,8 +85,10 @@ final class MkGrizzlyAdapter extends GrizzlyAdapter {
                 "rawtypes"
             }
         )
-    public void service(final GrizzlyRequest request,
-        final GrizzlyResponse response) {
+    public void service(
+        final Request request,
+        final Response response
+    ) {
         try {
             final MkQuery query = new GrizzlyQuery(request);
             final Iterator<Conditional> iter = this.conditionals.iterator();
@@ -113,7 +115,7 @@ final class MkGrizzlyAdapter extends GrizzlyAdapter {
                     );
                     response.setStatus(answer.status());
                     final byte[] body = answer.bodyBytes();
-                    response.getStream().write(body);
+                    response.createOutputStream().write(body);
                     response.setContentLength(body.length);
                     if (cond.decrement() == 0) {
                         iter.remove();
@@ -138,8 +140,10 @@ final class MkGrizzlyAdapter extends GrizzlyAdapter {
      * @param count The number of times this answer can be returned for matching
      *  requests
      */
-    public void next(final MkAnswer answer, final Matcher<MkQuery> query,
-        final int count) {
+    public void next(
+        final MkAnswer answer, final Matcher<MkQuery> query,
+        final int count
+    ) {
         this.conditionals.add(new Conditional(answer, query, count));
     }
 
@@ -159,21 +163,7 @@ final class MkGrizzlyAdapter extends GrizzlyAdapter {
      * @return Request received satisfying the matcher
      */
     public MkQuery take(final Matcher<MkAnswer> matcher) {
-        MkQuery result = null;
-        final Iterator<QueryWithAnswer> iter = this.queue.iterator();
-        while (iter.hasNext()) {
-            final QueryWithAnswer candidate = iter.next();
-            if (matcher.matches(candidate.answer())) {
-                result = candidate.query();
-                iter.remove();
-                break;
-            }
-        }
-        if (result == null) {
-            // @checkstyle MultipleStringLiterals (1 line)
-            throw new NoSuchElementException("No matching results found");
-        }
-        return result;
+        return this.takeMatching(matcher).next();
     }
 
     /**
@@ -185,17 +175,10 @@ final class MkGrizzlyAdapter extends GrizzlyAdapter {
      *  oldest to newest.
      */
     public Collection<MkQuery> takeAll(final Matcher<MkAnswer> matcher) {
-        final Collection<MkQuery> results = new LinkedList<MkQuery>();
-        final Iterator<QueryWithAnswer> iter = this.queue.iterator();
+        final Collection<MkQuery> results = new LinkedList<>();
+        final Iterator<MkQuery> iter = this.takeMatching(matcher);
         while (iter.hasNext()) {
-            final QueryWithAnswer candidate = iter.next();
-            if (matcher.matches(candidate.answer())) {
-                results.add(candidate.query());
-                iter.remove();
-            }
-        }
-        if (results.isEmpty()) {
-            throw new NoSuchElementException("No matching results found");
+            results.add(iter.next());
         }
         return results;
     }
@@ -209,18 +192,36 @@ final class MkGrizzlyAdapter extends GrizzlyAdapter {
     }
 
     /**
+     * Get the all requests received satisfying the given matcher.
+     * ({@link java.util.NoSuchElementException} if no elements satisfy the
+     * condition).
+     * @param matcher The matcher specifying the condition
+     * @return Iterator over all requests
+     */
+    private Iterator<MkQuery> takeMatching(final Matcher<MkAnswer> matcher) {
+        final Iterator<QueryWithAnswer> iter = this.queue.iterator();
+        final Iterator<MkQuery> result = new MkQueryIterator(iter, matcher);
+        if (!result.hasNext()) {
+            throw new NoSuchElementException("No matching results found");
+        }
+        return result;
+    }
+
+    /**
      * Notify this response about failure.
      * @param response The response to notify
      * @param failure The failure just happened
      */
-    private static void fail(final GrizzlyResponse<?> response,
-        final Throwable failure) {
+    private static void fail(
+        final Response response,
+        final Throwable failure
+    ) {
         response.setStatus(HttpURLConnection.HTTP_INTERNAL_ERROR);
         final PrintWriter writer;
         try {
             writer = new PrintWriter(
                 new OutputStreamWriter(
-                    response.getStream(),
+                    response.createOutputStream(),
                     MkGrizzlyAdapter.ENCODING
                 )
             );
@@ -236,39 +237,41 @@ final class MkGrizzlyAdapter extends GrizzlyAdapter {
 
     /**
      * Answer with condition.
+     *
+     * @since 1.5
      */
-    @EqualsAndHashCode(of = { "answr", "condition" })
+    @EqualsAndHashCode(of = {"answr", "condition"})
     private static final class Conditional {
         /**
          * The MkAnswer.
          */
         private final transient MkAnswer answr;
+
         /**
          * Condition for this answer.
          */
         private final transient Matcher<MkQuery> condition;
+
         /**
          * The number of times the answer is expected to appear.
          */
         private final transient AtomicInteger count;
+
         /**
          * Ctor.
          * @param ans The answer.
          * @param matcher The matcher.
          * @param times Number of times the answer should appear.
          */
-        Conditional(final MkAnswer ans, final Matcher<MkQuery> matcher,
-            final int times) {
+        Conditional(
+            final MkAnswer ans, final Matcher<MkQuery> matcher,
+            final int times
+        ) {
             this.answr = ans;
             this.condition = matcher;
-            if (times < 1) {
-                throw new IllegalArgumentException(
-                    "Answer must be returned at least once."
-                );
-            } else {
-                this.count = new AtomicInteger(times);
-            }
+            this.count = Conditional.positiveAtomic(times);
         }
+
         /**
          * Get the answer.
          * @return The answer
@@ -276,6 +279,7 @@ final class MkGrizzlyAdapter extends GrizzlyAdapter {
         public MkAnswer answer() {
             return this.answr;
         }
+
         /**
          * Does the query match the answer?
          * @param query The query to match
@@ -284,6 +288,7 @@ final class MkGrizzlyAdapter extends GrizzlyAdapter {
         public boolean matches(final MkQuery query) {
             return this.condition.matches(query);
         }
+
         /**
          * Decrement the count for this conditional.
          * @return The updated count
@@ -291,21 +296,40 @@ final class MkGrizzlyAdapter extends GrizzlyAdapter {
         public int decrement() {
             return this.count.decrementAndGet();
         }
+
+        /**
+         * Check if positive and convert to atomic.
+         * @param num Number
+         * @return Positive atomic integer
+         */
+        private static AtomicInteger positiveAtomic(final int num) {
+            if (num < 1) {
+                throw new IllegalArgumentException(
+                    "Answer must be returned at least once."
+                );
+            }
+            return new AtomicInteger(num);
+        }
+
     }
 
     /**
      * Query with answer.
+     *
+     * @since 1.5
      */
-    @EqualsAndHashCode(of = { "answr", "que" })
+    @EqualsAndHashCode(of = {"answr", "que"})
     private static final class QueryWithAnswer {
         /**
          * The answer.
          */
         private final transient MkAnswer answr;
+
         /**
          * The query.
          */
         private final transient MkQuery que;
+
         /**
          * Ctor.
          * @param qry The query
@@ -315,6 +339,7 @@ final class MkGrizzlyAdapter extends GrizzlyAdapter {
             this.answr = ans;
             this.que = qry;
         }
+
         /**
          * Get the query.
          * @return The query.
@@ -322,12 +347,63 @@ final class MkGrizzlyAdapter extends GrizzlyAdapter {
         public MkQuery query() {
             return this.que;
         }
+
         /**
          * Get the answer.
          * @return Answer
          */
         public MkAnswer answer() {
             return this.answr;
+        }
+    }
+
+    /**
+     * Iterator over matching answers.
+     *
+     * @since 1.17.3
+     */
+    @RequiredArgsConstructor
+    private static final class MkQueryIterator implements Iterator<MkQuery> {
+
+        /**
+         * Queue of results.
+         */
+        private final Queue<MkQuery> results = new LinkedList<>();
+
+        /**
+         * Original iterator.
+         */
+        private final Iterator<QueryWithAnswer> iter;
+
+        /**
+         * Matcher.
+         */
+        private final Matcher<MkAnswer> matcher;
+
+        @Override
+        public boolean hasNext() {
+            while (this.iter.hasNext()) {
+                final QueryWithAnswer candidate = this.iter.next();
+                if (this.matcher.matches(candidate.answer())) {
+                    this.results.add(candidate.query());
+                    this.iter.remove();
+                    break;
+                }
+            }
+            return !this.results.isEmpty();
+        }
+
+        @Override
+        public MkQuery next() {
+            if (this.results.isEmpty()) {
+                throw new NoSuchElementException();
+            }
+            return this.results.remove();
+        }
+
+        @Override
+        public void remove() {
+            this.results.remove();
         }
     }
 }

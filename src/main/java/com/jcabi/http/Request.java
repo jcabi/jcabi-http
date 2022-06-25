@@ -1,4 +1,4 @@
-/**
+/*
  * Copyright (c) 2011-2017, jcabi.com
  * All rights reserved.
  *
@@ -71,8 +71,6 @@ import java.io.InputStream;
  * possible HTTP methods (JdkRequest doesn't support {@code PATCH},
  * for example).
  *
- * @author Yegor Bugayenko (yegor@tpc2.com)
- * @version $Id$
  * @since 0.8
  * @see com.jcabi.http.request.JdkRequest
  * @see com.jcabi.http.request.ApacheRequest

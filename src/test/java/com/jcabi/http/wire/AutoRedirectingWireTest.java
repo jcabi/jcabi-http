@@ -1,4 +1,4 @@
-/**
+/*
  * Copyright (c) 2011-2017, jcabi.com
  * All rights reserved.
  *
@@ -40,13 +40,12 @@ import javax.ws.rs.core.HttpHeaders;
 import org.apache.http.HttpStatus;
 import org.hamcrest.MatcherAssert;
 import org.hamcrest.Matchers;
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
 
 /**
  * Test case for {@link AutoRedirectingWire}.
  *
- * @author Carlos Miranda (miranda.cma@gmail.com)
- * @version $Id$
+ * @since 1.7
  */
 public final class AutoRedirectingWireTest {
 
@@ -57,7 +56,7 @@ public final class AutoRedirectingWireTest {
      * @throws Exception If something goes wrong inside
      */
     @Test
-    public void retriesForHttpRedirectStatus() throws Exception {
+    void retriesForHttpRedirectStatus() throws Exception {
         final MkContainer container = new MkGrizzlyContainer().next(
             new MkAnswer.Simple(HttpStatus.SC_MOVED_TEMPORARILY, "")
                 // @checkstyle MultipleStringLiteralsCheck (1 line)
@@ -86,7 +85,7 @@ public final class AutoRedirectingWireTest {
      * @throws Exception If something goes wrong inside
      */
     @Test
-    public void returnsValidResponseAfterRetry() throws Exception {
+    void returnsValidResponseAfterRetry() throws Exception {
         final String body = "success";
         final MkContainer container = new MkGrizzlyContainer().next(
             new MkAnswer.Simple(HttpStatus.SC_MOVED_TEMPORARILY, "")

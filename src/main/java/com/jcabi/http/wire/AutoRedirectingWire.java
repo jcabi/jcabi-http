@@ -1,4 +1,4 @@
-/**
+/*
  * Copyright (c) 2011-2017, jcabi.com
  * All rights reserved.
  *
@@ -65,9 +65,6 @@ import lombok.ToString;
  *
  * <p>The class is immutable and thread-safe.
  *
- * @author Carlos Miranda (miranda.cma@gmail.com)
- * @author Yegor Bugayenko (yegor@tpc2.com)
- * @version $Id$
  * @since 1.6
  */
 @Immutable
@@ -128,7 +125,7 @@ public final class AutoRedirectingWire implements Wire {
             }
             URI location = URI.create(locations.get(0));
             if (!location.isAbsolute()) {
-                location = uri.resolve(uri);
+                location = uri.resolve(location);
             }
             response = this.origin.send(
                 req, location.toString(),

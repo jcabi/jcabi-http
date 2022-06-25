@@ -1,4 +1,4 @@
-/**
+/*
  * Copyright (c) 2011-2017, jcabi.com
  * All rights reserved.
  *
@@ -39,8 +39,6 @@
  * {@link JdkRequest} doesn't support {@code PATCH} HTTP method due to
  * a bug in HttpURLConnection.
  *
- * @author Yegor Bugayenko (yegor@tpc2.com)
- * @version $Id$
  * @since 0.10
  */
 package com.jcabi.http.request;

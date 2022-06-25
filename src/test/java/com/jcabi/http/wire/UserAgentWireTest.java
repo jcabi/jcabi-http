@@ -1,4 +1,4 @@
-/**
+/*
  * Copyright (c) 2011-2017, jcabi.com
  * All rights reserved.
  *
@@ -38,21 +38,16 @@ import java.net.HttpURLConnection;
 import javax.ws.rs.core.HttpHeaders;
 import org.hamcrest.MatcherAssert;
 import org.hamcrest.Matchers;
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
 
 /**
  * Test case for {@link UserAgentWire}.
- * @author Yegor Bugayenko (yegor@tpc2.com)
- * @version $Id$
+ * @since 1.2
  */
-public final class UserAgentWireTest {
+final class UserAgentWireTest {
 
-    /**
-     * UserAgentWire can add User-Agent HTTP header.
-     * @throws Exception If something goes wrong inside
-     */
     @Test
-    public void addsUserAgentHeader() throws Exception {
+    void addsDefaultUserAgentHeader() throws Exception {
         final MkContainer container = new MkGrizzlyContainer().next(
             new MkAnswer.Simple("")
         ).start();
@@ -63,8 +58,36 @@ public final class UserAgentWireTest {
             .assertStatus(HttpURLConnection.HTTP_OK);
         container.stop();
         MatcherAssert.assertThat(
+            "must add default User-Agent HTTP header",
             container.take().headers(),
-            Matchers.hasKey(HttpHeaders.USER_AGENT)
+            Matchers.hasEntry(
+                Matchers.is(HttpHeaders.USER_AGENT),
+                Matchers.contains(
+                    Matchers.startsWith("jcabi-")
+                )
+            )
+        );
+    }
+
+    @Test
+    void addsCustomUserAgentHeader() throws Exception {
+        final MkContainer container = new MkGrizzlyContainer().next(
+            new MkAnswer.Simple("")
+        ).start();
+        final String agent = "Mozilla/5.0";
+        new JdkRequest(container.home())
+            .through(UserAgentWire.class, agent)
+            .fetch()
+            .as(RestResponse.class)
+            .assertStatus(HttpURLConnection.HTTP_OK);
+        container.stop();
+        MatcherAssert.assertThat(
+            "must add custom User-Agent HTTP header",
+            container.take().headers(),
+            Matchers.hasEntry(
+                Matchers.is(HttpHeaders.USER_AGENT),
+                Matchers.contains(agent)
+            )
         );
     }
 

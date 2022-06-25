@@ -1,4 +1,4 @@
-/**
+/*
  * Copyright (c) 2011-2017, jcabi.com
  * All rights reserved.
  *
@@ -36,12 +36,11 @@ import org.hamcrest.Matcher;
 import org.hamcrest.TypeSafeMatcher;
 
 /**
- * Matcher for checking {@link MkAnswer#header()} contents.
- * @author Carlos Miranda (miranda.cma@gmail.com)
- * @version $Id$
+ * Matcher for checking {@link MkAnswer#headers()} contents.
+ * @since 1.5
  */
 @ToString
-@EqualsAndHashCode(callSuper = false, of = { "header", "matcher" })
+@EqualsAndHashCode(callSuper = false, of = {"header", "matcher"})
 final class MkAnswerHeaderMatcher extends TypeSafeMatcher<MkAnswer> {
     /**
      * The header to match.
@@ -78,5 +77,5 @@ final class MkAnswerHeaderMatcher extends TypeSafeMatcher<MkAnswer> {
     public boolean matchesSafely(final MkAnswer item) {
         return item.headers().containsKey(this.header)
             && this.matcher.matches(item.headers().get(this.header));
-    };
+    }
 }

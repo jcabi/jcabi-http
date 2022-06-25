@@ -1,4 +1,4 @@
-/**
+/*
  * Copyright (c) 2011-2017, jcabi.com
  * All rights reserved.
  *
@@ -40,12 +40,11 @@ import java.net.HttpURLConnection;
 import javax.ws.rs.core.HttpHeaders;
 import org.hamcrest.MatcherAssert;
 import org.hamcrest.Matchers;
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
 
 /**
  * Test case for {@link VerboseWire}.
- * @author Yegor Bugayenko (yegor@tpc2.com)
- * @version $Id$
+ * @since 1.0
  */
 public final class VerboseWireTest {
 
@@ -54,7 +53,7 @@ public final class VerboseWireTest {
      * @throws Exception If something goes wrong inside
      */
     @Test
-    public void logsRequest() throws Exception {
+    void logsRequest() throws Exception {
         final MkContainer container = new MkGrizzlyContainer().next(
             new MkAnswer.Simple("")
         ).start();
@@ -72,7 +71,7 @@ public final class VerboseWireTest {
      * @throws Exception If something goes wrong inside
      */
     @Test
-    public void logsRequestBody() throws Exception {
+    void logsRequestBody() throws Exception {
         final MkContainer container = new MkGrizzlyContainer().next(
             new MkAnswer.Simple("")
         ).start();

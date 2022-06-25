@@ -1,4 +1,4 @@
-/**
+/*
  * Copyright (c) 2011-2017, jcabi.com
  * All rights reserved.
  *
@@ -37,8 +37,6 @@ import lombok.ToString;
 /**
  * Immutable HTTP header.
  *
- * @author Yegor Bugayenko (yegor@tpc2.com)
- * @version $Id$
  * @since 0.10
  */
 @Immutable
@@ -86,6 +84,7 @@ public final class ImmutableHeader implements Map.Entry<String, String> {
      * @param key The key to normalize
      * @return Normalized key
      */
+    @SuppressWarnings("PMD.ProhibitPublicStaticMethods")
     public static String normalize(final String key) {
         final char[] chars = key.toCharArray();
         chars[0] = ImmutableHeader.upper(chars[0]);

@@ -1,4 +1,4 @@
-/**
+/*
  * Copyright (c) 2011-2017, jcabi.com
  * All rights reserved.
  *
@@ -30,7 +30,7 @@
 package com.jcabi.http;
 
 import com.jcabi.aspects.Immutable;
-import java.nio.charset.Charset;
+import java.nio.charset.StandardCharsets;
 import java.util.Map;
 import javax.json.JsonStructure;
 
@@ -53,8 +53,6 @@ import javax.json.JsonStructure;
  *
  * <p>Instances of this interface are immutable and thread-safe.
  *
- * @author Yegor Bugayenko (yegor@tpc2.com)
- * @version $Id$
  * @since 0.8
  */
 @Immutable
@@ -112,18 +110,18 @@ public interface RequestBody {
 
     /**
      * Printer of byte array.
+     *
+     * @since 1.0
      */
     @Immutable
     final class Printable {
-        /**
-         * The Charset to use.
-         */
-        private static final Charset CHARSET = Charset.forName("UTF-8");
+
         /**
          * Byte array.
          */
         @Immutable.Array
         private final transient byte[] array;
+
         /**
          * Ctor.
          * @param bytes Bytes to encapsulate
@@ -131,11 +129,12 @@ public interface RequestBody {
         public Printable(final byte[] bytes) {
             this.array = bytes;
         }
+
         @Override
         public String toString() {
             final StringBuilder text = new StringBuilder(0);
             final char[] chrs = new String(
-                this.array, RequestBody.Printable.CHARSET
+                this.array, StandardCharsets.UTF_8
             ).toCharArray();
             if (chrs.length > 0) {
                 for (final char chr : chrs) {

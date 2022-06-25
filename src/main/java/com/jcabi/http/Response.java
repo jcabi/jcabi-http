@@ -1,4 +1,4 @@
-/**
+/*
  * Copyright (c) 2011-2017, jcabi.com
  * All rights reserved.
  *
@@ -44,8 +44,6 @@ import java.util.Map;
  *
  * <p>Instances of this interface are immutable and thread-safe.
  *
- * @author Yegor Bugayenko (yegor@tpc2.com)
- * @version $Id$
  * @since 0.8
  * @see com.jcabi.http.request.JdkRequest
  */
@@ -103,9 +101,9 @@ public interface Response {
      * @param type Type to use
      * @param <T> Type to use
      * @return New response
-     * @checkstyle MethodName (3 lines)
      */
     @SuppressWarnings("PMD.ShortMethodName")
+    //@checkstyle MethodName (1 lines)
     <T extends Response> T as(Class<T> type);
 
 }

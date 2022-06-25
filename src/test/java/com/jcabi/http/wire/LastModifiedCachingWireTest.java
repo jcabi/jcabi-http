@@ -1,4 +1,4 @@
-/**
+/*
  * Copyright (c) 2011-2017, jcabi.com
  * All rights reserved.
  *
@@ -47,12 +47,10 @@ import org.hamcrest.MatcherAssert;
 import org.hamcrest.Matchers;
 import org.hamcrest.TypeSafeMatcher;
 import org.hamcrest.core.IsAnything;
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
 
 /**
  * Test case for {@link LastModifiedCachingWire}.
- * @author Igor Piddubnyi (igor.piddubnyi@gmail.com)
- * @version $Id$
  * @since 1.15
  */
 public final class LastModifiedCachingWireTest {
@@ -80,7 +78,7 @@ public final class LastModifiedCachingWireTest {
      * @throws Exception If fails
      */
     @Test
-    public void requestWithoutHeaderPassed() throws Exception {
+    void requestWithoutHeaderPassed() throws Exception {
         final MkContainer container = new MkGrizzlyContainer()
             .next(
                 new MkAnswer.Simple(
@@ -104,7 +102,7 @@ public final class LastModifiedCachingWireTest {
      * @throws Exception If fails
      */
     @Test
-    public void cachesGetRequest() throws Exception {
+    void cachesGetRequest() throws Exception {
         final Map<String, String> headers = Collections.singletonMap(
             HttpHeaders.LAST_MODIFIED,
             "Wed, 15 Nov 1995 04:58:08 GMT"
@@ -126,11 +124,13 @@ public final class LastModifiedCachingWireTest {
             final Request req = new JdkRequest(container.home())
                 .through(LastModifiedCachingWire.class);
             for (int idx = 0; idx < Tv.TEN; ++idx) {
-                req.fetch().as(RestResponse.class)
+                req
+                    .fetch()
+                    .as(RestResponse.class)
                     .assertStatus(HttpURLConnection.HTTP_OK)
                     .assertBody(
                         Matchers.equalTo(LastModifiedCachingWireTest.BODY)
-                );
+                    );
             }
             MatcherAssert.assertThat(
                 container.queries(), Matchers.equalTo(Tv.TEN)
@@ -148,19 +148,18 @@ public final class LastModifiedCachingWireTest {
      * @throws Exception If fails
      */
     @Test
-    public void doesNotCacheGetRequestIfTheLastModifiedHeaderIsMissing()
+    void doesNotCacheGetRequestIfTheLastModifiedHeaderIsMissing()
         throws Exception {
         final String first = "Body 1";
         final String second = "Body 2";
         final String third = "Body 3";
-        final Map<String, String> noHeaders = Collections.emptyMap();
         final MkContainer container = new MkGrizzlyContainer()
             .next(
                 new MkAnswer.Simple(
                     HttpURLConnection.HTTP_OK,
                     Collections.singletonMap(
-                            HttpHeaders.LAST_MODIFIED,
-                            "Wed, 15 Nov 1995 05:58:08 GMT"
+                        HttpHeaders.LAST_MODIFIED,
+                        "Wed, 15 Nov 1995 05:58:08 GMT"
                     ).entrySet(),
                     first.getBytes()
                 ),
@@ -169,7 +168,7 @@ public final class LastModifiedCachingWireTest {
             .next(
                 new MkAnswer.Simple(
                     HttpURLConnection.HTTP_OK,
-                    noHeaders.entrySet(),
+                    Collections.<Map.Entry<String, String>>emptySet(),
                     second.getBytes()
                 ),
                 queryContainsIfModifiedSinceHeader()
@@ -177,7 +176,7 @@ public final class LastModifiedCachingWireTest {
             .next(
                 new MkAnswer.Simple(
                     HttpURLConnection.HTTP_OK,
-                    noHeaders.entrySet(),
+                    Collections.<Map.Entry<String, String>>emptySet(),
                     third.getBytes()
                 ),
                 Matchers.not(queryContainsIfModifiedSinceHeader())
@@ -187,19 +186,13 @@ public final class LastModifiedCachingWireTest {
                 .through(LastModifiedCachingWire.class);
             req.fetch().as(RestResponse.class)
                 .assertStatus(HttpURLConnection.HTTP_OK)
-                .assertBody(
-                    Matchers.equalTo(first)
-            );
+                .assertBody(Matchers.equalTo(first));
             req.fetch().as(RestResponse.class)
                 .assertStatus(HttpURLConnection.HTTP_OK)
-                .assertBody(
-                    Matchers.equalTo(second)
-            );
+                .assertBody(Matchers.equalTo(second));
             req.fetch().as(RestResponse.class)
                 .assertStatus(HttpURLConnection.HTTP_OK)
-                .assertBody(
-                    Matchers.equalTo(third)
-            );
+                .assertBody(Matchers.equalTo(third));
         } finally {
             container.stop();
         }
@@ -220,7 +213,7 @@ public final class LastModifiedCachingWireTest {
      * @throws Exception If fails
      */
     @Test
-    public void doesNotEvictCacheOnNonOK()
+    void doesNotEvictCacheOnNonOk()
         throws Exception {
         final String body = "Body";
         final MkContainer container = new MkGrizzlyContainer()
@@ -246,18 +239,24 @@ public final class LastModifiedCachingWireTest {
         try {
             final Request req = new JdkRequest(container.home())
                 .through(LastModifiedCachingWire.class);
-            req.fetch().as(RestResponse.class)
+            req
+                .fetch()
+                .as(RestResponse.class)
                 .assertStatus(HttpURLConnection.HTTP_OK)
                 .assertBody(
                     Matchers.equalTo(body)
-            );
-            req.fetch().as(RestResponse.class)
+                );
+            req
+                .fetch()
+                .as(RestResponse.class)
                 .assertStatus(HttpURLConnection.HTTP_NOT_FOUND);
-            req.fetch().as(RestResponse.class)
+            req
+                .fetch()
+                .as(RestResponse.class)
                 .assertStatus(HttpURLConnection.HTTP_OK)
                 .assertBody(
                     Matchers.equalTo(body)
-            );
+                );
         } finally {
             container.stop();
         }
@@ -268,7 +267,7 @@ public final class LastModifiedCachingWireTest {
      * @throws Exception If fails
      */
     @Test
-    public void cacheUpdateNewerResponse() throws Exception {
+    void cacheUpdateNewerResponse() throws Exception {
         final Map<String, String> headers = Collections.singletonMap(
             HttpHeaders.LAST_MODIFIED,
             "Wed, 16 Nov 1995 04:58:08 GMT"
@@ -295,20 +294,24 @@ public final class LastModifiedCachingWireTest {
             final Request req = new JdkRequest(container.home())
                 .through(LastModifiedCachingWire.class);
             for (int idx = 0; idx < 2; ++idx) {
-                req.fetch().as(RestResponse.class)
+                req
+                    .fetch()
+                    .as(RestResponse.class)
                     .assertStatus(HttpURLConnection.HTTP_OK)
                     .assertBody(
                         Matchers.equalTo(LastModifiedCachingWireTest.BODY)
-                );
+                    );
             }
             for (int idx = 0; idx < 2; ++idx) {
-                req.fetch().as(RestResponse.class)
+                req
+                    .fetch()
+                    .as(RestResponse.class)
                     .assertStatus(HttpURLConnection.HTTP_OK)
                     .assertBody(
                         Matchers.equalTo(
                             LastModifiedCachingWireTest.BODY_UPDATED
                         )
-                );
+                    );
             }
             MatcherAssert.assertThat(
                 container.queries(), Matchers.equalTo(2 + 2)
@@ -317,13 +320,14 @@ public final class LastModifiedCachingWireTest {
             container.stop();
         }
     }
+
     /**
      * LastModifiedCachingWire can send a request directly
      * if it contains the "If-Modified-Since" header.
      * @throws Exception - if the test fails
      */
     @Test
-    public void sendsRequestDirectly() throws Exception {
+    void sendsRequestDirectly() throws Exception {
         final MkContainer container = new MkGrizzlyContainer()
             .next(
                 new MkAnswer.Simple(
@@ -343,11 +347,13 @@ public final class LastModifiedCachingWireTest {
                     "Fri, 01 Jan 2016 00:00:00 GMT"
                 );
             for (int idx = 0; idx < 2; ++idx) {
-                req.fetch().as(RestResponse.class)
+                req
+                    .fetch()
+                    .as(RestResponse.class)
                     .assertStatus(HttpURLConnection.HTTP_OK)
                     .assertBody(
                         Matchers.equalTo(LastModifiedCachingWireTest.BODY)
-                );
+                    );
             }
             MatcherAssert.assertThat(container.queries(), Matchers.equalTo(2));
         } finally {
@@ -360,7 +366,9 @@ public final class LastModifiedCachingWireTest {
      * @return The query matcher
      */
     private static Matcher<MkQuery> queryContainsIfModifiedSinceHeader() {
-        return queryContainingHeader("If-Modified-Since");
+        return LastModifiedCachingWireTest.queryContainingHeader(
+            "If-Modified-Since"
+        );
     }
 
     /**
@@ -375,6 +383,7 @@ public final class LastModifiedCachingWireTest {
             protected boolean matchesSafely(final MkQuery query) {
                 return query.headers().containsKey(header);
             }
+
             @Override
             public void describeTo(final Description description) {
                 description.appendText("contains ");

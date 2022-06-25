@@ -16,14 +16,14 @@ Optional Dependencies
   The following is a list of dependencies that would be required to use all
   features of this library. You may incorporate them directly in your <<<pom.xml>>>.
 
-  {{{https://jersey.java.net/}Jersey}} (RI of JAX-RS)
+  {{{https://eclipse-ee4j.github.io/jersey/}Jersey}} (RI of JAX-RS)
   is required for manipulating URIs (when <<<uri()>>> method is used):
 
 +--
 <dependency>
-  <groupId>com.sun.jersey</groupId>
+  <groupId>org.glassfish.jersey.core</groupId>
   <artifactId>jersey-client</artifactId>
-  <version>1.19</version>
+  <version>2.25.1</version>
 </dependency>
 +--
 

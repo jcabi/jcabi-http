@@ -1,4 +1,4 @@
-/**
+/*
  * Copyright (c) 2011-2017, jcabi.com
  * All rights reserved.
  *
@@ -38,8 +38,10 @@ import com.jcabi.log.Logger;
 import java.io.IOException;
 import java.io.InputStream;
 import java.net.HttpURLConnection;
+import java.net.URI;
 import java.util.Collection;
 import java.util.Map;
+import javax.ws.rs.core.UriBuilder;
 import lombok.EqualsAndHashCode;
 import lombok.ToString;
 
@@ -60,8 +62,6 @@ import lombok.ToString;
  *
  * <p>The class is immutable and thread-safe.
  *
- * @author Yegor Bugayenko (yegor@tpc2.com)
- * @version $Id$
  * @since 0.10
  */
 @Immutable
@@ -104,15 +104,29 @@ public final class RetryWire implements Wire {
                 if (rsp.status() < HttpURLConnection.HTTP_INTERNAL_ERROR) {
                     return rsp;
                 }
-                Logger.warn(
-                    this, "%s %s returns %d status (attempt #%d)",
-                    method, home, rsp.status(), attempt + 1
-                );
+                if (Logger.isWarnEnabled(this)) {
+                    final URI uri = URI.create(home);
+                    final String noauth =
+                        UriBuilder.fromUri(uri).userInfo("").toString();
+                    String authinfo = "";
+                    if (uri.getUserInfo() != null) {
+                        authinfo = Logger.format(
+                            " (auth: %[secret]s)",
+                            uri.getUserInfo()
+                        );
+                    }
+                    Logger.warn(
+                        this, "%s %s%s returns %d status (attempt #%d)",
+                        method, noauth, authinfo, rsp.status(), attempt + 1
+                    );
+                }
             } catch (final IOException ex) {
-                Logger.warn(
-                    this, "%s: %s",
-                    ex.getClass().getName(), ex.getLocalizedMessage()
-                );
+                if (Logger.isWarnEnabled(this)) {
+                    Logger.warn(
+                        this, "%s: %s",
+                        ex.getClass().getName(), ex.getLocalizedMessage()
+                    );
+                }
             }
             ++attempt;
         }

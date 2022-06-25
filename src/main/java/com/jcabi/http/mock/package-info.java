@@ -1,4 +1,4 @@
-/**
+/*
  * Copyright (c) 2011-2017, jcabi.com
  * All rights reserved.
  *
@@ -31,8 +31,6 @@
 /**
  * Mock of Servlet Container.
  *
- * @author Yegor Bugayenko (yegor@tpc2.com)
- * @version $Id$
  * @since 0.10
  * @see <a href="http://www.rexsl.com/rexsl-test/example-mock-servlet.html">Examples</a>
  */

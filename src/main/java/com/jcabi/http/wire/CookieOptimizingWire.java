@@ -1,4 +1,4 @@
-/**
+/*
  * Copyright (c) 2011-2017, jcabi.com
  * All rights reserved.
  *
@@ -67,8 +67,6 @@ import lombok.ToString;
  *
  * <p>The class is immutable and thread-safe.
  *
- * @author Yegor Bugayenko (yegor@tpc2.com)
- * @version $Id$
  * @since 0.10
  * @see <a href="http://tools.ietf.org/html/rfc2965">RFC 2965 "HTTP State Management Mechanism"</a>
  */
@@ -99,9 +97,9 @@ public final class CookieOptimizingWire implements Wire {
         final int connect,
         final int read) throws IOException {
         final Collection<Map.Entry<String, String>> hdrs =
-            new LinkedList<Map.Entry<String, String>>();
+            new LinkedList<>();
         final ConcurrentMap<String, String> cookies =
-            new ConcurrentHashMap<String, String>(0);
+            new ConcurrentHashMap<>(0);
         for (final Map.Entry<String, String> header : headers) {
             if (header.getKey().equals(HttpHeaders.COOKIE)) {
                 final String cookie = header.getValue();

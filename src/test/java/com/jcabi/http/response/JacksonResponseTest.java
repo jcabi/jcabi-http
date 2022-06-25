@@ -1,4 +1,4 @@
-/**
+/*
  * Copyright (c) 2011-2017, jcabi.com
  * All rights reserved.
  *
@@ -35,38 +35,23 @@ import com.jcabi.http.request.FakeRequest;
 import java.io.IOException;
 import org.hamcrest.MatcherAssert;
 import org.hamcrest.Matchers;
-import org.junit.Assert;
-import org.junit.Test;
+import org.junit.jupiter.api.Assertions;
+import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.function.Executable;
 
 /**
  * Test case for {@link JacksonResponse}.
  *
- * @author Borislav Borisov (bborisov@protonmail.com)
- * @version $Id$
  * @since 1.17
  */
-public final class JacksonResponseTest {
-    /**
-     * Assert.fail() message constant used with #readArray() calls.
-     */
-    @SuppressWarnings("PMD.LongVariable")
-    private static final String NO_READ_ARRAY_FAILURE =
-        "readArray() should have thrown IOException.";
-
-    /**
-     * Assert.fail() message constant used with #readObject calls.
-     */
-    @SuppressWarnings("PMD.LongVariable")
-    private static final String NO_READ_OBJECT_FAILURE =
-        "readObject() should have thrown IOException.";
-
+final class JacksonResponseTest {
     /**
      * JacksonResponse can read and return a JSON document.
      *
      * @throws IOException If anything goes wrong when parsing.
      */
     @Test
-    public void canReadJsonDocument() throws IOException {
+    void canReadJsonDocument() throws IOException {
         final JacksonResponse response = new FakeRequest()
             .withBody("{\n\t\r\"foo-foo\":2,\n\"bar\":\"\u20ac\"}")
             .fetch().as(JacksonResponse.class);
@@ -86,7 +71,7 @@ public final class JacksonResponseTest {
      * @throws IOException If anything goes wrong when parsing.
      */
     @Test
-    public void canParseUnquotedControlCharacters() throws IOException {
+    void canParseUnquotedControlCharacters() throws IOException {
         final JacksonResponse response = new FakeRequest()
             .withBody("{\"test\":\n\"\u001Fblah\uFFFDcwhoa\u0000!\"}")
             .fetch().as(JacksonResponse.class);
@@ -103,19 +88,26 @@ public final class JacksonResponseTest {
      * @throws IOException If anything goes wrong.
      */
     @Test
-    public void invalidJsonErrorHandlingIsLeftToJackson() throws IOException {
+    void invalidJsonErrorHandlingIsLeftToJackson() throws IOException {
         final String body = "{test:[]}";
         final String err = "was expecting double-quote to start field name";
         final JacksonResponse response = new FakeRequest()
             .withBody(body).fetch().as(JacksonResponse.class);
-        try {
-            response.json().read();
-            Assert.fail("read() should have thrown IOException.");
-        } catch (final IOException ex) {
-            MatcherAssert.assertThat(
-                ex.getLocalizedMessage(), Matchers.containsString(err)
-            );
-        }
+        MatcherAssert.assertThat(
+            Assertions.assertThrows(
+                IOException.class,
+                new Executable() {
+                    @Override
+                    public void execute() throws Throwable {
+                        response.json().read();
+                    }
+                }
+            ),
+            Matchers.hasProperty(
+                "message",
+                Matchers.containsString(err)
+            )
+        );
     }
 
     /**
@@ -125,22 +117,25 @@ public final class JacksonResponseTest {
      * @throws IOException If anything goes wrong.
      */
     @Test
-    public void invalidJsonArrayErrorHandlingIsLeftToJackson()
+    void invalidJsonArrayErrorHandlingIsLeftToJackson()
         throws IOException {
         final JacksonResponse response = new FakeRequest()
             .withBody("{\"anInvalidArrayTest\":[}")
             .fetch().as(JacksonResponse.class);
-        try {
-            response.json().readArray();
-            Assert.fail(JacksonResponseTest.NO_READ_ARRAY_FAILURE);
-        } catch (final IOException ex) {
-            MatcherAssert.assertThat(
-                ex.getLocalizedMessage(),
-                Matchers.containsString(
-                    "Unexpected close marker"
-                )
-            );
-        }
+        MatcherAssert.assertThat(
+            Assertions.assertThrows(
+                IOException.class,
+                new Executable() {
+                    @Override
+                    public void execute() throws Throwable {
+                        response.json().readArray();
+                    }
+                }
+            ),
+            Matchers.hasToString(
+                Matchers.containsString("Unexpected close marker")
+            )
+        );
     }
 
     /**
@@ -149,21 +144,26 @@ public final class JacksonResponseTest {
      * @throws IOException If anything goes wrong.
      */
     @Test
-    public void cannotReadJsonAsArrayIfNotOne() throws IOException {
+    void cannotReadJsonAsArrayIfNotOne() throws IOException {
         final JacksonResponse response = new FakeRequest()
             .withBody("{\"objectIsNotArray\": \"It's not!\"}")
             .fetch().as(JacksonResponse.class);
-        try {
-            response.json().readArray();
-            Assert.fail(JacksonResponseTest.NO_READ_ARRAY_FAILURE);
-        } catch (final IOException ex) {
-            MatcherAssert.assertThat(
-                ex.getLocalizedMessage(),
+        MatcherAssert.assertThat(
+            Assertions.assertThrows(
+                IOException.class,
+                new Executable() {
+                    @Override
+                    public void execute() throws Throwable {
+                        response.json().readArray();
+                    }
+                }
+            ),
+            Matchers.<IOException>hasToString(
                 Matchers.containsString(
                     "Cannot read as an array. The JSON is not a valid array."
                 )
-            );
-        }
+            )
+        );
     }
 
     /**
@@ -172,7 +172,7 @@ public final class JacksonResponseTest {
      * @throws IOException If anything goes wrong.
      */
     @Test
-    public void canReadAsArrayIfOne() throws IOException {
+    void canReadAsArrayIfOne() throws IOException {
         final JacksonResponse response = new FakeRequest()
             .withBody("[\"one\", \"two\"]")
             .fetch().as(JacksonResponse.class);
@@ -192,21 +192,26 @@ public final class JacksonResponseTest {
      * @throws IOException If anything goes wrong.
      */
     @Test
-    public void invalidJsonObjectErrorIsLeftToJackson() throws IOException {
+    void invalidJsonObjectErrorIsLeftToJackson() throws IOException {
         final JacksonResponse response = new FakeRequest()
             .withBody("{\"anInvalidObjectTest\":{}")
             .fetch().as(JacksonResponse.class);
-        try {
-            response.json().readObject();
-            Assert.fail(JacksonResponseTest.NO_READ_OBJECT_FAILURE);
-        } catch (final IOException ex) {
-            MatcherAssert.assertThat(
-                ex.getLocalizedMessage(),
+        MatcherAssert.assertThat(
+            Assertions.assertThrows(
+                IOException.class,
+                new Executable() {
+                    @Override
+                    public void execute() throws Throwable {
+                        response.json().readObject();
+                    }
+                }
+            ),
+            Matchers.<IOException>hasToString(
                 Matchers.containsString(
-                    "Unexpected end-of-input: expected close marker for OBJECT"
+                    "Unexpected end-of-input: expected close marker for Object"
                 )
-            );
-        }
+            )
+        );
     }
 
     /**
@@ -215,21 +220,26 @@ public final class JacksonResponseTest {
      * @throws IOException If anything goes wrong.
      */
     @Test
-    public void cannotReadJsonAsObjectIfNotOne() throws IOException {
+    void cannotReadJsonAsObjectIfNotOne() throws IOException {
         final String body = "[\"arrayIsNotObject\", \"It's not!\"]";
         final JacksonResponse response = new FakeRequest()
             .withBody(body).fetch().as(JacksonResponse.class);
-        try {
-            response.json().readObject();
-            Assert.fail(JacksonResponseTest.NO_READ_OBJECT_FAILURE);
-        } catch (final IOException ex) {
-            MatcherAssert.assertThat(
-                ex.getLocalizedMessage(),
+        MatcherAssert.assertThat(
+            Assertions.assertThrows(
+                IOException.class,
+                new Executable() {
+                    @Override
+                    public void execute() throws Throwable {
+                        response.json().readObject();
+                    }
+                }
+            ),
+            Matchers.<IOException>hasToString(
                 Matchers.containsString(
                     "Cannot read as an object. The JSON is not a valid object."
                 )
-            );
-        }
+            )
+        );
     }
 
     /**
@@ -238,7 +248,7 @@ public final class JacksonResponseTest {
      * @throws IOException If anything goes wrong.
      */
     @Test
-    public void canReadAsObjectIfOne() throws IOException {
+    void canReadAsObjectIfOne() throws IOException {
         final JacksonResponse response = new FakeRequest()
             .withBody("{\"hooray\": \"Got milk?\"}")
             .fetch().as(JacksonResponse.class);

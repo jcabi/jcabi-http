@@ -1,4 +1,4 @@
-/**
+/*
  * Copyright (c) 2011-2017, jcabi.com
  * All rights reserved.
  *
@@ -29,7 +29,7 @@
  */
 package com.jcabi.http.response;
 
-import com.fasterxml.jackson.core.JsonParser;
+import com.fasterxml.jackson.core.json.JsonReadFeature;
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.node.ArrayNode;
@@ -43,8 +43,6 @@ import lombok.EqualsAndHashCode;
 /**
  * A JSON response provided by the Jackson Project.
  *
- * @author Borislav Borisov (bborisov@protonmail.com)
- * @version $Id$
  * @since 1.17
  */
 @Immutable
@@ -72,6 +70,8 @@ public final class JacksonResponse extends AbstractResponse {
 
     /**
      * A tree representation views of JSON documents.
+     *
+     * @since 1.17.1
      */
     public static final class JsonReader {
         /**
@@ -79,7 +79,7 @@ public final class JacksonResponse extends AbstractResponse {
          * parsing by default.
          */
         private static final ObjectMapper MAPPER = new ObjectMapper()
-            .configure(JsonParser.Feature.ALLOW_UNQUOTED_CONTROL_CHARS, true);
+            .enable(JsonReadFeature.ALLOW_UNESCAPED_CONTROL_CHARS.mappedFeature());
 
         /**
          * Response body.

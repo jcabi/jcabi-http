@@ -1,4 +1,4 @@
-/**
+/*
  * Copyright (c) 2011-2017, jcabi.com
  * All rights reserved.
  *
@@ -39,12 +39,10 @@ import java.io.IOException;
 import java.net.HttpURLConnection;
 import javax.ws.rs.core.HttpHeaders;
 import org.hamcrest.Matchers;
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
 
 /**
  * Test case for {@link ETagCachingWire}.
- * @author Ievgen Degtiarenko (ievgen.degtiarenko@gmail.com)
- * @version $Id$
  * @since 2.0
  */
 public final class ETagCachingWireTest {
@@ -54,7 +52,7 @@ public final class ETagCachingWireTest {
      * @throws IOException If something goes wrong inside
      */
     @Test
-    public void takesContentFromCache() throws IOException {
+    void takesContentFromCache() throws IOException {
         final String body = "sample content";
         final MkContainer container = new MkGrizzlyContainer()
             .next(
@@ -86,16 +84,16 @@ public final class ETagCachingWireTest {
      * @throws IOException If something goes wrong inside
      */
     @Test
-    public void detectsContentModification() throws IOException {
-        final String beforeChange = "before change";
-        final String afterChange = "after change";
+    void detectsContentModification() throws IOException {
+        final String before = "before change";
+        final String after = "after change";
         final MkContainer container = new MkGrizzlyContainer()
             .next(
-                new MkAnswer.Simple(beforeChange)
+                new MkAnswer.Simple(before)
                     .withHeader(HttpHeaders.ETAG, "3e26")
             )
             .next(
-                new MkAnswer.Simple(afterChange)
+                new MkAnswer.Simple(after)
                     .withHeader(HttpHeaders.ETAG, "3e27")
             )
             .start();
@@ -106,12 +104,12 @@ public final class ETagCachingWireTest {
             .fetch()
             .as(RestResponse.class)
             .assertStatus(HttpURLConnection.HTTP_OK)
-            .assertBody(Matchers.equalTo(beforeChange));
+            .assertBody(Matchers.equalTo(before));
         req
             .fetch()
             .as(RestResponse.class)
             .assertStatus(HttpURLConnection.HTTP_OK)
-            .assertBody(Matchers.equalTo(afterChange));
+            .assertBody(Matchers.equalTo(after));
         container.stop();
     }
 }

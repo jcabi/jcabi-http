@@ -1,4 +1,4 @@
-/**
+/*
  * Copyright (c) 2011-2017, jcabi.com
  * All rights reserved.
  *
@@ -32,7 +32,7 @@ package com.jcabi.http.response;
 import com.jcabi.aspects.Immutable;
 import com.jcabi.http.Response;
 import java.io.StringReader;
-import java.io.UnsupportedEncodingException;
+import java.nio.charset.StandardCharsets;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 import javax.json.Json;
@@ -59,8 +59,6 @@ import lombok.EqualsAndHashCode;
  *
  * <p>The class is immutable and thread-safe.
  *
- * @author Yegor Bugayenko (yegor@tpc2.com)
- * @version $Id$
  * @since 0.8
  */
 @Immutable
@@ -102,11 +100,7 @@ public final class JsonResponse extends AbstractResponse {
     public JsonReader json() {
         final byte[] body = this.binary();
         final String json;
-        try {
-            json = new String(body, "UTF-8");
-        } catch (final UnsupportedEncodingException ex) {
-            throw new IllegalStateException(ex);
-        }
+        json = new String(body, StandardCharsets.UTF_8);
         return new JsonResponse.VerboseReader(
             Json.createReader(
                 new StringReader(
@@ -139,16 +133,21 @@ public final class JsonResponse extends AbstractResponse {
 
     /**
      * Verbose reader.
+     *
+     * @since 1.3.1
      */
     private static final class VerboseReader implements JsonReader {
+
         /**
          * Original reader.
          */
         private final transient JsonReader origin;
+
         /**
          * JSON body.
          */
         private final transient String json;
+
         /**
          * Ctor.
          * @param reader Original reader
@@ -158,6 +157,7 @@ public final class JsonResponse extends AbstractResponse {
             this.origin = reader;
             this.json = body;
         }
+
         @Override
         public JsonObject readObject() {
             try {
@@ -168,6 +168,7 @@ public final class JsonResponse extends AbstractResponse {
                 );
             }
         }
+
         @Override
         public JsonArray readArray() {
             try {
@@ -178,6 +179,7 @@ public final class JsonResponse extends AbstractResponse {
                 );
             }
         }
+
         @Override
         public JsonStructure read() {
             try {
@@ -188,6 +190,7 @@ public final class JsonResponse extends AbstractResponse {
                 );
             }
         }
+
         @Override
         public void close() {
             this.origin.close();

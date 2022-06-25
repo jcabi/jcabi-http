@@ -1,4 +1,4 @@
-/**
+/*
  * Copyright (c) 2011-2017, jcabi.com
  * All rights reserved.
  *
@@ -35,99 +35,135 @@ import java.net.MalformedURLException;
 import java.net.URI;
 import javax.ws.rs.HttpMethod;
 import org.apache.commons.lang3.StringUtils;
+import org.hamcrest.MatcherAssert;
 import org.hamcrest.Matchers;
-import org.junit.Rule;
-import org.junit.Test;
-import org.junit.rules.ExpectedException;
+import org.junit.jupiter.api.Assertions;
+import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.function.Executable;
 
 /**
  * Integration case for {@link JdkRequest}.
- * @author Carlos Miranda (miranda.cma@gmail.com)
- * @version $Id$
+ * @since 1.4.1
  */
-public final class JdkRequestITCase {
+final class JdkRequestITCase {
 
     /**
-     * Expected exception.
-     * @checkstyle VisibilityModifier (3 lines)
+     * Property name of Exception.
      */
-    @Rule
-    public final transient ExpectedException thrown = ExpectedException.none();
+    private static final String MESSAGE = "message";
 
     /**
      * BaseRequest throws an exception with a descriptive message showing the
      * URI and method when an error occurs.
-     * @throws Exception If something goes wrong inside.
      */
     @Test
-    public void throwsDescriptiveException() throws Exception {
+    void throwsDescriptiveException() {
         final String uri = "http://localhost:6789";
         final String method = HttpMethod.POST;
-        this.thrown.expect(IOException.class);
-        this.thrown.expectMessage(
-            Matchers.allOf(
-                Matchers.containsString(uri),
-                Matchers.containsString(method)
+        MatcherAssert.assertThat(
+            Assertions.assertThrows(
+                IOException.class,
+                new Executable() {
+                    @Override
+                    public void execute() throws Throwable {
+                        new JdkRequest(new URI(uri)).method(method).fetch();
+                    }
+                }),
+            Matchers.hasProperty(
+                JdkRequestITCase.MESSAGE,
+                Matchers.allOf(
+                    Matchers.containsString(uri),
+                    Matchers.containsString(method)
+                )
             )
         );
-        new JdkRequest(new URI(uri)).method(method).fetch();
     }
 
     /**
-     * BaseRequest throws an exception with a descriptive message
-     * if there is no port and no protocol mentioned in the uri.
-     * @throws Exception If something goes wrong inside.
+     * BaseRequest throws an exception with a descriptive message if there is no
+     * port and no protocol mentioned in the uri.
      */
     @Test
-    public void failsNoProtocolNoPort() throws Exception {
+    void failsNoProtocolNoPort() {
         final String uri = "localhost";
-        this.thrown.expect(MalformedURLException.class);
-        this.thrown.expectMessage(
-            Matchers.allOf(
-                Matchers.containsString("no protocol: "),
-                Matchers.containsString(uri)
+        MatcherAssert.assertThat(
+            Assertions.assertThrows(
+                MalformedURLException.class,
+                new Executable() {
+                    @Override
+                    public void execute() throws Throwable {
+                        new JdkRequest(uri).fetch();
+                    }
+                }),
+            Matchers.hasProperty(
+                JdkRequestITCase.MESSAGE,
+                Matchers.allOf(
+                    Matchers.containsString("no protocol: "),
+                    Matchers.containsString(uri)
+                )
             )
         );
-        new JdkRequest(uri).fetch();
     }
 
     /**
-     * BaseRequest throws an exception with a descriptive message
-     * if there is no protocol mentioned in the uri.
-     * @throws Exception If something goes wrong inside.
+     * BaseRequest throws an exception with a descriptive message if there is no
+     * protocol mentioned in the uri.
      */
     @Test
-    public void failsWithPortButNoProtocol() throws Exception {
+    void failsWithPortButNoProtocol() {
         final String url = "test.com";
         final String colon = ":";
-        this.thrown.expect(MalformedURLException.class);
-        this.thrown.expectMessage(
-            Matchers.allOf(
-                Matchers.containsString("unknown protocol: "),
-                Matchers.containsString(url)
+        MatcherAssert.assertThat(
+            Assertions.assertThrows(
+                MalformedURLException.class,
+                new Executable() {
+
+                    @Override
+                    public void execute() throws Throwable {
+                        new JdkRequest(
+                            StringUtils.join(
+                                url,
+                                colon,
+                                String.valueOf(Tv.EIGHTY)
+                            )
+                        ).fetch();
+                    }
+                }
+            ),
+            Matchers.hasProperty(
+                JdkRequestITCase.MESSAGE,
+                Matchers.allOf(
+                    Matchers.containsString("unknown protocol: "),
+                    Matchers.containsString(url)
+                )
             )
         );
-        new JdkRequest(
-            StringUtils.join(url, colon, String.valueOf(Tv.EIGHTY))
-        ).fetch();
     }
 
     /**
      * BaseRequest throws an exception with a descriptive message
      * if the uri is completely wrong (e.g. bla bla1)
-     * @throws Exception If something goes wrong inside.
      */
     @Test
-    public void failsMalformedEntirely() throws Exception {
+    void failsMalformedEntirely() {
         final String uri = "bla bla url";
-        this.thrown.expect(IllegalArgumentException.class);
-        this.thrown.expectMessage(
-            Matchers.allOf(
-                Matchers.containsString("Illegal character in path"),
-                Matchers.containsString(uri)
+        MatcherAssert.assertThat(
+            Assertions.assertThrows(
+                IllegalArgumentException.class,
+                new Executable() {
+
+                    @Override
+                    public void execute() throws Throwable {
+                        new JdkRequest(uri).fetch();
+                    }
+                }),
+            Matchers.hasProperty(
+                JdkRequestITCase.MESSAGE,
+                Matchers.allOf(
+                    Matchers.containsString("Illegal character in path"),
+                    Matchers.containsString(uri)
+                )
             )
         );
-        new JdkRequest(uri).fetch();
     }
-
 }

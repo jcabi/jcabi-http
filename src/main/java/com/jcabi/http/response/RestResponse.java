@@ -1,4 +1,4 @@
-/**
+/*
  * Copyright (c) 2011-2017, jcabi.com
  * All rights reserved.
  *
@@ -67,8 +67,6 @@ import org.hamcrest.Matchers;
  *
  * <p>The class is immutable and thread-safe.
  *
- * @author Yegor Bugayenko (yegor@tpc2.com)
- * @version $Id$
  * @since 0.8
  */
 @Immutable
@@ -182,8 +180,10 @@ public final class RestResponse extends AbstractResponse {
      * @param matcher The matcher to use
      * @return This object
      */
-    public RestResponse assertHeader(final String name,
-        final Matcher<Iterable<String>> matcher) {
+    public RestResponse assertHeader(
+        final String name,
+        final Matcher<Iterable<String>> matcher
+    ) {
         Iterable<String> values = this.headers().get(name);
         if (values == null) {
             values = Collections.emptyList();
@@ -262,33 +262,23 @@ public final class RestResponse extends AbstractResponse {
             "cookies should be set in HTTP header",
             headers.containsKey(HttpHeaders.SET_COOKIE)
         );
-        final Iterator<String> iterator =
-            headers.get(HttpHeaders.SET_COOKIE).iterator();
-        final Object first = iterator.next();
-        // @checkstyle MagicNumber (1 line)
-        final StringBuilder buf = new StringBuilder(256);
-        if (first != null) {
-            buf.append(first);
-        }
-        while (iterator.hasNext()) {
-            buf.append(',');
-            final Object obj = iterator.next();
-            if (obj != null) {
-                buf.append(obj);
-            }
-        }
-        final String header = buf.toString();
+        final List<String> cookies = headers.get(HttpHeaders.SET_COOKIE);
+        final Iterator<String> iterator = cookies.iterator();
         Cookie cookie = null;
-        for (final HttpCookie candidate : HttpCookie.parse(header)) {
-            if (candidate.getName().equals(name)) {
-                cookie = RestResponse.cookie(candidate);
-                break;
+        while (iterator.hasNext()) {
+            final String obj = iterator.next();
+            for (final HttpCookie candidate : HttpCookie.parse(obj)) {
+                if (candidate.getName().equals(name)) {
+                    cookie = RestResponse.cookie(candidate);
+                    break;
+                }
             }
         }
         MatcherAssert.assertThat(
             Logger.format(
                 "cookie '%s' not found in Set-Cookie header: '%s'",
-                name, header
+                name,
+                cookies
             ),
             cookie,
             Matchers.notNullValue()
@@ -314,12 +304,16 @@ public final class RestResponse extends AbstractResponse {
 
     /**
      * Status matcher.
+     *
+     * @since 1.2
      */
     private static final class StatusMatch extends CustomMatcher<Response> {
+
         /**
          * HTTP status to check.
          */
         private final transient int status;
+
         /**
          * Ctor.
          * @param msg Message to show
@@ -329,6 +323,7 @@ public final class RestResponse extends AbstractResponse {
             super(msg);
             this.status = sts;
         }
+
         @Override
         public boolean matches(final Object resp) {
             return Response.class.cast(resp).status() == this.status;

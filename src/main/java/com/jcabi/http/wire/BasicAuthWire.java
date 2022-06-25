@@ -1,4 +1,4 @@
-/**
+/*
  * Copyright (c) 2011-2017, jcabi.com
  * All rights reserved.
  *
@@ -39,6 +39,7 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.net.URI;
 import java.nio.charset.Charset;
+import java.nio.charset.StandardCharsets;
 import java.util.Collection;
 import java.util.LinkedList;
 import java.util.Map;
@@ -63,8 +64,6 @@ import lombok.ToString;
  *
  * <p>The class is immutable and thread-safe.
  *
- * @author Yegor Bugayenko (yegor@tpc2.com)
- * @version $Id$
  * @since 0.10
  * @see <a href="http://tools.ietf.org/html/rfc2617">RFC 2617 "HTTP Authentication: Basic and Digest Access Authentication"</a>
  */
@@ -74,15 +73,9 @@ import lombok.ToString;
 public final class BasicAuthWire implements Wire {
 
     /**
-     * The encoding to use.
-     */
-    private static final String ENCODING = "UTF-8";
-
-    /**
      * The Charset to use.
      */
-    private static final Charset CHARSET =
-        Charset.forName(BasicAuthWire.ENCODING);
+    private static final Charset CHARSET = StandardCharsets.UTF_8;
 
     /**
      * Original wire.
@@ -106,10 +99,15 @@ public final class BasicAuthWire implements Wire {
         final int connect,
         final int read) throws IOException {
         final Collection<Map.Entry<String, String>> hdrs =
-            new LinkedList<Map.Entry<String, String>>();
+            new LinkedList<>();
         boolean absent = true;
         for (final Map.Entry<String, String> header : headers) {
             if (header.getKey().equals(HttpHeaders.AUTHORIZATION)) {
+                Logger.warn(
+                    this,
+                    "Request already contains %s header",
+                    HttpHeaders.AUTHORIZATION
+                );
                 absent = false;
             }
             hdrs.add(header);
@@ -134,7 +132,13 @@ public final class BasicAuthWire implements Wire {
             );
         }
         return this.origin.send(
-            req, home, method, hdrs, content, connect, read
+            req.uri().userInfo(null).back(),
+            home,
+            method,
+            hdrs,
+            content,
+            connect,
+            read
         );
     }
 }

@@ -1,4 +1,4 @@
-/**
+/*
  * Copyright (c) 2011-2017, jcabi.com
  * All rights reserved.
  *
@@ -34,13 +34,20 @@ import com.jcabi.http.mock.MkContainer;
 import com.jcabi.http.mock.MkGrizzlyContainer;
 import com.jcabi.http.request.JdkRequest;
 import com.jcabi.http.response.RestResponse;
+import java.io.StringWriter;
 import java.net.HttpURLConnection;
-import org.junit.Test;
+import java.net.URI;
+import javax.ws.rs.core.UriBuilder;
+import org.apache.log4j.Logger;
+import org.apache.log4j.SimpleLayout;
+import org.apache.log4j.WriterAppender;
+import org.hamcrest.MatcherAssert;
+import org.hamcrest.Matchers;
+import org.junit.jupiter.api.Test;
 
 /**
  * Test case for {@link RetryWire}.
- * @author Yegor Bugayenko (yegor@tpc2.com)
- * @version $Id$
+ * @since 1.2
  */
 public final class RetryWireTest {
 
@@ -49,7 +56,7 @@ public final class RetryWireTest {
      * @throws Exception If something goes wrong inside
      */
     @Test
-    public void makesMultipleRequests() throws Exception {
+    void makesMultipleRequests() throws Exception {
         final MkContainer container = new MkGrizzlyContainer()
             .next(new MkAnswer.Simple(HttpURLConnection.HTTP_INTERNAL_ERROR))
             .next(new MkAnswer.Simple(HttpURLConnection.HTTP_INTERNAL_ERROR))
@@ -60,6 +67,36 @@ public final class RetryWireTest {
             .fetch()
             .as(RestResponse.class)
             .assertStatus(HttpURLConnection.HTTP_OK);
+        container.stop();
+    }
+
+    /**
+     * RetryWire should strip user info when logging URL.
+     * @throws Exception If something goes wrong inside
+     */
+    @Test
+    void stripsUserInfoWhenLogging() throws Exception {
+        final StringWriter writer = new StringWriter(
+        );
+        Logger.getLogger(RetryWire.class)
+            .addAppender(new WriterAppender(new SimpleLayout(), writer));
+        final MkContainer container = new MkGrizzlyContainer()
+            .next(new MkAnswer.Simple(HttpURLConnection.HTTP_INTERNAL_ERROR))
+            .next(new MkAnswer.Simple(HttpURLConnection.HTTP_OK))
+            .start();
+        final URI home = container.home();
+        new JdkRequest(UriBuilder.fromUri(home).userInfo("jeff:ffej").toString())
+            .through(RetryWire.class)
+            .fetch()
+            .as(RestResponse.class)
+            .assertStatus(HttpURLConnection.HTTP_OK);
+        writer.flush();
+        MatcherAssert.assertThat(
+            writer.toString(),
+            Matchers.containsString(
+                String.format("GET %s (auth: j***j)", home)
+            )
+        );
         container.stop();
     }
 

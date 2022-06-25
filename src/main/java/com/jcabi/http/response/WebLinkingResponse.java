@@ -1,4 +1,4 @@
-/**
+/*
  * Copyright (c) 2011-2017, jcabi.com
  * All rights reserved.
  *
@@ -61,8 +61,6 @@ import lombok.EqualsAndHashCode;
  *
  * <p>The class is immutable and thread-safe.
  *
- * @author Yegor Bugayenko (yegor@tpc2.com)
- * @version $Id$
  * @since 0.9
  * @see <a href="http://tools.ietf.org/html/rfc5988">RFC 5988 "Web Linking"</a>
  */
@@ -136,6 +134,8 @@ public final class WebLinkingResponse extends AbstractResponse {
 
     /**
      * Single link.
+     *
+     * @since 1.0
      */
     @Immutable
     public interface Link extends Map<String, String> {
@@ -148,10 +148,13 @@ public final class WebLinkingResponse extends AbstractResponse {
 
     /**
      * Implementation of a link.
+     *
+     * @since 1.0
      */
     @Immutable
     @EqualsAndHashCode
     private static final class SimpleLink implements WebLinkingResponse.Link {
+
         /**
          * Pattern to match link value.
          */
@@ -159,94 +162,149 @@ public final class WebLinkingResponse extends AbstractResponse {
         private static final Pattern PTN = Pattern.compile(
             "<([^>]+)>\\s*;(.*)"
         );
+
         /**
          * URI encapsulated.
          */
         private final transient String addr;
+
         /**
          * Map of link params.
          */
         private final transient ArrayMap<String, String> params;
+
         /**
          * Public ctor (parser).
          * @param text Text to parse
          * @throws IOException If fails
          */
         SimpleLink(final String text) throws IOException {
-            final Matcher matcher = WebLinkingResponse.SimpleLink.PTN
-                .matcher(text);
+            this(WebLinkingResponse.SimpleLink.parse(text));
+        }
+
+        /**
+         * Secondary ctor.
+         * @param matcher Matcher object.
+         */
+        private SimpleLink(final Matcher matcher) {
+            this(
+                matcher.group(1),
+                WebLinkingResponse.SimpleLink.parseParameters(matcher.group(2))
+            );
+        }
+
+        /**
+         * Primary ctor.
+         * @param address Address
+         * @param parameters Parameters
+         */
+        private SimpleLink(final String address,
+            final Map<String, String> parameters) {
+            this.addr = address;
+            this.params = new ArrayMap<>(parameters);
+        }
+
+        @Override
+        public URI uri() {
+            return URI.create(this.addr);
+        }
+
+        @Override
+        public int size() {
+            return this.params.size();
+        }
+
+        @Override
+        public boolean isEmpty() {
+            return this.params.isEmpty();
+        }
+
+        @Override
+        public boolean containsKey(final Object key) {
+            return this.params.containsKey(key);
+        }
+
+        @Override
+        public boolean containsValue(final Object value) {
+            return this.params.containsValue(value);
+        }
+
+        @Override
+        public String get(final Object key) {
+            return this.params.get(key);
+        }
+
+        @Override
+        public String put(final String key, final String value) {
+            throw new UnsupportedOperationException("#put()");
+        }
+
+        @Override
+        public String remove(final Object key) {
+            throw new UnsupportedOperationException("#remove()");
+        }
+
+        @Override
+        public void putAll(final Map<? extends String, ? extends String> map) {
+            throw new UnsupportedOperationException("#putAll()");
+        }
+
+        @Override
+        public void clear() {
+            throw new UnsupportedOperationException("#clear()");
+        }
+
+        @Override
+        public Set<String> keySet() {
+            return this.params.keySet();
+        }
+
+        @Override
+        public Collection<String> values() {
+            return this.params.values();
+        }
+
+        @Override
+        public Set<Map.Entry<String, String>> entrySet() {
+            return this.params.entrySet();
+        }
+
+        /**
+         * Match link with regexp.
+         * @param link A link.
+         * @return Matcher object
+         * @throws IOException If fails
+         */
+        private static Matcher parse(final String link) throws IOException {
+            final Matcher matcher = SimpleLink.PTN.matcher(link);
             if (!matcher.matches()) {
                 throw new IOException(
                     String.format(
                         "Link header value doesn't comply to RFC-5988: \"%s\"",
-                        text
+                        matcher
                     )
                 );
             }
-            this.addr = matcher.group(1);
+            return matcher;
+        }
+
+        /**
+         * Parse parameter string to map.
+         * @param param Result of regexp matching
+         * @return Map with parameters
+         */
+        private static Map<String, String> parseParameters(final String param) {
             final ConcurrentMap<String, String> args =
                 new ConcurrentHashMap<>(0);
             for (final String pair
-                : matcher.group(2).trim().split("\\s*;\\s*")) {
+                : param.trim().split("\\s*;\\s*")) {
                 final String[] parts = pair.split("=");
                 args.put(
                     parts[0].trim().toLowerCase(Locale.ENGLISH),
                     parts[1].trim().replaceAll("(^\"|\"$)", "")
                 );
             }
-            this.params = new ArrayMap<>(args);
-        }
-        @Override
-        public URI uri() {
-            return URI.create(this.addr);
-        }
-        @Override
-        public int size() {
-            return this.params.size();
-        }
-        @Override
-        public boolean isEmpty() {
-            return this.params.isEmpty();
-        }
-        @Override
-        public boolean containsKey(final Object key) {
-            return this.params.containsKey(key);
-        }
-        @Override
-        public boolean containsValue(final Object value) {
-            return this.params.containsValue(value);
-        }
-        @Override
-        public String get(final Object key) {
-            return this.params.get(key);
-        }
-        @Override
-        public String put(final String key, final String value) {
-            throw new UnsupportedOperationException("#put()");
-        }
-        @Override
-        public String remove(final Object key) {
-            throw new UnsupportedOperationException("#remove()");
-        }
-        @Override
-        public void putAll(final Map<? extends String, ? extends String> map) {
-            throw new UnsupportedOperationException("#putAll()");
-        }
-        @Override
-        public void clear() {
-            throw new UnsupportedOperationException("#clear()");
-        }
-        @Override
-        public Set<String> keySet() {
-            return this.params.keySet();
-        }
-        @Override
-        public Collection<String> values() {
-            return this.params.values();
-        }
-        @Override
-        public Set<Map.Entry<String, String>> entrySet() {
-            return this.params.entrySet();
+            return args;
         }
     }
 

@@ -1,4 +1,4 @@
-/**
+/*
  * Copyright (c) 2011-2017, jcabi.com
  * All rights reserved.
  *
@@ -63,10 +63,11 @@ import org.apache.http.util.EntityUtils;
  *
  * <p>The class is immutable and thread-safe.
  *
- * @author Yegor Bugayenko (yegor@tpc2.com)
- * @version $Id$
  * @since 0.8
  * @checkstyle ClassDataAbstractionCoupling (500 lines)
+ * @todo #200:30m TrustedWire does not support ApacheRequest.
+ *  Investigate if it's possible for them to work together,
+ *  if not see jcabi-http#178 for discussion about alternative solutions.
  */
 @Immutable
 @EqualsAndHashCode(of = "base")
@@ -107,6 +108,7 @@ public final class ApacheRequest implements Request {
                 response.close();
             }
         }
+
         /**
          * Create request.
          * @param home Home URI
@@ -150,6 +152,7 @@ public final class ApacheRequest implements Request {
             }
             return req;
         }
+
         /**
          * Fetch body from http entity.
          * @param entity HTTP entity
@@ -165,6 +168,7 @@ public final class ApacheRequest implements Request {
             }
             return body;
         }
+
         /**
          * Make a list of all hdrs.
          * @param list Apache HTTP hdrs

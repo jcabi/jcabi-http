@@ -1,4 +1,4 @@
-/**
+/*
  * Copyright (c) 2011-2017, jcabi.com
  * All rights reserved.
  *
@@ -59,8 +59,6 @@ import lombok.ToString;
  *
  * <p>The class is immutable and thread-safe.
  *
- * @author Yegor Bugayenko (yegor@tpc2.com)
- * @version $Id$
  * @since 0.10
  */
 @Immutable
@@ -92,7 +90,7 @@ public final class VerboseWire implements Wire {
         final ByteArrayOutputStream output = new ByteArrayOutputStream();
         final byte[] buffer = new byte[Tv.THOUSAND];
         for (int bytes = content.read(buffer); bytes != -1;
-             bytes = content.read(buffer)) {
+            bytes = content.read(buffer)) {
             output.write(buffer, 0, bytes);
         }
         output.flush();

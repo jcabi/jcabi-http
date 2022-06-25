@@ -1,4 +1,4 @@
-/**
+/*
  * Copyright (c) 2011-2017, jcabi.com
  * All rights reserved.
  *
@@ -52,11 +52,10 @@ import java.util.Map;
  * <p>Every {@code Wire} decorator passed to {@code through()} method
  * wraps a previously existing one.
  *
- * @author Yegor Bugayenko (yegor@tpc2.com)
- * @version $Id$
  * @since 0.9
  */
 @Immutable
+//@checkstyle ParameterNumber (16 lines)
 public interface Wire {
 
     /**
@@ -70,7 +69,6 @@ public interface Wire {
      * @param read The read timeout
      * @return Response obtained
      * @throws IOException if fails
-     * @checkstyle ParameterNumber (6 lines)
      */
     Response send(Request req, String home, String method,
         Collection<Map.Entry<String, String>> headers, InputStream content,
