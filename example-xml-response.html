@@ -33,13 +33,13 @@
                                                                     </ul>
                                                     </li>
                                                                                                                         <li >
-                            <span>                        <a href="apidocs-1.18.1/index.html" title="JavaDoc 1.18.1">JavaDoc 1.18.1</a>
+                            <span>                        <a href="apidocs-1.18.2/index.html" title="JavaDoc 1.18.2">JavaDoc 1.18.2</a>
         </span>
                                                                                                                                                                 <ul>
                                                                     </ul>
                                                     </li>
                                                                                                                         <li >
-                            <span>                        <a href="cobertura/index.html" title="Test coverage">Test coverage</a>
+                            <span>                        <a href="jacoco/index.html" title="Test coverage">Test coverage</a>
         </span>
                                                                                                                                                                 <ul>
                                                                     </ul>
@@ -143,7 +143,7 @@
                             <div class="logo">
                                 <a href="../"
                                     title=" logo ">
-                                    <img src="https://www.jcabi.com/logo-square.svg"
+                                    <img src="../logo-square.svg"
                                         alt="jcabi"
                                                                                     width="64"
                                                                                                                             height="64"
@@ -153,13 +153,13 @@
                             </div>
                             <ul class="badges">
                                 <li>
-                                    <strong itemprop="version">1.18.1</strong>
+                                    <strong itemprop="version">1.18.2</strong>
                                 </li>
                                 <li>
                                     
-                                    <time itemprop="datePublished" datetime="2021-09-06T03:00:54Z">
+                                    <time itemprop="datePublished" datetime="2022-07-19T05:16:51Z">
                                         
-                                        06-Sep-2021
+                                        19-Jul-2022
                                     </time>
                                 </li>
                                 <li class="menu-button">menu</li>
@@ -172,7 +172,7 @@
                                                 <article itemprop="articleBody">
                             <section>
 <h2><a name="Managing_XML_Responses"></a>Managing XML Responses</h2>
-<p>When your HTTP <a href="./apidocs-1.18.1/com/jcabi/http/Response.html"><code>Response</code></a> contains an XML document, it is convenient to use <a href="./apidocs-1.18.1/com/jcabi/http/response/XmlResponse.html"><code>XmlResponse</code></a> decorator to manipulate it, for example:</p>
+<p>When your HTTP <a href="./apidocs-1.18.2/com/jcabi/http/Response.html"><code>Response</code></a> contains an XML document, it is convenient to use <a href="./apidocs-1.18.2/com/jcabi/http/response/XmlResponse.html"><code>XmlResponse</code></a> decorator to manipulate it, for example:</p>
 <div class="source">
 <pre>String name = new JdkRequest(&quot;http://my.example.com&quot;)
   .fetch()
@@ -180,7 +180,7 @@
   .assertXPath(&quot;/data/name&quot;) // AssertionError if this XPath is absent
   .xml() // convert HTTP body to com.jcabi.xml.XML
   .xpath(&quot;/data/name/text()&quot;).get(0);</pre></div>
-<p>Method <a href="./apidocs-1.18.1/com/jcabi/http/response/XmlResponse.html"><code>XmlResponse#xml()</code></a> converts HTTP body to an instance of class <a class="externalLink" href="http://xml.jcabi.com/apidocs-0.6/com/jcabi/xml/XML.html"><code>XML</code></a> from <a class="externalLink" href="http://xml.jcabi.com">jcabi-xml</a> project.</p>
+<p>Method <a href="./apidocs-1.18.2/com/jcabi/http/response/XmlResponse.html"><code>XmlResponse#xml()</code></a> converts HTTP body to an instance of class <a class="externalLink" href="http://xml.jcabi.com/apidocs-0.6/com/jcabi/xml/XML.html"><code>XML</code></a> from <a class="externalLink" href="http://xml.jcabi.com">jcabi-xml</a> project.</p>
 <p>Don't forget to add this dependency to your classpath:</p>
 <div class="source">
 <pre>&lt;dependency&gt;
@@ -188,14 +188,14 @@
   &lt;artifactId&gt;jcabi-xml&lt;/artifactId&gt;
   &lt;version&gt;0.6&lt;/version&gt;
 &lt;/dependency&gt;</pre></div>
-<p>Read also about <a href="./apidocs-1.18.1/com/jcabi/http/response/RestResponse.html"><code>RestResponse</code></a>, which helps you to manage default HTTP response concepts.</p></section>
+<p>Read also about <a href="./apidocs-1.18.2/com/jcabi/http/response/RestResponse.html"><code>RestResponse</code></a>, which helps you to manage default HTTP response concepts.</p></section>
                         </article>
                     </div>
                 </main>
                 <footer class="legal-notes">
                     <div>
                         Copyright &#169;
-                                                                            2012-2021
+                                                                            2012-2022
                                             </div>
                     <div>jcabi.com, All Rights Reserved.</div>
                     <div><a href="http://maven.apache.org/privacy-policy.html">Privacy Policy</a>.</div>
