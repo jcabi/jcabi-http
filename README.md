@@ -1,20 +1,22 @@
 <img src="http://img.jcabi.com/logo-square.png" width="64px" height="64px" />
 
 [![EO principles respected here](https://www.elegantobjects.org/badge.svg)](https://www.elegantobjects.org)
-[![Managed by Zerocracy](https://www.0crat.com/badge/C3RUBL5H9.svg)](https://www.0crat.com/p/C3RUBL5H9)
 [![DevOps By Rultor.com](http://www.rultor.com/b/jcabi/jcabi-http)](http://www.rultor.com/p/jcabi/jcabi-http)
 [![We recommend IntelliJ IDEA](https://www.elegantobjects.org/intellij-idea.svg)](https://www.jetbrains.com/idea/)
 
-[![Build Status](https://travis-ci.org/jcabi/jcabi-http.svg?branch=master)](https://travis-ci.org/jcabi/jcabi-http)
+[![mvn](https://github.com/jcabi/jcabi-http/actions/workflows/mvn.yml/badge.svg)](https://github.com/jcabi/jcabi-http/actions/workflows/mvn.yml)
 [![PDD status](http://www.0pdd.com/svg?name=jcabi/jcabi-http)](http://www.0pdd.com/p?name=jcabi/jcabi-http)
-[![Build status](https://ci.appveyor.com/api/projects/status/a87rxtuvvek647fs/branch/master?svg=true)](https://ci.appveyor.com/project/yegor256/jcabi-http/branch/master)
-[![codecov](https://codecov.io/gh/jcabi/jcabi-http/branch/master/graph/badge.svg?token=TWye97XBJ8)](https://codecov.io/gh/jcabi/jcabi-http)
-[![Javadoc](https://javadoc.io/badge/com.jcabi/jcabi-http.svg)](http://www.javadoc.io/doc/com.jcabi/jcabi-http)
+[![Maintainability](https://api.codeclimate.com/v1/badges/742bde48ea6fabdba1ce/maintainability)](https://codeclimate.com/github/jcabi/jcabi-http/maintainability)
+[![Maven Central](https://img.shields.io/maven-central/v/com.jcabi/jcabi-http.svg)](https://maven-badges.herokuapp.com/maven-central/com.jcabi/jcabi-http)
+[![Javadoc](http://www.javadoc.io/badge/com.jcabi/jcabi-http.svg)](http://www.javadoc.io/doc/com.jcabi/jcabi-http)
 
-[![jpeek report](https://i.jpeek.org/com.jcabi/jcabi-http/badge.svg)](https://i.jpeek.org/com.jcabi/jcabi-http/)
-[![Maven Central](https://maven-badges.herokuapp.com/maven-central/com.jcabi/jcabi-http/badge.svg)](https://maven-badges.herokuapp.com/maven-central/com.jcabi/jcabi-http)
+[![codecov](https://codecov.io/gh/jcabi/jcabi-http/branch/master/graph/badge.svg)](https://codecov.io/gh/jcabi/jcabi-http)
+[![Hits-of-Code](https://hitsofcode.com/github/jcabi/jcabi-http)](https://hitsofcode.com/view/github/jcabi/jcabi-http)
+![Lines of code](https://img.shields.io/tokei/lines/github/jcabi/jcabi-http)
+[![License](https://img.shields.io/badge/license-MIT-green.svg)](https://github.com/jcabi/jcabi-http/blob/master/LICENSE.txt)
 
 More details are here: [http.jcabi.com](https://http.jcabi.com/index.html).
+
 Also, read this blog post: [Fluent Java HTTP Client](http://www.yegor256.com/2014/04/11/jcabi-http-intro.html).
 
 ```java
@@ -34,11 +36,6 @@ public class Main {
   }
 }
 ```
-
-## Questions?
-
-If you have any questions about the framework, or something doesn't work as expected,
-please [submit an issue here](https://github.com/jcabi/jcabi-http/issues/new).
 
 ## How to contribute?
 
