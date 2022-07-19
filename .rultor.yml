@@ -1,3 +1,5 @@
+docker:
+  image: yegor256/rultor-image:1.9.1
 architect:
   - yegor256
   - andreoss
@@ -13,8 +15,7 @@ merge:
 release:
   pre: false
   script: |-
-    env
-    export JAVA_HOME=/usr/lib/jvm/default-java
+    [[ "${tag}" =~ ^[0-9]+\.[0-9]+\.[0-9]+$ ]] || exit -1
     mvn versions:set "-DnewVersion=${tag}" --batch-mode
     git commit -am "${tag}"
     mvn clean deploy -Pqulice -Psonatype -Pjcabi --batch-mode --errors --settings ../settings.xml

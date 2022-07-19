@@ -37,7 +37,7 @@ OF THE POSSIBILITY OF SUCH DAMAGE.
   <bannerLeft>
     <name>jcabi</name>
     <src>https://www.jcabi.com/logo-square.svg</src>
-    <href>http://www.jcabi.com/</href>
+    <href>https://www.jcabi.com/</href>
     <width>64</width>
     <height>64</height>
   </bannerLeft>
@@ -50,7 +50,7 @@ OF THE POSSIBILITY OF SUCH DAMAGE.
     <menu name="Overview">
       <item name="Introduction" href="index.html"/>
       <item name="JavaDoc ${project.version}" href="./apidocs-${project.version}/index.html"/>
-      <item name="Test coverage" href="./cobertura/index.html"/>
+      <item name="Test coverage" href="./jacoco/index.html"/>
       <item name="Release History" href="https://github.com/jcabi/jcabi-http/releases"/>
     </menu>
     <menu name="Best Practices">
