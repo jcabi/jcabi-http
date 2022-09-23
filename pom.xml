@@ -159,7 +159,7 @@ OF THE POSSIBILITY OF SUCH DAMAGE.
     <dependency>
       <groupId>com.jcabi</groupId>
       <artifactId>jcabi-xml</artifactId>
-      <version>0.23.2</version>
+      <version>0.25.3</version>
       <scope>provided</scope>
       <optional>true</optional>
     </dependency>
