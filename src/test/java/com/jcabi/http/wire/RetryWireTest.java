@@ -50,7 +50,7 @@ import org.slf4j.LoggerFactory;
  *
  * @since 1.2
  */
-public final class RetryWireTest {
+final class RetryWireTest {
 
     /**
      * RetryWire can make a few requests before giving up.

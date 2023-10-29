@@ -30,7 +30,6 @@
 package com.jcabi.http.wire;
 
 import com.jcabi.aspects.Immutable;
-import com.jcabi.aspects.Tv;
 import com.jcabi.http.Request;
 import com.jcabi.http.Response;
 import com.jcabi.http.Wire;
@@ -91,7 +90,7 @@ public final class RetryWire implements Wire {
         final int connect, final int read) throws IOException {
         int attempt = 0;
         while (true) {
-            if (attempt > Tv.THREE) {
+            if (attempt > 3) {
                 throw new IOException(
                     String.format("failed after %d attempts", attempt)
                 );

@@ -29,7 +29,6 @@
  */
 package com.jcabi.http;
 
-import com.jcabi.aspects.Tv;
 import com.jcabi.http.mock.MkAnswer;
 import com.jcabi.http.mock.MkContainer;
 import com.jcabi.http.mock.MkGrizzlyContainer;
@@ -64,7 +63,7 @@ final class RequestITCase extends RequestTestTemplate {
      */
     @Values
     @ParameterizedTest
-    @Timeout(Tv.TEN)
+    @Timeout(10)
     void sendsHttpRequestAndProcessesHttpResponse(
         final Class<? extends Request> type
     ) throws Exception {
@@ -82,7 +81,7 @@ final class RequestITCase extends RequestTestTemplate {
      */
     @Values
     @ParameterizedTest
-    @Timeout(Tv.TEN)
+    @Timeout(10)
     void processesNotOkHttpResponse(
         final Class<? extends Request> type
     ) throws Exception {

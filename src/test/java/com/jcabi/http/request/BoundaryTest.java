@@ -38,7 +38,7 @@ import org.junit.jupiter.api.Test;
  * Test case {@link Boundary}.
  * @since 1.17.3
  */
-public final class BoundaryTest {
+final class BoundaryTest {
 
     /**
      * Boundary builds valid string.

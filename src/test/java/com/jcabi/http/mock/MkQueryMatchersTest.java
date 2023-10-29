@@ -41,7 +41,7 @@ import org.mockito.Mockito;
  *
  * @since 1.5
  */
-public final class MkQueryMatchersTest {
+final class MkQueryMatchersTest {
 
     /**
      * MkQueryMatchers should be able to match MkQuery body.

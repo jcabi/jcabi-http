@@ -30,7 +30,6 @@
 package com.jcabi.http.wire;
 
 import com.jcabi.aspects.Immutable;
-import com.jcabi.aspects.Tv;
 import com.jcabi.http.Request;
 import com.jcabi.http.RequestBody;
 import com.jcabi.http.Response;
@@ -88,7 +87,7 @@ public final class VerboseWire implements Wire {
         final int connect,
         final int read) throws IOException {
         final ByteArrayOutputStream output = new ByteArrayOutputStream();
-        final byte[] buffer = new byte[Tv.THOUSAND];
+        final byte[] buffer = new byte[1000];
         for (int bytes = content.read(buffer); bytes != -1;
             bytes = content.read(buffer)) {
             output.write(buffer, 0, bytes);

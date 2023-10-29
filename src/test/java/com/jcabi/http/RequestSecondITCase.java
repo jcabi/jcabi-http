@@ -48,7 +48,7 @@ import org.testcontainers.utility.DockerImageName;
 @SuppressWarnings("PMD.AbstractClassWithoutAbstractMethod")
 @TestInstance(TestInstance.Lifecycle.PER_CLASS)
 @Testcontainers(disabledWithoutDocker = true)
-public final class RequestSecondITCase {
+final class RequestSecondITCase {
 
     /**
      * Container with HttpBin.

@@ -29,7 +29,6 @@
  */
 package com.jcabi.http.wire;
 
-import com.jcabi.aspects.Tv;
 import com.jcabi.http.Request;
 import com.jcabi.http.mock.MkAnswer;
 import com.jcabi.http.mock.MkContainer;
@@ -53,7 +52,7 @@ import org.junit.jupiter.api.Test;
  * Test case for {@link LastModifiedCachingWire}.
  * @since 1.15
  */
-public final class LastModifiedCachingWireTest {
+final class LastModifiedCachingWireTest {
 
     /**
      * Test body.
@@ -107,6 +106,7 @@ public final class LastModifiedCachingWireTest {
             HttpHeaders.LAST_MODIFIED,
             "Wed, 15 Nov 1995 04:58:08 GMT"
         );
+        final int count = 10;
         final MkContainer container = new MkGrizzlyContainer()
             .next(
                 new MkAnswer.Simple(
@@ -118,12 +118,12 @@ public final class LastModifiedCachingWireTest {
             .next(
                 new MkAnswer.Simple(HttpURLConnection.HTTP_NOT_MODIFIED),
                 new IsAnything<MkQuery>(),
-                Tv.TEN
+                count
             ).start();
         try {
             final Request req = new JdkRequest(container.home())
                 .through(LastModifiedCachingWire.class);
-            for (int idx = 0; idx < Tv.TEN; ++idx) {
+            for (int idx = 0; idx < count; ++idx) {
                 req
                     .fetch()
                     .as(RestResponse.class)
@@ -133,7 +133,7 @@ public final class LastModifiedCachingWireTest {
                     );
             }
             MatcherAssert.assertThat(
-                container.queries(), Matchers.equalTo(Tv.TEN)
+                container.queries(), Matchers.equalTo(count)
             );
         } finally {
             container.stop();

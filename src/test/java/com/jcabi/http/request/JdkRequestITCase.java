@@ -29,7 +29,6 @@
  */
 package com.jcabi.http.request;
 
-import com.jcabi.aspects.Tv;
 import jakarta.ws.rs.HttpMethod;
 import java.io.IOException;
 import java.net.MalformedURLException;
@@ -124,7 +123,7 @@ final class JdkRequestITCase {
                             StringUtils.join(
                                 url,
                                 colon,
-                                String.valueOf(Tv.EIGHTY)
+                                "80"
                             )
                         ).fetch();
                     }

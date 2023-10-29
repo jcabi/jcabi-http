@@ -40,7 +40,7 @@ import org.junit.jupiter.params.provider.CsvSource;
  *
  * @since 1.10.1
  */
-public final class TrustedWireITCase {
+final class TrustedWireITCase {
 
     /**
      * TrustedWire can ignore SSL verifications.

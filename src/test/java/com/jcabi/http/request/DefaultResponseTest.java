@@ -42,13 +42,13 @@ import org.mockito.Mockito;
  * Test case for {@link DefaultResponse}.
  * @since 1.0
  */
-public final class DefaultResponseTest {
+final class DefaultResponseTest {
 
     /**
      * DefaultResponse can throw when entity is not a Unicode text.
      */
     @Test
-    public void throwsWhenEntityIsNotAUnicodeString() {
+    void throwsWhenEntityIsNotAUnicodeString() {
         Assertions.assertThrows(
             RuntimeException.class,
             new Executable() {

@@ -29,7 +29,6 @@
  */
 package com.jcabi.http.wire;
 
-import com.jcabi.aspects.Tv;
 import com.jcabi.http.mock.MkAnswer;
 import com.jcabi.http.mock.MkContainer;
 import com.jcabi.http.mock.MkGrizzlyContainer;
@@ -47,7 +46,7 @@ import org.junit.jupiter.api.Test;
  *
  * @since 1.7
  */
-public final class AutoRedirectingWireTest {
+final class AutoRedirectingWireTest {
 
     /**
      * AutoRedirectingWire retries up to the specified number of times for
@@ -65,7 +64,7 @@ public final class AutoRedirectingWireTest {
             Integer.MAX_VALUE
         ).start();
         try {
-            final int retries = Tv.THREE;
+            final int retries = 3;
             new JdkRequest(container.home())
                 .through(AutoRedirectingWire.class, retries)
                 .fetch().as(RestResponse.class)
@@ -101,7 +100,7 @@ public final class AutoRedirectingWireTest {
                 .assertStatus(HttpStatus.SC_OK);
             MatcherAssert.assertThat(
                 container.takeAll(Matchers.any(MkAnswer.class)),
-                Matchers.<MkQuery>iterableWithSize(Tv.THREE)
+                Matchers.<MkQuery>iterableWithSize(3)
             );
         } finally {
             container.stop();

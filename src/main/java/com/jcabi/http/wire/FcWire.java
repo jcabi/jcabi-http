@@ -30,7 +30,6 @@
 package com.jcabi.http.wire;
 
 import com.jcabi.aspects.Immutable;
-import com.jcabi.aspects.Tv;
 import com.jcabi.http.Request;
 import com.jcabi.http.Response;
 import com.jcabi.http.Wire;
@@ -138,7 +137,7 @@ public final class FcWire implements Wire {
         final int connect,
         final int read) throws IOException {
         final URI uri = req.uri().get();
-        final StringBuilder label = new StringBuilder(Tv.HUNDRED)
+        final StringBuilder label = new StringBuilder(100)
             .append(method).append(' ').append(uri.getPath());
         if (uri.getQuery() != null) {
             label.append('?').append(uri.getQuery());

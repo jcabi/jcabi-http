@@ -39,7 +39,7 @@ import org.mockito.Mockito;
  * Test case for {@link MkAnswerMatchers}.
  * @since 1.5
  */
-public final class MkAnswerMatchersTest {
+final class MkAnswerMatchersTest {
 
     /**
      * MkAnswerMatchers should be able to match MkAnswer body.

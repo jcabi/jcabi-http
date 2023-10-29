@@ -41,7 +41,7 @@ import org.junit.jupiter.api.Test;
  * Test case for {@link TrustedWire}.
  * @since 1.10
  */
-public final class TrustedWireTest {
+final class TrustedWireTest {
 
     /**
      * TrustedWire can ignore PKIX errors.

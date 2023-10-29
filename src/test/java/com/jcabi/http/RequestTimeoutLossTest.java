@@ -51,7 +51,7 @@ import org.mockito.Mockito;
  * @since 1.17.3
  */
 @SuppressWarnings("PMD.TooManyMethods")
-public final class RequestTimeoutLossTest extends RequestTestTemplate {
+final class RequestTimeoutLossTest extends RequestTestTemplate {
     /**
      * Placeholder URL used for testing purposes only.
      */

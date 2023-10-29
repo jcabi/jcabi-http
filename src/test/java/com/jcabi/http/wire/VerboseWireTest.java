@@ -46,7 +46,7 @@ import org.junit.jupiter.api.Test;
  * Test case for {@link VerboseWire}.
  * @since 1.0
  */
-public final class VerboseWireTest {
+final class VerboseWireTest {
 
     /**
      * VerboseWire can log requests.

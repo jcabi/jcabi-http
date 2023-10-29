@@ -45,7 +45,7 @@ import org.junit.jupiter.api.Test;
  * Test case for {@link ETagCachingWire}.
  * @since 2.0
  */
-public final class ETagCachingWireTest {
+final class ETagCachingWireTest {
 
     /**
      * ETagCachingWire can take content from cache.
