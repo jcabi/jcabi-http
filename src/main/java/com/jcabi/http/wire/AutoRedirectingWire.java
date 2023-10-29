@@ -34,6 +34,7 @@ import com.jcabi.aspects.Tv;
 import com.jcabi.http.Request;
 import com.jcabi.http.Response;
 import com.jcabi.http.Wire;
+import jakarta.ws.rs.core.HttpHeaders;
 import java.io.IOException;
 import java.io.InputStream;
 import java.net.HttpURLConnection;
@@ -42,7 +43,6 @@ import java.util.Collection;
 import java.util.List;
 import java.util.Map;
 import java.util.concurrent.TimeUnit;
-import javax.ws.rs.core.HttpHeaders;
 import lombok.EqualsAndHashCode;
 import lombok.ToString;
 

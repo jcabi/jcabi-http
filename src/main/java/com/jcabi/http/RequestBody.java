@@ -30,9 +30,9 @@
 package com.jcabi.http;
 
 import com.jcabi.aspects.Immutable;
+import jakarta.json.JsonStructure;
 import java.nio.charset.StandardCharsets;
 import java.util.Map;
-import javax.json.JsonStructure;
 
 /**
  * Request body.

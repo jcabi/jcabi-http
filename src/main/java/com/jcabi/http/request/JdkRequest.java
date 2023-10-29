@@ -44,6 +44,7 @@ import java.io.InputStream;
 import java.io.OutputStream;
 import java.net.HttpURLConnection;
 import java.net.URI;
+import java.net.URISyntaxException;
 import java.net.URL;
 import java.net.URLConnection;
 import java.util.Collection;
@@ -80,22 +81,15 @@ public final class JdkRequest implements Request {
     private static final Wire WIRE = new Wire() {
         // @checkstyle ParameterNumber (6 lines)
         @Override
-        public Response send(final Request req, final String home,
+        public Response send(
+            final Request req, final String home,
             final String method,
             final Collection<Map.Entry<String, String>> headers,
             final InputStream content,
             final int connect,
-            final int read) throws IOException {
-            final URLConnection raw = new URL(home).openConnection();
-            if (!(raw instanceof HttpURLConnection)) {
-                throw new IOException(
-                    String.format(
-                        "'%s' opens %s instead of expected HttpURLConnection",
-                        home, raw.getClass().getName()
-                    )
-                );
-            }
-            final HttpURLConnection conn = HttpURLConnection.class.cast(raw);
+            final int read
+        ) throws IOException {
+            final HttpURLConnection conn = JdkRequest.openConnection(home);
             try {
                 conn.setConnectTimeout(connect);
                 conn.setReadTimeout(read);
@@ -139,8 +133,10 @@ public final class JdkRequest implements Request {
          * @param output The output stream to write to
          * @throws IOException If an IO Exception occurs
          */
-        private void writeFully(final InputStream content,
-            final OutputStream output) throws IOException {
+        private void writeFully(
+            final InputStream content,
+            final OutputStream output
+        ) throws IOException {
             // @checkstyle MagicNumber (1 line)
             final byte[] buffer = new byte[8192];
             for (int bytes = content.read(buffer); bytes != -1;
@@ -155,7 +151,8 @@ public final class JdkRequest implements Request {
          * @return Headers
          */
         private Array<Map.Entry<String, String>> headers(
-            final Map<String, List<String>> fields) {
+            final Map<String, List<String>> fields
+        ) {
             final Collection<Map.Entry<String, String>> headers =
                 new LinkedList<>();
             for (final Map.Entry<String, List<String>> field
@@ -280,14 +277,45 @@ public final class JdkRequest implements Request {
     }
 
     @Override
-    public <T extends Wire> Request through(final Class<T> type,
-        final Object... args) {
+    public <T extends Wire> Request through(
+        final Class<T> type,
+        final Object... args
+    ) {
         return this.base.through(type, args);
     }
 
     @Override
     public Request through(final Wire wire) {
         return this.base.through(wire);
+    }
+
+    /**
+     * Open HTTP connection.
+     * @param url URL.
+     * @return Connection.
+     * @throws IOException if unable to connect.
+     */
+    private static HttpURLConnection openConnection(
+        final String url
+    ) throws IOException {
+        final URLConnection raw;
+        try {
+            raw = new URI(url).toURL().openConnection();
+        } catch (final URISyntaxException | IllegalArgumentException ex) {
+            throw new IOException(
+                String.format("'%s' is incorrect", url),
+                ex
+            );
+        }
+        if (!(raw instanceof HttpURLConnection)) {
+            throw new IOException(
+                String.format(
+                    "'%s' opens %s instead of expected HttpURLConnection",
+                    url, raw.getClass().getName()
+                )
+            );
+        }
+        return HttpURLConnection.class.cast(raw);
     }
 
 }

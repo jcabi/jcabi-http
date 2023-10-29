@@ -41,6 +41,10 @@ import com.jcabi.http.Response;
 import com.jcabi.http.Wire;
 import com.jcabi.immutable.Array;
 import com.jcabi.log.Logger;
+import jakarta.json.Json;
+import jakarta.json.JsonStructure;
+import jakarta.ws.rs.core.HttpHeaders;
+import jakarta.ws.rs.core.UriBuilder;
 import java.io.ByteArrayInputStream;
 import java.io.IOException;
 import java.io.InputStream;
@@ -55,10 +59,6 @@ import java.util.Arrays;
 import java.util.Collection;
 import java.util.LinkedList;
 import java.util.Map;
-import javax.json.Json;
-import javax.json.JsonStructure;
-import javax.ws.rs.core.HttpHeaders;
-import javax.ws.rs.core.UriBuilder;
 import lombok.EqualsAndHashCode;
 
 /**
@@ -81,7 +81,8 @@ import lombok.EqualsAndHashCode;
 //  first one, since maybe qulice is counting the methods in the inner
 //  classes too - if it doesn't, then it can be left.
 //@checkstyle LineLength (1 line)
-@SuppressWarnings({"PMD.TooManyMethods", "PMD.GodClass", "PMD.ExcessiveImports"})
+@SuppressWarnings({"PMD.TooManyMethods", "PMD.GodClass",
+    "PMD.ExcessiveImports"})
 public final class BaseRequest implements Request {
 
     /**
@@ -159,9 +160,11 @@ public final class BaseRequest implements Request {
      * @param method HTTP method
      * @param body HTTP request body
      */
-    public BaseRequest(final Wire wre, final String uri,
+    public BaseRequest(
+        final Wire wre, final String uri,
         final Iterable<Map.Entry<String, String>> headers,
-        final String method, final byte[] body) {
+        final String method, final byte[] body
+    ) {
         this(wre, uri, headers, method, body, 0, 0);
         //@checkstyle ParameterNumber (15 lines)
     }
@@ -176,10 +179,12 @@ public final class BaseRequest implements Request {
      * @param cnct Connect timeout for http connection
      * @param rdd Read timeout for http connection
      */
-    public BaseRequest(final Wire wre, final String uri,
+    public BaseRequest(
+        final Wire wre, final String uri,
         final Iterable<Map.Entry<String, String>> headers,
         final String method, final byte[] body,
-        final int cnct, final int rdd) {
+        final int cnct, final int rdd
+    ) {
         this.wire = wre;
         this.home = BaseRequest.createUri(uri).toString();
         this.hdrs = new Array<>(headers);

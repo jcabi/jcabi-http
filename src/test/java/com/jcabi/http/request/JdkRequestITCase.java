@@ -30,10 +30,10 @@
 package com.jcabi.http.request;
 
 import com.jcabi.aspects.Tv;
+import jakarta.ws.rs.HttpMethod;
 import java.io.IOException;
 import java.net.MalformedURLException;
 import java.net.URI;
-import javax.ws.rs.HttpMethod;
 import org.apache.commons.lang3.StringUtils;
 import org.hamcrest.MatcherAssert;
 import org.hamcrest.Matchers;
@@ -88,7 +88,7 @@ final class JdkRequestITCase {
         final String uri = "localhost";
         MatcherAssert.assertThat(
             Assertions.assertThrows(
-                MalformedURLException.class,
+                IOException.class,
                 new Executable() {
                     @Override
                     public void execute() throws Throwable {
@@ -98,7 +98,7 @@ final class JdkRequestITCase {
             Matchers.hasProperty(
                 JdkRequestITCase.MESSAGE,
                 Matchers.allOf(
-                    Matchers.containsString("no protocol: "),
+                    Matchers.containsString("is incorrect"),
                     Matchers.containsString(uri)
                 )
             )

@@ -31,7 +31,7 @@ package com.jcabi.http.response;
 
 import com.jcabi.http.Response;
 import com.jcabi.http.request.FakeRequest;
-import javax.json.stream.JsonParsingException;
+import jakarta.json.stream.JsonParsingException;
 import org.hamcrest.MatcherAssert;
 import org.hamcrest.Matchers;
 import org.junit.jupiter.api.Assertions;
