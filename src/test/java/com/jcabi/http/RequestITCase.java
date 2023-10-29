@@ -37,14 +37,15 @@ import com.jcabi.http.request.ApacheRequest;
 import com.jcabi.http.response.JsonResponse;
 import com.jcabi.http.response.RestResponse;
 import com.jcabi.http.response.XmlResponse;
+import jakarta.json.Json;
 import java.io.IOException;
 import java.net.HttpURLConnection;
 import java.net.URI;
-import javax.json.Json;
 import org.hamcrest.MatcherAssert;
 import org.hamcrest.Matchers;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.Timeout;
 import org.junit.jupiter.api.function.Executable;
 import org.junit.jupiter.params.ParameterizedTest;
 
@@ -62,14 +63,15 @@ final class RequestITCase extends RequestTestTemplate {
      */
     @Values
     @ParameterizedTest
+    @Timeout(10)
     void sendsHttpRequestAndProcessesHttpResponse(
         final Class<? extends Request> type
     ) throws Exception {
-        RequestTestTemplate.request(new URI("http://www.jare.io"), type)
+        RequestTestTemplate.request(new URI("https://www.rt.com/rss/"), type)
             .fetch().as(RestResponse.class)
             .assertStatus(HttpURLConnection.HTTP_OK)
             .as(XmlResponse.class)
-            .assertXPath("/xhtml:html");
+            .assertXPath("/rss/channel");
     }
 
     /**
@@ -79,10 +81,11 @@ final class RequestITCase extends RequestTestTemplate {
      */
     @Values
     @ParameterizedTest
+    @Timeout(10)
     void processesNotOkHttpResponse(
         final Class<? extends Request> type
     ) throws Exception {
-        RequestTestTemplate.request(new URI("http://www.jare.io/file-not-found.txt"), type)
+        RequestTestTemplate.request(new URI("https://example.com/file-not-found.txt"), type)
             .fetch().as(RestResponse.class)
             .assertStatus(HttpURLConnection.HTTP_NOT_FOUND);
     }
