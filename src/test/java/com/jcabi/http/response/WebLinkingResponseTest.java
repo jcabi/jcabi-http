@@ -39,7 +39,7 @@ import org.junit.jupiter.api.Test;
  * Test case for {@link WebLinkingResponse}.
  * @since 0.9
  */
-public final class WebLinkingResponseTest {
+final class WebLinkingResponseTest {
 
     /**
      * The Link header.

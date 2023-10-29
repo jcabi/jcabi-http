@@ -32,7 +32,6 @@ package com.jcabi.http.wire;
 import com.google.common.cache.CacheBuilder;
 import com.google.common.cache.CacheLoader;
 import com.google.common.cache.LoadingCache;
-import com.jcabi.aspects.Tv;
 import com.jcabi.http.Request;
 import com.jcabi.http.Response;
 import com.jcabi.http.mock.MkAnswer;
@@ -63,7 +62,7 @@ final class CachingWireTest {
         ).start();
         final Request req = new JdkRequest(container.home())
             .through(CachingWire.class);
-        for (int idx = 0; idx < Tv.TEN; ++idx) {
+        for (int idx = 0; idx < 10; ++idx) {
             req.fetch().as(RestResponse.class)
                 .assertStatus(HttpURLConnection.HTTP_OK);
         }
@@ -118,7 +117,7 @@ final class CachingWireTest {
         container.stop();
         MatcherAssert.assertThat(
             container.queries(),
-            Matchers.equalTo(Tv.THREE)
+            Matchers.equalTo(3)
         );
     }
 
@@ -147,7 +146,7 @@ final class CachingWireTest {
                 );
         final Request req = new JdkRequest(container.home())
             .through(CachingWire.class, cache);
-        for (int idx = 0; idx < Tv.TEN; ++idx) {
+        for (int idx = 0; idx < 10; ++idx) {
             req.fetch().as(RestResponse.class)
                 .assertStatus(HttpURLConnection.HTTP_OK);
         }

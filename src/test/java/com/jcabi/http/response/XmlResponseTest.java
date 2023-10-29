@@ -43,7 +43,7 @@ import org.junit.jupiter.api.Test;
  * @since 1.1
  */
 @SuppressWarnings("PMD.TooManyMethods")
-public final class XmlResponseTest {
+final class XmlResponseTest {
 
     /**
      * XmlResponse can find nodes with XPath.

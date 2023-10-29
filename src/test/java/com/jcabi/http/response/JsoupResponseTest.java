@@ -41,7 +41,7 @@ import org.junit.jupiter.api.Test;
  *
  * @since 1.4
  */
-public final class JsoupResponseTest {
+final class JsoupResponseTest {
 
     /**
      * JsoupResponse normalizes malformed HTML responses.

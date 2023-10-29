@@ -29,7 +29,6 @@
  */
 package com.jcabi.http.wire;
 
-import com.jcabi.aspects.Tv;
 import com.jcabi.http.Request;
 import com.jcabi.http.mock.MkAnswer;
 import com.jcabi.http.mock.MkContainer;
@@ -45,7 +44,7 @@ import org.junit.jupiter.api.Test;
  * Test case for {@link FcWire}.
  * @since 1.0
  */
-public final class FcWireTest {
+final class FcWireTest {
 
     /**
      * FileCachingWire can cache GET requests.
@@ -58,7 +57,7 @@ public final class FcWireTest {
         ).start();
         final Request req = new JdkRequest(container.home())
             .through(FcWire.class);
-        for (int idx = 0; idx < Tv.TEN; ++idx) {
+        for (int idx = 0; idx < 10; ++idx) {
             req.fetch().as(RestResponse.class)
                 .assertStatus(HttpURLConnection.HTTP_OK);
         }
@@ -113,7 +112,7 @@ public final class FcWireTest {
         container.stop();
         MatcherAssert.assertThat(
             container.queries(),
-            Matchers.equalTo(Tv.THREE)
+            Matchers.equalTo(3)
         );
     }
 

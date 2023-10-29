@@ -30,7 +30,6 @@
 package com.jcabi.http.wire;
 
 import com.jcabi.aspects.Immutable;
-import com.jcabi.aspects.Tv;
 import com.jcabi.http.Request;
 import com.jcabi.http.Response;
 import com.jcabi.http.Wire;
@@ -86,7 +85,7 @@ public final class AutoRedirectingWire implements Wire {
      * @param wire Original wire
      */
     public AutoRedirectingWire(final Wire wire) {
-        this(wire, Tv.FIVE);
+        this(wire, 5);
     }
 
     /**

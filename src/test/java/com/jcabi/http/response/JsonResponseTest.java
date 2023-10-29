@@ -42,7 +42,7 @@ import org.junit.jupiter.api.function.Executable;
  * Test case for {@link JsonResponse}.
  * @since 1.1
  */
-public final class JsonResponseTest {
+final class JsonResponseTest {
 
     /**
      * JsonResponse can read and return a JSON document.

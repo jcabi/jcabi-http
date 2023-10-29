@@ -29,7 +29,6 @@
  */
 package com.jcabi.http;
 
-import com.jcabi.aspects.Tv;
 import com.jcabi.http.request.JdkRequest;
 import com.jcabi.http.response.JsonResponse;
 import com.jcabi.http.response.RestResponse;
@@ -147,7 +146,7 @@ public abstract class RequestITCaseTemplate {
     @Test
     final void followsLocationHeader() throws IOException {
         this.request("/absolute-redirect/5")
-            .through(AutoRedirectingWire.class, Tv.SIX)
+            .through(AutoRedirectingWire.class, 6)
             .fetch()
             .as(RestResponse.class)
             .assertStatus(HttpURLConnection.HTTP_OK);
@@ -156,7 +155,7 @@ public abstract class RequestITCaseTemplate {
     @Test
     final void followsLocationHeaderRelativeRedirect() throws IOException {
         this.request("/relative-redirect/5")
-            .through(AutoRedirectingWire.class, Tv.SIX)
+            .through(AutoRedirectingWire.class, 6)
             .fetch()
             .as(RestResponse.class)
             .assertStatus(HttpURLConnection.HTTP_OK);
@@ -168,7 +167,7 @@ public abstract class RequestITCaseTemplate {
             IOException.class,
             () ->
                 this.request("/delay/3")
-                    .timeout(Tv.THOUSAND, Tv.THOUSAND)
+                    .timeout(1000, 1000)
                     .fetch()
         );
     }

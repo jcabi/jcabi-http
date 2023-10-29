@@ -49,7 +49,7 @@ import org.junit.jupiter.api.Test;
  * Test case for {@link RetryWire}.
  * @since 1.2
  */
-public final class RetryWireTest {
+final class RetryWireTest {
 
     /**
      * RetryWire can make a few requests before giving up.

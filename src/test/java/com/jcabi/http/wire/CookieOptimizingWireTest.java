@@ -45,7 +45,7 @@ import org.junit.jupiter.api.Test;
  * Test case for {@link CookieOptimizingWire}.
  * @since 1.0
  */
-public final class CookieOptimizingWireTest {
+final class CookieOptimizingWireTest {
 
     /**
      * CookieOptimizingWire can transfer cookies.

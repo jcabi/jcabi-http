@@ -41,7 +41,7 @@ import org.mockito.Mockito;
  * Test case for {@link GrizzlyQuery}.
  * @since 1.13
  */
-public final class GrizzlyQueryTest {
+final class GrizzlyQueryTest {
 
     /**
      * GrizzlyQuery can return a body as a byte array.
