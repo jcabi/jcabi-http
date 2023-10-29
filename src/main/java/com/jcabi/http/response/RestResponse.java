@@ -33,14 +33,14 @@ import com.jcabi.aspects.Immutable;
 import com.jcabi.http.Request;
 import com.jcabi.http.Response;
 import com.jcabi.log.Logger;
+import jakarta.ws.rs.core.Cookie;
+import jakarta.ws.rs.core.HttpHeaders;
 import java.net.HttpCookie;
 import java.net.URI;
 import java.util.Collections;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
-import javax.ws.rs.core.Cookie;
-import javax.ws.rs.core.HttpHeaders;
 import lombok.EqualsAndHashCode;
 import org.hamcrest.CustomMatcher;
 import org.hamcrest.Matcher;
@@ -182,7 +182,7 @@ public final class RestResponse extends AbstractResponse {
      */
     public RestResponse assertHeader(
         final String name,
-        final Matcher<Iterable<String>> matcher
+        final Matcher<? super Iterable<String>> matcher
     ) {
         Iterable<String> values = this.headers().get(name);
         if (values == null) {
@@ -293,13 +293,12 @@ public final class RestResponse extends AbstractResponse {
      * @return Regular one
      */
     private static Cookie cookie(final HttpCookie cookie) {
-        return new Cookie(
-            cookie.getName(),
-            cookie.getValue(),
-            cookie.getPath(),
-            cookie.getDomain(),
-            cookie.getVersion()
-        );
+        return new Cookie.Builder(cookie.getName())
+            .value(cookie.getValue())
+            .domain(cookie.getDomain())
+            .version(cookie.getVersion())
+            .path(cookie.getPath())
+            .build();
     }
 
     /**
