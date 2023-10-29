@@ -85,7 +85,7 @@
 <a class="jxr_linenumber" name="L77" href="#L77">77</a>  <em class="jxr_javadoccomment"> */</em>
 <a class="jxr_linenumber" name="L78" href="#L78">78</a>  @Immutable
 <a class="jxr_linenumber" name="L79" href="#L79">79</a>  @EqualsAndHashCode(callSuper = <strong class="jxr_keyword">true</strong>)
-<a class="jxr_linenumber" name="L80" href="#L80">80</a>  <strong class="jxr_keyword">public</strong> <strong class="jxr_keyword">final</strong> <strong class="jxr_keyword">class</strong> <a href="../../../../com/jcabi/http/response/XmlResponse.html">XmlResponse</a> <strong class="jxr_keyword">extends</strong> <a href="../../../../com/jcabi/http/response/AbstractResponse.html">AbstractResponse</a> {
+<a class="jxr_linenumber" name="L80" href="#L80">80</a>  <strong class="jxr_keyword">public</strong> <strong class="jxr_keyword">final</strong> <strong class="jxr_keyword">class</strong> <a name="XmlResponse" href="../../../../com/jcabi/http/response/XmlResponse.html#XmlResponse">XmlResponse</a> <strong class="jxr_keyword">extends</strong> <a name="AbstractResponse" href="../../../../com/jcabi/http/response/AbstractResponse.html#AbstractResponse">AbstractResponse</a> {
 <a class="jxr_linenumber" name="L81" href="#L81">81</a>  
 <a class="jxr_linenumber" name="L82" href="#L82">82</a>      <em class="jxr_javadoccomment">/**</em>
 <a class="jxr_linenumber" name="L83" href="#L83">83</a>  <em class="jxr_javadoccomment">     * Map of namespaces.</em>
@@ -96,7 +96,7 @@
 <a class="jxr_linenumber" name="L88" href="#L88">88</a>  <em class="jxr_javadoccomment">     * Public ctor.</em>
 <a class="jxr_linenumber" name="L89" href="#L89">89</a>  <em class="jxr_javadoccomment">     * @param resp Response</em>
 <a class="jxr_linenumber" name="L90" href="#L90">90</a>  <em class="jxr_javadoccomment">     */</em>
-<a class="jxr_linenumber" name="L91" href="#L91">91</a>      <strong class="jxr_keyword">public</strong> <a href="../../../../com/jcabi/http/response/XmlResponse.html">XmlResponse</a>(<strong class="jxr_keyword">final</strong> <a href="../../../../com/jcabi/http/Response.html">Response</a> resp) {
+<a class="jxr_linenumber" name="L91" href="#L91">91</a>      <strong class="jxr_keyword">public</strong> <a name="XmlResponse" href="../../../../com/jcabi/http/response/XmlResponse.html#XmlResponse">XmlResponse</a>(<strong class="jxr_keyword">final</strong> <a name="Response" href="../../../../com/jcabi/http/Response.html#Response">Response</a> resp) {
 <a class="jxr_linenumber" name="L92" href="#L92">92</a>          <strong class="jxr_keyword">this</strong>(resp, <strong class="jxr_keyword">new</strong> ArrayMap&lt;String, String&gt;());
 <a class="jxr_linenumber" name="L93" href="#L93">93</a>      }
 <a class="jxr_linenumber" name="L94" href="#L94">94</a>  
@@ -105,7 +105,7 @@
 <a class="jxr_linenumber" name="L97" href="#L97">97</a>  <em class="jxr_javadoccomment">     * @param resp Response</em>
 <a class="jxr_linenumber" name="L98" href="#L98">98</a>  <em class="jxr_javadoccomment">     * @param map Map of namespaces</em>
 <a class="jxr_linenumber" name="L99" href="#L99">99</a>  <em class="jxr_javadoccomment">     */</em>
-<a class="jxr_linenumber" name="L100" href="#L100">100</a>     <strong class="jxr_keyword">private</strong> <a href="../../../../com/jcabi/http/response/XmlResponse.html">XmlResponse</a>(<strong class="jxr_keyword">final</strong> <a href="../../../../com/jcabi/http/Response.html">Response</a> resp,
+<a class="jxr_linenumber" name="L100" href="#L100">100</a>     <strong class="jxr_keyword">private</strong> <a name="XmlResponse" href="../../../../com/jcabi/http/response/XmlResponse.html#XmlResponse">XmlResponse</a>(<strong class="jxr_keyword">final</strong> <a name="Response" href="../../../../com/jcabi/http/Response.html#Response">Response</a> resp,
 <a class="jxr_linenumber" name="L101" href="#L101">101</a>         <strong class="jxr_keyword">final</strong> ArrayMap&lt;String, String&gt; map) {
 <a class="jxr_linenumber" name="L102" href="#L102">102</a>         <strong class="jxr_keyword">super</strong>(resp);
 <a class="jxr_linenumber" name="L103" href="#L103">103</a>         <strong class="jxr_keyword">this</strong>.namespaces = map;
@@ -125,8 +125,8 @@
 <a class="jxr_linenumber" name="L117" href="#L117">117</a> <em class="jxr_javadoccomment">     * @param uri Namespace URI</em>
 <a class="jxr_linenumber" name="L118" href="#L118">118</a> <em class="jxr_javadoccomment">     * @return This object</em>
 <a class="jxr_linenumber" name="L119" href="#L119">119</a> <em class="jxr_javadoccomment">     */</em>
-<a class="jxr_linenumber" name="L120" href="#L120">120</a>     <strong class="jxr_keyword">public</strong> <a href="../../../../com/jcabi/http/response/XmlResponse.html">XmlResponse</a> registerNs(<strong class="jxr_keyword">final</strong> String prefix, <strong class="jxr_keyword">final</strong> String uri) {
-<a class="jxr_linenumber" name="L121" href="#L121">121</a>         <strong class="jxr_keyword">return</strong> <strong class="jxr_keyword">new</strong> <a href="../../../../com/jcabi/http/response/XmlResponse.html">XmlResponse</a>(<strong class="jxr_keyword">this</strong>, <strong class="jxr_keyword">this</strong>.namespaces.with(prefix, uri));
+<a class="jxr_linenumber" name="L120" href="#L120">120</a>     <strong class="jxr_keyword">public</strong> <a name="XmlResponse" href="../../../../com/jcabi/http/response/XmlResponse.html#XmlResponse">XmlResponse</a> registerNs(<strong class="jxr_keyword">final</strong> String prefix, <strong class="jxr_keyword">final</strong> String uri) {
+<a class="jxr_linenumber" name="L121" href="#L121">121</a>         <strong class="jxr_keyword">return</strong> <strong class="jxr_keyword">new</strong> <a name="XmlResponse" href="../../../../com/jcabi/http/response/XmlResponse.html#XmlResponse">XmlResponse</a>(<strong class="jxr_keyword">this</strong>, <strong class="jxr_keyword">this</strong>.namespaces.with(prefix, uri));
 <a class="jxr_linenumber" name="L122" href="#L122">122</a>     }
 <a class="jxr_linenumber" name="L123" href="#L123">123</a> 
 <a class="jxr_linenumber" name="L124" href="#L124">124</a>     <em class="jxr_javadoccomment">/**</em>
@@ -135,7 +135,7 @@
 <a class="jxr_linenumber" name="L127" href="#L127">127</a> <em class="jxr_javadoccomment">     * @param xpath Query to use</em>
 <a class="jxr_linenumber" name="L128" href="#L128">128</a> <em class="jxr_javadoccomment">     * @return This object</em>
 <a class="jxr_linenumber" name="L129" href="#L129">129</a> <em class="jxr_javadoccomment">     */</em>
-<a class="jxr_linenumber" name="L130" href="#L130">130</a>     <strong class="jxr_keyword">public</strong> <a href="../../../../com/jcabi/http/response/XmlResponse.html">XmlResponse</a> assertXPath(<strong class="jxr_keyword">final</strong> String xpath) {
+<a class="jxr_linenumber" name="L130" href="#L130">130</a>     <strong class="jxr_keyword">public</strong> <a name="XmlResponse" href="../../../../com/jcabi/http/response/XmlResponse.html#XmlResponse">XmlResponse</a> assertXPath(<strong class="jxr_keyword">final</strong> String xpath) {
 <a class="jxr_linenumber" name="L131" href="#L131">131</a>         <strong class="jxr_keyword">final</strong> String body = <strong class="jxr_keyword">this</strong>.body();
 <a class="jxr_linenumber" name="L132" href="#L132">132</a>         <strong class="jxr_keyword">if</strong> (!XhtmlMatchers.hasXPath(xpath, <strong class="jxr_keyword">this</strong>.context()).matches(body)) {
 <a class="jxr_linenumber" name="L133" href="#L133">133</a>             <strong class="jxr_keyword">throw</strong> <strong class="jxr_keyword">new</strong> AssertionError(
@@ -153,9 +153,9 @@
 <a class="jxr_linenumber" name="L145" href="#L145">145</a> <em class="jxr_javadoccomment">     * @param query XPath query to fetch new URI</em>
 <a class="jxr_linenumber" name="L146" href="#L146">146</a> <em class="jxr_javadoccomment">     * @return New request</em>
 <a class="jxr_linenumber" name="L147" href="#L147">147</a> <em class="jxr_javadoccomment">     */</em>
-<a class="jxr_linenumber" name="L148" href="#L148">148</a>     <strong class="jxr_keyword">public</strong> <a href="../../../../com/jcabi/http/Request.html">Request</a> rel(<strong class="jxr_keyword">final</strong> String query) {
+<a class="jxr_linenumber" name="L148" href="#L148">148</a>     <strong class="jxr_keyword">public</strong> Request rel(<strong class="jxr_keyword">final</strong> String query) {
 <a class="jxr_linenumber" name="L149" href="#L149">149</a>         <strong class="jxr_keyword">this</strong>.assertXPath(query);
-<a class="jxr_linenumber" name="L150" href="#L150">150</a>         <strong class="jxr_keyword">return</strong> <strong class="jxr_keyword">new</strong> <a href="../../../../com/jcabi/http/response/RestResponse.html">RestResponse</a>(<strong class="jxr_keyword">this</strong>).jump(
+<a class="jxr_linenumber" name="L150" href="#L150">150</a>         <strong class="jxr_keyword">return</strong> <strong class="jxr_keyword">new</strong> <a name="RestResponse" href="../../../../com/jcabi/http/response/RestResponse.html#RestResponse">RestResponse</a>(<strong class="jxr_keyword">this</strong>).jump(
 <a class="jxr_linenumber" name="L151" href="#L151">151</a>             URI.create(<strong class="jxr_keyword">this</strong>.xml().xpath(query).get(0))
 <a class="jxr_linenumber" name="L152" href="#L152">152</a>         );
 <a class="jxr_linenumber" name="L153" href="#L153">153</a>     }
@@ -176,6 +176,6 @@
 <a class="jxr_linenumber" name="L168" href="#L168">168</a> }
 </pre>
 <hr/>
-<div id="footer">Copyright &#169; 2012&#x2013;2022 <a href="https://www.jcabi.com">jcabi.com</a>. All rights reserved.</div>
+<div id="footer">Copyright &#169; 2012&#x2013;2023 <a href="https://www.jcabi.com">jcabi.com</a>. All rights reserved.</div>
 </body>
 </html>

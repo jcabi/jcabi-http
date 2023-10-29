@@ -41,14 +41,14 @@
 <a class="jxr_linenumber" name="L33" href="#L33">33</a>  <strong class="jxr_keyword">import</strong> com.jcabi.http.Request;
 <a class="jxr_linenumber" name="L34" href="#L34">34</a>  <strong class="jxr_keyword">import</strong> com.jcabi.http.Response;
 <a class="jxr_linenumber" name="L35" href="#L35">35</a>  <strong class="jxr_keyword">import</strong> com.jcabi.log.Logger;
-<a class="jxr_linenumber" name="L36" href="#L36">36</a>  <strong class="jxr_keyword">import</strong> java.net.HttpCookie;
-<a class="jxr_linenumber" name="L37" href="#L37">37</a>  <strong class="jxr_keyword">import</strong> java.net.URI;
-<a class="jxr_linenumber" name="L38" href="#L38">38</a>  <strong class="jxr_keyword">import</strong> java.util.Collections;
-<a class="jxr_linenumber" name="L39" href="#L39">39</a>  <strong class="jxr_keyword">import</strong> java.util.Iterator;
-<a class="jxr_linenumber" name="L40" href="#L40">40</a>  <strong class="jxr_keyword">import</strong> java.util.List;
-<a class="jxr_linenumber" name="L41" href="#L41">41</a>  <strong class="jxr_keyword">import</strong> java.util.Map;
-<a class="jxr_linenumber" name="L42" href="#L42">42</a>  <strong class="jxr_keyword">import</strong> javax.ws.rs.core.Cookie;
-<a class="jxr_linenumber" name="L43" href="#L43">43</a>  <strong class="jxr_keyword">import</strong> javax.ws.rs.core.HttpHeaders;
+<a class="jxr_linenumber" name="L36" href="#L36">36</a>  <strong class="jxr_keyword">import</strong> jakarta.ws.rs.core.Cookie;
+<a class="jxr_linenumber" name="L37" href="#L37">37</a>  <strong class="jxr_keyword">import</strong> jakarta.ws.rs.core.HttpHeaders;
+<a class="jxr_linenumber" name="L38" href="#L38">38</a>  <strong class="jxr_keyword">import</strong> java.net.HttpCookie;
+<a class="jxr_linenumber" name="L39" href="#L39">39</a>  <strong class="jxr_keyword">import</strong> java.net.URI;
+<a class="jxr_linenumber" name="L40" href="#L40">40</a>  <strong class="jxr_keyword">import</strong> java.util.Collections;
+<a class="jxr_linenumber" name="L41" href="#L41">41</a>  <strong class="jxr_keyword">import</strong> java.util.Iterator;
+<a class="jxr_linenumber" name="L42" href="#L42">42</a>  <strong class="jxr_keyword">import</strong> java.util.List;
+<a class="jxr_linenumber" name="L43" href="#L43">43</a>  <strong class="jxr_keyword">import</strong> java.util.Map;
 <a class="jxr_linenumber" name="L44" href="#L44">44</a>  <strong class="jxr_keyword">import</strong> lombok.EqualsAndHashCode;
 <a class="jxr_linenumber" name="L45" href="#L45">45</a>  <strong class="jxr_keyword">import</strong> org.hamcrest.CustomMatcher;
 <a class="jxr_linenumber" name="L46" href="#L46">46</a>  <strong class="jxr_keyword">import</strong> org.hamcrest.Matcher;
@@ -80,13 +80,13 @@
 <a class="jxr_linenumber" name="L72" href="#L72">72</a>  @Immutable
 <a class="jxr_linenumber" name="L73" href="#L73">73</a>  @EqualsAndHashCode(callSuper = <strong class="jxr_keyword">true</strong>)
 <a class="jxr_linenumber" name="L74" href="#L74">74</a>  @SuppressWarnings(<span class="jxr_string">"PMD.TooManyMethods"</span>)
-<a class="jxr_linenumber" name="L75" href="#L75">75</a>  <strong class="jxr_keyword">public</strong> <strong class="jxr_keyword">final</strong> <strong class="jxr_keyword">class</strong> <a href="../../../../com/jcabi/http/response/RestResponse.html">RestResponse</a> <strong class="jxr_keyword">extends</strong> <a href="../../../../com/jcabi/http/response/AbstractResponse.html">AbstractResponse</a> {
+<a class="jxr_linenumber" name="L75" href="#L75">75</a>  <strong class="jxr_keyword">public</strong> <strong class="jxr_keyword">final</strong> <strong class="jxr_keyword">class</strong> <a name="RestResponse" href="../../../../com/jcabi/http/response/RestResponse.html#RestResponse">RestResponse</a> <strong class="jxr_keyword">extends</strong> <a name="AbstractResponse" href="../../../../com/jcabi/http/response/AbstractResponse.html#AbstractResponse">AbstractResponse</a> {
 <a class="jxr_linenumber" name="L76" href="#L76">76</a>  
 <a class="jxr_linenumber" name="L77" href="#L77">77</a>      <em class="jxr_javadoccomment">/**</em>
 <a class="jxr_linenumber" name="L78" href="#L78">78</a>  <em class="jxr_javadoccomment">     * Public ctor.</em>
 <a class="jxr_linenumber" name="L79" href="#L79">79</a>  <em class="jxr_javadoccomment">     * @param resp Response</em>
 <a class="jxr_linenumber" name="L80" href="#L80">80</a>  <em class="jxr_javadoccomment">     */</em>
-<a class="jxr_linenumber" name="L81" href="#L81">81</a>      <strong class="jxr_keyword">public</strong> <a href="../../../../com/jcabi/http/response/RestResponse.html">RestResponse</a>(<strong class="jxr_keyword">final</strong> <a href="../../../../com/jcabi/http/Response.html">Response</a> resp) {
+<a class="jxr_linenumber" name="L81" href="#L81">81</a>      <strong class="jxr_keyword">public</strong> <a name="RestResponse" href="../../../../com/jcabi/http/response/RestResponse.html#RestResponse">RestResponse</a>(<strong class="jxr_keyword">final</strong> <a name="Response" href="../../../../com/jcabi/http/Response.html#Response">Response</a> resp) {
 <a class="jxr_linenumber" name="L82" href="#L82">82</a>          <strong class="jxr_keyword">super</strong>(resp);
 <a class="jxr_linenumber" name="L83" href="#L83">83</a>      }
 <a class="jxr_linenumber" name="L84" href="#L84">84</a>  
@@ -95,7 +95,7 @@
 <a class="jxr_linenumber" name="L87" href="#L87">87</a>  <em class="jxr_javadoccomment">     * @param matcher The matcher to use</em>
 <a class="jxr_linenumber" name="L88" href="#L88">88</a>  <em class="jxr_javadoccomment">     * @return The same object</em>
 <a class="jxr_linenumber" name="L89" href="#L89">89</a>  <em class="jxr_javadoccomment">     */</em>
-<a class="jxr_linenumber" name="L90" href="#L90">90</a>      <strong class="jxr_keyword">public</strong> <a href="../../../../com/jcabi/http/response/RestResponse.html">RestResponse</a> assertThat(<strong class="jxr_keyword">final</strong> Matcher&lt;Response&gt; matcher) {
+<a class="jxr_linenumber" name="L90" href="#L90">90</a>      <strong class="jxr_keyword">public</strong> <a name="RestResponse" href="../../../../com/jcabi/http/response/RestResponse.html#RestResponse">RestResponse</a> assertThat(<strong class="jxr_keyword">final</strong> Matcher&lt;Response&gt; matcher) {
 <a class="jxr_linenumber" name="L91" href="#L91">91</a>          MatcherAssert.assertThat(
 <a class="jxr_linenumber" name="L92" href="#L92">92</a>              String.format(<span class="jxr_string">"HTTP response is not valid: %s"</span>, <strong class="jxr_keyword">this</strong>),
 <a class="jxr_linenumber" name="L93" href="#L93">93</a>              <strong class="jxr_keyword">this</strong>,
@@ -110,7 +110,7 @@
 <a class="jxr_linenumber" name="L102" href="#L102">102</a> <em class="jxr_javadoccomment">     * @param status Expected status code</em>
 <a class="jxr_linenumber" name="L103" href="#L103">103</a> <em class="jxr_javadoccomment">     * @return The same object</em>
 <a class="jxr_linenumber" name="L104" href="#L104">104</a> <em class="jxr_javadoccomment">     */</em>
-<a class="jxr_linenumber" name="L105" href="#L105">105</a>     <strong class="jxr_keyword">public</strong> <a href="../../../../com/jcabi/http/response/RestResponse.html">RestResponse</a> assertStatus(<strong class="jxr_keyword">final</strong> <strong class="jxr_keyword">int</strong> status) {
+<a class="jxr_linenumber" name="L105" href="#L105">105</a>     <strong class="jxr_keyword">public</strong> <a name="RestResponse" href="../../../../com/jcabi/http/response/RestResponse.html#RestResponse">RestResponse</a> assertStatus(<strong class="jxr_keyword">final</strong> <strong class="jxr_keyword">int</strong> status) {
 <a class="jxr_linenumber" name="L106" href="#L106">106</a>         <strong class="jxr_keyword">final</strong> String message = String.format(
 <a class="jxr_linenumber" name="L107" href="#L107">107</a>             <span class="jxr_string">"HTTP response with status %d"</span>, status
 <a class="jxr_linenumber" name="L108" href="#L108">108</a>         );
@@ -131,7 +131,7 @@
 <a class="jxr_linenumber" name="L123" href="#L123">123</a> <em class="jxr_javadoccomment">     * @param matcher Matcher to validate status code</em>
 <a class="jxr_linenumber" name="L124" href="#L124">124</a> <em class="jxr_javadoccomment">     * @return This object</em>
 <a class="jxr_linenumber" name="L125" href="#L125">125</a> <em class="jxr_javadoccomment">     */</em>
-<a class="jxr_linenumber" name="L126" href="#L126">126</a>     <strong class="jxr_keyword">public</strong> <a href="../../../../com/jcabi/http/response/RestResponse.html">RestResponse</a> assertStatus(<strong class="jxr_keyword">final</strong> Matcher&lt;Integer&gt; matcher) {
+<a class="jxr_linenumber" name="L126" href="#L126">126</a>     <strong class="jxr_keyword">public</strong> <a name="RestResponse" href="../../../../com/jcabi/http/response/RestResponse.html#RestResponse">RestResponse</a> assertStatus(<strong class="jxr_keyword">final</strong> Matcher&lt;Integer&gt; matcher) {
 <a class="jxr_linenumber" name="L127" href="#L127">127</a>         MatcherAssert.assertThat(
 <a class="jxr_linenumber" name="L128" href="#L128">128</a>             String.format(
 <a class="jxr_linenumber" name="L129" href="#L129">129</a>                 <span class="jxr_string">"HTTP response status is not the one expected:%n%s"</span>,
@@ -148,7 +148,7 @@
 <a class="jxr_linenumber" name="L140" href="#L140">140</a> <em class="jxr_javadoccomment">     * @param matcher The matcher to use</em>
 <a class="jxr_linenumber" name="L141" href="#L141">141</a> <em class="jxr_javadoccomment">     * @return This object</em>
 <a class="jxr_linenumber" name="L142" href="#L142">142</a> <em class="jxr_javadoccomment">     */</em>
-<a class="jxr_linenumber" name="L143" href="#L143">143</a>     <strong class="jxr_keyword">public</strong> <a href="../../../../com/jcabi/http/response/RestResponse.html">RestResponse</a> assertBody(<strong class="jxr_keyword">final</strong> Matcher&lt;String&gt; matcher) {
+<a class="jxr_linenumber" name="L143" href="#L143">143</a>     <strong class="jxr_keyword">public</strong> <a name="RestResponse" href="../../../../com/jcabi/http/response/RestResponse.html#RestResponse">RestResponse</a> assertBody(<strong class="jxr_keyword">final</strong> Matcher&lt;String&gt; matcher) {
 <a class="jxr_linenumber" name="L144" href="#L144">144</a>         MatcherAssert.assertThat(
 <a class="jxr_linenumber" name="L145" href="#L145">145</a>             String.format(
 <a class="jxr_linenumber" name="L146" href="#L146">146</a>                 <span class="jxr_string">"HTTP response body content is not valid:%n%s"</span>,
@@ -165,7 +165,7 @@
 <a class="jxr_linenumber" name="L157" href="#L157">157</a> <em class="jxr_javadoccomment">     * @param matcher The matcher to use</em>
 <a class="jxr_linenumber" name="L158" href="#L158">158</a> <em class="jxr_javadoccomment">     * @return This object</em>
 <a class="jxr_linenumber" name="L159" href="#L159">159</a> <em class="jxr_javadoccomment">     */</em>
-<a class="jxr_linenumber" name="L160" href="#L160">160</a>     <strong class="jxr_keyword">public</strong> <a href="../../../../com/jcabi/http/response/RestResponse.html">RestResponse</a> assertBinary(<strong class="jxr_keyword">final</strong> Matcher&lt;byte[]&gt; matcher) {
+<a class="jxr_linenumber" name="L160" href="#L160">160</a>     <strong class="jxr_keyword">public</strong> <a name="RestResponse" href="../../../../com/jcabi/http/response/RestResponse.html#RestResponse">RestResponse</a> assertBinary(<strong class="jxr_keyword">final</strong> Matcher&lt;byte[]&gt; matcher) {
 <a class="jxr_linenumber" name="L161" href="#L161">161</a>         MatcherAssert.assertThat(
 <a class="jxr_linenumber" name="L162" href="#L162">162</a>             String.format(
 <a class="jxr_linenumber" name="L163" href="#L163">163</a>                 <span class="jxr_string">"HTTP response binary content is not valid:%n%s"</span>,
@@ -188,9 +188,9 @@
 <a class="jxr_linenumber" name="L180" href="#L180">180</a> <em class="jxr_javadoccomment">     * @param matcher The matcher to use</em>
 <a class="jxr_linenumber" name="L181" href="#L181">181</a> <em class="jxr_javadoccomment">     * @return This object</em>
 <a class="jxr_linenumber" name="L182" href="#L182">182</a> <em class="jxr_javadoccomment">     */</em>
-<a class="jxr_linenumber" name="L183" href="#L183">183</a>     <strong class="jxr_keyword">public</strong> <a href="../../../../com/jcabi/http/response/RestResponse.html">RestResponse</a> assertHeader(
+<a class="jxr_linenumber" name="L183" href="#L183">183</a>     <strong class="jxr_keyword">public</strong> <a name="RestResponse" href="../../../../com/jcabi/http/response/RestResponse.html#RestResponse">RestResponse</a> assertHeader(
 <a class="jxr_linenumber" name="L184" href="#L184">184</a>         <strong class="jxr_keyword">final</strong> String name,
-<a class="jxr_linenumber" name="L185" href="#L185">185</a>         <strong class="jxr_keyword">final</strong> Matcher&lt;Iterable&lt;String&gt;&gt; matcher
+<a class="jxr_linenumber" name="L185" href="#L185">185</a>         <strong class="jxr_keyword">final</strong> Matcher&lt;? <strong class="jxr_keyword">super</strong> Iterable&lt;String&gt;&gt; matcher
 <a class="jxr_linenumber" name="L186" href="#L186">186</a>     ) {
 <a class="jxr_linenumber" name="L187" href="#L187">187</a>         Iterable&lt;String&gt; values = <strong class="jxr_keyword">this</strong>.headers().get(name);
 <a class="jxr_linenumber" name="L188" href="#L188">188</a>         <strong class="jxr_keyword">if</strong> (values == <strong class="jxr_keyword">null</strong>) {
@@ -214,7 +214,7 @@
 <a class="jxr_linenumber" name="L206" href="#L206">206</a> <em class="jxr_javadoccomment">     * @return This object</em>
 <a class="jxr_linenumber" name="L207" href="#L207">207</a> <em class="jxr_javadoccomment">     * @since 0.9</em>
 <a class="jxr_linenumber" name="L208" href="#L208">208</a> <em class="jxr_javadoccomment">     */</em>
-<a class="jxr_linenumber" name="L209" href="#L209">209</a>     <strong class="jxr_keyword">public</strong> <a href="../../../../com/jcabi/http/response/RestResponse.html">RestResponse</a> assertHeader(<strong class="jxr_keyword">final</strong> String name, <strong class="jxr_keyword">final</strong> String value) {
+<a class="jxr_linenumber" name="L209" href="#L209">209</a>     <strong class="jxr_keyword">public</strong> <a name="RestResponse" href="../../../../com/jcabi/http/response/RestResponse.html#RestResponse">RestResponse</a> assertHeader(<strong class="jxr_keyword">final</strong> String name, <strong class="jxr_keyword">final</strong> String value) {
 <a class="jxr_linenumber" name="L210" href="#L210">210</a>         <strong class="jxr_keyword">return</strong> <strong class="jxr_keyword">this</strong>.assertHeader(name, Matchers.hasItems(value));
 <a class="jxr_linenumber" name="L211" href="#L211">211</a>     }
 <a class="jxr_linenumber" name="L212" href="#L212">212</a> 
@@ -224,8 +224,8 @@
 <a class="jxr_linenumber" name="L216" href="#L216">216</a> <em class="jxr_javadoccomment">     * @return New request</em>
 <a class="jxr_linenumber" name="L217" href="#L217">217</a> <em class="jxr_javadoccomment">     */</em>
 <a class="jxr_linenumber" name="L218" href="#L218">218</a>     @SuppressWarnings(<span class="jxr_string">"PMD.UseConcurrentHashMap"</span>)
-<a class="jxr_linenumber" name="L219" href="#L219">219</a>     <strong class="jxr_keyword">public</strong> <a href="../../../../com/jcabi/http/Request.html">Request</a> jump(<strong class="jxr_keyword">final</strong> URI uri) {
-<a class="jxr_linenumber" name="L220" href="#L220">220</a>         <a href="../../../../com/jcabi/http/Request.html">Request</a> req = <strong class="jxr_keyword">this</strong>.back().uri()
+<a class="jxr_linenumber" name="L219" href="#L219">219</a>     <strong class="jxr_keyword">public</strong> Request jump(<strong class="jxr_keyword">final</strong> URI uri) {
+<a class="jxr_linenumber" name="L220" href="#L220">220</a>         Request req = <strong class="jxr_keyword">this</strong>.back().uri()
 <a class="jxr_linenumber" name="L221" href="#L221">221</a>             .set(<strong class="jxr_keyword">this</strong>.back().uri().get().resolve(uri))
 <a class="jxr_linenumber" name="L222" href="#L222">222</a>             .back();
 <a class="jxr_linenumber" name="L223" href="#L223">223</a>         <strong class="jxr_keyword">final</strong> Map&lt;String, List&lt;String&gt;&gt; headers = <strong class="jxr_keyword">this</strong>.headers();
@@ -248,7 +248,7 @@
 <a class="jxr_linenumber" name="L240" href="#L240">240</a> <em class="jxr_javadoccomment">     * Follow LOCATION header.</em>
 <a class="jxr_linenumber" name="L241" href="#L241">241</a> <em class="jxr_javadoccomment">     * @return New request</em>
 <a class="jxr_linenumber" name="L242" href="#L242">242</a> <em class="jxr_javadoccomment">     */</em>
-<a class="jxr_linenumber" name="L243" href="#L243">243</a>     <strong class="jxr_keyword">public</strong> <a href="../../../../com/jcabi/http/Request.html">Request</a> follow() {
+<a class="jxr_linenumber" name="L243" href="#L243">243</a>     <strong class="jxr_keyword">public</strong> Request follow() {
 <a class="jxr_linenumber" name="L244" href="#L244">244</a>         <strong class="jxr_keyword">this</strong>.assertHeader(
 <a class="jxr_linenumber" name="L245" href="#L245">245</a>             HttpHeaders.LOCATION,
 <a class="jxr_linenumber" name="L246" href="#L246">246</a>             Matchers.not(Matchers.emptyIterableOf(String.<strong class="jxr_keyword">class</strong>))
@@ -301,46 +301,45 @@
 <a class="jxr_linenumber" name="L293" href="#L293">293</a> <em class="jxr_javadoccomment">     * @return Regular one</em>
 <a class="jxr_linenumber" name="L294" href="#L294">294</a> <em class="jxr_javadoccomment">     */</em>
 <a class="jxr_linenumber" name="L295" href="#L295">295</a>     <strong class="jxr_keyword">private</strong> <strong class="jxr_keyword">static</strong> Cookie cookie(<strong class="jxr_keyword">final</strong> HttpCookie cookie) {
-<a class="jxr_linenumber" name="L296" href="#L296">296</a>         <strong class="jxr_keyword">return</strong> <strong class="jxr_keyword">new</strong> Cookie(
-<a class="jxr_linenumber" name="L297" href="#L297">297</a>             cookie.getName(),
-<a class="jxr_linenumber" name="L298" href="#L298">298</a>             cookie.getValue(),
-<a class="jxr_linenumber" name="L299" href="#L299">299</a>             cookie.getPath(),
-<a class="jxr_linenumber" name="L300" href="#L300">300</a>             cookie.getDomain(),
-<a class="jxr_linenumber" name="L301" href="#L301">301</a>             cookie.getVersion()
-<a class="jxr_linenumber" name="L302" href="#L302">302</a>         );
-<a class="jxr_linenumber" name="L303" href="#L303">303</a>     }
-<a class="jxr_linenumber" name="L304" href="#L304">304</a> 
-<a class="jxr_linenumber" name="L305" href="#L305">305</a>     <em class="jxr_javadoccomment">/**</em>
-<a class="jxr_linenumber" name="L306" href="#L306">306</a> <em class="jxr_javadoccomment">     * Status matcher.</em>
-<a class="jxr_linenumber" name="L307" href="#L307">307</a> <em class="jxr_javadoccomment">     *</em>
-<a class="jxr_linenumber" name="L308" href="#L308">308</a> <em class="jxr_javadoccomment">     * @since 1.2</em>
-<a class="jxr_linenumber" name="L309" href="#L309">309</a> <em class="jxr_javadoccomment">     */</em>
-<a class="jxr_linenumber" name="L310" href="#L310">310</a>     <strong class="jxr_keyword">private</strong> <strong class="jxr_keyword">static</strong> <strong class="jxr_keyword">final</strong> <strong class="jxr_keyword">class</strong> <a href="../../../../com/jcabi/http/response/RestResponse.html">StatusMatch</a> <strong class="jxr_keyword">extends</strong> CustomMatcher&lt;Response&gt; {
-<a class="jxr_linenumber" name="L311" href="#L311">311</a> 
-<a class="jxr_linenumber" name="L312" href="#L312">312</a>         <em class="jxr_javadoccomment">/**</em>
-<a class="jxr_linenumber" name="L313" href="#L313">313</a> <em class="jxr_javadoccomment">         * HTTP status to check.</em>
-<a class="jxr_linenumber" name="L314" href="#L314">314</a> <em class="jxr_javadoccomment">         */</em>
-<a class="jxr_linenumber" name="L315" href="#L315">315</a>         <strong class="jxr_keyword">private</strong> <strong class="jxr_keyword">final</strong> <strong class="jxr_keyword">transient</strong> <strong class="jxr_keyword">int</strong> status;
-<a class="jxr_linenumber" name="L316" href="#L316">316</a> 
-<a class="jxr_linenumber" name="L317" href="#L317">317</a>         <em class="jxr_javadoccomment">/**</em>
-<a class="jxr_linenumber" name="L318" href="#L318">318</a> <em class="jxr_javadoccomment">         * Ctor.</em>
-<a class="jxr_linenumber" name="L319" href="#L319">319</a> <em class="jxr_javadoccomment">         * @param msg Message to show</em>
-<a class="jxr_linenumber" name="L320" href="#L320">320</a> <em class="jxr_javadoccomment">         * @param sts HTTP status to check</em>
-<a class="jxr_linenumber" name="L321" href="#L321">321</a> <em class="jxr_javadoccomment">         */</em>
-<a class="jxr_linenumber" name="L322" href="#L322">322</a>         <a href="../../../../com/jcabi/http/response/RestResponse.html">StatusMatch</a>(<strong class="jxr_keyword">final</strong> String msg, <strong class="jxr_keyword">final</strong> <strong class="jxr_keyword">int</strong> sts) {
-<a class="jxr_linenumber" name="L323" href="#L323">323</a>             <strong class="jxr_keyword">super</strong>(msg);
-<a class="jxr_linenumber" name="L324" href="#L324">324</a>             <strong class="jxr_keyword">this</strong>.status = sts;
-<a class="jxr_linenumber" name="L325" href="#L325">325</a>         }
-<a class="jxr_linenumber" name="L326" href="#L326">326</a> 
-<a class="jxr_linenumber" name="L327" href="#L327">327</a>         @Override
-<a class="jxr_linenumber" name="L328" href="#L328">328</a>         <strong class="jxr_keyword">public</strong> <strong class="jxr_keyword">boolean</strong> matches(<strong class="jxr_keyword">final</strong> Object resp) {
-<a class="jxr_linenumber" name="L329" href="#L329">329</a>             <strong class="jxr_keyword">return</strong> Response.<strong class="jxr_keyword">class</strong>.<strong class="jxr_keyword">cast</strong>(resp).status() == <strong class="jxr_keyword">this</strong>.status;
-<a class="jxr_linenumber" name="L330" href="#L330">330</a>         }
-<a class="jxr_linenumber" name="L331" href="#L331">331</a>     }
-<a class="jxr_linenumber" name="L332" href="#L332">332</a> 
-<a class="jxr_linenumber" name="L333" href="#L333">333</a> }
+<a class="jxr_linenumber" name="L296" href="#L296">296</a>         <strong class="jxr_keyword">return</strong> <strong class="jxr_keyword">new</strong> Cookie.Builder(cookie.getName())
+<a class="jxr_linenumber" name="L297" href="#L297">297</a>             .value(cookie.getValue())
+<a class="jxr_linenumber" name="L298" href="#L298">298</a>             .domain(cookie.getDomain())
+<a class="jxr_linenumber" name="L299" href="#L299">299</a>             .version(cookie.getVersion())
+<a class="jxr_linenumber" name="L300" href="#L300">300</a>             .path(cookie.getPath())
+<a class="jxr_linenumber" name="L301" href="#L301">301</a>             .build();
+<a class="jxr_linenumber" name="L302" href="#L302">302</a>     }
+<a class="jxr_linenumber" name="L303" href="#L303">303</a> 
+<a class="jxr_linenumber" name="L304" href="#L304">304</a>     <em class="jxr_javadoccomment">/**</em>
+<a class="jxr_linenumber" name="L305" href="#L305">305</a> <em class="jxr_javadoccomment">     * Status matcher.</em>
+<a class="jxr_linenumber" name="L306" href="#L306">306</a> <em class="jxr_javadoccomment">     *</em>
+<a class="jxr_linenumber" name="L307" href="#L307">307</a> <em class="jxr_javadoccomment">     * @since 1.2</em>
+<a class="jxr_linenumber" name="L308" href="#L308">308</a> <em class="jxr_javadoccomment">     */</em>
+<a class="jxr_linenumber" name="L309" href="#L309">309</a>     <strong class="jxr_keyword">private</strong> <strong class="jxr_keyword">static</strong> <strong class="jxr_keyword">final</strong> <strong class="jxr_keyword">class</strong> StatusMatch <strong class="jxr_keyword">extends</strong> CustomMatcher&lt;Response&gt; {
+<a class="jxr_linenumber" name="L310" href="#L310">310</a> 
+<a class="jxr_linenumber" name="L311" href="#L311">311</a>         <em class="jxr_javadoccomment">/**</em>
+<a class="jxr_linenumber" name="L312" href="#L312">312</a> <em class="jxr_javadoccomment">         * HTTP status to check.</em>
+<a class="jxr_linenumber" name="L313" href="#L313">313</a> <em class="jxr_javadoccomment">         */</em>
+<a class="jxr_linenumber" name="L314" href="#L314">314</a>         <strong class="jxr_keyword">private</strong> <strong class="jxr_keyword">final</strong> <strong class="jxr_keyword">transient</strong> <strong class="jxr_keyword">int</strong> status;
+<a class="jxr_linenumber" name="L315" href="#L315">315</a> 
+<a class="jxr_linenumber" name="L316" href="#L316">316</a>         <em class="jxr_javadoccomment">/**</em>
+<a class="jxr_linenumber" name="L317" href="#L317">317</a> <em class="jxr_javadoccomment">         * Ctor.</em>
+<a class="jxr_linenumber" name="L318" href="#L318">318</a> <em class="jxr_javadoccomment">         * @param msg Message to show</em>
+<a class="jxr_linenumber" name="L319" href="#L319">319</a> <em class="jxr_javadoccomment">         * @param sts HTTP status to check</em>
+<a class="jxr_linenumber" name="L320" href="#L320">320</a> <em class="jxr_javadoccomment">         */</em>
+<a class="jxr_linenumber" name="L321" href="#L321">321</a>         StatusMatch(<strong class="jxr_keyword">final</strong> String msg, <strong class="jxr_keyword">final</strong> <strong class="jxr_keyword">int</strong> sts) {
+<a class="jxr_linenumber" name="L322" href="#L322">322</a>             <strong class="jxr_keyword">super</strong>(msg);
+<a class="jxr_linenumber" name="L323" href="#L323">323</a>             <strong class="jxr_keyword">this</strong>.status = sts;
+<a class="jxr_linenumber" name="L324" href="#L324">324</a>         }
+<a class="jxr_linenumber" name="L325" href="#L325">325</a> 
+<a class="jxr_linenumber" name="L326" href="#L326">326</a>         @Override
+<a class="jxr_linenumber" name="L327" href="#L327">327</a>         <strong class="jxr_keyword">public</strong> <strong class="jxr_keyword">boolean</strong> matches(<strong class="jxr_keyword">final</strong> Object resp) {
+<a class="jxr_linenumber" name="L328" href="#L328">328</a>             <strong class="jxr_keyword">return</strong> Response.<strong class="jxr_keyword">class</strong>.<strong class="jxr_keyword">cast</strong>(resp).status() == <strong class="jxr_keyword">this</strong>.status;
+<a class="jxr_linenumber" name="L329" href="#L329">329</a>         }
+<a class="jxr_linenumber" name="L330" href="#L330">330</a>     }
+<a class="jxr_linenumber" name="L331" href="#L331">331</a> 
+<a class="jxr_linenumber" name="L332" href="#L332">332</a> }
 </pre>
 <hr/>
-<div id="footer">Copyright &#169; 2012&#x2013;2022 <a href="https://www.jcabi.com">jcabi.com</a>. All rights reserved.</div>
+<div id="footer">Copyright &#169; 2012&#x2013;2023 <a href="https://www.jcabi.com">jcabi.com</a>. All rights reserved.</div>
 </body>
 </html>

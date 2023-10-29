@@ -47,15 +47,15 @@
 <a class="jxr_linenumber" name="L39" href="#L39">39</a>  <strong class="jxr_keyword">import</strong> com.jcabi.http.response.XmlResponse;
 <a class="jxr_linenumber" name="L40" href="#L40">40</a>  <strong class="jxr_keyword">import</strong> com.jcabi.http.wire.BasicAuthWire;
 <a class="jxr_linenumber" name="L41" href="#L41">41</a>  <strong class="jxr_keyword">import</strong> com.jcabi.http.wire.UserAgentWire;
-<a class="jxr_linenumber" name="L42" href="#L42">42</a>  <strong class="jxr_keyword">import</strong> java.io.ByteArrayInputStream;
-<a class="jxr_linenumber" name="L43" href="#L43">43</a>  <strong class="jxr_keyword">import</strong> java.net.HttpURLConnection;
-<a class="jxr_linenumber" name="L44" href="#L44">44</a>  <strong class="jxr_keyword">import</strong> java.net.URI;
-<a class="jxr_linenumber" name="L45" href="#L45">45</a>  <strong class="jxr_keyword">import</strong> java.net.URLDecoder;
-<a class="jxr_linenumber" name="L46" href="#L46">46</a>  <strong class="jxr_keyword">import</strong> java.net.URLEncoder;
-<a class="jxr_linenumber" name="L47" href="#L47">47</a>  <strong class="jxr_keyword">import</strong> java.nio.charset.StandardCharsets;
-<a class="jxr_linenumber" name="L48" href="#L48">48</a>  <strong class="jxr_keyword">import</strong> javax.ws.rs.core.HttpHeaders;
-<a class="jxr_linenumber" name="L49" href="#L49">49</a>  <strong class="jxr_keyword">import</strong> javax.ws.rs.core.MediaType;
-<a class="jxr_linenumber" name="L50" href="#L50">50</a>  <strong class="jxr_keyword">import</strong> javax.ws.rs.core.UriBuilder;
+<a class="jxr_linenumber" name="L42" href="#L42">42</a>  <strong class="jxr_keyword">import</strong> jakarta.ws.rs.core.HttpHeaders;
+<a class="jxr_linenumber" name="L43" href="#L43">43</a>  <strong class="jxr_keyword">import</strong> jakarta.ws.rs.core.MediaType;
+<a class="jxr_linenumber" name="L44" href="#L44">44</a>  <strong class="jxr_keyword">import</strong> jakarta.ws.rs.core.UriBuilder;
+<a class="jxr_linenumber" name="L45" href="#L45">45</a>  <strong class="jxr_keyword">import</strong> java.io.ByteArrayInputStream;
+<a class="jxr_linenumber" name="L46" href="#L46">46</a>  <strong class="jxr_keyword">import</strong> java.net.HttpURLConnection;
+<a class="jxr_linenumber" name="L47" href="#L47">47</a>  <strong class="jxr_keyword">import</strong> java.net.URI;
+<a class="jxr_linenumber" name="L48" href="#L48">48</a>  <strong class="jxr_keyword">import</strong> java.net.URLDecoder;
+<a class="jxr_linenumber" name="L49" href="#L49">49</a>  <strong class="jxr_keyword">import</strong> java.net.URLEncoder;
+<a class="jxr_linenumber" name="L50" href="#L50">50</a>  <strong class="jxr_keyword">import</strong> java.nio.charset.StandardCharsets;
 <a class="jxr_linenumber" name="L51" href="#L51">51</a>  <strong class="jxr_keyword">import</strong> org.glassfish.grizzly.http.server.Constants;
 <a class="jxr_linenumber" name="L52" href="#L52">52</a>  <strong class="jxr_keyword">import</strong> org.hamcrest.MatcherAssert;
 <a class="jxr_linenumber" name="L53" href="#L53">53</a>  <strong class="jxr_keyword">import</strong> org.hamcrest.Matchers;
@@ -73,7 +73,7 @@
 <a class="jxr_linenumber" name="L65" href="#L65">65</a>          <span class="jxr_string">"PMD.AvoidDuplicateLiterals"</span>,
 <a class="jxr_linenumber" name="L66" href="#L66">66</a>          <span class="jxr_string">"PMD.TestClassWithoutTestCases"</span>
 <a class="jxr_linenumber" name="L67" href="#L67">67</a>      })
-<a class="jxr_linenumber" name="L68" href="#L68">68</a>  <strong class="jxr_keyword">final</strong> <strong class="jxr_keyword">class</strong> <a href="../../../com/jcabi/http/RequestTest.html">RequestTest</a> <strong class="jxr_keyword">extends</strong> <a href="../../../com/jcabi/http/RequestTestTemplate.html">RequestTestTemplate</a> {
+<a class="jxr_linenumber" name="L68" href="#L68">68</a>  <strong class="jxr_keyword">final</strong> <strong class="jxr_keyword">class</strong> RequestTest <strong class="jxr_keyword">extends</strong> <a name="RequestTestTemplate" href="../../../com/jcabi/http/RequestTestTemplate.html#RequestTestTemplate">RequestTestTemplate</a> {
 <a class="jxr_linenumber" name="L69" href="#L69">69</a>  
 <a class="jxr_linenumber" name="L70" href="#L70">70</a>      <em class="jxr_javadoccomment">/**</em>
 <a class="jxr_linenumber" name="L71" href="#L71">71</a>  <em class="jxr_javadoccomment">     * BaseRequest can fetch HTTP request and process HTTP response.</em>
@@ -743,6 +743,6 @@
 <a class="jxr_linenumber" name="L735" href="#L735">735</a> }
 </pre>
 <hr/>
-<div id="footer">Copyright &#169; 2012&#x2013;2022 <a href="https://www.jcabi.com">jcabi.com</a>. All rights reserved.</div>
+<div id="footer">Copyright &#169; 2012&#x2013;2023 <a href="https://www.jcabi.com">jcabi.com</a>. All rights reserved.</div>
 </body>
 </html>

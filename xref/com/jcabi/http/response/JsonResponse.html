@@ -39,16 +39,16 @@
 <a class="jxr_linenumber" name="L31" href="#L31">31</a>  
 <a class="jxr_linenumber" name="L32" href="#L32">32</a>  <strong class="jxr_keyword">import</strong> com.jcabi.aspects.Immutable;
 <a class="jxr_linenumber" name="L33" href="#L33">33</a>  <strong class="jxr_keyword">import</strong> com.jcabi.http.Response;
-<a class="jxr_linenumber" name="L34" href="#L34">34</a>  <strong class="jxr_keyword">import</strong> java.io.StringReader;
-<a class="jxr_linenumber" name="L35" href="#L35">35</a>  <strong class="jxr_keyword">import</strong> java.nio.charset.StandardCharsets;
-<a class="jxr_linenumber" name="L36" href="#L36">36</a>  <strong class="jxr_keyword">import</strong> java.util.regex.Matcher;
-<a class="jxr_linenumber" name="L37" href="#L37">37</a>  <strong class="jxr_keyword">import</strong> java.util.regex.Pattern;
-<a class="jxr_linenumber" name="L38" href="#L38">38</a>  <strong class="jxr_keyword">import</strong> javax.json.Json;
-<a class="jxr_linenumber" name="L39" href="#L39">39</a>  <strong class="jxr_keyword">import</strong> javax.json.JsonArray;
-<a class="jxr_linenumber" name="L40" href="#L40">40</a>  <strong class="jxr_keyword">import</strong> javax.json.JsonObject;
-<a class="jxr_linenumber" name="L41" href="#L41">41</a>  <strong class="jxr_keyword">import</strong> javax.json.JsonReader;
-<a class="jxr_linenumber" name="L42" href="#L42">42</a>  <strong class="jxr_keyword">import</strong> javax.json.JsonStructure;
-<a class="jxr_linenumber" name="L43" href="#L43">43</a>  <strong class="jxr_keyword">import</strong> javax.json.stream.JsonParsingException;
+<a class="jxr_linenumber" name="L34" href="#L34">34</a>  <strong class="jxr_keyword">import</strong> jakarta.json.Json;
+<a class="jxr_linenumber" name="L35" href="#L35">35</a>  <strong class="jxr_keyword">import</strong> jakarta.json.JsonArray;
+<a class="jxr_linenumber" name="L36" href="#L36">36</a>  <strong class="jxr_keyword">import</strong> jakarta.json.JsonObject;
+<a class="jxr_linenumber" name="L37" href="#L37">37</a>  <strong class="jxr_keyword">import</strong> jakarta.json.JsonReader;
+<a class="jxr_linenumber" name="L38" href="#L38">38</a>  <strong class="jxr_keyword">import</strong> jakarta.json.JsonStructure;
+<a class="jxr_linenumber" name="L39" href="#L39">39</a>  <strong class="jxr_keyword">import</strong> jakarta.json.stream.JsonParsingException;
+<a class="jxr_linenumber" name="L40" href="#L40">40</a>  <strong class="jxr_keyword">import</strong> java.io.StringReader;
+<a class="jxr_linenumber" name="L41" href="#L41">41</a>  <strong class="jxr_keyword">import</strong> java.nio.charset.StandardCharsets;
+<a class="jxr_linenumber" name="L42" href="#L42">42</a>  <strong class="jxr_keyword">import</strong> java.util.regex.Matcher;
+<a class="jxr_linenumber" name="L43" href="#L43">43</a>  <strong class="jxr_keyword">import</strong> java.util.regex.Pattern;
 <a class="jxr_linenumber" name="L44" href="#L44">44</a>  <strong class="jxr_keyword">import</strong> lombok.EqualsAndHashCode;
 <a class="jxr_linenumber" name="L45" href="#L45">45</a>  
 <a class="jxr_linenumber" name="L46" href="#L46">46</a>  <em class="jxr_javadoccomment">/**</em>
@@ -71,7 +71,7 @@
 <a class="jxr_linenumber" name="L63" href="#L63">63</a>  <em class="jxr_javadoccomment"> */</em>
 <a class="jxr_linenumber" name="L64" href="#L64">64</a>  @Immutable
 <a class="jxr_linenumber" name="L65" href="#L65">65</a>  @EqualsAndHashCode(callSuper = <strong class="jxr_keyword">true</strong>)
-<a class="jxr_linenumber" name="L66" href="#L66">66</a>  <strong class="jxr_keyword">public</strong> <strong class="jxr_keyword">final</strong> <strong class="jxr_keyword">class</strong> <a href="../../../../com/jcabi/http/response/JsonResponse.html">JsonResponse</a> <strong class="jxr_keyword">extends</strong> <a href="../../../../com/jcabi/http/response/AbstractResponse.html">AbstractResponse</a> {
+<a class="jxr_linenumber" name="L66" href="#L66">66</a>  <strong class="jxr_keyword">public</strong> <strong class="jxr_keyword">final</strong> <strong class="jxr_keyword">class</strong> <a name="JsonResponse" href="../../../../com/jcabi/http/response/JsonResponse.html#JsonResponse">JsonResponse</a> <strong class="jxr_keyword">extends</strong> <a name="AbstractResponse" href="../../../../com/jcabi/http/response/AbstractResponse.html#AbstractResponse">AbstractResponse</a> {
 <a class="jxr_linenumber" name="L67" href="#L67">67</a>  
 <a class="jxr_linenumber" name="L68" href="#L68">68</a>      <em class="jxr_javadoccomment">/**</em>
 <a class="jxr_linenumber" name="L69" href="#L69">69</a>  <em class="jxr_javadoccomment">     * Pattern matching non-ASCII characters, to escape them before parsing.</em>
@@ -84,7 +84,7 @@
 <a class="jxr_linenumber" name="L76" href="#L76">76</a>  <em class="jxr_javadoccomment">     * Public ctor.</em>
 <a class="jxr_linenumber" name="L77" href="#L77">77</a>  <em class="jxr_javadoccomment">     * @param resp Response</em>
 <a class="jxr_linenumber" name="L78" href="#L78">78</a>  <em class="jxr_javadoccomment">     */</em>
-<a class="jxr_linenumber" name="L79" href="#L79">79</a>      <strong class="jxr_keyword">public</strong> <a href="../../../../com/jcabi/http/response/JsonResponse.html">JsonResponse</a>(<strong class="jxr_keyword">final</strong> <a href="../../../../com/jcabi/http/Response.html">Response</a> resp) {
+<a class="jxr_linenumber" name="L79" href="#L79">79</a>      <strong class="jxr_keyword">public</strong> <a name="JsonResponse" href="../../../../com/jcabi/http/response/JsonResponse.html#JsonResponse">JsonResponse</a>(<strong class="jxr_keyword">final</strong> <a name="Response" href="../../../../com/jcabi/http/Response.html#Response">Response</a> resp) {
 <a class="jxr_linenumber" name="L80" href="#L80">80</a>          <strong class="jxr_keyword">super</strong>(resp);
 <a class="jxr_linenumber" name="L81" href="#L81">81</a>      }
 <a class="jxr_linenumber" name="L82" href="#L82">82</a>  
@@ -94,7 +94,7 @@
 <a class="jxr_linenumber" name="L86" href="#L86">86</a>  <em class="jxr_javadoccomment">     * @param element Element in the JSON data of this object</em>
 <a class="jxr_linenumber" name="L87" href="#L87">87</a>  <em class="jxr_javadoccomment">     * @return This object</em>
 <a class="jxr_linenumber" name="L88" href="#L88">88</a>  <em class="jxr_javadoccomment">     */</em>
-<a class="jxr_linenumber" name="L89" href="#L89">89</a>      <strong class="jxr_keyword">public</strong> <a href="../../../../com/jcabi/http/response/JsonResponse.html">JsonResponse</a> assertJson(<strong class="jxr_keyword">final</strong> String element) {
+<a class="jxr_linenumber" name="L89" href="#L89">89</a>      <strong class="jxr_keyword">public</strong> <a name="JsonResponse" href="../../../../com/jcabi/http/response/JsonResponse.html#JsonResponse">JsonResponse</a> assertJson(<strong class="jxr_keyword">final</strong> String element) {
 <a class="jxr_linenumber" name="L90" href="#L90">90</a>          <strong class="jxr_keyword">throw</strong> <strong class="jxr_keyword">new</strong> UnsupportedOperationException(
 <a class="jxr_linenumber" name="L91" href="#L91">91</a>              <em class="jxr_comment">// @checkstyle LineLength (1 line)</em>
 <a class="jxr_linenumber" name="L92" href="#L92">92</a>              <span class="jxr_string">"assertJson() is not implemented yet, since we are not sure which JSON query standard to use"</span>
@@ -105,7 +105,7 @@
 <a class="jxr_linenumber" name="L97" href="#L97">97</a>  <em class="jxr_javadoccomment">     * Read body as JSON.</em>
 <a class="jxr_linenumber" name="L98" href="#L98">98</a>  <em class="jxr_javadoccomment">     * @return Json reader</em>
 <a class="jxr_linenumber" name="L99" href="#L99">99</a>  <em class="jxr_javadoccomment">     */</em>
-<a class="jxr_linenumber" name="L100" href="#L100">100</a>     <strong class="jxr_keyword">public</strong> <a href="../../../../com/jcabi/http/response/JacksonResponse.html">JsonReader</a> json() {
+<a class="jxr_linenumber" name="L100" href="#L100">100</a>     <strong class="jxr_keyword">public</strong> JsonReader json() {
 <a class="jxr_linenumber" name="L101" href="#L101">101</a>         <strong class="jxr_keyword">final</strong> byte[] body = <strong class="jxr_keyword">this</strong>.binary();
 <a class="jxr_linenumber" name="L102" href="#L102">102</a>         <strong class="jxr_keyword">final</strong> String json;
 <a class="jxr_linenumber" name="L103" href="#L103">103</a>         json = <strong class="jxr_keyword">new</strong> String(body, StandardCharsets.UTF_8);
@@ -144,12 +144,12 @@
 <a class="jxr_linenumber" name="L136" href="#L136">136</a> <em class="jxr_javadoccomment">     *</em>
 <a class="jxr_linenumber" name="L137" href="#L137">137</a> <em class="jxr_javadoccomment">     * @since 1.3.1</em>
 <a class="jxr_linenumber" name="L138" href="#L138">138</a> <em class="jxr_javadoccomment">     */</em>
-<a class="jxr_linenumber" name="L139" href="#L139">139</a>     <strong class="jxr_keyword">private</strong> <strong class="jxr_keyword">static</strong> <strong class="jxr_keyword">final</strong> <strong class="jxr_keyword">class</strong> <a href="../../../../com/jcabi/http/response/JsonResponse.html">VerboseReader</a> <strong class="jxr_keyword">implements</strong> <a href="../../../../com/jcabi/http/response/JacksonResponse.html">JsonReader</a> {
+<a class="jxr_linenumber" name="L139" href="#L139">139</a>     <strong class="jxr_keyword">private</strong> <strong class="jxr_keyword">static</strong> <strong class="jxr_keyword">final</strong> <strong class="jxr_keyword">class</strong> VerboseReader <strong class="jxr_keyword">implements</strong> JsonReader {
 <a class="jxr_linenumber" name="L140" href="#L140">140</a> 
 <a class="jxr_linenumber" name="L141" href="#L141">141</a>         <em class="jxr_javadoccomment">/**</em>
 <a class="jxr_linenumber" name="L142" href="#L142">142</a> <em class="jxr_javadoccomment">         * Original reader.</em>
 <a class="jxr_linenumber" name="L143" href="#L143">143</a> <em class="jxr_javadoccomment">         */</em>
-<a class="jxr_linenumber" name="L144" href="#L144">144</a>         <strong class="jxr_keyword">private</strong> <strong class="jxr_keyword">final</strong> <strong class="jxr_keyword">transient</strong> <a href="../../../../com/jcabi/http/response/JacksonResponse.html">JsonReader</a> origin;
+<a class="jxr_linenumber" name="L144" href="#L144">144</a>         <strong class="jxr_keyword">private</strong> <strong class="jxr_keyword">final</strong> <strong class="jxr_keyword">transient</strong> JsonReader origin;
 <a class="jxr_linenumber" name="L145" href="#L145">145</a> 
 <a class="jxr_linenumber" name="L146" href="#L146">146</a>         <em class="jxr_javadoccomment">/**</em>
 <a class="jxr_linenumber" name="L147" href="#L147">147</a> <em class="jxr_javadoccomment">         * JSON body.</em>
@@ -161,7 +161,7 @@
 <a class="jxr_linenumber" name="L153" href="#L153">153</a> <em class="jxr_javadoccomment">         * @param reader Original reader</em>
 <a class="jxr_linenumber" name="L154" href="#L154">154</a> <em class="jxr_javadoccomment">         * @param body JSON body</em>
 <a class="jxr_linenumber" name="L155" href="#L155">155</a> <em class="jxr_javadoccomment">         */</em>
-<a class="jxr_linenumber" name="L156" href="#L156">156</a>         <a href="../../../../com/jcabi/http/response/JsonResponse.html">VerboseReader</a>(<strong class="jxr_keyword">final</strong> <a href="../../../../com/jcabi/http/response/JacksonResponse.html">JsonReader</a> reader, <strong class="jxr_keyword">final</strong> String body) {
+<a class="jxr_linenumber" name="L156" href="#L156">156</a>         VerboseReader(<strong class="jxr_keyword">final</strong> JsonReader reader, <strong class="jxr_keyword">final</strong> String body) {
 <a class="jxr_linenumber" name="L157" href="#L157">157</a>             <strong class="jxr_keyword">this</strong>.origin = reader;
 <a class="jxr_linenumber" name="L158" href="#L158">158</a>             <strong class="jxr_keyword">this</strong>.json = body;
 <a class="jxr_linenumber" name="L159" href="#L159">159</a>         }
@@ -208,6 +208,6 @@
 <a class="jxr_linenumber" name="L200" href="#L200">200</a> }
 </pre>
 <hr/>
-<div id="footer">Copyright &#169; 2012&#x2013;2022 <a href="https://www.jcabi.com">jcabi.com</a>. All rights reserved.</div>
+<div id="footer">Copyright &#169; 2012&#x2013;2023 <a href="https://www.jcabi.com">jcabi.com</a>. All rights reserved.</div>
 </body>
 </html>

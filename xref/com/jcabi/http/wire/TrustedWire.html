@@ -74,7 +74,7 @@
 <a class="jxr_linenumber" name="L66" href="#L66">66</a>  @Immutable
 <a class="jxr_linenumber" name="L67" href="#L67">67</a>  @ToString(of = <span class="jxr_string">"origin"</span>)
 <a class="jxr_linenumber" name="L68" href="#L68">68</a>  @EqualsAndHashCode(of = <span class="jxr_string">"origin"</span>)
-<a class="jxr_linenumber" name="L69" href="#L69">69</a>  <strong class="jxr_keyword">public</strong> <strong class="jxr_keyword">final</strong> <strong class="jxr_keyword">class</strong> <a href="../../../../com/jcabi/http/wire/TrustedWire.html">TrustedWire</a> <strong class="jxr_keyword">implements</strong> <a href="../../../../com/jcabi/http/Wire.html">Wire</a> {
+<a class="jxr_linenumber" name="L69" href="#L69">69</a>  <strong class="jxr_keyword">public</strong> <strong class="jxr_keyword">final</strong> <strong class="jxr_keyword">class</strong> <a name="TrustedWire" href="../../../../com/jcabi/http/wire/TrustedWire.html#TrustedWire">TrustedWire</a> <strong class="jxr_keyword">implements</strong> <a name="Wire" href="../../../../com/jcabi/http/Wire.html#Wire">Wire</a> {
 <a class="jxr_linenumber" name="L70" href="#L70">70</a>  
 <a class="jxr_linenumber" name="L71" href="#L71">71</a>      <em class="jxr_javadoccomment">/**</em>
 <a class="jxr_linenumber" name="L72" href="#L72">72</a>  <em class="jxr_javadoccomment">     * Trust manager.</em>
@@ -101,19 +101,19 @@
 <a class="jxr_linenumber" name="L93" href="#L93">93</a>      <em class="jxr_javadoccomment">/**</em>
 <a class="jxr_linenumber" name="L94" href="#L94">94</a>  <em class="jxr_javadoccomment">     * Original wire.</em>
 <a class="jxr_linenumber" name="L95" href="#L95">95</a>  <em class="jxr_javadoccomment">     */</em>
-<a class="jxr_linenumber" name="L96" href="#L96">96</a>      <strong class="jxr_keyword">private</strong> <strong class="jxr_keyword">final</strong> <strong class="jxr_keyword">transient</strong> <a href="../../../../com/jcabi/http/Wire.html">Wire</a> origin;
+<a class="jxr_linenumber" name="L96" href="#L96">96</a>      <strong class="jxr_keyword">private</strong> <strong class="jxr_keyword">final</strong> <strong class="jxr_keyword">transient</strong> <a name="Wire" href="../../../../com/jcabi/http/Wire.html#Wire">Wire</a> origin;
 <a class="jxr_linenumber" name="L97" href="#L97">97</a>  
 <a class="jxr_linenumber" name="L98" href="#L98">98</a>      <em class="jxr_javadoccomment">/**</em>
 <a class="jxr_linenumber" name="L99" href="#L99">99</a>  <em class="jxr_javadoccomment">     * Public ctor.</em>
 <a class="jxr_linenumber" name="L100" href="#L100">100</a> <em class="jxr_javadoccomment">     * @param wire Original wire</em>
 <a class="jxr_linenumber" name="L101" href="#L101">101</a> <em class="jxr_javadoccomment">     */</em>
-<a class="jxr_linenumber" name="L102" href="#L102">102</a>     <strong class="jxr_keyword">public</strong> <a href="../../../../com/jcabi/http/wire/TrustedWire.html">TrustedWire</a>(<strong class="jxr_keyword">final</strong> <a href="../../../../com/jcabi/http/Wire.html">Wire</a> wire) {
+<a class="jxr_linenumber" name="L102" href="#L102">102</a>     <strong class="jxr_keyword">public</strong> <a name="TrustedWire" href="../../../../com/jcabi/http/wire/TrustedWire.html#TrustedWire">TrustedWire</a>(<strong class="jxr_keyword">final</strong> <a name="Wire" href="../../../../com/jcabi/http/Wire.html#Wire">Wire</a> wire) {
 <a class="jxr_linenumber" name="L103" href="#L103">103</a>         <strong class="jxr_keyword">this</strong>.origin = wire;
 <a class="jxr_linenumber" name="L104" href="#L104">104</a>     }
 <a class="jxr_linenumber" name="L105" href="#L105">105</a> 
 <a class="jxr_linenumber" name="L106" href="#L106">106</a>     <em class="jxr_comment">// @checkstyle ParameterNumber (13 lines)</em>
 <a class="jxr_linenumber" name="L107" href="#L107">107</a>     @Override
-<a class="jxr_linenumber" name="L108" href="#L108">108</a>     <strong class="jxr_keyword">public</strong> <a href="../../../../com/jcabi/http/Response.html">Response</a> send(<strong class="jxr_keyword">final</strong> <a href="../../../../com/jcabi/http/Request.html">Request</a> req, <strong class="jxr_keyword">final</strong> String home,
+<a class="jxr_linenumber" name="L108" href="#L108">108</a>     <strong class="jxr_keyword">public</strong> <a name="Response" href="../../../../com/jcabi/http/Response.html#Response">Response</a> send(<strong class="jxr_keyword">final</strong> Request req, <strong class="jxr_keyword">final</strong> String home,
 <a class="jxr_linenumber" name="L109" href="#L109">109</a>         <strong class="jxr_keyword">final</strong> String method,
 <a class="jxr_linenumber" name="L110" href="#L110">110</a>         <strong class="jxr_keyword">final</strong> Collection&lt;Map.Entry&lt;String, String&gt;&gt; headers,
 <a class="jxr_linenumber" name="L111" href="#L111">111</a>         <strong class="jxr_keyword">final</strong> InputStream content,
@@ -156,6 +156,6 @@
 <a class="jxr_linenumber" name="L148" href="#L148">148</a> }
 </pre>
 <hr/>
-<div id="footer">Copyright &#169; 2012&#x2013;2022 <a href="https://www.jcabi.com">jcabi.com</a>. All rights reserved.</div>
+<div id="footer">Copyright &#169; 2012&#x2013;2023 <a href="https://www.jcabi.com">jcabi.com</a>. All rights reserved.</div>
 </body>
 </html>

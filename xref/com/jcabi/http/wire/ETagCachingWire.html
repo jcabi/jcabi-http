@@ -39,7 +39,7 @@
 <a class="jxr_linenumber" name="L31" href="#L31">31</a>  
 <a class="jxr_linenumber" name="L32" href="#L32">32</a>  <strong class="jxr_keyword">import</strong> com.jcabi.aspects.Immutable;
 <a class="jxr_linenumber" name="L33" href="#L33">33</a>  <strong class="jxr_keyword">import</strong> com.jcabi.http.Wire;
-<a class="jxr_linenumber" name="L34" href="#L34">34</a>  <strong class="jxr_keyword">import</strong> javax.ws.rs.core.HttpHeaders;
+<a class="jxr_linenumber" name="L34" href="#L34">34</a>  <strong class="jxr_keyword">import</strong> jakarta.ws.rs.core.HttpHeaders;
 <a class="jxr_linenumber" name="L35" href="#L35">35</a>  <strong class="jxr_keyword">import</strong> lombok.ToString;
 <a class="jxr_linenumber" name="L36" href="#L36">36</a>  
 <a class="jxr_linenumber" name="L37" href="#L37">37</a>  <em class="jxr_javadoccomment">/**</em>
@@ -67,18 +67,18 @@
 <a class="jxr_linenumber" name="L59" href="#L59">59</a>  <em class="jxr_javadoccomment"> */</em>
 <a class="jxr_linenumber" name="L60" href="#L60">60</a>  @ToString
 <a class="jxr_linenumber" name="L61" href="#L61">61</a>  @Immutable
-<a class="jxr_linenumber" name="L62" href="#L62">62</a>  <strong class="jxr_keyword">public</strong> <strong class="jxr_keyword">final</strong> <strong class="jxr_keyword">class</strong> <a href="../../../../com/jcabi/http/wire/ETagCachingWire.html">ETagCachingWire</a> <strong class="jxr_keyword">extends</strong> <a href="../../../../com/jcabi/http/wire/AbstractHeaderBasedCachingWire.html">AbstractHeaderBasedCachingWire</a> {
+<a class="jxr_linenumber" name="L62" href="#L62">62</a>  <strong class="jxr_keyword">public</strong> <strong class="jxr_keyword">final</strong> <strong class="jxr_keyword">class</strong> <a name="ETagCachingWire" href="../../../../com/jcabi/http/wire/ETagCachingWire.html#ETagCachingWire">ETagCachingWire</a> <strong class="jxr_keyword">extends</strong> <a name="AbstractHeaderBasedCachingWire" href="../../../../com/jcabi/http/wire/AbstractHeaderBasedCachingWire.html#AbstractHeaderBasedCachingWire">AbstractHeaderBasedCachingWire</a> {
 <a class="jxr_linenumber" name="L63" href="#L63">63</a>  
 <a class="jxr_linenumber" name="L64" href="#L64">64</a>      <em class="jxr_javadoccomment">/**</em>
 <a class="jxr_linenumber" name="L65" href="#L65">65</a>  <em class="jxr_javadoccomment">     * Public ctor.</em>
 <a class="jxr_linenumber" name="L66" href="#L66">66</a>  <em class="jxr_javadoccomment">     * @param wire Original wire</em>
 <a class="jxr_linenumber" name="L67" href="#L67">67</a>  <em class="jxr_javadoccomment">     */</em>
-<a class="jxr_linenumber" name="L68" href="#L68">68</a>      <strong class="jxr_keyword">public</strong> <a href="../../../../com/jcabi/http/wire/ETagCachingWire.html">ETagCachingWire</a>(<strong class="jxr_keyword">final</strong> <a href="../../../../com/jcabi/http/Wire.html">Wire</a> wire) {
+<a class="jxr_linenumber" name="L68" href="#L68">68</a>      <strong class="jxr_keyword">public</strong> <a name="ETagCachingWire" href="../../../../com/jcabi/http/wire/ETagCachingWire.html#ETagCachingWire">ETagCachingWire</a>(<strong class="jxr_keyword">final</strong> <a name="Wire" href="../../../../com/jcabi/http/Wire.html#Wire">Wire</a> wire) {
 <a class="jxr_linenumber" name="L69" href="#L69">69</a>          <strong class="jxr_keyword">super</strong>(HttpHeaders.ETAG, HttpHeaders.IF_NONE_MATCH, wire);
 <a class="jxr_linenumber" name="L70" href="#L70">70</a>      }
 <a class="jxr_linenumber" name="L71" href="#L71">71</a>  }
 </pre>
 <hr/>
-<div id="footer">Copyright &#169; 2012&#x2013;2022 <a href="https://www.jcabi.com">jcabi.com</a>. All rights reserved.</div>
+<div id="footer">Copyright &#169; 2012&#x2013;2023 <a href="https://www.jcabi.com">jcabi.com</a>. All rights reserved.</div>
 </body>
 </html>

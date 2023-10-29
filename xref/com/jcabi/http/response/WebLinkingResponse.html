@@ -75,7 +75,7 @@
 <a class="jxr_linenumber" name="L67" href="#L67">67</a>  @Immutable
 <a class="jxr_linenumber" name="L68" href="#L68">68</a>  @EqualsAndHashCode(callSuper = <strong class="jxr_keyword">true</strong>)
 <a class="jxr_linenumber" name="L69" href="#L69">69</a>  @SuppressWarnings(<span class="jxr_string">"PMD.TooManyMethods"</span>)
-<a class="jxr_linenumber" name="L70" href="#L70">70</a>  <strong class="jxr_keyword">public</strong> <strong class="jxr_keyword">final</strong> <strong class="jxr_keyword">class</strong> <a href="../../../../com/jcabi/http/response/WebLinkingResponse.html">WebLinkingResponse</a> <strong class="jxr_keyword">extends</strong> <a href="../../../../com/jcabi/http/response/AbstractResponse.html">AbstractResponse</a> {
+<a class="jxr_linenumber" name="L70" href="#L70">70</a>  <strong class="jxr_keyword">public</strong> <strong class="jxr_keyword">final</strong> <strong class="jxr_keyword">class</strong> <a name="WebLinkingResponse" href="../../../../com/jcabi/http/response/WebLinkingResponse.html#WebLinkingResponse">WebLinkingResponse</a> <strong class="jxr_keyword">extends</strong> <a name="AbstractResponse" href="../../../../com/jcabi/http/response/AbstractResponse.html#AbstractResponse">AbstractResponse</a> {
 <a class="jxr_linenumber" name="L71" href="#L71">71</a>  
 <a class="jxr_linenumber" name="L72" href="#L72">72</a>      <em class="jxr_javadoccomment">/**</em>
 <a class="jxr_linenumber" name="L73" href="#L73">73</a>  <em class="jxr_javadoccomment">     * ImmutableHeader name.</em>
@@ -91,7 +91,7 @@
 <a class="jxr_linenumber" name="L83" href="#L83">83</a>  <em class="jxr_javadoccomment">     * Public ctor.</em>
 <a class="jxr_linenumber" name="L84" href="#L84">84</a>  <em class="jxr_javadoccomment">     * @param resp Response</em>
 <a class="jxr_linenumber" name="L85" href="#L85">85</a>  <em class="jxr_javadoccomment">     */</em>
-<a class="jxr_linenumber" name="L86" href="#L86">86</a>      <strong class="jxr_keyword">public</strong> <a href="../../../../com/jcabi/http/response/WebLinkingResponse.html">WebLinkingResponse</a>(<strong class="jxr_keyword">final</strong> <a href="../../../../com/jcabi/http/Response.html">Response</a> resp) {
+<a class="jxr_linenumber" name="L86" href="#L86">86</a>      <strong class="jxr_keyword">public</strong> <a name="WebLinkingResponse" href="../../../../com/jcabi/http/response/WebLinkingResponse.html#WebLinkingResponse">WebLinkingResponse</a>(<strong class="jxr_keyword">final</strong> <a name="Response" href="../../../../com/jcabi/http/Response.html#Response">Response</a> resp) {
 <a class="jxr_linenumber" name="L87" href="#L87">87</a>          <strong class="jxr_keyword">super</strong>(resp);
 <a class="jxr_linenumber" name="L88" href="#L88">88</a>      }
 <a class="jxr_linenumber" name="L89" href="#L89">89</a>  
@@ -101,7 +101,7 @@
 <a class="jxr_linenumber" name="L93" href="#L93">93</a>  <em class="jxr_javadoccomment">     * @return The same object</em>
 <a class="jxr_linenumber" name="L94" href="#L94">94</a>  <em class="jxr_javadoccomment">     * @throws IOException If fails</em>
 <a class="jxr_linenumber" name="L95" href="#L95">95</a>  <em class="jxr_javadoccomment">     */</em>
-<a class="jxr_linenumber" name="L96" href="#L96">96</a>      <strong class="jxr_keyword">public</strong> <a href="../../../../com/jcabi/http/Request.html">Request</a> follow(<strong class="jxr_keyword">final</strong> String rel) <strong class="jxr_keyword">throws</strong> IOException {
+<a class="jxr_linenumber" name="L96" href="#L96">96</a>      <strong class="jxr_keyword">public</strong> Request follow(<strong class="jxr_keyword">final</strong> String rel) <strong class="jxr_keyword">throws</strong> IOException {
 <a class="jxr_linenumber" name="L97" href="#L97">97</a>          <strong class="jxr_keyword">final</strong> WebLinkingResponse.Link link = <strong class="jxr_keyword">this</strong>.links().get(rel);
 <a class="jxr_linenumber" name="L98" href="#L98">98</a>          <strong class="jxr_keyword">if</strong> (link == <strong class="jxr_keyword">null</strong>) {
 <a class="jxr_linenumber" name="L99" href="#L99">99</a>              <strong class="jxr_keyword">throw</strong> <strong class="jxr_keyword">new</strong> IOException(
@@ -111,7 +111,7 @@
 <a class="jxr_linenumber" name="L103" href="#L103">103</a>                 )
 <a class="jxr_linenumber" name="L104" href="#L104">104</a>             );
 <a class="jxr_linenumber" name="L105" href="#L105">105</a>         }
-<a class="jxr_linenumber" name="L106" href="#L106">106</a>         <strong class="jxr_keyword">return</strong> <strong class="jxr_keyword">new</strong> <a href="../../../../com/jcabi/http/response/RestResponse.html">RestResponse</a>(<strong class="jxr_keyword">this</strong>).jump(link.uri());
+<a class="jxr_linenumber" name="L106" href="#L106">106</a>         <strong class="jxr_keyword">return</strong> <strong class="jxr_keyword">new</strong> <a name="RestResponse" href="../../../../com/jcabi/http/response/RestResponse.html#RestResponse">RestResponse</a>(<strong class="jxr_keyword">this</strong>).jump(link.uri());
 <a class="jxr_linenumber" name="L107" href="#L107">107</a>     }
 <a class="jxr_linenumber" name="L108" href="#L108">108</a> 
 <a class="jxr_linenumber" name="L109" href="#L109">109</a>     <em class="jxr_javadoccomment">/**</em>
@@ -146,7 +146,7 @@
 <a class="jxr_linenumber" name="L138" href="#L138">138</a> <em class="jxr_javadoccomment">     * @since 1.0</em>
 <a class="jxr_linenumber" name="L139" href="#L139">139</a> <em class="jxr_javadoccomment">     */</em>
 <a class="jxr_linenumber" name="L140" href="#L140">140</a>     @Immutable
-<a class="jxr_linenumber" name="L141" href="#L141">141</a>     <strong class="jxr_keyword">public</strong> <strong class="jxr_keyword">interface</strong> <a href="../../../../com/jcabi/http/response/WebLinkingResponse.html">Link</a> <strong class="jxr_keyword">extends</strong> Map&lt;String, String&gt; {
+<a class="jxr_linenumber" name="L141" href="#L141">141</a>     <strong class="jxr_keyword">public</strong> <strong class="jxr_keyword">interface</strong> Link <strong class="jxr_keyword">extends</strong> Map&lt;String, String&gt; {
 <a class="jxr_linenumber" name="L142" href="#L142">142</a>         <em class="jxr_javadoccomment">/**</em>
 <a class="jxr_linenumber" name="L143" href="#L143">143</a> <em class="jxr_javadoccomment">         * Its URI.</em>
 <a class="jxr_linenumber" name="L144" href="#L144">144</a> <em class="jxr_javadoccomment">         * @return URI</em>
@@ -161,7 +161,7 @@
 <a class="jxr_linenumber" name="L153" href="#L153">153</a> <em class="jxr_javadoccomment">     */</em>
 <a class="jxr_linenumber" name="L154" href="#L154">154</a>     @Immutable
 <a class="jxr_linenumber" name="L155" href="#L155">155</a>     @EqualsAndHashCode
-<a class="jxr_linenumber" name="L156" href="#L156">156</a>     <strong class="jxr_keyword">private</strong> <strong class="jxr_keyword">static</strong> <strong class="jxr_keyword">final</strong> <strong class="jxr_keyword">class</strong> <a href="../../../../com/jcabi/http/response/WebLinkingResponse.html">SimpleLink</a> <strong class="jxr_keyword">implements</strong> WebLinkingResponse.Link {
+<a class="jxr_linenumber" name="L156" href="#L156">156</a>     <strong class="jxr_keyword">private</strong> <strong class="jxr_keyword">static</strong> <strong class="jxr_keyword">final</strong> <strong class="jxr_keyword">class</strong> SimpleLink <strong class="jxr_keyword">implements</strong> WebLinkingResponse.Link {
 <a class="jxr_linenumber" name="L157" href="#L157">157</a> 
 <a class="jxr_linenumber" name="L158" href="#L158">158</a>         <em class="jxr_javadoccomment">/**</em>
 <a class="jxr_linenumber" name="L159" href="#L159">159</a> <em class="jxr_javadoccomment">         * Pattern to match link value.</em>
@@ -186,7 +186,7 @@
 <a class="jxr_linenumber" name="L178" href="#L178">178</a> <em class="jxr_javadoccomment">         * @param text Text to parse</em>
 <a class="jxr_linenumber" name="L179" href="#L179">179</a> <em class="jxr_javadoccomment">         * @throws IOException If fails</em>
 <a class="jxr_linenumber" name="L180" href="#L180">180</a> <em class="jxr_javadoccomment">         */</em>
-<a class="jxr_linenumber" name="L181" href="#L181">181</a>         <a href="../../../../com/jcabi/http/response/WebLinkingResponse.html">SimpleLink</a>(<strong class="jxr_keyword">final</strong> String text) <strong class="jxr_keyword">throws</strong> IOException {
+<a class="jxr_linenumber" name="L181" href="#L181">181</a>         SimpleLink(<strong class="jxr_keyword">final</strong> String text) <strong class="jxr_keyword">throws</strong> IOException {
 <a class="jxr_linenumber" name="L182" href="#L182">182</a>             <strong class="jxr_keyword">this</strong>(WebLinkingResponse.SimpleLink.parse(text));
 <a class="jxr_linenumber" name="L183" href="#L183">183</a>         }
 <a class="jxr_linenumber" name="L184" href="#L184">184</a> 
@@ -194,7 +194,7 @@
 <a class="jxr_linenumber" name="L186" href="#L186">186</a> <em class="jxr_javadoccomment">         * Secondary ctor.</em>
 <a class="jxr_linenumber" name="L187" href="#L187">187</a> <em class="jxr_javadoccomment">         * @param matcher Matcher object.</em>
 <a class="jxr_linenumber" name="L188" href="#L188">188</a> <em class="jxr_javadoccomment">         */</em>
-<a class="jxr_linenumber" name="L189" href="#L189">189</a>         <strong class="jxr_keyword">private</strong> <a href="../../../../com/jcabi/http/response/WebLinkingResponse.html">SimpleLink</a>(<strong class="jxr_keyword">final</strong> Matcher matcher) {
+<a class="jxr_linenumber" name="L189" href="#L189">189</a>         <strong class="jxr_keyword">private</strong> SimpleLink(<strong class="jxr_keyword">final</strong> Matcher matcher) {
 <a class="jxr_linenumber" name="L190" href="#L190">190</a>             <strong class="jxr_keyword">this</strong>(
 <a class="jxr_linenumber" name="L191" href="#L191">191</a>                 matcher.group(1),
 <a class="jxr_linenumber" name="L192" href="#L192">192</a>                 WebLinkingResponse.SimpleLink.parseParameters(matcher.group(2))
@@ -206,7 +206,7 @@
 <a class="jxr_linenumber" name="L198" href="#L198">198</a> <em class="jxr_javadoccomment">         * @param address Address</em>
 <a class="jxr_linenumber" name="L199" href="#L199">199</a> <em class="jxr_javadoccomment">         * @param parameters Parameters</em>
 <a class="jxr_linenumber" name="L200" href="#L200">200</a> <em class="jxr_javadoccomment">         */</em>
-<a class="jxr_linenumber" name="L201" href="#L201">201</a>         <strong class="jxr_keyword">private</strong> <a href="../../../../com/jcabi/http/response/WebLinkingResponse.html">SimpleLink</a>(<strong class="jxr_keyword">final</strong> String address,
+<a class="jxr_linenumber" name="L201" href="#L201">201</a>         <strong class="jxr_keyword">private</strong> SimpleLink(<strong class="jxr_keyword">final</strong> String address,
 <a class="jxr_linenumber" name="L202" href="#L202">202</a>             <strong class="jxr_keyword">final</strong> Map&lt;String, String&gt; parameters) {
 <a class="jxr_linenumber" name="L203" href="#L203">203</a>             <strong class="jxr_keyword">this</strong>.addr = address;
 <a class="jxr_linenumber" name="L204" href="#L204">204</a>             <strong class="jxr_keyword">this</strong>.params = <strong class="jxr_keyword">new</strong> ArrayMap&lt;&gt;(parameters);
@@ -319,6 +319,6 @@
 <a class="jxr_linenumber" name="L311" href="#L311">311</a> }
 </pre>
 <hr/>
-<div id="footer">Copyright &#169; 2012&#x2013;2022 <a href="https://www.jcabi.com">jcabi.com</a>. All rights reserved.</div>
+<div id="footer">Copyright &#169; 2012&#x2013;2023 <a href="https://www.jcabi.com">jcabi.com</a>. All rights reserved.</div>
 </body>
 </html>

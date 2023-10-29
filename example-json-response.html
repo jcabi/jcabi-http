@@ -33,7 +33,7 @@
                                                                     </ul>
                                                     </li>
                                                                                                                         <li >
-                            <span>                        <a href="apidocs-1.20.1/index.html" title="JavaDoc 1.20.1">JavaDoc 1.20.1</a>
+                            <span>                        <a href="apidocs-2.0.0/index.html" title="JavaDoc 2.0.0">JavaDoc 2.0.0</a>
         </span>
                                                                                                                                                                 <ul>
                                                                     </ul>
@@ -127,7 +127,7 @@
                                                                                                     <li >
                             <span>                        <a href="project-info.html" title="Project Information">Project Information</a>
         </span>
-                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                            </li>
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                    </li>
                                                                                                                         <li >
                             <span>                        <a href="project-reports.html" title="Project Reports">Project Reports</a>
         </span>
@@ -153,13 +153,13 @@
                             </div>
                             <ul class="badges">
                                 <li>
-                                    <strong itemprop="version">1.20.1</strong>
+                                    <strong itemprop="version">2.0.0</strong>
                                 </li>
                                 <li>
                                     
-                                    <time itemprop="datePublished" datetime="2022-08-30T09:34:49Z">
+                                    <time itemprop="datePublished" datetime="2023-10-29T08:58:26Z">
                                         
-                                        30-Aug-2022
+                                        29-Oct-2023
                                     </time>
                                 </li>
                                 <li class="menu-button">menu</li>
@@ -172,14 +172,14 @@
                                                 <article itemprop="articleBody">
                             <section>
 <h2><a name="Managing_JSON_Responses"></a>Managing JSON Responses</h2>
-<p>When your HTTP <a href="./apidocs-1.20.1/com/jcabi/http/Response.html"><code>Response</code></a> contains a JSON document, it is convenient to use <a href="./apidocs-1.20.1/com/jcabi/http/response/JsonResponse.html"><code>JsonResponse</code></a> decorator to manipulate it, for example:</p>
+<p>When your HTTP <a href="./apidocs-2.0.0/com/jcabi/http/Response.html"><code>Response</code></a> contains a JSON document, it is convenient to use <a href="./apidocs-2.0.0/com/jcabi/http/response/JsonResponse.html"><code>JsonResponse</code></a> decorator to manipulate it, for example:</p>
 <div class="source">
 <pre>String name = new JdkRequest(&quot;http://my.example.com&quot;)
   .fetch()
   .as(JsonResponse.class)
   .json() // convert HTTP body to javax.json.JsonReader
   .readJsonObject().getString(&quot;name&quot;);</pre></div>
-<p>Method <a href="./apidocs-1.20.1/com/jcabi/http/response/JsonResponse.html"><code>JsonResponse#json()</code></a> converts HTTP body to an instance of class <a class="externalLink" href="http://docs.oracle.com/javaee/7/api/javax/json/JsonReader.html"><code>JsonReader</code></a>.</p>
+<p>Method <a href="./apidocs-2.0.0/com/jcabi/http/response/JsonResponse.html"><code>JsonResponse#json()</code></a> converts HTTP body to an instance of class <a class="externalLink" href="http://docs.oracle.com/javaee/7/api/javax/json/JsonReader.html"><code>JsonReader</code></a>.</p>
 <p>Don't forget to add these two dependencies to your classpath:</p>
 <div class="source">
 <pre>&lt;dependency&gt;
@@ -194,14 +194,14 @@
   &lt;version&gt;1.0.3&lt;/version&gt;
   &lt;scope&gt;runtime&lt;/scope&gt;
 &lt;/dependency&gt;</pre></div>
-<p>Read also about <a href="./apidocs-1.20.1/com/jcabi/http/response/RestResponse.html"><code>RestResponse</code></a>, which helps you to manage default HTTP response concepts.</p></section>
+<p>Read also about <a href="./apidocs-2.0.0/com/jcabi/http/response/RestResponse.html"><code>RestResponse</code></a>, which helps you to manage default HTTP response concepts.</p></section>
                         </article>
                     </div>
                 </main>
                 <footer class="legal-notes">
                     <div>
                         Copyright &#169;
-                                                                            2012-2022
+                                                                            2012-2023
                                             </div>
                     <div>jcabi.com, All Rights Reserved.</div>
                     <div><a href="http://maven.apache.org/privacy-policy.html">Privacy Policy</a>.</div>

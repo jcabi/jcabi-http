@@ -55,13 +55,13 @@
 <a class="jxr_linenumber" name="L47" href="#L47">47</a>  <em class="jxr_javadoccomment"> */</em>
 <a class="jxr_linenumber" name="L48" href="#L48">48</a>  @Immutable
 <a class="jxr_linenumber" name="L49" href="#L49">49</a>  @EqualsAndHashCode(callSuper = <strong class="jxr_keyword">true</strong>)
-<a class="jxr_linenumber" name="L50" href="#L50">50</a>  <strong class="jxr_keyword">public</strong> <strong class="jxr_keyword">final</strong> <strong class="jxr_keyword">class</strong> <a href="../../../../com/jcabi/http/response/JacksonResponse.html">JacksonResponse</a> <strong class="jxr_keyword">extends</strong> <a href="../../../../com/jcabi/http/response/AbstractResponse.html">AbstractResponse</a> {
+<a class="jxr_linenumber" name="L50" href="#L50">50</a>  <strong class="jxr_keyword">public</strong> <strong class="jxr_keyword">final</strong> <strong class="jxr_keyword">class</strong> <a name="JacksonResponse" href="../../../../com/jcabi/http/response/JacksonResponse.html#JacksonResponse">JacksonResponse</a> <strong class="jxr_keyword">extends</strong> <a name="AbstractResponse" href="../../../../com/jcabi/http/response/AbstractResponse.html#AbstractResponse">AbstractResponse</a> {
 <a class="jxr_linenumber" name="L51" href="#L51">51</a>      <em class="jxr_javadoccomment">/**</em>
 <a class="jxr_linenumber" name="L52" href="#L52">52</a>  <em class="jxr_javadoccomment">     * Ctor.</em>
 <a class="jxr_linenumber" name="L53" href="#L53">53</a>  <em class="jxr_javadoccomment">     *</em>
 <a class="jxr_linenumber" name="L54" href="#L54">54</a>  <em class="jxr_javadoccomment">     * @param resp Response</em>
 <a class="jxr_linenumber" name="L55" href="#L55">55</a>  <em class="jxr_javadoccomment">     */</em>
-<a class="jxr_linenumber" name="L56" href="#L56">56</a>      <strong class="jxr_keyword">public</strong> <a href="../../../../com/jcabi/http/response/JacksonResponse.html">JacksonResponse</a>(<strong class="jxr_keyword">final</strong> <a href="../../../../com/jcabi/http/Response.html">Response</a> resp) {
+<a class="jxr_linenumber" name="L56" href="#L56">56</a>      <strong class="jxr_keyword">public</strong> <a name="JacksonResponse" href="../../../../com/jcabi/http/response/JacksonResponse.html#JacksonResponse">JacksonResponse</a>(<strong class="jxr_keyword">final</strong> <a name="Response" href="../../../../com/jcabi/http/Response.html#Response">Response</a> resp) {
 <a class="jxr_linenumber" name="L57" href="#L57">57</a>          <strong class="jxr_keyword">super</strong>(resp);
 <a class="jxr_linenumber" name="L58" href="#L58">58</a>      }
 <a class="jxr_linenumber" name="L59" href="#L59">59</a>  
@@ -70,8 +70,8 @@
 <a class="jxr_linenumber" name="L62" href="#L62">62</a>  <em class="jxr_javadoccomment">     *</em>
 <a class="jxr_linenumber" name="L63" href="#L63">63</a>  <em class="jxr_javadoccomment">     * @return JSON reader.</em>
 <a class="jxr_linenumber" name="L64" href="#L64">64</a>  <em class="jxr_javadoccomment">     */</em>
-<a class="jxr_linenumber" name="L65" href="#L65">65</a>      <strong class="jxr_keyword">public</strong> <a href="../../../../com/jcabi/http/response/JacksonResponse.html">JsonReader</a> json() {
-<a class="jxr_linenumber" name="L66" href="#L66">66</a>          <strong class="jxr_keyword">return</strong> <strong class="jxr_keyword">new</strong> <a href="../../../../com/jcabi/http/response/JacksonResponse.html">JsonReader</a>(
+<a class="jxr_linenumber" name="L65" href="#L65">65</a>      <strong class="jxr_keyword">public</strong> JsonReader json() {
+<a class="jxr_linenumber" name="L66" href="#L66">66</a>          <strong class="jxr_keyword">return</strong> <strong class="jxr_keyword">new</strong> JsonReader(
 <a class="jxr_linenumber" name="L67" href="#L67">67</a>              <strong class="jxr_keyword">this</strong>.binary()
 <a class="jxr_linenumber" name="L68" href="#L68">68</a>          );
 <a class="jxr_linenumber" name="L69" href="#L69">69</a>      }
@@ -81,7 +81,7 @@
 <a class="jxr_linenumber" name="L73" href="#L73">73</a>  <em class="jxr_javadoccomment">     *</em>
 <a class="jxr_linenumber" name="L74" href="#L74">74</a>  <em class="jxr_javadoccomment">     * @since 1.17.1</em>
 <a class="jxr_linenumber" name="L75" href="#L75">75</a>  <em class="jxr_javadoccomment">     */</em>
-<a class="jxr_linenumber" name="L76" href="#L76">76</a>      <strong class="jxr_keyword">public</strong> <strong class="jxr_keyword">static</strong> <strong class="jxr_keyword">final</strong> <strong class="jxr_keyword">class</strong> <a href="../../../../com/jcabi/http/response/JacksonResponse.html">JsonReader</a> {
+<a class="jxr_linenumber" name="L76" href="#L76">76</a>      <strong class="jxr_keyword">public</strong> <strong class="jxr_keyword">static</strong> <strong class="jxr_keyword">final</strong> <strong class="jxr_keyword">class</strong> JsonReader {
 <a class="jxr_linenumber" name="L77" href="#L77">77</a>          <em class="jxr_javadoccomment">/**</em>
 <a class="jxr_linenumber" name="L78" href="#L78">78</a>  <em class="jxr_javadoccomment">         * Jackson's ObjectMapper. Allow unquoted control characters when</em>
 <a class="jxr_linenumber" name="L79" href="#L79">79</a>  <em class="jxr_javadoccomment">         * parsing by default.</em>
@@ -99,7 +99,7 @@
 <a class="jxr_linenumber" name="L91" href="#L91">91</a>  <em class="jxr_javadoccomment">         *</em>
 <a class="jxr_linenumber" name="L92" href="#L92">92</a>  <em class="jxr_javadoccomment">         * @param bytes The HTTP response body as an array of bytes.</em>
 <a class="jxr_linenumber" name="L93" href="#L93">93</a>  <em class="jxr_javadoccomment">         */</em>
-<a class="jxr_linenumber" name="L94" href="#L94">94</a>          <strong class="jxr_keyword">public</strong> <a href="../../../../com/jcabi/http/response/JacksonResponse.html">JsonReader</a>(<strong class="jxr_keyword">final</strong> byte[] bytes) {
+<a class="jxr_linenumber" name="L94" href="#L94">94</a>          <strong class="jxr_keyword">public</strong> JsonReader(<strong class="jxr_keyword">final</strong> byte[] bytes) {
 <a class="jxr_linenumber" name="L95" href="#L95">95</a>              <strong class="jxr_keyword">this</strong>.body = Arrays.copyOf(bytes, bytes.length);
 <a class="jxr_linenumber" name="L96" href="#L96">96</a>          }
 <a class="jxr_linenumber" name="L97" href="#L97">97</a>  
@@ -150,6 +150,6 @@
 <a class="jxr_linenumber" name="L142" href="#L142">142</a> }
 </pre>
 <hr/>
-<div id="footer">Copyright &#169; 2012&#x2013;2022 <a href="https://www.jcabi.com">jcabi.com</a>. All rights reserved.</div>
+<div id="footer">Copyright &#169; 2012&#x2013;2023 <a href="https://www.jcabi.com">jcabi.com</a>. All rights reserved.</div>
 </body>
 </html>

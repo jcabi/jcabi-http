@@ -1,0 +1,1 @@
+packageSearchIndex = [{"l":"All Packages","url":"allpackages-index.html"},{"l":"com.jcabi.http"},{"l":"com.jcabi.http.mock"},{"l":"com.jcabi.http.request"},{"l":"com.jcabi.http.response"},{"l":"com.jcabi.http.wire"}]
