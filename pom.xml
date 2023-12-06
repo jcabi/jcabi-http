@@ -408,7 +408,7 @@ OF THE POSSIBILITY OF SUCH DAMAGE.
           <plugin>
             <groupId>org.owasp</groupId>
             <artifactId>dependency-check-maven</artifactId>
-            <version>9.0.2</version>
+            <version>9.0.3</version>
             <configuration>
               <failBuildOnCVSS>7.0</failBuildOnCVSS>
               <failOnError>true</failOnError>
