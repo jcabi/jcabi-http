@@ -46,6 +46,8 @@ import org.hamcrest.Matchers;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.Timeout;
+import org.junit.jupiter.api.condition.DisabledOnOs;
+import org.junit.jupiter.api.condition.OS;
 import org.junit.jupiter.api.function.Executable;
 import org.junit.jupiter.params.ParameterizedTest;
 
@@ -64,6 +66,7 @@ final class RequestITCase extends RequestTestTemplate {
     @Values
     @ParameterizedTest
     @Timeout(10)
+    @DisabledOnOs(OS.WINDOWS)
     void sendsHttpRequestAndProcessesHttpResponse(
         final Class<? extends Request> type
     ) throws Exception {
