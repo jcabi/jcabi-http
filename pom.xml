@@ -189,7 +189,7 @@ OF THE POSSIBILITY OF SUCH DAMAGE.
       <artifactId>jersey-client</artifactId>
       <scope>provided</scope>
       <optional>true</optional>
-      <version>3.1.4</version>
+      <version>3.1.5</version>
     </dependency>
     <dependency>
       <groupId>org.apache.httpcomponents</groupId>
@@ -208,7 +208,7 @@ OF THE POSSIBILITY OF SUCH DAMAGE.
     <dependency>
       <groupId>org.glassfish.jersey.core</groupId>
       <artifactId>jersey-server</artifactId>
-      <version>3.1.4</version>
+      <version>3.1.5</version>
       <scope>test</scope>
       <optional>true</optional>
     </dependency>
