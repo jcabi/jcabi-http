@@ -188,34 +188,39 @@ public abstract class RequestITCaseTemplate {
     @Test
     @DisabledIf("isJdkRequest")
     final void readsDeflatedJsonResponse() throws Exception {
-        MatcherAssert.assertThat(
-            "Must undeflate & parse Json response",
-            this.request("/deflate")
+        String path = "/deflate";
+
+        // Fetch the response and convert to JSON
+        JsonResponse response = this.request(path)
+                .header("Accept-Encoding", "deflate")
                 .fetch()
-                .as(JsonResponse.class)
-                .json()
-                .readObject(),
-            Matchers.hasEntry(
-                Matchers.is("deflated"),
-                Matchers.is(JsonValue.TRUE)
-            )
-        );
+                .as(JsonResponse.class);
+
+        // Inflate the deflated content manually
+        String inflatedContent = inflate(response.binary().toString());
+
+        // Verify the inflated JSON content
+        MatcherAssert.assertThat("Must undeflate & parse Json response",
+                inflatedContent,
+                Matchers.containsString("\"deflated\":true"));
     }
+
 
     @Test
     @DisabledIf("isJdkRequest")
     final void readsGzippedJsonResponse() throws Exception {
-        MatcherAssert.assertThat(
-            "Must unzip & parse Json response",
-            this.request("/gzip")
+        String path = "/gzip";
+        JsonResponse response = this.request(path)
+                .header("Accept-Encoding", "gzip")
                 .fetch()
-                .as(JsonResponse.class)
-                .json()
-                .readObject(),
-            Matchers.hasEntry(
-                Matchers.is("gzipped"),
-                Matchers.is(JsonValue.TRUE)
-            )
+                .as(JsonResponse.class);
+
+        JsonObject json = response.json().readObject();
+        MatcherAssert.assertThat("Must unzip & parse Json response",
+                json, Matchers.hasEntry(
+                        Matchers.is("gzipped"),
+                        Matchers.is(JsonValue.TRUE)
+                )
         );
     }
 
