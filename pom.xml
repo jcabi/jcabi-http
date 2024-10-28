@@ -271,7 +271,7 @@ OF THE POSSIBILITY OF SUCH DAMAGE.
     <dependency>
       <groupId>ch.qos.logback</groupId>
       <artifactId>logback-core</artifactId>
-      <version>1.5.10</version>
+      <version>1.5.12</version>
     </dependency>
     <dependency>
       <groupId>org.slf4j</groupId>
