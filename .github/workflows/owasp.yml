@@ -16,6 +16,6 @@ jobs:
         uses: actions/setup-java@v4
         with:
           java-version: 1.8
-	  distibution: 'temurin'
+	  distribution: 'temurin'
       - name: Maven
         run:  mvn --errors --batch-mode -Powasp dependency-check:check
