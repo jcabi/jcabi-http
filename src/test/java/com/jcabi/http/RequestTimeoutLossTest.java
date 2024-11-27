@@ -136,8 +136,8 @@ final class RequestTimeoutLossTest extends RequestTestTemplate {
      * The connect and read timeouts are properly set no matter in which order
      * <code>Request.timeout</code> is called.
      *
-     * @throws Exception If something goes wrong inside
      * @param type Type of Request
+     * @throws Exception If something goes wrong inside
      */
     @ParameterizedTest
     @Values
