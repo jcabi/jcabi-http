@@ -201,6 +201,7 @@ final class LastModifiedCachingWireTest {
     /**
      * LastModifiedCachingWire can resist cache eviction in the event of a non
      * OK response without a last modified header.
+     * @throws Exception If fails
      * @todo #120:30min Confirm cache clearing behaviour in all non-OK responses
      *  Non-OK behaviour was not specified in #120, so for example, if the
      *  response is 404 as below, does it make any sense to keep the item in
@@ -210,7 +211,6 @@ final class LastModifiedCachingWireTest {
      *  or 410 Gone etc. Or, personally I think all non-OK and OK responses
      *  should behave the same WRT to clearing the cache as the cache value is
      *  so unlikely to be returned in future.
-     * @throws Exception If fails
      */
     @Test
     void doesNotEvictCacheOnNonOk()
