@@ -42,6 +42,7 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.net.HttpURLConnection;
 import java.nio.charset.Charset;
+import java.nio.charset.StandardCharsets;
 import java.util.Collection;
 import java.util.Collections;
 import java.util.Map;
@@ -70,7 +71,7 @@ public final class FakeRequest implements Request {
     /**
      * The Charset to use.
      */
-    private static final Charset CHARSET = Charset.forName("UTF-8");
+    private static final Charset CHARSET = StandardCharsets.UTF_8;
 
     /**
      * Base request.
