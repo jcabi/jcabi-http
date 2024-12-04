@@ -200,8 +200,8 @@ final class RequestTest extends RequestTestTemplate {
 
     /**
      * BaseRequest can fetch body with HTTP POST request with params.
-     * @throws Exception If something goes wrong inside
      * @param type Request type
+     * @throws Exception If something goes wrong inside
      */
     @Values
     @ParameterizedTest
