@@ -101,8 +101,8 @@ final class RequestTest extends RequestTestTemplate {
 
     /**
      * BaseRequest can fetch HTTP headers.
-     * @throws Exception If something goes wrong inside
      * @param type Request type
+     * @throws Exception If something goes wrong inside
      */
     @Values
     @ParameterizedTest
