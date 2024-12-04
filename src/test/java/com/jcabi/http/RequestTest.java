@@ -330,9 +330,9 @@ final class RequestTest extends RequestTestTemplate {
     /**
      * BaseRequest can fetch multipart body with HTTP POST request
      * with two params.
+     * @param type Request type
      * @throws Exception If something goes wrong inside
      * @checkstyle LineLength (40 lines)
-     * @param type Request type
      */
     @Values
     @ParameterizedTest
