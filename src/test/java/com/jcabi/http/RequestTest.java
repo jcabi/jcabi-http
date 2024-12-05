@@ -492,8 +492,8 @@ final class RequestTest extends RequestTestTemplate {
 
     /**
      * BaseRequest can assert response body content with XPath query.
-     * @throws Exception If something goes wrong inside.
      * @param type Request type
+     * @throws Exception If something goes wrong inside.
      */
     @Values
     @ParameterizedTest
