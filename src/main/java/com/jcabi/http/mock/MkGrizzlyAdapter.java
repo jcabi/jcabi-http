@@ -79,11 +79,11 @@ final class MkGrizzlyAdapter extends HttpHandler {
     @Override
     @SuppressWarnings
         (
-            {
-                "PMD.AvoidCatchingThrowable",
-                "PMD.AvoidInstantiatingObjectsInLoops",
-                "rawtypes"
-            }
+        {
+        "PMD.AvoidCatchingThrowable",
+        "PMD.AvoidInstantiatingObjectsInLoops",
+        "rawtypes"
+        }
         )
     public void service(
         final Request request,
