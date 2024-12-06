@@ -642,9 +642,9 @@ final class RequestTest extends RequestTestTemplate {
 
     /**
      * BaseRequest can return redirect status (without redirecting).
+     * @param type Request type
      * @throws Exception If something goes wrong inside
      * @since 0.10
-     * @param type Request type
      */
     @Values
     @ParameterizedTest
