@@ -611,8 +611,8 @@ final class RequestTest extends RequestTestTemplate {
 
     /**
      * BaseRequest can fetch GET request twice.
-     * @throws Exception If something goes wrong inside
      * @param type Request type
+     * @throws Exception If something goes wrong inside
      */
     @Values
     @ParameterizedTest
