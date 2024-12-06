@@ -579,8 +579,8 @@ final class RequestTest extends RequestTestTemplate {
 
     /**
      * BaseRequest can use basic authentication scheme.
-     * @throws Exception If something goes wrong inside
      * @param type Request type
+     * @throws Exception If something goes wrong inside
      */
     @ParameterizedTest
     @Values
