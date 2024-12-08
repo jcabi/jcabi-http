@@ -44,7 +44,7 @@ public final class MultipartBodyBuilder {
     /**
      * Carriage return constant.
      */
-    private static final byte[] CRLF = new byte[]{13, 10};
+    private static final byte[] CRLF = {13, 10};
 
     /**
      * Byte array.

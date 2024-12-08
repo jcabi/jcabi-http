@@ -69,8 +69,8 @@ final class RequestTest extends RequestTestTemplate {
 
     /**
      * BaseRequest can fetch HTTP request and process HTTP response.
-     * @throws Exception If something goes wrong inside
      * @param type Request type
+     * @throws Exception If something goes wrong inside
      */
     @Values
     @ParameterizedTest
@@ -101,8 +101,8 @@ final class RequestTest extends RequestTestTemplate {
 
     /**
      * BaseRequest can fetch HTTP headers.
-     * @throws Exception If something goes wrong inside
      * @param type Request type
+     * @throws Exception If something goes wrong inside
      */
     @Values
     @ParameterizedTest
@@ -138,8 +138,8 @@ final class RequestTest extends RequestTestTemplate {
 
     /**
      * BaseRequest can fetch GET request with query params.
-     * @throws Exception If something goes wrong inside
      * @param type Request type
+     * @throws Exception If something goes wrong inside
      */
     @Values
     @ParameterizedTest
@@ -169,8 +169,8 @@ final class RequestTest extends RequestTestTemplate {
 
     /**
      * BaseRequest can fetch body with HTTP POST request.
-     * @throws Exception If something goes wrong inside
      * @param type Request type
+     * @throws Exception If something goes wrong inside
      */
     @Values
     @ParameterizedTest
@@ -200,8 +200,8 @@ final class RequestTest extends RequestTestTemplate {
 
     /**
      * BaseRequest can fetch body with HTTP POST request with params.
-     * @throws Exception If something goes wrong inside
      * @param type Request type
+     * @throws Exception If something goes wrong inside
      */
     @Values
     @ParameterizedTest
@@ -238,9 +238,9 @@ final class RequestTest extends RequestTestTemplate {
     /**
      * BaseRequest can fetch multipart body with HTTP POST request
      * with single byte param.
+     * @param type Request type
      * @throws Exception If something goes wrong inside
      * @checkstyle LineLength (30 lines)
-     * @param type Request type
      */
     @Values
     @ParameterizedTest
@@ -284,9 +284,9 @@ final class RequestTest extends RequestTestTemplate {
     /**
      * BaseRequest can fetch multipart body with HTTP POST request
      * with single param.
+     * @param type Request type
      * @throws Exception If something goes wrong inside
      * @checkstyle LineLength (30 lines)
-     * @param type Request type
      */
     @Values
     @ParameterizedTest
@@ -330,9 +330,9 @@ final class RequestTest extends RequestTestTemplate {
     /**
      * BaseRequest can fetch multipart body with HTTP POST request
      * with two params.
+     * @param type Request type
      * @throws Exception If something goes wrong inside
      * @checkstyle LineLength (40 lines)
-     * @param type Request type
      */
     @Values
     @ParameterizedTest
@@ -383,8 +383,8 @@ final class RequestTest extends RequestTestTemplate {
 
     /**
      * BaseRequest can fetch body with HTTP POST request.
-     * @throws Exception If something goes wrong inside
      * @param type Request type
+     * @throws Exception If something goes wrong inside
      */
     @Values
     @ParameterizedTest
@@ -416,8 +416,8 @@ final class RequestTest extends RequestTestTemplate {
 
     /**
      * BaseRequest can assert HTTP status code value.
-     * @throws Exception If something goes wrong inside.
      * @param type Request type
+     * @throws Exception If something goes wrong inside.
      */
     @Values
     @ParameterizedTest
@@ -439,8 +439,8 @@ final class RequestTest extends RequestTestTemplate {
 
     /**
      * BaseRequest can assert response body.
-     * @throws Exception If something goes wrong inside.
      * @param type Request type
+     * @throws Exception If something goes wrong inside.
      */
     @Values
     @ParameterizedTest
@@ -460,8 +460,8 @@ final class RequestTest extends RequestTestTemplate {
 
     /**
      * BaseRequest can assert HTTP headers in response.
-     * @throws Exception If something goes wrong inside.
      * @param type Request type
+     * @throws Exception If something goes wrong inside.
      */
     @Values
     @ParameterizedTest
@@ -492,8 +492,8 @@ final class RequestTest extends RequestTestTemplate {
 
     /**
      * BaseRequest can assert response body content with XPath query.
-     * @throws Exception If something goes wrong inside.
      * @param type Request type
+     * @throws Exception If something goes wrong inside.
      */
     @Values
     @ParameterizedTest
@@ -532,8 +532,8 @@ final class RequestTest extends RequestTestTemplate {
 
     /**
      * BaseRequest can handle unicode in plain text response.
-     * @throws Exception If something goes wrong inside
      * @param type Request type
+     * @throws Exception If something goes wrong inside
      */
     @Values
     @ParameterizedTest
@@ -556,8 +556,8 @@ final class RequestTest extends RequestTestTemplate {
 
     /**
      * BaseRequest can handle unicode in XML response.
-     * @throws Exception If something goes wrong inside
      * @param type Request type
+     * @throws Exception If something goes wrong inside
      */
     @Values
     @ParameterizedTest
@@ -579,8 +579,8 @@ final class RequestTest extends RequestTestTemplate {
 
     /**
      * BaseRequest can use basic authentication scheme.
-     * @throws Exception If something goes wrong inside
      * @param type Request type
+     * @throws Exception If something goes wrong inside
      */
     @ParameterizedTest
     @Values
@@ -611,8 +611,8 @@ final class RequestTest extends RequestTestTemplate {
 
     /**
      * BaseRequest can fetch GET request twice.
-     * @throws Exception If something goes wrong inside
      * @param type Request type
+     * @throws Exception If something goes wrong inside
      */
     @Values
     @ParameterizedTest
@@ -642,9 +642,9 @@ final class RequestTest extends RequestTestTemplate {
 
     /**
      * BaseRequest can return redirect status (without redirecting).
+     * @param type Request type
      * @throws Exception If something goes wrong inside
      * @since 0.10
-     * @param type Request type
      */
     @Values
     @ParameterizedTest
@@ -664,8 +664,8 @@ final class RequestTest extends RequestTestTemplate {
 
     /**
      * BaseRequest can fetch body with HTTP POST request.
-     * @throws Exception If something goes wrong inside
      * @param type Request type
+     * @throws Exception If something goes wrong inside
      */
     @Values
     @ParameterizedTest
