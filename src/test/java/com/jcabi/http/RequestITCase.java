@@ -79,8 +79,8 @@ final class RequestITCase extends RequestTestTemplate {
 
     /**
      * BaseRequest can process not-OK response.
-     * @throws Exception If something goes wrong inside
      * @param type Request type
+     * @throws Exception If something goes wrong inside
      */
     @Values
     @ParameterizedTest
