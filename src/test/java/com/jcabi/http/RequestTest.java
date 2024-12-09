@@ -535,6 +535,7 @@ final class RequestTest extends RequestTestTemplate {
         container.stop();
         final URI uri = container.home();
         MatcherAssert.assertThat(
+            "should be correct URI",
             uri.toString().matches("^http://localhost:\\d+/$"),
             Matchers.describedAs(uri.toString(), Matchers.is(true))
         );
@@ -611,6 +612,7 @@ final class RequestTest extends RequestTestTemplate {
         container.stop();
         final MkQuery query = container.take();
         MatcherAssert.assertThat(
+            "should be basic authorization",
             query.headers(),
             Matchers.hasEntry(
                 Matchers.equalTo(HttpHeaders.AUTHORIZATION),
@@ -645,6 +647,7 @@ final class RequestTest extends RequestTestTemplate {
             .assertStatus(HttpURLConnection.HTTP_OK);
         container.stop();
         MatcherAssert.assertThat(
+            "should be ends with 'foo-X'",
             container.take(),
             MkQueryMatchers.hasPath(Matchers.endsWith("foo-X"))
         );
@@ -698,6 +701,7 @@ final class RequestTest extends RequestTestTemplate {
             .assertStatus(HttpURLConnection.HTTP_OK);
         final MkQuery query = container.take();
         MatcherAssert.assertThat(
+            "should contains body as input stream",
             query.body(),
             Matchers.containsString(value)
         );
