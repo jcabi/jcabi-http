@@ -44,8 +44,8 @@ import java.util.Map;
  *
  * <p>Instances of this interface are immutable and thread-safe.
  *
+ * @see com.jcabi.http.request.JdkRequest *
  * @since 0.8
- * @see com.jcabi.http.request.JdkRequest
  */
 @Immutable
 public interface Response {
