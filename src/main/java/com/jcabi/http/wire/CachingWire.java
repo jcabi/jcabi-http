@@ -81,11 +81,11 @@ import lombok.ToString;
  * query part.
  *
  * <p>The class is immutable and thread-safe.
+ * @since 1.0
  * @todo #179:30m This implementation depends on Guava. Investigate for a
  *  possible shared interface between this class and other implementations for
  *  caching. If this shared interface is possible replace this task with a task
  *  for implementing it.
- * @since 1.0
  */
 @Immutable
 @ToString
