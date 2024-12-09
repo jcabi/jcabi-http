@@ -89,10 +89,12 @@ final class RequestTest extends RequestTestTemplate {
             .assertStatus(HttpURLConnection.HTTP_OK);
         final MkQuery query = container.take();
         MatcherAssert.assertThat(
+            "should contains 'helloall'",
             query,
             MkQueryMatchers.hasPath(Matchers.containsString("helloall"))
         );
         MatcherAssert.assertThat(
+            "should be GET method",
             query.method(),
             Matchers.equalTo(Request.GET)
         );
@@ -121,6 +123,7 @@ final class RequestTest extends RequestTestTemplate {
             .assertStatus(HttpURLConnection.HTTP_OK);
         final MkQuery query = container.take();
         MatcherAssert.assertThat(
+            "should be accept '*' and user-agent 'jcabi'",
             query.headers(),
             Matchers.allOf(
                 Matchers.hasEntry(
@@ -158,6 +161,7 @@ final class RequestTest extends RequestTestTemplate {
             .assertStatus(HttpURLConnection.HTTP_OK);
         final MkQuery query = container.take();
         MatcherAssert.assertThat(
+            "should be ends with '€'",
             URLDecoder.decode(
                 query.uri().toString(),
                 String.valueOf(StandardCharsets.UTF_8)
@@ -250,7 +254,7 @@ final class RequestTest extends RequestTestTemplate {
         final MkContainer container = new MkGrizzlyContainer().next(
             new MkAnswer.Simple("")
         ).start();
-        final byte[] value = new byte[]{Byte.parseByte("-122")};
+        final byte[] value = {Byte.parseByte("-122")};
         RequestTestTemplate.request(container.home(), type)
             .method(Request.POST)
             .header(
