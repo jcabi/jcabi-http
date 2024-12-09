@@ -64,10 +64,10 @@ import org.apache.http.util.EntityUtils;
  * <p>The class is immutable and thread-safe.
  *
  * @since 0.8
- * @checkstyle ClassDataAbstractionCoupling (500 lines)
  * @todo #200:30m TrustedWire does not support ApacheRequest.
  *  Investigate if it's possible for them to work together,
  *  if not see jcabi-http#178 for discussion about alternative solutions.
+ * @checkstyle ClassDataAbstractionCoupling (500 lines)
  */
 @Immutable
 @EqualsAndHashCode(of = "base")
