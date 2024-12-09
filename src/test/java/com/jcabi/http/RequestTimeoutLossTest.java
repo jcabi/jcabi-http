@@ -378,10 +378,12 @@ final class RequestTimeoutLossTest extends RequestTestTemplate {
                 rdc.capture()
             );
             MatcherAssert.assertThat(
+                "should be connect timeout",
                 cnc.getValue().intValue(),
                 Matchers.is(RequestTimeoutLossTest.CONNECT_TIMEOUT)
             );
             MatcherAssert.assertThat(
+                "should be read timeout",
                 rdc.getValue().intValue(),
                 Matchers.is(RequestTimeoutLossTest.READ_TIMEOUT)
             );
