@@ -37,6 +37,7 @@ import com.jcabi.immutable.Array;
 import com.jcabi.log.Logger;
 import java.net.HttpURLConnection;
 import java.nio.charset.Charset;
+import java.nio.charset.StandardCharsets;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
@@ -89,7 +90,7 @@ public interface MkAnswer {
         /**
          * The Charset to use.
          */
-        private static final Charset CHARSET = Charset.forName("UTF-8");
+        private static final Charset CHARSET = StandardCharsets.UTF_8;
 
         /**
          * Encapsulated response.
