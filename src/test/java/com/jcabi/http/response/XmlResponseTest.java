@@ -39,8 +39,8 @@ import org.junit.jupiter.api.Test;
 
 /**
  * Test case for {@link XmlResponse}.
- * @checkstyle ClassDataAbstractionCoupling (500 lines)
  * @since 1.1
+ * @checkstyle ClassDataAbstractionCoupling (500 lines)
  */
 @SuppressWarnings("PMD.TooManyMethods")
 final class XmlResponseTest {

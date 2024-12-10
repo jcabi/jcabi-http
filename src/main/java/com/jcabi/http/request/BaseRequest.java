@@ -64,10 +64,10 @@ import lombok.EqualsAndHashCode;
 /**
  * Base implementation of {@link Request}.
  *
- * @since 0.8
  * // @checkstyle ClassDataAbstractionCoupling (500 lines)
  * @see Request
  * @see Response
+ * @since 0.8
  */
 @Immutable
 @EqualsAndHashCode(of = {"home", "mtd", "hdrs", "content"})

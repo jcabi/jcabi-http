@@ -56,10 +56,12 @@ final class JacksonResponseTest {
             .withBody("{\n\t\r\"foo-foo\":2,\n\"bar\":\"\u20ac\"}")
             .fetch().as(JacksonResponse.class);
         MatcherAssert.assertThat(
+            "should be 2",
             response.json().read().path("foo-foo").asInt(),
             Matchers.equalTo(2)
         );
         MatcherAssert.assertThat(
+            "should be '\u20ac'",
             response.json().read().path("bar").asText(),
             Matchers.equalTo("\u20ac")
         );
@@ -76,6 +78,7 @@ final class JacksonResponseTest {
             .withBody("{\"test\":\n\"\u001Fblah\uFFFDcwhoa\u0000!\"}")
             .fetch().as(JacksonResponse.class);
         MatcherAssert.assertThat(
+            "should be '\u001Fblah\uFFFDcwhoa\u0000!'",
             response.json().readObject().get("test").asText(),
             Matchers.is("\u001Fblah\uFFFDcwhoa\u0000!")
         );
@@ -94,6 +97,7 @@ final class JacksonResponseTest {
         final JacksonResponse response = new FakeRequest()
             .withBody(body).fetch().as(JacksonResponse.class);
         MatcherAssert.assertThat(
+            "should contains error 'was expecting double-quote to start field name'",
             Assertions.assertThrows(
                 IOException.class,
                 new Executable() {
@@ -123,6 +127,7 @@ final class JacksonResponseTest {
             .withBody("{\"anInvalidArrayTest\":[}")
             .fetch().as(JacksonResponse.class);
         MatcherAssert.assertThat(
+            "should contains error 'Unexpected close marker'",
             Assertions.assertThrows(
                 IOException.class,
                 new Executable() {
@@ -149,6 +154,7 @@ final class JacksonResponseTest {
             .withBody("{\"objectIsNotArray\": \"It's not!\"}")
             .fetch().as(JacksonResponse.class);
         MatcherAssert.assertThat(
+            "should contains 'Cannot read as an array. The JSON is not a valid array.'",
             Assertions.assertThrows(
                 IOException.class,
                 new Executable() {
@@ -178,10 +184,10 @@ final class JacksonResponseTest {
             .fetch().as(JacksonResponse.class);
         final ArrayNode array = response.json().readArray();
         MatcherAssert.assertThat(
-            array.get(0).asText(), Matchers.is("one")
+            "should be 'one'", array.get(0).asText(), Matchers.is("one")
         );
         MatcherAssert.assertThat(
-            array.get(1).asText(), Matchers.is("two")
+            "should be 'one'", array.get(1).asText(), Matchers.is("two")
         );
     }
 
@@ -197,6 +203,7 @@ final class JacksonResponseTest {
             .withBody("{\"anInvalidObjectTest\":{}")
             .fetch().as(JacksonResponse.class);
         MatcherAssert.assertThat(
+            "should contains error 'Unexpected end-of-input: expected close marker for Object",
             Assertions.assertThrows(
                 IOException.class,
                 new Executable() {
