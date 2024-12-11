@@ -262,7 +262,7 @@ final class JacksonResponseTest {
             .fetch().as(JacksonResponse.class);
         final ObjectNode object = response.json().readObject();
         MatcherAssert.assertThat(
-            object.get("hooray").asText(), Matchers.is("Got milk?")
+            "should contains 'Got milk?", object.get("hooray").asText(), Matchers.is("Got milk?")
         );
     }
 }
