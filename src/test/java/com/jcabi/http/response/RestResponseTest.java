@@ -107,6 +107,7 @@ final class RestResponseTest {
                 .fetch()
         );
         MatcherAssert.assertThat(
+            "should contains value & path",
             response.cookie("cookie1"),
             Matchers.allOf(
                 Matchers.hasProperty("value", Matchers.equalTo("foo1")),
@@ -129,6 +130,7 @@ final class RestResponseTest {
                 .fetch()
         );
         MatcherAssert.assertThat(
+            "should contains value & path",
             response.cookie("baz"),
             Matchers.allOf(
                 Matchers.hasProperty("value", Matchers.equalTo("goo")),
@@ -136,6 +138,7 @@ final class RestResponseTest {
             )
         );
         MatcherAssert.assertThat(
+            "should contains value & path",
             response.cookie("foo"),
             Matchers.allOf(
                 Matchers.hasProperty("value", Matchers.equalTo("bar")),
@@ -151,6 +154,7 @@ final class RestResponseTest {
     @Test
     void jumpsToRelativeUrls() throws Exception {
         MatcherAssert.assertThat(
+            "should contains value & path",
             new RestResponse(
                 new FakeRequest()
                     .uri().set(new URI("http://locahost:888/tt")).back()
