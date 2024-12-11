@@ -232,6 +232,7 @@ final class JacksonResponseTest {
         final JacksonResponse response = new FakeRequest()
             .withBody(body).fetch().as(JacksonResponse.class);
         MatcherAssert.assertThat(
+            "should contains error 'Cannot read as an object. The JSON is not a valid object.",
             Assertions.assertThrows(
                 IOException.class,
                 new Executable() {
