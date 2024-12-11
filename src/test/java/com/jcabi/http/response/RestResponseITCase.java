@@ -77,6 +77,7 @@ import org.junit.jupiter.api.function.Executable;
     @Test
     void readsCookies() throws IOException {
         MatcherAssert.assertThat(
+            "should contains value 'bar",
             new JdkRequest("https://httpbin.org/cookies/set?foo=bar")
                 .fetch()
                 .as(RestResponse.class)
