@@ -65,6 +65,7 @@ import org.junit.jupiter.api.function.Executable;
                 @Override
                 public void execute() {
                     MatcherAssert.assertThat(
+                        "should contains value 'abc",
                         resp.cookie("xyz"),
                         Matchers.hasProperty("value", Matchers.is("abc"))
                     );
