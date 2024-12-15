@@ -62,6 +62,7 @@ final class XmlResponseTest {
             Matchers.hasSize(2)
         );
         MatcherAssert.assertThat(
+            "should contains '\u0443\u0440\u0430'",
             response.xml().xpath("/r/a/text()"),
             Matchers.hasItem("\u0443\u0440\u0430!")
         );
