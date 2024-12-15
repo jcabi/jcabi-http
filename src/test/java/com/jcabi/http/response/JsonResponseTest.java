@@ -60,6 +60,7 @@ final class JsonResponseTest {
             Matchers.equalTo(2)
         );
         MatcherAssert.assertThat(
+            "should be equal \u20ac",
             response.json().readObject().getString("bar"),
             Matchers.equalTo("\u20ac")
         );
