@@ -114,6 +114,7 @@ final class XmlResponseTest {
         ).registerNs("foo", "urn:foo");
         final XML xml = response.xml();
         MatcherAssert.assertThat(
+            "should be equal to 'yes!'",
             xml.xpath("//foo:b/text()").get(0),
             Matchers.equalTo("yes!")
         );
