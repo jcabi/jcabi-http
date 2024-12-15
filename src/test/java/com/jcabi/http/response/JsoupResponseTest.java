@@ -57,6 +57,7 @@ final class JsoupResponseTest {
             )
         ).fetch();
         MatcherAssert.assertThat(
+            "should contains normalized response",
             new JsoupResponse(resp).body(),
             XhtmlMatchers.hasXPaths(
                 "/xhtml:html/xhtml:head",
