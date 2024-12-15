@@ -93,6 +93,7 @@ final class JsonResponseTest {
         final String body = "{\"test\": \"logged!\"$@%#^&%@$#}";
         final Response resp = new FakeRequest().withBody(body).fetch();
         MatcherAssert.assertThat(
+            "should contains json body",
             Assertions.assertThrows(
                 JsonParsingException.class,
                 new Executable() {
