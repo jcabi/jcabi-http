@@ -119,6 +119,7 @@ final class XmlResponseTest {
             Matchers.equalTo("yes!")
         );
         MatcherAssert.assertThat(
+            "should be empty",
             xml.nodes("/foo:a/foo:b"),
             Matchers.not(Matchers.empty())
         );
