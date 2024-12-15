@@ -55,6 +55,7 @@ final class JsonResponseTest {
             .fetch();
         final JsonResponse response = new JsonResponse(resp);
         MatcherAssert.assertThat(
+            "should be equal 2",
             response.json().readObject().getInt("foo-foo"),
             Matchers.equalTo(2)
         );
