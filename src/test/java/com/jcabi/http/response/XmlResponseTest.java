@@ -57,6 +57,7 @@ final class XmlResponseTest {
                 .fetch()
         );
         MatcherAssert.assertThat(
+            "should be equal 2",
             response.xml().xpath("//a/text()"),
             Matchers.hasSize(2)
         );
