@@ -77,6 +77,7 @@ final class JsonResponseTest {
             .withBody("{\"test\":\n\"\u001Fblah\uFFFDcwhoa\u0000!\"}").fetch();
         final JsonResponse response = new JsonResponse(resp);
         MatcherAssert.assertThat(
+            "should be \u001Fblah\uFFFDcwhoa\u0000!",
             response.json().readObject().getString("test"),
             Matchers.is("\u001Fblah\uFFFDcwhoa\u0000!")
         );
