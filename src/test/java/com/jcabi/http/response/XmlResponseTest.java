@@ -142,6 +142,7 @@ final class XmlResponseTest {
             Matchers.hasSize(2)
         );
         MatcherAssert.assertThat(
+            "should be equal 1",
             response.xml().nodes("/root/a").get(0).xpath("x/text()").get(0),
             Matchers.equalTo("1")
         );
