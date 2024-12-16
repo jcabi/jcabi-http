@@ -90,7 +90,7 @@ final class LastModifiedCachingWireTest {
             req.fetch().as(RestResponse.class)
                 .assertStatus(HttpURLConnection.HTTP_OK)
                 .assertBody(Matchers.equalTo(LastModifiedCachingWireTest.BODY));
-            MatcherAssert.assertThat(container.queries(), Matchers.equalTo(1));
+            MatcherAssert.assertThat("should be equal 1", container.queries(), Matchers.equalTo(1));
         } finally {
             container.stop();
         }
@@ -133,7 +133,7 @@ final class LastModifiedCachingWireTest {
                     );
             }
             MatcherAssert.assertThat(
-                container.queries(), Matchers.equalTo(count)
+            "should be equal to count", container.queries(), Matchers.equalTo(count)
             );
         } finally {
             container.stop();
@@ -314,7 +314,7 @@ final class LastModifiedCachingWireTest {
                     );
             }
             MatcherAssert.assertThat(
-                container.queries(), Matchers.equalTo(2 + 2)
+                "should be equal 4", container.queries(), Matchers.equalTo(2 + 2)
             );
         } finally {
             container.stop();
@@ -355,7 +355,7 @@ final class LastModifiedCachingWireTest {
                         Matchers.equalTo(LastModifiedCachingWireTest.BODY)
                     );
             }
-            MatcherAssert.assertThat(container.queries(), Matchers.equalTo(2));
+            MatcherAssert.assertThat("should be eq 2", container.queries(), Matchers.equalTo(2));
         } finally {
             container.stop();
         }
