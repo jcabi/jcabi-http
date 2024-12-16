@@ -111,6 +111,7 @@ final class FcWireTest {
             .assertBody(Matchers.containsString("third"));
         container.stop();
         MatcherAssert.assertThat(
+            "should be equal 3",
             container.queries(),
             Matchers.equalTo(3)
         );
