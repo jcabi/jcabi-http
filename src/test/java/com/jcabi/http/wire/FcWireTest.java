@@ -62,7 +62,7 @@ final class FcWireTest {
                 .assertStatus(HttpURLConnection.HTTP_OK);
         }
         container.stop();
-        MatcherAssert.assertThat(container.queries(), Matchers.equalTo(1));
+        MatcherAssert.assertThat("should be equal 1", container.queries(), Matchers.equalTo(1));
     }
 
     /**
