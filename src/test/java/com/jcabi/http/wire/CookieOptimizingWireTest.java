@@ -73,6 +73,7 @@ final class CookieOptimizingWireTest {
         container.take();
         final MkQuery query = container.take();
         MatcherAssert.assertThat(
+            "should be size 1",
             query.headers().get(HttpHeaders.COOKIE),
             Matchers.hasSize(1)
         );
