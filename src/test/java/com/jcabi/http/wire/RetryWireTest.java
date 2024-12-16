@@ -94,6 +94,7 @@ final class RetryWireTest {
                 .as(RestResponse.class)
                 .assertStatus(HttpURLConnection.HTTP_OK);
             MatcherAssert.assertThat(
+                "should strips user info",
                 appender.list,
                 Matchers.hasItem(
                     Matchers.hasProperty(
