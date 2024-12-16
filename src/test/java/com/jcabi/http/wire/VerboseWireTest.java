@@ -85,6 +85,7 @@ final class VerboseWireTest {
                 .assertStatus(HttpURLConnection.HTTP_OK);
             final MkQuery query = container.take();
             MatcherAssert.assertThat(
+                "should starts with 'hello,'",
                 query.body(),
                 Matchers.startsWith("hello,")
             );
