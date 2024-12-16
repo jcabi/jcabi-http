@@ -67,7 +67,7 @@ final class CachingWireTest {
                 .assertStatus(HttpURLConnection.HTTP_OK);
         }
         container.stop();
-        MatcherAssert.assertThat(container.queries(), Matchers.equalTo(1));
+        MatcherAssert.assertThat("should be equal 1", container.queries(), Matchers.equalTo(1));
     }
 
     /**
@@ -87,7 +87,7 @@ final class CachingWireTest {
                 .assertStatus(HttpURLConnection.HTTP_OK);
         }
         container.stop();
-        MatcherAssert.assertThat(container.queries(), Matchers.equalTo(2));
+        MatcherAssert.assertThat("should be equal 1", container.queries(), Matchers.equalTo(2));
     }
 
     /**
@@ -116,6 +116,7 @@ final class CachingWireTest {
             .assertBody(Matchers.containsString("third"));
         container.stop();
         MatcherAssert.assertThat(
+            "should be equal 3",
             container.queries(),
             Matchers.equalTo(3)
         );
@@ -151,7 +152,7 @@ final class CachingWireTest {
                 .assertStatus(HttpURLConnection.HTTP_OK);
         }
         container.stop();
-        MatcherAssert.assertThat(container.queries(), Matchers.equalTo(1));
+        MatcherAssert.assertThat("should be equal 1", container.queries(), Matchers.equalTo(1));
     }
 
 }
