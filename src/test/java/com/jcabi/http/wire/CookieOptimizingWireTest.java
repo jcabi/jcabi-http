@@ -78,6 +78,7 @@ final class CookieOptimizingWireTest {
             Matchers.hasSize(1)
         );
         MatcherAssert.assertThat(
+            "should contains 3 items",
             query.headers(),
             Matchers.hasEntry(
                 Matchers.equalTo(HttpHeaders.COOKIE),
@@ -119,10 +120,12 @@ final class CookieOptimizingWireTest {
         container.take();
         final MkQuery query = container.take();
         MatcherAssert.assertThat(
+            "should be size 1",
             query.headers().get(HttpHeaders.COOKIE),
             Matchers.hasSize(1)
         );
         MatcherAssert.assertThat(
+            "should contains 2 items & not contains 1 item",
             query.headers(),
             Matchers.hasEntry(
                 Matchers.equalTo(HttpHeaders.COOKIE),
