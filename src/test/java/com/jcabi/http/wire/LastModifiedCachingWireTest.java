@@ -133,7 +133,7 @@ final class LastModifiedCachingWireTest {
                     );
             }
             MatcherAssert.assertThat(
-            "should be equal to count", container.queries(), Matchers.equalTo(count)
+                "should be equal to count", container.queries(), Matchers.equalTo(count)
             );
         } finally {
             container.stop();
