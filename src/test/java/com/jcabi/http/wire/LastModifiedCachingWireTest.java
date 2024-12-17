@@ -90,7 +90,7 @@ final class LastModifiedCachingWireTest {
             req.fetch().as(RestResponse.class)
                 .assertStatus(HttpURLConnection.HTTP_OK)
                 .assertBody(Matchers.equalTo(LastModifiedCachingWireTest.BODY));
-            MatcherAssert.assertThat(container.queries(), Matchers.equalTo(1));
+            MatcherAssert.assertThat("should be equal 1", container.queries(), Matchers.equalTo(1));
         } finally {
             container.stop();
         }
@@ -133,7 +133,7 @@ final class LastModifiedCachingWireTest {
                     );
             }
             MatcherAssert.assertThat(
-                container.queries(), Matchers.equalTo(count)
+                "should be equal to count", container.queries(), Matchers.equalTo(count)
             );
         } finally {
             container.stop();
@@ -201,6 +201,7 @@ final class LastModifiedCachingWireTest {
     /**
      * LastModifiedCachingWire can resist cache eviction in the event of a non
      * OK response without a last modified header.
+     * @throws Exception If fails
      * @todo #120:30min Confirm cache clearing behaviour in all non-OK responses
      *  Non-OK behaviour was not specified in #120, so for example, if the
      *  response is 404 as below, does it make any sense to keep the item in
@@ -210,7 +211,6 @@ final class LastModifiedCachingWireTest {
      *  or 410 Gone etc. Or, personally I think all non-OK and OK responses
      *  should behave the same WRT to clearing the cache as the cache value is
      *  so unlikely to be returned in future.
-     * @throws Exception If fails
      */
     @Test
     void doesNotEvictCacheOnNonOk()
@@ -314,7 +314,7 @@ final class LastModifiedCachingWireTest {
                     );
             }
             MatcherAssert.assertThat(
-                container.queries(), Matchers.equalTo(2 + 2)
+                "should be equal 4", container.queries(), Matchers.equalTo(2 + 2)
             );
         } finally {
             container.stop();
@@ -355,7 +355,7 @@ final class LastModifiedCachingWireTest {
                         Matchers.equalTo(LastModifiedCachingWireTest.BODY)
                     );
             }
-            MatcherAssert.assertThat(container.queries(), Matchers.equalTo(2));
+            MatcherAssert.assertThat("should be eq 2", container.queries(), Matchers.equalTo(2));
         } finally {
             container.stop();
         }

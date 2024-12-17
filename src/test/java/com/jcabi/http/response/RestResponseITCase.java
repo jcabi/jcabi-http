@@ -55,6 +55,7 @@ import org.junit.jupiter.api.function.Executable;
                 @Override
                 public void execute() {
                     MatcherAssert.assertThat(
+                        "should contains value 'efg'",
                         resp.cookie("ijk"),
                         Matchers.hasProperty("value", Matchers.is("efg"))
                     );
@@ -64,6 +65,7 @@ import org.junit.jupiter.api.function.Executable;
                 @Override
                 public void execute() {
                     MatcherAssert.assertThat(
+                        "should contains value 'abc'",
                         resp.cookie("xyz"),
                         Matchers.hasProperty("value", Matchers.is("abc"))
                     );
@@ -75,6 +77,7 @@ import org.junit.jupiter.api.function.Executable;
     @Test
     void readsCookies() throws IOException {
         MatcherAssert.assertThat(
+            "should contains value 'bar'",
             new JdkRequest("https://httpbin.org/cookies/set?foo=bar")
                 .fetch()
                 .as(RestResponse.class)
