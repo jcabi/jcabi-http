@@ -42,9 +42,8 @@ import org.hamcrest.core.IsAnything;
 
 /**
  * Implementation of {@link MkContainer} based on Grizzly Server.
- *
- * @since 0.10
  * @see MkContainer
+ * @since 0.10
  */
 @SuppressWarnings("PMD.TooManyMethods")
 @EqualsAndHashCode(of = {"adapter", "gws", "port"})

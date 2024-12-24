@@ -70,6 +70,7 @@ final class AutoRedirectingWireTest {
                 .fetch().as(RestResponse.class)
                 .assertStatus(HttpStatus.SC_MOVED_TEMPORARILY);
             MatcherAssert.assertThat(
+                "should retries 3 times",
                 container.takeAll(Matchers.any(MkAnswer.class)),
                 Matchers.<MkQuery>iterableWithSize(retries)
             );
@@ -99,6 +100,7 @@ final class AutoRedirectingWireTest {
                 .assertBody(Matchers.is(body))
                 .assertStatus(HttpStatus.SC_OK);
             MatcherAssert.assertThat(
+                "should retries 3 times",
                 container.takeAll(Matchers.any(MkAnswer.class)),
                 Matchers.<MkQuery>iterableWithSize(3)
             );

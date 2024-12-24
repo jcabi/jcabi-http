@@ -58,8 +58,8 @@ import org.junit.jupiter.params.provider.ValueSource;
 /**
  * Tests for any implementation of {@link Request}.
  *
- * @checkstyle JavadocMethodCheck (500 lines)
  * @since 1.17.8
+ * @checkstyle JavadocMethodCheck (500 lines)
  */
 @RequiredArgsConstructor(access = AccessLevel.PROTECTED)
 @SuppressWarnings({"PMD.AbstractClassWithoutAbstractMethod", "PMD.TooManyMethods"})

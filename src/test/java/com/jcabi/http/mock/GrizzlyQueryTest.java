@@ -59,6 +59,7 @@ final class GrizzlyQueryTest {
             new ByteArrayInputStream(body)
         );
         MatcherAssert.assertThat(
+            "should match the body",
             new GrizzlyQuery(request).binary(),
             Matchers.is(body)
         );

@@ -65,14 +65,17 @@ final class WebLinkingResponseTest {
             );
             final WebLinkingResponse.Link link = response.links().get("foo");
             MatcherAssert.assertThat(
+                "should contains '/hey/foo'",
                 link.uri(),
                 Matchers.hasToString("/hey/foo")
             );
             MatcherAssert.assertThat(
+                "should contains key 'title'",
                 link,
                 Matchers.hasKey("title")
             );
             MatcherAssert.assertThat(
+                "should not contains key 'something else'",
                 response.links(),
                 Matchers.not(Matchers.hasKey("something else"))
             );
@@ -92,10 +95,12 @@ final class WebLinkingResponseTest {
             ).uri().set(new URI("http://localhost/test")).back().fetch()
         );
         MatcherAssert.assertThat(
+            "should equals 'http://localhost/a'",
             response.follow("first").uri().get(),
             Matchers.equalTo(new URI("http://localhost/a"))
         );
         MatcherAssert.assertThat(
+            "should equals 'http://localhost/o'",
             response.follow("second").uri().get(),
             Matchers.equalTo(new URI("http://localhost/o"))
         );

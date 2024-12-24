@@ -52,6 +52,7 @@ final class BasicAuthWireITCase {
             .fetch()
             .as(XmlResponse.class);
         MatcherAssert.assertThat(
+            "should be success",
             res.body(),
             Matchers.containsString("Success!")
         );

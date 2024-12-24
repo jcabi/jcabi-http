@@ -55,10 +55,12 @@ final class JsonResponseTest {
             .fetch();
         final JsonResponse response = new JsonResponse(resp);
         MatcherAssert.assertThat(
+            "should be equal 2",
             response.json().readObject().getInt("foo-foo"),
             Matchers.equalTo(2)
         );
         MatcherAssert.assertThat(
+            "should be equal \u20ac",
             response.json().readObject().getString("bar"),
             Matchers.equalTo("\u20ac")
         );
@@ -75,6 +77,7 @@ final class JsonResponseTest {
             .withBody("{\"test\":\n\"\u001Fblah\uFFFDcwhoa\u0000!\"}").fetch();
         final JsonResponse response = new JsonResponse(resp);
         MatcherAssert.assertThat(
+            "should be \u001Fblah\uFFFDcwhoa\u0000!",
             response.json().readObject().getString("test"),
             Matchers.is("\u001Fblah\uFFFDcwhoa\u0000!")
         );
@@ -90,6 +93,7 @@ final class JsonResponseTest {
         final String body = "{\"test\": \"logged!\"$@%#^&%@$#}";
         final Response resp = new FakeRequest().withBody(body).fetch();
         MatcherAssert.assertThat(
+            "should contains json body",
             Assertions.assertThrows(
                 JsonParsingException.class,
                 new Executable() {
@@ -114,6 +118,7 @@ final class JsonResponseTest {
         final String body = "[\"test\": \"logged!\"$@%#^&%@$#]";
         final Response resp = new FakeRequest().withBody(body).fetch();
         MatcherAssert.assertThat(
+            "should contains json body",
             Assertions.assertThrows(
                 JsonParsingException.class,
                 new Executable() {
@@ -142,6 +147,7 @@ final class JsonResponseTest {
         final String body = "{test:[]}}}";
         final Response resp = new FakeRequest().withBody(body).fetch();
         MatcherAssert.assertThat(
+            "should contains json body",
             Assertions.assertThrows(
                 JsonParsingException.class,
                 new Executable() {

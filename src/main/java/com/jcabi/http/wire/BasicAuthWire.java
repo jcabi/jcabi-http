@@ -64,8 +64,8 @@ import lombok.ToString;
  *
  * <p>The class is immutable and thread-safe.
  *
- * @since 0.10
  * @see <a href="http://tools.ietf.org/html/rfc2617">RFC 2617 "HTTP Authentication: Basic and Digest Access Authentication"</a>
+ * @since 0.10
  */
 @Immutable
 @ToString(of = "origin")

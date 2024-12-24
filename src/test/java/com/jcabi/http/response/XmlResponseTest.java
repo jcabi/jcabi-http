@@ -39,8 +39,8 @@ import org.junit.jupiter.api.Test;
 
 /**
  * Test case for {@link XmlResponse}.
- * @checkstyle ClassDataAbstractionCoupling (500 lines)
  * @since 1.1
+ * @checkstyle ClassDataAbstractionCoupling (500 lines)
  */
 @SuppressWarnings("PMD.TooManyMethods")
 final class XmlResponseTest {
@@ -57,10 +57,12 @@ final class XmlResponseTest {
                 .fetch()
         );
         MatcherAssert.assertThat(
+            "should be equal 2",
             response.xml().xpath("//a/text()"),
             Matchers.hasSize(2)
         );
         MatcherAssert.assertThat(
+            "should contains '\u0443\u0440\u0430'",
             response.xml().xpath("/r/a/text()"),
             Matchers.hasItem("\u0443\u0440\u0430!")
         );
@@ -112,10 +114,12 @@ final class XmlResponseTest {
         ).registerNs("foo", "urn:foo");
         final XML xml = response.xml();
         MatcherAssert.assertThat(
+            "should be equal to 'yes!'",
             xml.xpath("//foo:b/text()").get(0),
             Matchers.equalTo("yes!")
         );
         MatcherAssert.assertThat(
+            "should be empty",
             xml.nodes("/foo:a/foo:b"),
             Matchers.not(Matchers.empty())
         );
@@ -133,10 +137,12 @@ final class XmlResponseTest {
                 .fetch()
         );
         MatcherAssert.assertThat(
+            "should be equal 2",
             response.xml().nodes("//a"),
             Matchers.hasSize(2)
         );
         MatcherAssert.assertThat(
+            "should be equal 1",
             response.xml().nodes("/root/a").get(0).xpath("x/text()").get(0),
             Matchers.equalTo("1")
         );

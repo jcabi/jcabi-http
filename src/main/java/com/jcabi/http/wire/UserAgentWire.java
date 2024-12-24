@@ -64,8 +64,8 @@ import lombok.ToString;
  *
  * <p>The class is immutable and thread-safe.
  *
- * @since 0.10
  * @see <a href="http://tools.ietf.org/html/rfc2616#section-14.43">RFC 2616 section 14.43 "User-Agent"</a>
+ * @since 0.10
  */
 @Immutable
 @ToString(of = "origin")
