@@ -100,6 +100,7 @@ final class BasicAuthWireTest {
             .assertStatus(HttpURLConnection.HTTP_OK);
         container.stop();
         MatcherAssert.assertThat(
+            "should be correct header",
             container.take().headers().get(HttpHeaders.AUTHORIZATION).get(0),
             Matchers.equalTo(expected)
         );
@@ -125,6 +126,7 @@ final class BasicAuthWireTest {
             userinfo
         ).build();
         MatcherAssert.assertThat(
+            "should not contains user info",
             Assertions.assertThrows(
                 AssertionError.class,
                 new Executable() {
