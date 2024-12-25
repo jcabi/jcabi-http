@@ -60,6 +60,7 @@ final class JdkRequestITCase {
         final String uri = "http://localhost:6789";
         final String method = HttpMethod.POST;
         MatcherAssert.assertThat(
+            "should be error with a descriptive message",
             Assertions.assertThrows(
                 IOException.class,
                 new Executable() {
@@ -86,6 +87,7 @@ final class JdkRequestITCase {
     void failsNoProtocolNoPort() {
         final String uri = "localhost";
         MatcherAssert.assertThat(
+            "should be error with a descriptive message",
             Assertions.assertThrows(
                 IOException.class,
                 new Executable() {
@@ -113,6 +115,7 @@ final class JdkRequestITCase {
         final String url = "test.com";
         final String colon = ":";
         MatcherAssert.assertThat(
+            "should be error with a descriptive message",
             Assertions.assertThrows(
                 MalformedURLException.class,
                 new Executable() {
@@ -147,6 +150,7 @@ final class JdkRequestITCase {
     void failsMalformedEntirely() {
         final String uri = "bla bla url";
         MatcherAssert.assertThat(
+            "should be error with a descriptive message",
             Assertions.assertThrows(
                 IllegalArgumentException.class,
                 new Executable() {
