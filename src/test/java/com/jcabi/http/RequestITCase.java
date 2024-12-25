@@ -130,6 +130,7 @@ final class RequestITCase extends RequestTestTemplate {
                 .assertStatus(HttpURLConnection.HTTP_OK);
             final MkQuery query = container.take();
             MatcherAssert.assertThat(
+                "should be 'GET'",
                 query.method(),
                 Matchers.is("GET")
             );
@@ -151,6 +152,7 @@ final class RequestITCase extends RequestTestTemplate {
                 .as(RestResponse.class)
                 .assertStatus(HttpURLConnection.HTTP_OK);
             MatcherAssert.assertThat(
+                "should be 'DELETE'",
                 container.take().method(),
                 Matchers.is("DELETE")
             );
@@ -176,10 +178,12 @@ final class RequestITCase extends RequestTestTemplate {
                 .json();
             final MkQuery take = container.take();
             MatcherAssert.assertThat(
+                "should be 'DELETE'",
                 take.method(),
                 Matchers.is("DELETE")
             );
             MatcherAssert.assertThat(
+                "should be '{}'",
                 take.body(),
                 Matchers.is("{}")
             );
