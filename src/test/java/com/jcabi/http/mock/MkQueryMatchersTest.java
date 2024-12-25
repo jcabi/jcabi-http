@@ -52,6 +52,7 @@ final class MkQueryMatchersTest {
         final MkQuery query = Mockito.mock(MkQuery.class);
         Mockito.doReturn(body).when(query).body();
         MatcherAssert.assertThat(
+            "should match the query body",
             query,
             MkQueryMatchers.hasBody(
                 Matchers.is(body)
@@ -71,6 +72,7 @@ final class MkQueryMatchersTest {
             Collections.singletonMap(header, Collections.singletonList(value))
         ).when(query).headers();
         MatcherAssert.assertThat(
+            "should match the query header",
             query,
             MkQueryMatchers.hasHeader(
                 header,
@@ -88,6 +90,7 @@ final class MkQueryMatchersTest {
         final MkQuery query = Mockito.mock(MkQuery.class);
         Mockito.doReturn(body).when(query).uri();
         MatcherAssert.assertThat(
+            "should match the raw path",
             query,
             MkQueryMatchers.hasPath(
                 Matchers.is("/index.html")
@@ -104,6 +107,7 @@ final class MkQueryMatchersTest {
         final MkQuery query = Mockito.mock(MkQuery.class);
         Mockito.doReturn(body).when(query).uri();
         MatcherAssert.assertThat(
+            "should match the raw query",
             query,
             MkQueryMatchers.hasQuery(
                 Matchers.is("x=10")
