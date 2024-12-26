@@ -90,6 +90,7 @@ final class FakeRequestTest {
     @Test
     void changesUri() throws Exception {
         MatcherAssert.assertThat(
+            "should ends with 'facebook.com/'",
             new FakeRequest()
                 .uri().set(new URI("http://facebook.com")).back()
                 .uri().get().toString(),
@@ -104,6 +105,7 @@ final class FakeRequestTest {
     @Test
     void changesUriInResponse() throws Exception {
         MatcherAssert.assertThat(
+            "should contains 'google.com'",
             new FakeRequest()
                 .uri().set(new URI("http://google.com")).back()
                 .fetch().back()
@@ -163,6 +165,7 @@ final class FakeRequestTest {
     @Test
     void identifiesUniquely() {
         MatcherAssert.assertThat(
+            "should not equals",
             new FakeRequest().header("header-1", "value-1"),
             Matchers.not(
                 Matchers.equalTo(
@@ -171,6 +174,7 @@ final class FakeRequestTest {
             )
         );
         MatcherAssert.assertThat(
+            "should equals",
             new FakeRequest(),
             Matchers.equalTo(new FakeRequest())
         );
