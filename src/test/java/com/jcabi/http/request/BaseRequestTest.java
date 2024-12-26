@@ -65,6 +65,7 @@ final class BaseRequestTest {
     void buildsDestinationUri() {
         final Wire wire = Mockito.mock(Wire.class);
         MatcherAssert.assertThat(
+            "should has the right destination URI",
             new BaseRequest(wire, "http://localhost:88/t/f")
                 .uri().path("/bar").queryParam("u1", "\u20ac")
                 .queryParams(new ArrayMap<String, String>().with("u2", ""))
@@ -82,6 +83,7 @@ final class BaseRequestTest {
     void printsJsonInBody() {
         final Wire wire = Mockito.mock(Wire.class);
         MatcherAssert.assertThat(
+            "should equals to '{\"foo\":\"test 1\"}'",
             new BaseRequest(wire, "http://localhost:88/x").body().set(
                 Json.createObjectBuilder().add("foo", "test 1").build()
             ).get(),
@@ -96,6 +98,7 @@ final class BaseRequestTest {
     void includesPort() {
         final Wire wire = Mockito.mock(Wire.class);
         MatcherAssert.assertThat(
+            "should has 'http://localhost:8080/'",
             // @checkstyle MagicNumber (2 lines)
             new BaseRequest(wire, "http://localhost")
                 .uri().port(8080).back().uri().get(),
@@ -110,6 +113,7 @@ final class BaseRequestTest {
     void identifiesUniquely() {
         final Wire wire = Mockito.mock(Wire.class);
         MatcherAssert.assertThat(
+            "should not equals",
             new BaseRequest(wire, "").header("header-1", "value-1"),
             Matchers.not(
                 Matchers.equalTo(
@@ -118,6 +122,7 @@ final class BaseRequestTest {
             )
         );
         MatcherAssert.assertThat(
+            "should equals",
             new BaseRequest(wire, ""),
             Matchers.equalTo(new BaseRequest(wire, ""))
         );
@@ -131,6 +136,7 @@ final class BaseRequestTest {
     void exceptionWhenMissingContentType() {
         final Wire wire = Mockito.mock(Wire.class);
         MatcherAssert.assertThat(
+            "should be error when multipart-body without content-type",
             Assertions.assertThrows(
                 IllegalStateException.class,
                 new Executable() {
@@ -158,6 +164,7 @@ final class BaseRequestTest {
     void exceptionWhenMissingBoundary() {
         final Wire wire = Mockito.mock(Wire.class);
         MatcherAssert.assertThat(
+            "should be error when multipart-body without content-type",
             Assertions.assertThrows(
                 IllegalStateException.class,
                 new Executable() {
@@ -197,6 +204,7 @@ final class BaseRequestTest {
             .method(Request.POST)
             .fetch();
         MatcherAssert.assertThat(
+            "should be match to 'foo1=bar1&foo2=bar2&foo3=bar3&foo4=bar4'",
             srv.take().body(),
             Matchers.is("foo1=bar1&foo2=bar2&foo3=bar3&foo4=bar4")
         );
