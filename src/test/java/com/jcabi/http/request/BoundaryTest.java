@@ -47,6 +47,7 @@ final class BoundaryTest {
     @Test
     void buildsExpectedBoundary() throws Exception {
         MatcherAssert.assertThat(
+            "should be match",
             new Boundary(new Random(0L)).value(),
             Matchers.is("PdAChx6AMjemBZYS_W0fi7l8H_-w-X")
         );
