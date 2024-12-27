@@ -49,6 +49,7 @@ final class ImmutableHeaderTest {
         final Map.Entry<String, String> header =
             new ImmutableHeader("content-type", "text/plain");
         MatcherAssert.assertThat(
+            "should be 'Content-Type'",
             header.getKey(),
             Matchers.equalTo("Content-Type")
         );
