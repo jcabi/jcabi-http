@@ -175,14 +175,16 @@ final class GrizzlyQuery implements MkQuery {
     private static byte[] input(final Request req) throws IOException {
         // @checkstyle MagicNumber (1 line)
         final byte[] buffer = new byte[8192];
-        final InputStream input = req.getInputStream();
-        final ByteArrayOutputStream output = new ByteArrayOutputStream();
-        while (true) {
-            final int bytes = input.read(buffer);
-            if (bytes == -1) {
-                break;
+        final ByteArrayOutputStream output;
+        try (InputStream input = req.getInputStream()) {
+            output = new ByteArrayOutputStream();
+            while (true) {
+                final int bytes = input.read(buffer);
+                if (bytes == -1) {
+                    break;
+                }
+                output.write(buffer, 0, bytes);
             }
-            output.write(buffer, 0, bytes);
         }
         return output.toByteArray();
     }
