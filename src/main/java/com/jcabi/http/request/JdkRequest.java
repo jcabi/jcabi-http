@@ -102,12 +102,8 @@ public final class JdkRequest implements Request {
                 if (method.equals(Request.POST) || method.equals(Request.PUT)
                     || method.equals(Request.PATCH)) {
                     conn.setDoOutput(true);
-                    final OutputStream output = conn.getOutputStream();
-                    try {
+                    try (OutputStream output = conn.getOutputStream()) {
                         this.writeFully(content, output);
-                    } finally {
-                        output.close();
-                        content.close();
                     }
                 }
                 return new DefaultResponse(
