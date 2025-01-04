@@ -217,21 +217,16 @@ final class MkGrizzlyAdapter extends HttpHandler {
         final Throwable failure
     ) {
         response.setStatus(HttpURLConnection.HTTP_INTERNAL_ERROR);
-        final PrintWriter writer;
-        try {
-            writer = new PrintWriter(
-                new OutputStreamWriter(
-                    response.createOutputStream(),
-                    MkGrizzlyAdapter.ENCODING
-                )
-            );
+        try (PrintWriter writer = new PrintWriter(
+            new OutputStreamWriter(
+                response.createOutputStream(),
+                MkGrizzlyAdapter.ENCODING
+            )
+        )
+        ) {
+            writer.print(Logger.format("%[exception]s", failure));
         } catch (final UnsupportedEncodingException ex) {
             throw new IllegalStateException(ex);
-        }
-        try {
-            writer.print(Logger.format("%[exception]s", failure));
-        } finally {
-            writer.close();
         }
     }
 
