@@ -170,28 +170,25 @@ public final class JdkRequest implements Request {
          * @throws IOException
          */
         private byte[] body(final HttpURLConnection conn) throws IOException {
-            final InputStream input;
+            final InputStream inp;
             if (conn.getResponseCode() >= HttpURLConnection.HTTP_BAD_REQUEST) {
-                input = conn.getErrorStream();
+                inp = conn.getErrorStream();
             } else {
-                input = conn.getInputStream();
+                inp = conn.getInputStream();
             }
-            final byte[] body;
-            if (input == null) {
-                body = new byte[0];
-            } else {
-                try {
-                    // @checkstyle MagicNumber (1 line)
+            byte[] body = new byte[0];
+            if (inp != null) {
+                try (InputStream is = inp; ByteArrayOutputStream os = new ByteArrayOutputStream()) {
                     final byte[] buffer = new byte[8192];
-                    final ByteArrayOutputStream output =
-                        new ByteArrayOutputStream();
-                    for (int bytes = input.read(buffer); bytes != -1;
-                        bytes = input.read(buffer)) {
-                        output.write(buffer, 0, bytes);
+                    int bytes;
+                    while (true) {
+                        bytes = is.read(buffer);
+                        if (bytes == -1) {
+                            break;
+                        }
+                        os.write(buffer, 0, bytes);
                     }
-                    body = output.toByteArray();
-                } finally {
-                    input.close();
+                    body = os.toByteArray();
                 }
             }
             return body;
