@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2011-2022, jcabi.com
+ * Copyright (c) 2011-2025, jcabi.com
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -45,8 +45,6 @@ import java.io.IOException;
 import java.net.HttpURLConnection;
 import java.net.URI;
 import java.util.Locale;
-import lombok.AccessLevel;
-import lombok.RequiredArgsConstructor;
 import org.hamcrest.MatcherAssert;
 import org.hamcrest.Matchers;
 import org.junit.jupiter.api.Assertions;
@@ -61,7 +59,6 @@ import org.junit.jupiter.params.provider.ValueSource;
  * @checkstyle JavadocMethodCheck (500 lines)
  * @since 1.17.8
  */
-@RequiredArgsConstructor(access = AccessLevel.PROTECTED)
 @SuppressWarnings({"PMD.AbstractClassWithoutAbstractMethod", "PMD.TooManyMethods"})
 public abstract class RequestITCaseTemplate {
 
@@ -74,6 +71,16 @@ public abstract class RequestITCaseTemplate {
      * Base URI.
      */
     private final URI uri;
+
+    /**
+     * Ctor.
+     * @param type Type
+     * @param uri URI
+     */
+    protected RequestITCaseTemplate(final Class<? extends Request> type, final URI uri) {
+        this.type = type;
+        this.uri = uri;
+    }
 
     /**
      * Make request for a specific path.

@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2011-2022, jcabi.com
+ * Copyright (c) 2011-2025, jcabi.com
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -36,7 +36,6 @@ import org.hamcrest.MatcherAssert;
 import org.hamcrest.Matchers;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
-import org.junit.jupiter.api.function.Executable;
 
 /**
  * Test case for {@link JsonResponse}.
@@ -92,12 +91,7 @@ final class JsonResponseTest {
         MatcherAssert.assertThat(
             Assertions.assertThrows(
                 JsonParsingException.class,
-                new Executable() {
-                    @Override
-                    public void execute() throws Throwable {
-                        new JsonResponse(resp).json().readObject();
-                    }
-                },
+                () -> new JsonResponse(resp).json().readObject(),
                 "readObject() should have thrown JsonParsingException"
             ),
             Matchers.hasToString(Matchers.containsString(body))
@@ -116,12 +110,7 @@ final class JsonResponseTest {
         MatcherAssert.assertThat(
             Assertions.assertThrows(
                 JsonParsingException.class,
-                new Executable() {
-                    @Override
-                    public void execute() throws Throwable {
-                        new JsonResponse(resp).json().readArray();
-                    }
-                },
+                () -> new JsonResponse(resp).json().readArray(),
                 "readArray() should have thrown JsonParsingException"
             ),
             Matchers.hasToString(
@@ -144,12 +133,7 @@ final class JsonResponseTest {
         MatcherAssert.assertThat(
             Assertions.assertThrows(
                 JsonParsingException.class,
-                new Executable() {
-                    @Override
-                    public void execute() throws Throwable {
-                        new JsonResponse(resp).json().read();
-                    }
-                },
+                () -> new JsonResponse(resp).json().read(),
                 "readStructure() should have thrown JsonParsingException"
             ),
             Matchers.<JsonParsingException>hasToString(

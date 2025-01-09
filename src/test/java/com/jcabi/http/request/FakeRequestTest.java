@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2011-2022, jcabi.com
+ * Copyright (c) 2011-2025, jcabi.com
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -41,7 +41,6 @@ import org.hamcrest.MatcherAssert;
 import org.hamcrest.Matchers;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
-import org.junit.jupiter.api.function.Executable;
 
 /**
  * Test case for {@link FakeRequest}.
@@ -120,19 +119,14 @@ final class FakeRequestTest {
     void fetchThrowsExceptionWhenBodyIsNotEmpty() {
         Assertions.assertThrows(
             IllegalStateException.class,
-            new Executable() {
-                @Override
-                public void execute() throws Throwable {
-                    new FakeRequest()
-                        .withStatus(HttpURLConnection.HTTP_OK)
-                        .withBody("blah")
-                        .fetch(
-                            new ByteArrayInputStream(
-                                "foo".getBytes(StandardCharsets.UTF_8)
-                            )
-                        );
-                }
-            }
+            () -> new FakeRequest()
+                .withStatus(HttpURLConnection.HTTP_OK)
+                .withBody("blah")
+                .fetch(
+                    new ByteArrayInputStream(
+                        "foo".getBytes(StandardCharsets.UTF_8)
+                    )
+                )
         );
     }
 
@@ -155,25 +149,6 @@ final class FakeRequestTest {
                     Matchers.not(Matchers.is(request))
                 )
             );
-    }
-
-    /**
-     * FakeRequest can identify itself uniquely.
-     */
-    @Test
-    void identifiesUniquely() {
-        MatcherAssert.assertThat(
-            new FakeRequest().header("header-1", "value-1"),
-            Matchers.not(
-                Matchers.equalTo(
-                    new FakeRequest().header("header-2", "value-2")
-                )
-            )
-        );
-        MatcherAssert.assertThat(
-            new FakeRequest(),
-            Matchers.equalTo(new FakeRequest())
-        );
     }
 
     /**

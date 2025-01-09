@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2011-2022, jcabi.com
+ * Copyright (c) 2011-2025, jcabi.com
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -77,14 +77,11 @@ final class MkGrizzlyAdapter extends HttpHandler {
 
     // @checkstyle ExecutableStatementCount (55 lines)
     @Override
-    @SuppressWarnings
-        (
-            {
-                "PMD.AvoidCatchingThrowable",
-                "PMD.AvoidInstantiatingObjectsInLoops",
-                "rawtypes"
-            }
-        )
+    @SuppressWarnings({
+        "PMD.AvoidCatchingThrowable",
+        "PMD.AvoidInstantiatingObjectsInLoops",
+        "rawtypes"
+    })
     public void service(
         final Request request,
         final Response response
@@ -362,7 +359,6 @@ final class MkGrizzlyAdapter extends HttpHandler {
      *
      * @since 1.17.3
      */
-    @RequiredArgsConstructor
     private static final class MkQueryIterator implements Iterator<MkQuery> {
 
         /**
@@ -379,6 +375,17 @@ final class MkGrizzlyAdapter extends HttpHandler {
          * Matcher.
          */
         private final Matcher<MkAnswer> matcher;
+
+        /**
+         * Ctor.
+         * @param iter Iterator
+         * @param matcher Matcher
+         */
+        private MkQueryIterator(final Iterator<QueryWithAnswer> iter,
+            final Matcher<MkAnswer> matcher) {
+            this.iter = iter;
+            this.matcher = matcher;
+        }
 
         @Override
         public boolean hasNext() {

@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2011-2022, jcabi.com
+ * Copyright (c) 2011-2025, jcabi.com
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -47,7 +47,6 @@ import org.hamcrest.MatcherAssert;
 import org.hamcrest.Matchers;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
-import org.junit.jupiter.api.function.Executable;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.CsvSource;
 
@@ -127,16 +126,11 @@ final class BasicAuthWireTest {
         MatcherAssert.assertThat(
             Assertions.assertThrows(
                 AssertionError.class,
-                new Executable() {
-                    @Override
-                    public void execute() throws Throwable {
-                        new JdkRequest(uri)
-                            .through(BasicAuthWire.class)
-                            .fetch()
-                            .as(RestResponse.class)
-                            .assertStatus(HttpURLConnection.HTTP_OK);
-                    }
-                }
+                () -> new JdkRequest(uri)
+                    .through(BasicAuthWire.class)
+                    .fetch()
+                    .as(RestResponse.class)
+                    .assertStatus(HttpURLConnection.HTTP_OK)
             ),
             Matchers.<AssertionError>hasToString(
                 Matchers.not(

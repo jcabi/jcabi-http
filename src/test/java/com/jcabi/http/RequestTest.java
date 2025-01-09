@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2011-2022, jcabi.com
+ * Copyright (c) 2011-2025, jcabi.com
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -52,7 +52,6 @@ import org.glassfish.grizzly.http.server.Constants;
 import org.hamcrest.MatcherAssert;
 import org.hamcrest.Matchers;
 import org.junit.jupiter.api.Assertions;
-import org.junit.jupiter.api.function.Executable;
 import org.junit.jupiter.params.ParameterizedTest;
 
 /**
@@ -706,22 +705,17 @@ final class RequestTest extends RequestTestTemplate {
     ) {
         Assertions.assertThrows(
             IllegalStateException.class,
-            new Executable() {
-                @Override
-                public void execute() throws Throwable {
-                    RequestTestTemplate.request(
-                        new URI("http://localhost:78787"),
-                        type
+            () -> RequestTestTemplate.request(
+                new URI("http://localhost:78787"),
+                type
+            )
+                .method(Request.GET)
+                .body().set("already set").back()
+                .fetch(
+                    new ByteArrayInputStream(
+                        "ba".getBytes(StandardCharsets.UTF_8)
                     )
-                        .method(Request.GET)
-                        .body().set("already set").back()
-                        .fetch(
-                            new ByteArrayInputStream(
-                                "ba".getBytes(StandardCharsets.UTF_8)
-                            )
-                        );
-                }
-            }
+                )
         );
     }
 

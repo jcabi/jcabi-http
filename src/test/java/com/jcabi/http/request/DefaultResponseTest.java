@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2011-2022, jcabi.com
+ * Copyright (c) 2011-2025, jcabi.com
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -35,7 +35,6 @@ import java.net.HttpURLConnection;
 import java.util.Map;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
-import org.junit.jupiter.api.function.Executable;
 import org.mockito.Mockito;
 
 /**
@@ -51,19 +50,14 @@ final class DefaultResponseTest {
     void throwsWhenEntityIsNotAUnicodeString() {
         Assertions.assertThrows(
             RuntimeException.class,
-            new Executable() {
-                @Override
-                public void execute() {
-                    new DefaultResponse(
-                        Mockito.mock(Request.class),
-                        HttpURLConnection.HTTP_OK,
-                        "some text",
-                        new Array<Map.Entry<String, String>>(),
-                        // @checkstyle MagicNumber (1 line)
-                        new byte[]{(byte) 0xC0, (byte) 0xC0}
-                    ).body();
-                }
-            }
+            () -> new DefaultResponse(
+                Mockito.mock(Request.class),
+                HttpURLConnection.HTTP_OK,
+                "some text",
+                new Array<Map.Entry<String, String>>(),
+                // @checkstyle MagicNumber (1 line)
+                new byte[]{(byte) 0xC0, (byte) 0xC0}
+            ).body()
         );
     }
 

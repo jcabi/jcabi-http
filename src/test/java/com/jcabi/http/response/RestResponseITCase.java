@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2011-2022, jcabi.com
+ * Copyright (c) 2011-2025, jcabi.com
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -35,7 +35,6 @@ import org.hamcrest.MatcherAssert;
 import org.hamcrest.Matchers;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
-import org.junit.jupiter.api.function.Executable;
 
 /**
  * Integration test for {@link RestResponse}.
@@ -51,24 +50,14 @@ import org.junit.jupiter.api.function.Executable;
             .fetch()
             .as(RestResponse.class);
         Assertions.assertAll(
-            new Executable() {
-                @Override
-                public void execute() {
-                    MatcherAssert.assertThat(
-                        resp.cookie("ijk"),
-                        Matchers.hasProperty("value", Matchers.is("efg"))
-                    );
-                }
-            },
-            new Executable() {
-                @Override
-                public void execute() {
-                    MatcherAssert.assertThat(
-                        resp.cookie("xyz"),
-                        Matchers.hasProperty("value", Matchers.is("abc"))
-                    );
-                }
-            }
+            () -> MatcherAssert.assertThat(
+                resp.cookie("ijk"),
+                Matchers.hasProperty("value", Matchers.is("efg"))
+            ),
+            () -> MatcherAssert.assertThat(
+                resp.cookie("xyz"),
+                Matchers.hasProperty("value", Matchers.is("abc"))
+            )
         );
     }
 

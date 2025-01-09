@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2011-2022, jcabi.com
+ * Copyright (c) 2011-2025, jcabi.com
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -33,6 +33,7 @@ import com.jcabi.http.request.ApacheRequest;
 import com.jcabi.http.request.JdkRequest;
 import java.lang.annotation.Retention;
 import java.lang.annotation.RetentionPolicy;
+import java.lang.reflect.InvocationTargetException;
 import java.net.URI;
 import lombok.SneakyThrows;
 import org.junit.jupiter.params.provider.ValueSource;
@@ -62,6 +63,11 @@ abstract class RequestTestTemplate {
      */
     @SneakyThrows
     static Request request(final URI uri, final Class<? extends Request> type) {
-        return type.getDeclaredConstructor(URI.class).newInstance(uri);
+        try {
+            return type.getDeclaredConstructor(URI.class).newInstance(uri);
+        } catch (final InstantiationException | IllegalAccessException | InvocationTargetException |
+            NoSuchMethodException ex) {
+            throw new IllegalArgumentException(ex);
+        }
     }
 }

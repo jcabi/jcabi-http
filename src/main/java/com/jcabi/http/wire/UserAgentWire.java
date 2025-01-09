@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2011-2022, jcabi.com
+ * Copyright (c) 2011-2025, jcabi.com
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -70,7 +70,6 @@ import lombok.ToString;
 @Immutable
 @ToString(of = "origin")
 @EqualsAndHashCode(of = "origin")
-@RequiredArgsConstructor
 public final class UserAgentWire implements Wire {
 
     /**
@@ -97,6 +96,15 @@ public final class UserAgentWire implements Wire {
                 System.getProperty("java.version")
             )
         );
+    }
+
+    /**
+     * Public ctor.
+     * @param wire Original wire
+     */
+    public UserAgentWire(final Wire wire, final String agnt) {
+        this.origin = wire;
+        this.agent = agnt;
     }
 
     // @checkstyle ParameterNumber (7 lines)

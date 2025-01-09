@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2011-2022, jcabi.com
+ * Copyright (c) 2011-2025, jcabi.com
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -85,21 +85,16 @@ final class RequestTimeoutLossTest extends RequestTestTemplate {
         final Class<? extends Request> type
     )
         throws Exception {
-        final Callable<Response> execution = new Callable<Response>() {
-            @Override
-            public Response call() throws Exception {
-                return RequestTimeoutLossTest.request(type)
-                    .through(MockWire.class)
-                    .method(Request.GET)
-                    .timeout(
-                        RequestTimeoutLossTest.CONNECT_TIMEOUT,
-                        RequestTimeoutLossTest.READ_TIMEOUT
-                    )
-                    .body()
-                    .back()
-                    .fetch();
-            }
-        };
+        final Callable<Response> execution = () -> RequestTimeoutLossTest.request(type)
+            .through(MockWire.class)
+            .method(Request.GET)
+            .timeout(
+                RequestTimeoutLossTest.CONNECT_TIMEOUT,
+                RequestTimeoutLossTest.READ_TIMEOUT
+            )
+            .body()
+            .back()
+            .fetch();
         this.testTimeoutOrderDoesntMatter(execution);
     }
 
@@ -116,19 +111,14 @@ final class RequestTimeoutLossTest extends RequestTestTemplate {
         final Class<? extends Request> type
     )
         throws Exception {
-        final Callable<Response> execution = new Callable<Response>() {
-            @Override
-            public Response call() throws Exception {
-                return RequestTimeoutLossTest.request(type)
-                    .through(MockWire.class)
-                    .method(Request.GET)
-                    .timeout(
-                        RequestTimeoutLossTest.CONNECT_TIMEOUT,
-                        RequestTimeoutLossTest.READ_TIMEOUT
-                    )
-                    .fetch();
-            }
-        };
+        final Callable<Response> execution = () -> RequestTimeoutLossTest.request(type)
+            .through(MockWire.class)
+            .method(Request.GET)
+            .timeout(
+                RequestTimeoutLossTest.CONNECT_TIMEOUT,
+                RequestTimeoutLossTest.READ_TIMEOUT
+            )
+            .fetch();
         this.testTimeoutOrderDoesntMatter(execution);
     }
 
@@ -145,23 +135,18 @@ final class RequestTimeoutLossTest extends RequestTestTemplate {
         final Class<? extends Request> type
     )
         throws Exception {
-        final Callable<Response> execution = new Callable<Response>() {
-            @Override
-            public Response call() throws Exception {
-                return RequestTimeoutLossTest.request(type)
-                    .through(MockWire.class)
-                    .method(Request.GET)
-                    .timeout(
-                        RequestTimeoutLossTest.CONNECT_TIMEOUT,
-                        RequestTimeoutLossTest.READ_TIMEOUT
-                    )
-                    .header(
-                        RequestTimeoutLossTest.CONTENT_TYPE,
-                        "text/plain"
-                    )
-                    .fetch();
-            }
-        };
+        final Callable<Response> execution = () -> RequestTimeoutLossTest.request(type)
+            .through(MockWire.class)
+            .method(Request.GET)
+            .timeout(
+                RequestTimeoutLossTest.CONNECT_TIMEOUT,
+                RequestTimeoutLossTest.READ_TIMEOUT
+            )
+            .header(
+                RequestTimeoutLossTest.CONTENT_TYPE,
+                "text/plain"
+            )
+            .fetch();
         this.testTimeoutOrderDoesntMatter(execution);
     }
 
@@ -178,19 +163,14 @@ final class RequestTimeoutLossTest extends RequestTestTemplate {
         final Class<? extends Request> type
     )
         throws Exception {
-        final Callable<Response> execution = new Callable<Response>() {
-            @Override
-            public Response call() throws Exception {
-                return RequestTimeoutLossTest.request(type)
-                    .through(MockWire.class)
-                    .timeout(
-                        RequestTimeoutLossTest.CONNECT_TIMEOUT,
-                        RequestTimeoutLossTest.READ_TIMEOUT
-                    )
-                    .method(Request.GET)
-                    .fetch();
-            }
-        };
+        final Callable<Response> execution = () -> RequestTimeoutLossTest.request(type)
+            .through(MockWire.class)
+            .timeout(
+                RequestTimeoutLossTest.CONNECT_TIMEOUT,
+                RequestTimeoutLossTest.READ_TIMEOUT
+            )
+            .method(Request.GET)
+            .fetch();
         this.testTimeoutOrderDoesntMatter(execution);
     }
 
@@ -207,21 +187,16 @@ final class RequestTimeoutLossTest extends RequestTestTemplate {
         final Class<? extends Request> type
     )
         throws Exception {
-        final Callable<Response> execution = new Callable<Response>() {
-            @Override
-            public Response call() throws Exception {
-                return RequestTimeoutLossTest.request(type)
-                    .through(MockWire.class)
-                    .method(Request.GET)
-                    .timeout(
-                        RequestTimeoutLossTest.CONNECT_TIMEOUT,
-                        RequestTimeoutLossTest.READ_TIMEOUT
-                    )
-                    .multipartBody()
-                    .back()
-                    .fetch();
-            }
-        };
+        final Callable<Response> execution = () -> RequestTimeoutLossTest.request(type)
+            .through(MockWire.class)
+            .method(Request.GET)
+            .timeout(
+                RequestTimeoutLossTest.CONNECT_TIMEOUT,
+                RequestTimeoutLossTest.READ_TIMEOUT
+            )
+            .multipartBody()
+            .back()
+            .fetch();
         this.testTimeoutOrderDoesntMatter(execution);
     }
 
@@ -238,20 +213,15 @@ final class RequestTimeoutLossTest extends RequestTestTemplate {
         final Class<? extends Request> type
     )
         throws Exception {
-        final Callable<Response> execution = new Callable<Response>() {
-            @Override
-            public Response call() throws Exception {
-                return RequestTimeoutLossTest.request(type)
-                    .through(MockWire.class)
-                    .method(Request.GET)
-                    .timeout(
-                        RequestTimeoutLossTest.CONNECT_TIMEOUT,
-                        RequestTimeoutLossTest.READ_TIMEOUT
-                    )
-                    .reset(RequestTimeoutLossTest.CONTENT_TYPE)
-                    .fetch();
-            }
-        };
+        final Callable<Response> execution = () -> RequestTimeoutLossTest.request(type)
+            .through(MockWire.class)
+            .method(Request.GET)
+            .timeout(
+                RequestTimeoutLossTest.CONNECT_TIMEOUT,
+                RequestTimeoutLossTest.READ_TIMEOUT
+            )
+            .reset(RequestTimeoutLossTest.CONTENT_TYPE)
+            .fetch();
         this.testTimeoutOrderDoesntMatter(execution);
     }
 
@@ -269,22 +239,17 @@ final class RequestTimeoutLossTest extends RequestTestTemplate {
     )
         throws Exception {
         this.testTimeoutOrderDoesntMatter(
-            new Callable<Response>() {
-                @Override
-                public Response call() throws Exception {
-                    return RequestTimeoutLossTest.request(type)
-                        .through(MockWire.class)
-                        .method(Request.GET)
-                        .timeout(
-                            RequestTimeoutLossTest.CONNECT_TIMEOUT,
-                            RequestTimeoutLossTest.READ_TIMEOUT
-                        )
-                        .uri()
-                        .path("/api")
-                        .back()
-                        .fetch();
-                }
-            }
+            () -> RequestTimeoutLossTest.request(type)
+                .through(MockWire.class)
+                .method(Request.GET)
+                .timeout(
+                    RequestTimeoutLossTest.CONNECT_TIMEOUT,
+                    RequestTimeoutLossTest.READ_TIMEOUT
+                )
+                .uri()
+                .path("/api")
+                .back()
+                .fetch()
         );
     }
 
@@ -299,12 +264,7 @@ final class RequestTimeoutLossTest extends RequestTestTemplate {
         final Wire wire = Mockito.mock(Wire.class);
         final Response response = Mockito.mock(Response.class);
         final Supplier<Collection<Map.Entry<String, String>>> hdrs =
-            new Supplier<Collection<Map.Entry<String, String>>>() {
-                @Override
-                public Collection<Map.Entry<String, String>> get() {
-                    return ArgumentMatchers.anyCollection();
-                }
-            };
+            () -> ArgumentMatchers.anyCollection();
         final String url = "fake-url";
         Mockito.when(
             wire.send(
