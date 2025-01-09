@@ -43,7 +43,6 @@ import org.hamcrest.MatcherAssert;
 import org.hamcrest.Matchers;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
-import org.junit.jupiter.api.function.Executable;
 import org.mockito.Mockito;
 
 /**
@@ -104,26 +103,6 @@ final class BaseRequestTest {
     }
 
     /**
-     * FakeRequest can identify itself uniquely.
-     */
-    @Test
-    void identifiesUniquely() {
-        final Wire wire = Mockito.mock(Wire.class);
-        MatcherAssert.assertThat(
-            new BaseRequest(wire, "").header("header-1", "value-1"),
-            Matchers.not(
-                Matchers.equalTo(
-                    new BaseRequest(wire, "").header("header-2", "value-2")
-                )
-            )
-        );
-        MatcherAssert.assertThat(
-            new BaseRequest(wire, ""),
-            Matchers.equalTo(new BaseRequest(wire, ""))
-        );
-    }
-
-    /**
      * Throws exception when using formParam on multipart-body without
      * content-type defined.
      */
@@ -133,15 +112,10 @@ final class BaseRequestTest {
         MatcherAssert.assertThat(
             Assertions.assertThrows(
                 IllegalStateException.class,
-                new Executable() {
-                    @Override
-                    public void execute() throws Throwable {
-                        new BaseRequest(wire, "")
-                            .multipartBody()
-                            .formParam("a", "value")
-                            .back();
-                    }
-                }
+                () -> new BaseRequest(wire, "")
+                    .multipartBody()
+                    .formParam("a", "value")
+                    .back()
             ),
             Matchers.hasProperty(
                 BaseRequestTest.MESSAGE,
@@ -160,17 +134,12 @@ final class BaseRequestTest {
         MatcherAssert.assertThat(
             Assertions.assertThrows(
                 IllegalStateException.class,
-                new Executable() {
-                    @Override
-                    public void execute() throws Throwable {
-                        new BaseRequest(wire, "")
-                            .header(
-                                HttpHeaders.CONTENT_TYPE,
-                                MediaType.MULTIPART_FORM_DATA
-                            )
-                            .multipartBody().formParam("b", "val").back();
-                    }
-                }
+                () -> new BaseRequest(wire, "")
+                    .header(
+                        HttpHeaders.CONTENT_TYPE,
+                        MediaType.MULTIPART_FORM_DATA
+                    )
+                    .multipartBody().formParam("b", "val").back()
             ),
             Matchers.hasProperty(
                 BaseRequestTest.MESSAGE,

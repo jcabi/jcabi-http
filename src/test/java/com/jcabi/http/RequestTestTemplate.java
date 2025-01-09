@@ -33,6 +33,7 @@ import com.jcabi.http.request.ApacheRequest;
 import com.jcabi.http.request.JdkRequest;
 import java.lang.annotation.Retention;
 import java.lang.annotation.RetentionPolicy;
+import java.lang.reflect.InvocationTargetException;
 import java.net.URI;
 import lombok.SneakyThrows;
 import org.junit.jupiter.params.provider.ValueSource;
@@ -62,6 +63,11 @@ abstract class RequestTestTemplate {
      */
     @SneakyThrows
     static Request request(final URI uri, final Class<? extends Request> type) {
-        return type.getDeclaredConstructor(URI.class).newInstance(uri);
+        try {
+            return type.getDeclaredConstructor(URI.class).newInstance(uri);
+        } catch (final InstantiationException | IllegalAccessException | InvocationTargetException |
+            NoSuchMethodException ex) {
+            throw new IllegalArgumentException(ex);
+        }
     }
 }

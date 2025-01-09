@@ -42,7 +42,6 @@ import org.hamcrest.Matchers;
 import org.hamcrest.core.IsAnything;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
-import org.junit.jupiter.api.function.Executable;
 
 /**
  * Test case for {@link MkContainer}.
@@ -149,23 +148,20 @@ final class MkContainerTest {
     void returnsErrorIfNoMatches() {
         Assertions.assertThrows(
             NoSuchElementException.class,
-            new Executable() {
-                @Override
-                public void execute() throws Throwable {
-                    try (MkContainer container = new MkGrizzlyContainer()) {
-                        container.next(
-                            new MkAnswer.Simple("not supposed to match"),
-                            Matchers.not(new IsAnything<MkQuery>())
-                        ).start();
-                        new JdkRequest(container.home())
-                            .through(VerboseWire.class)
-                            .fetch()
-                            .as(RestResponse.class)
-                            .assertStatus(
-                                HttpURLConnection.HTTP_INTERNAL_ERROR
-                            );
-                        container.take();
-                    }
+            () -> {
+                try (MkContainer container = new MkGrizzlyContainer()) {
+                    container.next(
+                        new MkAnswer.Simple("not supposed to match"),
+                        Matchers.not(new IsAnything<MkQuery>())
+                    ).start();
+                    new JdkRequest(container.home())
+                        .through(VerboseWire.class)
+                        .fetch()
+                        .as(RestResponse.class)
+                        .assertStatus(
+                            HttpURLConnection.HTTP_INTERNAL_ERROR
+                        );
+                    container.take();
                 }
             }
         );
