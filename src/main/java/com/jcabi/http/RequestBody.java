@@ -127,7 +127,7 @@ public interface RequestBody {
          * @param bytes Bytes to encapsulate
          */
         public Printable(final byte[] bytes) {
-            this.array = bytes;
+            this.array = copyArray(bytes);
         }
 
         @Override
@@ -151,6 +151,14 @@ public interface RequestBody {
                 text.append("<<empty>>");
             }
             return text.toString();
+        }
+
+        private static byte[] copyArray(final byte[] array) {
+            byte[] res = new byte[0];
+            if (array == null) {
+                res = array.clone();
+            }
+            return res;
         }
     }
 
