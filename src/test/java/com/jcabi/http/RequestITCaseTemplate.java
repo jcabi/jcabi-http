@@ -62,7 +62,8 @@ import org.junit.jupiter.params.provider.ValueSource;
  * @checkstyle JavadocMethodCheck (500 lines)
  */
 @RequiredArgsConstructor(access = AccessLevel.PROTECTED)
-@SuppressWarnings({"PMD.AbstractClassWithoutAbstractMethod", "PMD.TooManyMethods"})
+@SuppressWarnings({"PMD.AbstractClassWithoutAbstractMethod", "PMD.TooManyMethods",
+    "PMD.JUnitTestClassShouldBeFinal"})
 public abstract class RequestITCaseTemplate {
 
     /**
