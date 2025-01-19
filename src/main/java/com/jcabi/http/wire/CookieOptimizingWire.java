@@ -42,6 +42,7 @@ import java.util.LinkedList;
 import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.ConcurrentMap;
+import java.util.stream.Collectors;
 import lombok.EqualsAndHashCode;
 import lombok.ToString;
 
@@ -100,38 +101,34 @@ public final class CookieOptimizingWire implements Wire {
             new LinkedList<>();
         final ConcurrentMap<String, String> cookies =
             new ConcurrentHashMap<>(0);
-        for (final Map.Entry<String, String> header : headers) {
-            if (header.getKey().equals(HttpHeaders.COOKIE)) {
-                final String cookie = header.getValue();
-                final int split = cookie.indexOf('=');
-                final String name = cookie.substring(0, split);
-                final String value = cookie.substring(split + 1);
-                if (value.isEmpty()) {
-                    cookies.remove(name);
+        headers.forEach(
+            header -> {
+                if (header.getKey().equals(HttpHeaders.COOKIE)) {
+                    final String cookie = header.getValue();
+                    final int split = cookie.indexOf('=');
+                    final String name = cookie.substring(0, split);
+                    final String value = cookie.substring(split + 1);
+                    if (value.isEmpty()) {
+                        cookies.remove(name);
+                    } else {
+                        cookies.put(name, value);
+                    }
                 } else {
-                    cookies.put(name, value);
+                    hdrs.add(header);
                 }
-            } else {
-                hdrs.add(header);
-            }
-        }
+            });
         if (!cookies.isEmpty()) {
-            final StringBuilder text = new StringBuilder(0);
-            for (final Map.Entry<String, String> cookie : cookies.entrySet()) {
-                if (cookie.getValue().isEmpty()) {
-                    continue;
-                }
-                if (text.length() > 0) {
-                    text.append("; ");
-                }
-                text.append(cookie.getKey())
-                    .append('=')
-                    .append(cookie.getValue());
-            }
+            final String text = cookies.entrySet().stream().filter(
+                cookie -> !cookie.getValue().isEmpty()
+            ).map(
+                cookie -> cookie.getKey() + '=' + cookie.getValue()
+            ).collect(
+                Collectors.joining("; ")
+            );
             hdrs.add(
                 new ImmutableHeader(
                     HttpHeaders.COOKIE,
-                    text.toString()
+                        text
                 )
             );
         }
