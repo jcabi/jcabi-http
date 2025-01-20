@@ -83,11 +83,9 @@ public final class RetryWire implements Wire {
 
     // @checkstyle ParameterNumber (13 lines)
     @Override
-    public Response send(final Request req, final String home,
-        final String method,
-        final Collection<Map.Entry<String, String>> headers,
-        final InputStream content,
-        final int connect, final int read) throws IOException {
+    public Response send(final Request req, final String home, final String method,
+        final Collection<Map.Entry<String, String>> hdrs, final InputStream cont,
+        final int conn, final int read) throws IOException {
         int attempt = 0;
         while (true) {
             if (attempt > 3) {
@@ -96,38 +94,51 @@ public final class RetryWire implements Wire {
                 );
             }
             try {
-                final Response rsp = this.origin.send(
-                    req, home, method, headers, content,
-                    connect, read
-                );
+                final Response rsp = this.sendRequest(req, home, method, hdrs, cont, conn, read);
                 if (rsp.status() < HttpURLConnection.HTTP_INTERNAL_ERROR) {
                     return rsp;
                 }
-                if (Logger.isWarnEnabled(this)) {
-                    final URI uri = URI.create(home);
-                    final String noauth =
-                        UriBuilder.fromUri(uri).userInfo("").toString();
-                    String authinfo = "";
-                    if (uri.getUserInfo() != null) {
-                        authinfo = Logger.format(
-                            " (auth: %[secret]s)",
-                            uri.getUserInfo()
-                        );
-                    }
-                    Logger.warn(
-                        this, "%s %s%s returns %d status (attempt #%d)",
-                        method, noauth, authinfo, rsp.status(), attempt + 1
-                    );
-                }
+                this.logWarning(method, home, rsp.status(), attempt);
             } catch (final IOException ex) {
-                if (Logger.isWarnEnabled(this)) {
-                    Logger.warn(
-                        this, "%s: %s",
-                        ex.getClass().getName(), ex.getLocalizedMessage()
-                    );
-                }
+                this.logWarning(ex);
             }
             ++attempt;
+        }
+    }
+
+    // @checkstyle ParameterNumber (4 lines)
+    private Response sendRequest(final Request req, final String home, final String method,
+        final Collection<Map.Entry<String, String>> headers, final InputStream content,
+        final int connect, final int read) throws IOException {
+        return this.origin.send(req, home, method, headers, content, connect, read);
+    }
+
+    // @checkstyle ParameterNumber (17 lines)
+    private void logWarning(final String method, final String home, final int status,
+        final int attempt) {
+        if (Logger.isWarnEnabled(this)) {
+            final URI uri = URI.create(home);
+            final String noauth = UriBuilder.fromUri(uri).userInfo("").toString();
+            String authinfo = "";
+            if (uri.getUserInfo() != null) {
+                authinfo = Logger.format(
+                    " (auth: %[secret]s)",
+                    uri.getUserInfo()
+                );
+            }
+            Logger.warn(
+                this, "%s %s%s returns %d status (attempt #%d)",
+                method, noauth, authinfo, status, attempt + 1
+            );
+        }
+    }
+
+    private void logWarning(final IOException exp) {
+        if (Logger.isWarnEnabled(this)) {
+            Logger.warn(
+                this, "%s: %s",
+                exp.getClass().getName(), exp.getLocalizedMessage()
+            );
         }
     }
 }
