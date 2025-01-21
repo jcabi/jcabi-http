@@ -30,6 +30,7 @@
 package com.jcabi.http.mock;
 
 import com.jcabi.log.Logger;
+import java.io.IOException;
 import java.io.OutputStreamWriter;
 import java.io.PrintWriter;
 import java.io.UnsupportedEncodingException;
@@ -37,6 +38,8 @@ import java.net.HttpURLConnection;
 import java.util.Collection;
 import java.util.Iterator;
 import java.util.LinkedList;
+import java.util.List;
+import java.util.Map;
 import java.util.NoSuchElementException;
 import java.util.Queue;
 import java.util.concurrent.ConcurrentLinkedQueue;
@@ -90,44 +93,8 @@ final class MkGrizzlyAdapter extends HttpHandler {
         final Response response
     ) {
         try {
-            final MkQuery query = new GrizzlyQuery(request);
-            final Iterator<Conditional> iter = this.conditionals.iterator();
-            boolean matched = false;
-            while (iter.hasNext()) {
-                final Conditional cond = iter.next();
-                if (cond.matches(query)) {
-                    matched = true;
-                    final MkAnswer answer = cond.answer();
-                    this.queue.add(new QueryWithAnswer(query, answer));
-                    for (final String name : answer.headers().keySet()) {
-                        // @checkstyle NestedForDepth (3 lines)
-                        for (final String value : answer.headers().get(name)) {
-                            response.addHeader(name, value);
-                        }
-                    }
-                    response.addHeader(
-                        HttpHeaders.SERVER,
-                        String.format(
-                            "%s query #%d, %d answer(s) left",
-                            this.getClass().getName(),
-                            this.queue.size(), this.conditionals.size()
-                        )
-                    );
-                    response.setStatus(answer.status());
-                    final byte[] body = answer.bodyBytes();
-                    response.createOutputStream().write(body);
-                    response.setContentLength(body.length);
-                    if (cond.decrement() == 0) {
-                        iter.remove();
-                    }
-                    break;
-                }
-            }
-            if (!matched) {
-                throw new NoSuchElementException("No matching answers found.");
-            }
-            // @checkstyle IllegalCatch (1 line)
-        } catch (final Throwable ex) {
+            this.handleRequest(request, response);
+        } catch (final IOException ex) {
             MkGrizzlyAdapter.fail(response, ex);
         }
     }
@@ -228,6 +195,80 @@ final class MkGrizzlyAdapter extends HttpHandler {
         } catch (final UnsupportedEncodingException ex) {
             throw new IllegalStateException(ex);
         }
+    }
+
+    private void handleRequest(final Request request, final Response response) throws IOException {
+        final MkQuery query = new GrizzlyQuery(request);
+        final boolean matched = this.processConditionals(query, response);
+        if (!matched) {
+            throw new NoSuchElementException("No matching answers found.");
+        }
+    }
+
+    private boolean processConditionals(final MkQuery query, final Response response) {
+        final Iterator<Conditional> iter = this.conditionals.iterator();
+        boolean res = false;
+        while (iter.hasNext()) {
+            final Conditional cond = iter.next();
+            if (cond.matches(query)) {
+                this.handleMatchingConditional(cond, query, response);
+                if (cond.decrement() == 0) {
+                    iter.remove();
+                }
+                res = true;
+                break;
+            }
+        }
+        return res;
+    }
+
+    private void handleMatchingConditional(
+        final Conditional cond,
+        final MkQuery query,
+        final Response response
+    ) {
+        final MkAnswer answer = cond.answer();
+        this.queue.add(new QueryWithAnswer(query, answer));
+        addHeadersToResponse(answer.headers(), response);
+        this.addServerHeader(response);
+        setResponseStatusAndBody(response, answer);
+    }
+
+    private static void addHeadersToResponse(
+        final Map<String, List<String>> headers,
+        final Response response
+    ) {
+        for (final Map.Entry<String, List<String>> entry : headers.entrySet()) {
+            for (final String value : entry.getValue()) {
+                response.addHeader(entry.getKey(), value);
+            }
+        }
+    }
+
+    private void addServerHeader(final Response response) {
+        response.addHeader(
+            HttpHeaders.SERVER,
+            String.format(
+                "%s query #%d, %d answer(s) left",
+                this.getClass().getName(),
+                this.queue.size(), this.conditionals.size()
+            )
+        );
+    }
+
+    @SuppressWarnings("PMD.AvoidThrowingRawExceptionTypes")
+    private static void setResponseStatusAndBody(
+        final Response response,
+        final MkAnswer answer
+    ) {
+        response.setStatus(answer.status());
+        final byte[] body = answer.bodyBytes();
+        try {
+            response.createOutputStream().write(body);
+        } catch (final IOException ex) {
+            throw new RuntimeException("Failed to write response body", ex);
+        }
+        response.setContentLength(body.length);
     }
 
     /**
