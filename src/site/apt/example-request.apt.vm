@@ -103,4 +103,3 @@ String cookie = new JdkRequest("http://my.example.com")
 
   Read also about {{{./example-xml-response.html}<<<XmlResponse>>>}} and
   {{{./example-json-response.html}<<<JsonResponse>>>}}.
-
