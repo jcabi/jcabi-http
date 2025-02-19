@@ -62,7 +62,7 @@ OF THE POSSIBILITY OF SUCH DAMAGE.
   </distributionManagement>
   <properties>
     <byte-buddy.version>
-            1.15.10
+            1.17.1
         </byte-buddy.version>
   </properties>
   <dependencies>
