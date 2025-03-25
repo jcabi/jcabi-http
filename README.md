@@ -13,6 +13,7 @@
 [![codecov](https://codecov.io/gh/jcabi/jcabi-http/branch/master/graph/badge.svg)](https://codecov.io/gh/jcabi/jcabi-http)
 [![Hits-of-Code](https://hitsofcode.com/github/jcabi/jcabi-http)](https://hitsofcode.com/view/github/jcabi/jcabi-http)
 [![License](https://img.shields.io/badge/license-MIT-green.svg)](https://github.com/jcabi/jcabi-http/blob/master/LICENSE.txt)
+[![libs.tech recommends](https://libs.tech/project/16312153/badge.svg)](https://libs.tech/project/16312153/jcabi-http)
 
 More details are here: [http.jcabi.com](https://http.jcabi.com/index.html).
 
