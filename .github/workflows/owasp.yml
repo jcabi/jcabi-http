@@ -12,7 +12,7 @@ name: OWASP
 
 jobs:
   owasp:
-    timeout-minutes: 20
+    timeout-minutes: 22
     runs-on: ubuntu-24.04
     steps:
       - uses: actions/checkout@v4
