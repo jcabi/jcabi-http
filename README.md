@@ -44,7 +44,7 @@ the `master` branch, if they look correct.
 
 Please run Maven build before submitting a pull request:
 
-```
+```bash
 $ mvn clean install -Pqulice
 ```
 
