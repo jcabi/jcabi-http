@@ -62,7 +62,7 @@
   </distributionManagement>
   <properties>
     <byte-buddy.version>
-            1.15.10
+            1.17.6
         </byte-buddy.version>
   </properties>
   <dependencies>
