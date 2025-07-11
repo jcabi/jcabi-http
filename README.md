@@ -1,3 +1,6 @@
+#
+[![](http://img.jcabi.com/logo-square.png)](http://img.jcabi.com/logo-square.png)
+
 <img src="http://img.jcabi.com/logo-square.png" width="64px" height="64px" />
 
 [![EO principles respected here](https://www.elegantobjects.org/badge.svg)](https://www.elegantobjects.org)
@@ -44,8 +47,8 @@ the `master` branch, if they look correct.
 
 Please run Maven build before submitting a pull request:
 
-```bash
-$ mvn clean install -Pqulice
+```shell
+mvn clean install -Pqulice
 ```
 
 Make sure you're using Maven 3.6+ and Java 8+.
