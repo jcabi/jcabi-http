@@ -1,7 +1,6 @@
 #
-[![](http://img.jcabi.com/logo-square.png)](http://img.jcabi.com/logo-square.png)
 
-<img src="http://img.jcabi.com/logo-square.png" width="64px" height="64px" />
+[![logo-square](http://img.jcabi.com/logo-square.png)](http://img.jcabi.com/logo-square.png)
 
 [![EO principles respected here](https://www.elegantobjects.org/badge.svg)](https://www.elegantobjects.org)
 [![DevOps By Rultor.com](https://www.rultor.com/b/jcabi/jcabi-http)](https://www.rultor.com/p/jcabi/jcabi-http)
