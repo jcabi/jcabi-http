@@ -35,7 +35,7 @@ String body = response.body();
 +--
 
   {{{./apidocs-${project.version}/com/jcabi/http/Request.html}<<<Request>>>}}
-  is a trully immutable class, which means that you
+  is a truly immutable class, which means that you
   can't change any of its properties. However,
   you can create new requests. For example, you want to make a similar
   request, but with a <<<POST>>> HTTP method:
@@ -74,7 +74,7 @@ Response response = new JdkRequest("http://my.example.com")
   response with a new custom decorator, that implements more methods, suitable
   for a particular use case.
 
-  The simpliest decorator is
+  The simplest decorator is
   {{{./apidocs-${project.version}/com/jcabi/http/response/RestResponse.html}<<<RestResponse>>>}}.
   It helps you to make assertions on the response and follow redirects,
   for example:

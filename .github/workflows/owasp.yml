@@ -7,7 +7,7 @@ name: OWASP
   schedule:
     - cron: '0 0 * * *'
   pull_request:
-    branches: [ master ]
+    branches: [master]
 
 
 jobs:
@@ -22,4 +22,4 @@ jobs:
           java-version: 11
           distribution: 'temurin'
       - name: Maven
-        run:  mvn --errors --batch-mode -Powasp dependency-check:check
+        run: mvn --errors --batch-mode -Powasp dependency-check:check

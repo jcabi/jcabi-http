@@ -21,7 +21,7 @@ import lombok.EqualsAndHashCode;
  * XML response.
  *
  * <p>This response decorator is able to parse HTTP response body as
- * an XML document and manipulate with it afterwords, for example:
+ * an XML document and manipulate with it afterwards, for example:
  *
  * <pre> String name = new JdkRequest("http://my.example.com")
  *   .header(HttpHeaders.ACCEPT, MediaType.TEXT_XML)
