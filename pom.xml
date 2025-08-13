@@ -408,10 +408,12 @@
           <plugin>
             <groupId>org.owasp</groupId>
             <artifactId>dependency-check-maven</artifactId>
-            <version>11.1.0</version>
+            <version>10.0.0</version>
             <configuration>
               <failBuildOnCVSS>7.0</failBuildOnCVSS>
               <failOnError>true</failOnError>
+              <connectionTimeout>120000</connectionTimeout>
+              <readTimeout>120000</readTimeout>
             </configuration>
             <executions>
               <execution>
