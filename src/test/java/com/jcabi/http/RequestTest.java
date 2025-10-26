@@ -706,7 +706,7 @@ final class RequestTest extends RequestTestTemplate {
                         .body().set("already set").back()
                         .fetch(
                             new ByteArrayInputStream(
-                                "ba".getBytes(StandardCharsets.UTF_8)
+                                "hello".getBytes(StandardCharsets.UTF_8)
                             )
                         );
                 }

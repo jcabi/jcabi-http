@@ -1,4 +1,6 @@
-<img src="http://img.jcabi.com/logo-square.png" width="64px" height="64px" />
+# jcabi-http
+
+![logo](https://www.jcabi.com/logo-square.svg)
 
 [![EO principles respected here](https://www.elegantobjects.org/badge.svg)](https://www.elegantobjects.org)
 [![DevOps By Rultor.com](https://www.rultor.com/b/jcabi/jcabi-http)](https://www.rultor.com/p/jcabi/jcabi-http)
@@ -44,8 +46,8 @@ the `master` branch, if they look correct.
 
 Please run Maven build before submitting a pull request:
 
-```
-$ mvn clean install -Pqulice
+```sh
+mvn clean install -Pqulice
 ```
 
 Make sure you're using Maven 3.6+ and Java 8+.

@@ -53,7 +53,7 @@ MkContainer container = new MkGrizzlyContainer();
   The container is not yet started and doesn't know what to reply when
   a new HTTP request comes in. We should add at least one instance of
   {{{./apidocs-${project.version}/com/jcabi/http/mock/MkAnswer.html}<<<MkAnswer>>>}}
-  to its queue of ready-to-be-dispached answers:
+  to its queue of ready-to-be-dispatched answers:
 
 +--
 container.next(

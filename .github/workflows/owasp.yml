@@ -7,19 +7,28 @@ name: OWASP
   schedule:
     - cron: '0 0 * * *'
   pull_request:
-    branches: [ master ]
+    branches:
+      - master
 
 
 jobs:
   owasp:
-    timeout-minutes: 15
+    timeout-minutes: 45
     runs-on: ubuntu-24.04
     steps:
       - uses: actions/checkout@v5
-      - name: JDK 11
+      - name: JDK 21
         uses: actions/setup-java@v4
         with:
-          java-version: 11
+          java-version: 21
           distribution: 'temurin'
       - name: Maven
-        run:  mvn --errors --batch-mode -Powasp dependency-check:check
+        run: |
+            if [ -z "${NVD_API_KEY:-}" ]; then
+                echo "NVD_API_KEY is NOT set"
+                exit 1
+            else
+                mvn -DnvdApiKey="$NVD_API_KEY" --errors --batch-mode -Powasp dependency-check:check
+            fi
+        env:
+          NVD_API_KEY: ${{ secrets.NVD_API_KEY }}

@@ -11,7 +11,7 @@ Optional Dependencies
   The project is structured in a manner that many dependencies are optional. This
   is done in order to keep the package small, as the diverse functionality
   provided by the various classes require many other libraries that may be
-  non-trival or result in conflicts with your own project.
+  non-trivial or result in conflicts with your own project.
 
   The following is a list of dependencies that would be required to use all
   features of this library. You may incorporate them directly in your <<<pom.xml>>>.

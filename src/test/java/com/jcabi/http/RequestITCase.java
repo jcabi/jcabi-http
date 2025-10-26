@@ -63,7 +63,7 @@ final class RequestITCase extends RequestTestTemplate {
     void processesNotOkHttpResponse(
         final Class<? extends Request> type
     ) throws Exception {
-        RequestTestTemplate.request(new URI("https://example.com/file-not-found.txt"), type)
+        RequestTestTemplate.request(new URI("https://badssl.com/404"), type)
             .fetch().as(RestResponse.class)
             .assertStatus(HttpURLConnection.HTTP_NOT_FOUND);
     }

@@ -62,8 +62,11 @@
   </distributionManagement>
   <properties>
     <byte-buddy.version>
-            1.15.10
+            1.17.8
         </byte-buddy.version>
+    <lombok.version>
+            1.18.42
+        </lombok.version>
   </properties>
   <dependencies>
     <dependency>
@@ -89,7 +92,7 @@
     <dependency>
       <groupId>org.projectlombok</groupId>
       <artifactId>lombok</artifactId>
-      <version>1.18.36</version>
+      <version>${lombok.version}</version>
     </dependency>
     <dependency>
       <groupId>org.apache.commons</groupId>
@@ -356,6 +359,19 @@
     <plugins>
       <plugin>
         <groupId>org.apache.maven.plugins</groupId>
+        <artifactId>maven-compiler-plugin</artifactId>
+        <configuration>
+          <annotationProcessorPaths>
+            <path>
+              <groupId>org.projectlombok</groupId>
+              <artifactId>lombok</artifactId>
+              <version>${lombok.version}</version>
+            </path>
+          </annotationProcessorPaths>
+        </configuration>
+      </plugin>
+      <plugin>
+        <groupId>org.apache.maven.plugins</groupId>
         <artifactId>maven-surefire-plugin</artifactId>
         <configuration>
           <argLine>
@@ -410,6 +426,7 @@
             <artifactId>dependency-check-maven</artifactId>
             <version>11.1.0</version>
             <configuration>
+              <nvdApiKey>${nvdApiKey}</nvdApiKey>
               <failBuildOnCVSS>7.0</failBuildOnCVSS>
               <failOnError>true</failOnError>
             </configuration>
