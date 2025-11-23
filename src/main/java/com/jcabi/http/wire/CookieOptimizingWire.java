@@ -91,7 +91,8 @@ public final class CookieOptimizingWire implements Wire {
                 } else {
                     hdrs.add(header);
                 }
-            });
+            }
+        );
         if (!cookies.isEmpty()) {
             final String text = cookies.entrySet().stream().filter(
                 cookie -> !cookie.getValue().isEmpty()

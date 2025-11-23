@@ -18,7 +18,6 @@ import org.hamcrest.MatcherAssert;
 import org.hamcrest.Matchers;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
-import org.junit.jupiter.api.function.Executable;
 import org.mockito.Mockito;
 
 /**
@@ -114,15 +113,10 @@ final class BaseRequestTest {
             "should be error when multipart-body without content-type",
             Assertions.assertThrows(
                 IllegalStateException.class,
-                new Executable() {
-                    @Override
-                    public void execute() throws Throwable {
-                        new BaseRequest(wire, "")
-                            .multipartBody()
-                            .formParam("a", "value")
-                            .back();
-                    }
-                }
+                () -> new BaseRequest(wire, "")
+                    .multipartBody()
+                    .formParam("a", "value")
+                    .back()
             ),
             Matchers.hasProperty(
                 BaseRequestTest.MESSAGE,
@@ -142,17 +136,12 @@ final class BaseRequestTest {
             "should be error when multipart-body without content-type",
             Assertions.assertThrows(
                 IllegalStateException.class,
-                new Executable() {
-                    @Override
-                    public void execute() throws Throwable {
-                        new BaseRequest(wire, "")
-                            .header(
-                                HttpHeaders.CONTENT_TYPE,
-                                MediaType.MULTIPART_FORM_DATA
-                            )
-                            .multipartBody().formParam("b", "val").back();
-                    }
-                }
+                () -> new BaseRequest(wire, "")
+                    .header(
+                        HttpHeaders.CONTENT_TYPE,
+                        MediaType.MULTIPART_FORM_DATA
+                    )
+                    .multipartBody().formParam("b", "val").back()
             ),
             Matchers.hasProperty(
                 BaseRequestTest.MESSAGE,

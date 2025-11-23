@@ -13,7 +13,6 @@ import org.hamcrest.MatcherAssert;
 import org.hamcrest.Matchers;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
-import org.junit.jupiter.api.function.Executable;
 
 /**
  * Integration case for {@link JdkRequest}.
@@ -38,12 +37,8 @@ final class JdkRequestITCase {
             "should be error with a descriptive message",
             Assertions.assertThrows(
                 IOException.class,
-                new Executable() {
-                    @Override
-                    public void execute() throws Throwable {
-                        new JdkRequest(new URI(uri)).method(method).fetch();
-                    }
-                }),
+                () -> new JdkRequest(new URI(uri)).method(method).fetch()
+            ),
             Matchers.hasProperty(
                 JdkRequestITCase.MESSAGE,
                 Matchers.allOf(
@@ -65,12 +60,8 @@ final class JdkRequestITCase {
             "should be error with a descriptive message",
             Assertions.assertThrows(
                 IOException.class,
-                new Executable() {
-                    @Override
-                    public void execute() throws Throwable {
-                        new JdkRequest(uri).fetch();
-                    }
-                }),
+                () -> new JdkRequest(uri).fetch()
+            ),
             Matchers.hasProperty(
                 JdkRequestITCase.MESSAGE,
                 Matchers.allOf(
@@ -93,19 +84,13 @@ final class JdkRequestITCase {
             "should be error with a descriptive message",
             Assertions.assertThrows(
                 MalformedURLException.class,
-                new Executable() {
-
-                    @Override
-                    public void execute() throws Throwable {
-                        new JdkRequest(
-                            StringUtils.join(
-                                url,
-                                colon,
-                                "80"
-                            )
-                        ).fetch();
-                    }
-                }
+                () -> new JdkRequest(
+                    StringUtils.join(
+                        url,
+                        colon,
+                        "80"
+                    )
+                ).fetch()
             ),
             Matchers.hasProperty(
                 JdkRequestITCase.MESSAGE,
@@ -128,13 +113,8 @@ final class JdkRequestITCase {
             "should be error with a descriptive message",
             Assertions.assertThrows(
                 IllegalArgumentException.class,
-                new Executable() {
-
-                    @Override
-                    public void execute() throws Throwable {
-                        new JdkRequest(uri).fetch();
-                    }
-                }),
+                () -> new JdkRequest(uri).fetch()
+            ),
             Matchers.hasProperty(
                 JdkRequestITCase.MESSAGE,
                 Matchers.allOf(

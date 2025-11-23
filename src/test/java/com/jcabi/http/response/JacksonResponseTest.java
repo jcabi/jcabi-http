@@ -12,7 +12,6 @@ import org.hamcrest.MatcherAssert;
 import org.hamcrest.Matchers;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
-import org.junit.jupiter.api.function.Executable;
 
 /**
  * Test case for {@link JacksonResponse}.
@@ -75,12 +74,7 @@ final class JacksonResponseTest {
             "should contains error 'was expecting double-quote to start field name'",
             Assertions.assertThrows(
                 IOException.class,
-                new Executable() {
-                    @Override
-                    public void execute() throws Throwable {
-                        response.json().read();
-                    }
-                }
+                () -> response.json().read()
             ),
             Matchers.hasProperty(
                 "message",
@@ -105,12 +99,7 @@ final class JacksonResponseTest {
             "should contains error 'Unexpected close marker'",
             Assertions.assertThrows(
                 IOException.class,
-                new Executable() {
-                    @Override
-                    public void execute() throws Throwable {
-                        response.json().readArray();
-                    }
-                }
+                () -> response.json().readArray()
             ),
             Matchers.hasToString(
                 Matchers.containsString("Unexpected close marker")
@@ -132,12 +121,7 @@ final class JacksonResponseTest {
             "should contains 'Cannot read as an array. The JSON is not a valid array.'",
             Assertions.assertThrows(
                 IOException.class,
-                new Executable() {
-                    @Override
-                    public void execute() throws Throwable {
-                        response.json().readArray();
-                    }
-                }
+                () -> response.json().readArray()
             ),
             Matchers.<IOException>hasToString(
                 Matchers.containsString(
@@ -181,12 +165,7 @@ final class JacksonResponseTest {
             "should contains error 'Unexpected end-of-input: expected close marker for Object",
             Assertions.assertThrows(
                 IOException.class,
-                new Executable() {
-                    @Override
-                    public void execute() throws Throwable {
-                        response.json().readObject();
-                    }
-                }
+                () -> response.json().readObject()
             ),
             Matchers.<IOException>hasToString(
                 Matchers.containsString(
@@ -210,12 +189,7 @@ final class JacksonResponseTest {
             "should contains error 'Cannot read as an object. The JSON is not a valid object.",
             Assertions.assertThrows(
                 IOException.class,
-                new Executable() {
-                    @Override
-                    public void execute() throws Throwable {
-                        response.json().readObject();
-                    }
-                }
+                () -> response.json().readObject()
             ),
             Matchers.<IOException>hasToString(
                 Matchers.containsString(

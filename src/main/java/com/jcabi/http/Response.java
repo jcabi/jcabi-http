@@ -66,7 +66,7 @@ public interface Response {
     String body();
 
     /**
-     * Raw body as a an array of bytes.
+     * Raw body as an array of bytes.
      * @return The body, as a UTF-8 string
      */
     byte[] binary();

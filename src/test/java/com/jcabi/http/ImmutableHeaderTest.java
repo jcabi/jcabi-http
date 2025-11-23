@@ -17,10 +17,9 @@ final class ImmutableHeaderTest {
 
     /**
      * ImmutableHeader can normalize headers.
-     * @throws Exception If something goes wrong inside
      */
     @Test
-    void normalizesHeaderKey() throws Exception {
+    void normalizesHeaderKey() {
         final Map.Entry<String, String> header =
             new ImmutableHeader("content-type", "text/plain");
         MatcherAssert.assertThat(

@@ -17,10 +17,9 @@ final class BoundaryTest {
 
     /**
      * Boundary builds valid string.
-     * @throws Exception If something goes wrong inside.
      */
     @Test
-    void buildsExpectedBoundary() throws Exception {
+    void buildsExpectedBoundary() {
         MatcherAssert.assertThat(
             "should be match",
             new Boundary(new Random(0L)).value(),
