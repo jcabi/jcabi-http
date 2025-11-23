@@ -2,21 +2,11 @@
 <html xmlns="http://www.w3.org/1999/xhtml" lang="en-US">
     <head>
         <meta charset="UTF-8"/>
-        <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-        <title>jcabi-http &#x2013; HTTP Request that Retries on Failure</title>
+        <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+        <title>HTTP Request that Retries on Failure – jcabi-http</title>
         <link media="all" rel="stylesheet" type="text/css" href="./css/jcabi.css"/>
-                    <meta name="author" content="Yegor Bugayenko" />
-                            <script>
-                var _gaq = _gaq || [];
-                _gaq.push(['_setAccount', 'UA-1963507-23']);
-                _gaq.push(['_trackPageview']);
-                (function() {
-                    var ga = document.createElement('script'); ga.type = 'text/javascript'; ga.async = true;
-                    ga.src = ('https:' == document.location.protocol ? 'https://ssl' : 'http://www') + '.google-analytics.com/ga.js';
-                    var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga, s);
-                })();
-            </script>
-                                            <script src="https://code.jquery.com/jquery-2.1.0.min.js"></script>
+                    <meta name="author" content="Yegor Bugayenko"/>
+                                                    <script src="https://code.jquery.com/jquery-2.1.0.min.js"></script>
         <script src="./js/jcabi.js"></script>
     </head>
     <body>
@@ -33,7 +23,7 @@
                                                                     </ul>
                                                     </li>
                                                                                                                         <li >
-                            <span>                        <a href="apidocs-2.0.0/index.html" title="JavaDoc 2.0.0">JavaDoc 2.0.0</a>
+                            <span>                        <a href="apidocs-2.1.0/index.html" title="JavaDoc 2.1.0">JavaDoc 2.1.0</a>
         </span>
                                                                                                                                                                 <ul>
                                                                     </ul>
@@ -143,23 +133,21 @@
                             <div class="logo">
                                 <a href="../"
                                     title=" logo ">
-                                    <img src="../logo-square.svg"
+                                    <img src="${decoration.bannerLeft.src}"
                                         alt="jcabi"
-                                                                                    width="64"
-                                                                                                                            height="64"
-                                                                                itemprop="image"
+                                                                                                                        itemprop="image"
                                     />
                                 </a>
                             </div>
                             <ul class="badges">
                                 <li>
-                                    <strong itemprop="version">2.0.0</strong>
+                                    <strong itemprop="version">2.1.0</strong>
                                 </li>
                                 <li>
-                                    
-                                    <time itemprop="datePublished" datetime="2023-10-29T08:58:26Z">
-                                        
-                                        29-Oct-2023
+                                    $dateFormat.applyPattern("yyyy-MM-dd'T'hh:mm:ss'Z'")
+                                    <time itemprop="datePublished" datetime="${dateFormat.format($currentDate)}">
+                                        $dateFormat.applyPattern('dd-MMM-yyyy')
+                                        ${dateFormat.format($currentDate)}
                                     </time>
                                 </li>
                                 <li class="menu-button">menu</li>
@@ -170,14 +158,13 @@
                                 <img src="https://www.jcabi.com/fork-me.svg" class="fork-me"/>
                             </a>
                                                 <article itemprop="articleBody">
-                            <section>
-<h2><a name="HTTP_Request_that_Retries_on_Failure"></a>HTTP Request that Retries on Failure</h2>
-<p><a href="./apidocs-2.0.0/com/jcabi/http/wire/RetryWire.html"><code>RetryWire</code></a>. is a decorator of <a href="./apidocs-2.0.0/com/jcabi/http/Wire.html"><code>Wire</code></a> that retries to fetch a response a few times before giving up and throwing <code>IOException</code>, for example:</p>
-<div class="source">
-<pre>String body = new JdkRequest(&quot;http://www.google.com&quot;)
+                            <section><a id="HTTP_Request_that_Retries_on_Failure"></a>
+<h1>HTTP Request that Retries on Failure</h1>
+<p><a href="./apidocs-2.1.0/com/jcabi/http/wire/RetryWire.html"><code>RetryWire</code></a>. is a decorator of <a href="./apidocs-2.1.0/com/jcabi/http/Wire.html"><code>Wire</code></a> that retries to fetch a response a few times before giving up and throwing <code>IOException</code>, for example:</p>
+<pre><code>String body = new JdkRequest(&quot;http://www.google.com&quot;)
   .through(RetryWire.class);
   .fetch()
-  .body();</pre></div>
+  .body();</code></pre>
 <p>If it recommended to use this decorator in production, to avoid accidental exceptions due to unstable connection.</p></section>
                         </article>
                     </div>
@@ -185,10 +172,10 @@
                 <footer class="legal-notes">
                     <div>
                         Copyright &#169;
-                                                                            2012-2023
+                                                                            2012-${currentYear}
                                             </div>
                     <div>jcabi.com, All Rights Reserved.</div>
-                    <div><a href="http://maven.apache.org/privacy-policy.html">Privacy Policy</a>.</div>
+                    <div><a href="https://maven.apache.org/privacy-policy.html">Privacy Policy</a>.</div>
                 </footer>
             </div>
         </div>

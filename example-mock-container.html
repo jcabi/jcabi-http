@@ -2,21 +2,11 @@
 <html xmlns="http://www.w3.org/1999/xhtml" lang="en-US">
     <head>
         <meta charset="UTF-8"/>
-        <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-        <title>jcabi-http &#x2013; Mock Servlet Container</title>
+        <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+        <title>Mock Servlet Container – jcabi-http</title>
         <link media="all" rel="stylesheet" type="text/css" href="./css/jcabi.css"/>
-                    <meta name="author" content="Yegor Bugayenko" />
-                            <script>
-                var _gaq = _gaq || [];
-                _gaq.push(['_setAccount', 'UA-1963507-23']);
-                _gaq.push(['_trackPageview']);
-                (function() {
-                    var ga = document.createElement('script'); ga.type = 'text/javascript'; ga.async = true;
-                    ga.src = ('https:' == document.location.protocol ? 'https://ssl' : 'http://www') + '.google-analytics.com/ga.js';
-                    var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga, s);
-                })();
-            </script>
-                                            <script src="https://code.jquery.com/jquery-2.1.0.min.js"></script>
+                    <meta name="author" content="Yegor Bugayenko"/>
+                                                    <script src="https://code.jquery.com/jquery-2.1.0.min.js"></script>
         <script src="./js/jcabi.js"></script>
     </head>
     <body>
@@ -33,7 +23,7 @@
                                                                     </ul>
                                                     </li>
                                                                                                                         <li >
-                            <span>                        <a href="apidocs-2.0.0/index.html" title="JavaDoc 2.0.0">JavaDoc 2.0.0</a>
+                            <span>                        <a href="apidocs-2.1.0/index.html" title="JavaDoc 2.1.0">JavaDoc 2.1.0</a>
         </span>
                                                                                                                                                                 <ul>
                                                                     </ul>
@@ -143,23 +133,21 @@
                             <div class="logo">
                                 <a href="../"
                                     title=" logo ">
-                                    <img src="../logo-square.svg"
+                                    <img src="${decoration.bannerLeft.src}"
                                         alt="jcabi"
-                                                                                    width="64"
-                                                                                                                            height="64"
-                                                                                itemprop="image"
+                                                                                                                        itemprop="image"
                                     />
                                 </a>
                             </div>
                             <ul class="badges">
                                 <li>
-                                    <strong itemprop="version">2.0.0</strong>
+                                    <strong itemprop="version">2.1.0</strong>
                                 </li>
                                 <li>
-                                    
-                                    <time itemprop="datePublished" datetime="2023-10-29T08:58:26Z">
-                                        
-                                        29-Oct-2023
+                                    $dateFormat.applyPattern("yyyy-MM-dd'T'hh:mm:ss'Z'")
+                                    <time itemprop="datePublished" datetime="${dateFormat.format($currentDate)}">
+                                        $dateFormat.applyPattern('dd-MMM-yyyy')
+                                        ${dateFormat.format($currentDate)}
                                     </time>
                                 </li>
                                 <li class="menu-button">menu</li>
@@ -170,11 +158,10 @@
                                 <img src="https://www.jcabi.com/fork-me.svg" class="fork-me"/>
                             </a>
                                                 <article itemprop="articleBody">
-                            <section>
-<h2><a name="Mock_Servlet_Container"></a>Mock Servlet Container</h2>
-<p><a href="./apidocs-2.0.0/com/jcabi/http/mock/MkContainer.html"><code>MkContainer</code></a> is a simple lightweight Java servlet container that can act as a mock server-side of your application, in order to test your RESTful client, for example:</p>
-<div class="source">
-<pre>public class ClientTest {
+                            <section><a id="Mock_Servlet_Container"></a>
+<h1>Mock Servlet Container</h1>
+<p><a href="./apidocs-2.1.0/com/jcabi/http/mock/MkContainer.html"><code>MkContainer</code></a> is a simple lightweight Java servlet container that can act as a mock server-side of your application, in order to test your RESTful client, for example:</p>
+<pre><code>public class ClientTest {
   @Test
   public void sendsHttpHeadersCorrectly() {
     MkContainer container = new MkGrizzlyContainer();
@@ -198,60 +185,52 @@
       )
     );
   }
-}</pre></div>
-<p>Let's see what's happening here. First, a new instance of <a href="./apidocs-2.0.0/com/jcabi/http/mock/MkContainer.html"><code>MkContainer</code></a> is created, with a Grizzly-based implementation <a href="./apidocs-2.0.0/com/jcabi/http/mock/MkGrizzlyContainer.html"><code>MkGrizzlyContainer</code></a>:</p>
-<div class="source">
-<pre>MkContainer container = new MkGrizzlyContainer();</pre></div>
-<p>The container is not yet started and doesn't know what to reply when a new HTTP request comes in. We should add at least one instance of <a href="./apidocs-2.0.0/com/jcabi/http/mock/MkAnswer.html"><code>MkAnswer</code></a> to its queue of ready-to-be-dispached answers:</p>
-<div class="source">
-<pre>container.next(
+}</code></pre>
+<p>Let's see what's happening here. First, a new instance of <a href="./apidocs-2.1.0/com/jcabi/http/mock/MkContainer.html"><code>MkContainer</code></a> is created, with a Grizzly-based implementation <a href="./apidocs-2.1.0/com/jcabi/http/mock/MkGrizzlyContainer.html"><code>MkGrizzlyContainer</code></a>:</p>
+<pre><code>MkContainer container = new MkGrizzlyContainer();</code></pre>
+<p>The container is not yet started and doesn't know what to reply when a new HTTP request comes in. We should add at least one instance of <a href="./apidocs-2.1.0/com/jcabi/http/mock/MkAnswer.html"><code>MkAnswer</code></a> to its queue of ready-to-be-dispatched answers:</p>
+<pre><code>container.next(
   new MkAnswer.Simple(&quot;hello, world!&quot;)
     .withHeader(&quot;Content-Type&quot;, &quot;text/plain&quot;)
     .withHeader(&quot;Server&quot;, &quot;mock&quot;)
-);</pre></div>
-<p>It's possible to add more instances of <a href="./apidocs-2.0.0/com/jcabi/http/mock/MkAnswer.html"><code>MkAnswer</code></a>, using this method <code>next()</code>. They will be returned by a running container one by one in response to incoming HTTP &quot;queries&quot; (which will be recorded by the container as instances of <a href="./apidocs-2.0.0/com/jcabi/http/mock/MkQuery.html"><code>MkQuery</code></a> and available later through method <code>take()</code>).</p>
+);</code></pre>
+<p>It's possible to add more instances of <a href="./apidocs-2.1.0/com/jcabi/http/mock/MkAnswer.html"><code>MkAnswer</code></a>, using this method <code>next()</code>. They will be returned by a running container one by one in response to incoming HTTP &quot;queries&quot; (which will be recorded by the container as instances of <a href="./apidocs-2.1.0/com/jcabi/http/mock/MkQuery.html"><code>MkQuery</code></a> and available later through method <code>take()</code>).</p>
 <p>Now it's time to start the container on a randomly allocated TCP port (you can also use a fixed port number, but random allocation is preferred):</p>
-<div class="source">
-<pre>container.start();</pre></div>
-<p>Then, we're making a request to a running container, getting its main entry URI by <code>container.home()</code> (<a href="./apidocs-2.0.0/com/jcabi/http/wire/VerboseWire.html"><code>VerboseWire</code></a> is used in order to make HTTP request and response details visible in log):</p>
-<div class="source">
-<pre>new JdkRequest(container.home())
+<pre><code>container.start();</code></pre>
+<p>Then, we're making a request to a running container, getting its main entry URI by <code>container.home()</code> (<a href="./apidocs-2.1.0/com/jcabi/http/wire/VerboseWire.html"><code>VerboseWire</code></a> is used in order to make HTTP request and response details visible in log):</p>
+<pre><code>new JdkRequest(container.home())
   .through(VerboseWire.class)
   .header(&quot;User-Agent&quot;, &quot;My Super HTTP Client&quot;)
-  .fetch();</pre></div>
+  .fetch();</code></pre>
 <p>Then, we stop the container:</p>
-<div class="source">
-<pre>container.stop();</pre></div>
+<pre><code>container.stop();</code></pre>
 <p>Now it's time to check what was received by the container before it was stopped. All &quot;queries&quot; received are recorded in the container in chronological order. They may be retrieved using <code>container.take()</code> method:</p>
-<div class="source">
-<pre>MkQuery query = container.take();</pre></div>
+<pre><code>MkQuery query = container.take();</code></pre>
 <p>Finally, we can make assertions about this query:</p>
-<div class="source">
-<pre>MatcherAssert.assertThat(
+<pre><code>MatcherAssert.assertThat(
   query.headers(),
   Matchers.hasEntry(
     Matchers.equalTo(&quot;User=Agent&quot;),
     Matchers.hasItem(&quot;My Super HTTP Client&quot;)
   )
-);</pre></div>
-<p><a href="./apidocs-2.0.0/com/jcabi/http/mock/MkGrizzlyContainer.html"><code>MkGrizzlyContainer</code></a> depends on <a class="externalLink" href="https://java.net/projects/grizzly-servlet-container">Grizzly Servlet Webserver</a>, and this dependency is required in your <code>pom.xml</code>:</p>
-<div class="source">
-<pre>&lt;dependency&gt;
+);</code></pre>
+<p><a href="./apidocs-2.1.0/com/jcabi/http/mock/MkGrizzlyContainer.html"><code>MkGrizzlyContainer</code></a> depends on <a class="externalLink" href="https://java.net/projects/grizzly-servlet-container">Grizzly Servlet Webserver</a>, and this dependency is required in your <code>pom.xml</code>:</p>
+<pre><code>&lt;dependency&gt;
   &lt;groupId&gt;com.sun.grizzly&lt;/groupId&gt;
   &lt;artifactId&gt;grizzly-servlet-webserver&lt;/artifactId&gt;
   &lt;version&gt;1.9.10&lt;/version&gt;
   &lt;scope&gt;test&lt;/scope&gt;
-&lt;/dependency&gt;</pre></div></section>
+&lt;/dependency&gt;</code></pre></section>
                         </article>
                     </div>
                 </main>
                 <footer class="legal-notes">
                     <div>
                         Copyright &#169;
-                                                                            2012-2023
+                                                                            2012-${currentYear}
                                             </div>
                     <div>jcabi.com, All Rights Reserved.</div>
-                    <div><a href="http://maven.apache.org/privacy-policy.html">Privacy Policy</a>.</div>
+                    <div><a href="https://maven.apache.org/privacy-policy.html">Privacy Policy</a>.</div>
                 </footer>
             </div>
         </div>

@@ -1,0 +1,5 @@
+com.jcabi.http
+com.jcabi.http.mock
+com.jcabi.http.request
+com.jcabi.http.response
+com.jcabi.http.wire

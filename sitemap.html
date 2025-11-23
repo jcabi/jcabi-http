@@ -2,20 +2,10 @@
 <html xmlns="http://www.w3.org/1999/xhtml" lang="en-US">
     <head>
         <meta charset="UTF-8"/>
-        <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-        <title>jcabi-http &#x2013; Sitemap</title>
+        <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+        <title>Sitemap – jcabi-http</title>
         <link media="all" rel="stylesheet" type="text/css" href="./css/jcabi.css"/>
-                            <script>
-                var _gaq = _gaq || [];
-                _gaq.push(['_setAccount', 'UA-1963507-23']);
-                _gaq.push(['_trackPageview']);
-                (function() {
-                    var ga = document.createElement('script'); ga.type = 'text/javascript'; ga.async = true;
-                    ga.src = ('https:' == document.location.protocol ? 'https://ssl' : 'http://www') + '.google-analytics.com/ga.js';
-                    var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga, s);
-                })();
-            </script>
-                                            <script src="https://code.jquery.com/jquery-2.1.0.min.js"></script>
+                                                    <script src="https://code.jquery.com/jquery-2.1.0.min.js"></script>
         <script src="./js/jcabi.js"></script>
     </head>
     <body>
@@ -32,7 +22,7 @@
                                                                     </ul>
                                                     </li>
                                                                                                                         <li >
-                            <span>                        <a href="apidocs-2.0.0/index.html" title="JavaDoc 2.0.0">JavaDoc 2.0.0</a>
+                            <span>                        <a href="apidocs-2.1.0/index.html" title="JavaDoc 2.1.0">JavaDoc 2.1.0</a>
         </span>
                                                                                                                                                                 <ul>
                                                                     </ul>
@@ -142,23 +132,21 @@
                             <div class="logo">
                                 <a href="../"
                                     title=" logo ">
-                                    <img src="../logo-square.svg"
+                                    <img src="${decoration.bannerLeft.src}"
                                         alt="jcabi"
-                                                                                    width="64"
-                                                                                                                            height="64"
-                                                                                itemprop="image"
+                                                                                                                        itemprop="image"
                                     />
                                 </a>
                             </div>
                             <ul class="badges">
                                 <li>
-                                    <strong itemprop="version">2.0.0</strong>
+                                    <strong itemprop="version">2.1.0</strong>
                                 </li>
                                 <li>
-                                    
-                                    <time itemprop="datePublished" datetime="2023-10-29T08:59:27Z">
-                                        
-                                        29-Oct-2023
+                                    $dateFormat.applyPattern("yyyy-MM-dd'T'hh:mm:ss'Z'")
+                                    <time itemprop="datePublished" datetime="${dateFormat.format($currentDate)}">
+                                        $dateFormat.applyPattern('dd-MMM-yyyy')
+                                        ${dateFormat.format($currentDate)}
                                     </time>
                                 </li>
                                 <li class="menu-button">menu</li>
@@ -170,97 +158,57 @@
                             </a>
                                                 <article itemprop="articleBody">
                             <section>
-<h2><a name="Sitemap"></a>Sitemap</h2>
-
-<p>This page lists all entries of the navigation menu in expanded form.</p>
-<section><section>
-<h4><a name="Overview"></a>Overview</h4><hr />
-
+<h1>Sitemap</h1>
+<p>This page lists all entries of the navigation menu in expanded form.</p><section>
+<h2>Overview</h2><hr />
 <ul>
-
 <li><a href="index.html">Introduction</a></li>
-
-<li><a href="apidocs-2.0.0/index.html">JavaDoc 2.0.0</a></li>
-
+<li><a href="apidocs-2.1.0/index.html">JavaDoc 2.1.0</a></li>
 <li><a href="jacoco/index.html">Test coverage</a></li>
-
-<li><a class="externalLink" href="https://github.com/jcabi/jcabi-http/releases">Release History</a></li></ul>
-</section><section>
-<h4><a name="Best_Practices"></a>Best Practices</h4><hr />
-
+<li><a class="externalLink" href="https://github.com/jcabi/jcabi-http/releases">Release History</a></li></ul></section><section>
+<h2>Best Practices</h2><hr />
 <ul>
-
 <li><a href="optional-dependencies.html">Optional Dependencies</a></li>
-
-<li><a href="pkix-validator.html">Suppress PKIX Validator</a></li></ul>
-</section><section>
-<h4><a name="Examples"></a>Examples</h4><hr />
-
+<li><a href="pkix-validator.html">Suppress PKIX Validator</a></li></ul></section><section>
+<h2>Examples</h2><hr />
 <ul>
-
 <li><a href="example-request.html">Make HTTP Request</a></li>
-
 <li><a href="example-xml-response.html">XML Response</a></li>
-
 <li><a href="example-json-response.html">JSON Response</a></li>
-
 <li><a href="example-web-linking-response.html">Web Linking Response</a></li>
-
 <li><a href="example-retry-request.html">HTTP Request that retries</a></li>
-
-<li><a href="example-auto-redirecting.html">Retrying for redirect responses</a></li></ul>
-</section><section>
-<h4><a name="Mock_Servlet_Container"></a>Mock Servlet Container</h4><hr />
-
+<li><a href="example-auto-redirecting.html">Retrying for redirect responses</a></li></ul></section><section>
+<h2>Mock Servlet Container</h2><hr />
 <ul>
-
-<li><a href="example-mock-container.html">HTTP client unit testing</a></li></ul>
-</section><section>
-<h4><a name="Project_Documentation"></a>Project Documentation</h4><hr />
-
+<li><a href="example-mock-container.html">HTTP client unit testing</a></li></ul></section><section>
+<h2>Project Documentation</h2><hr />
 <ul>
-
 <li><a href="./project-info.html">Project Information</a>
-
 <ul>
-
 <li><a href="dependencies.html">Dependencies</a></li>
-
 <li><a href="index.html">About</a></li>
-
 <li><a href="plugins.html">Plugins</a></li>
-
 <li><a href="scm.html">Source Code Management</a></li>
-
 <li><a href="summary.html">Summary</a></li></ul></li>
-
 <li><a href="./project-reports.html">Project Reports</a>
-
 <ul>
-
 <li><a href="xref/index.html">Source Xref</a></li>
-
 <li><a href="xref-test/index.html">Test Source Xref</a></li>
-
-<li><a href="surefire-report.html">Surefire Report</a></li>
-
+<li><a href="surefire.html">Surefire</a></li>
 <li><a href="dependency-updates-report.html">Dependency Updates Report</a></li>
-
 <li><a href="plugin-updates-report.html">Plugin Updates Report</a></li>
-
-<li><a href="apidocs-2.0.0/index.html">Javadoc</a></li>
-
-<li><a href="jacoco-aggregate/index.html">JaCoCo Aggregate</a></li></ul></li></ul></section></section></section>
+<li><a href="apidocs/index.html">Javadoc</a></li>
+<li><a href="jacoco-aggregate/index.html">JaCoCo Aggregate</a></li></ul></li></ul></section></section>
                         </article>
                     </div>
                 </main>
                 <footer class="legal-notes">
                     <div>
                         Copyright &#169;
-                                                                            2012-2023
+                                                                            2012-${currentYear}
                                             </div>
                     <div>jcabi.com, All Rights Reserved.</div>
-                    <div><a href="http://maven.apache.org/privacy-policy.html">Privacy Policy</a>.</div>
+                    <div><a href="https://maven.apache.org/privacy-policy.html">Privacy Policy</a>.</div>
                 </footer>
             </div>
         </div>

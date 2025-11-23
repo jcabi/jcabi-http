@@ -2,21 +2,11 @@
 <html xmlns="http://www.w3.org/1999/xhtml" lang="en-US">
     <head>
         <meta charset="UTF-8"/>
-        <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-        <title>jcabi-http &#x2013; Making HTTP Request</title>
+        <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+        <title>Making HTTP Request – jcabi-http</title>
         <link media="all" rel="stylesheet" type="text/css" href="./css/jcabi.css"/>
-                    <meta name="author" content="Yegor Bugayenko" />
-                            <script>
-                var _gaq = _gaq || [];
-                _gaq.push(['_setAccount', 'UA-1963507-23']);
-                _gaq.push(['_trackPageview']);
-                (function() {
-                    var ga = document.createElement('script'); ga.type = 'text/javascript'; ga.async = true;
-                    ga.src = ('https:' == document.location.protocol ? 'https://ssl' : 'http://www') + '.google-analytics.com/ga.js';
-                    var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga, s);
-                })();
-            </script>
-                                            <script src="https://code.jquery.com/jquery-2.1.0.min.js"></script>
+                    <meta name="author" content="Yegor Bugayenko"/>
+                                                    <script src="https://code.jquery.com/jquery-2.1.0.min.js"></script>
         <script src="./js/jcabi.js"></script>
     </head>
     <body>
@@ -33,7 +23,7 @@
                                                                     </ul>
                                                     </li>
                                                                                                                         <li >
-                            <span>                        <a href="apidocs-2.0.0/index.html" title="JavaDoc 2.0.0">JavaDoc 2.0.0</a>
+                            <span>                        <a href="apidocs-2.1.0/index.html" title="JavaDoc 2.1.0">JavaDoc 2.1.0</a>
         </span>
                                                                                                                                                                 <ul>
                                                                     </ul>
@@ -143,23 +133,21 @@
                             <div class="logo">
                                 <a href="../"
                                     title=" logo ">
-                                    <img src="../logo-square.svg"
+                                    <img src="${decoration.bannerLeft.src}"
                                         alt="jcabi"
-                                                                                    width="64"
-                                                                                                                            height="64"
-                                                                                itemprop="image"
+                                                                                                                        itemprop="image"
                                     />
                                 </a>
                             </div>
                             <ul class="badges">
                                 <li>
-                                    <strong itemprop="version">2.0.0</strong>
+                                    <strong itemprop="version">2.1.0</strong>
                                 </li>
                                 <li>
-                                    
-                                    <time itemprop="datePublished" datetime="2023-10-29T08:58:26Z">
-                                        
-                                        29-Oct-2023
+                                    $dateFormat.applyPattern("yyyy-MM-dd'T'hh:mm:ss'Z'")
+                                    <time itemprop="datePublished" datetime="${dateFormat.format($currentDate)}">
+                                        $dateFormat.applyPattern('dd-MMM-yyyy')
+                                        ${dateFormat.format($currentDate)}
                                     </time>
                                 </li>
                                 <li class="menu-button">menu</li>
@@ -170,24 +158,20 @@
                                 <img src="https://www.jcabi.com/fork-me.svg" class="fork-me"/>
                             </a>
                                                 <article itemprop="articleBody">
-                            <section>
-<h2><a name="Making_HTTP_Request"></a>Making HTTP Request</h2>
-<p>There is one interface <a href="./apidocs-2.0.0/com/jcabi/http/Request.html"><code>Request</code></a> that represents an HTTP request. There are a few implementations of the interface, and the most popular and easy to use is <a href="./apidocs-2.0.0/com/jcabi/http/request/JdkRequest.html"><code>JdkRequest</code></a>. It makes a request using native JDK class <a class="externalLink" href="http://docs.oracle.com/javase/7/docs/api/java/net/HttpURLConnection.html"><code>java.net.HttpURLConnection</code></a>.</p>
-<p>First, make an instance of <a href="./apidocs-2.0.0/com/jcabi/http/request/JdkRequest.html"><code>JdkRequest</code></a>, providing target URI as the first and the only constructor argument (<code>String</code>, <code>URI</code>, and <code>URL</code> types are accepted):</p>
-<div class="source">
-<pre>Request request = new JdkRequest(&quot;http://my.example.com&quot;);</pre></div>
+                            <section><a id="Making_HTTP_Request"></a>
+<h1>Making HTTP Request</h1>
+<p>There is one interface <a href="./apidocs-2.1.0/com/jcabi/http/Request.html"><code>Request</code></a> that represents an HTTP request. There are a few implementations of the interface, and the most popular and easy to use is <a href="./apidocs-2.1.0/com/jcabi/http/request/JdkRequest.html"><code>JdkRequest</code></a>. It makes a request using native JDK class <a class="externalLink" href="http://docs.oracle.com/javase/7/docs/api/java/net/HttpURLConnection.html"><code>java.net.HttpURLConnection</code></a>.</p>
+<p>First, make an instance of <a href="./apidocs-2.1.0/com/jcabi/http/request/JdkRequest.html"><code>JdkRequest</code></a>, providing target URI as the first and the only constructor argument (<code>String</code>, <code>URI</code>, and <code>URL</code> types are accepted):</p>
+<pre><code>Request request = new JdkRequest(&quot;http://my.example.com&quot;);</code></pre>
 <p>The object is ready to make an HTTP request using the URI provided, <code>GET</code> HTTP method, no custom HTTP headers and no request body. To fire an HTTP request and obtain a response use method <code>fetch()</code>:</p>
-<div class="source">
-<pre>Response response = request.fetch();
+<pre><code>Response response = request.fetch();
 int status = response.status();
-String body = response.body();</pre></div>
-<p><a href="./apidocs-2.0.0/com/jcabi/http/Request.html"><code>Request</code></a> is a trully immutable class, which means that you can't change any of its properties. However, you can create new requests. For example, you want to make a similar request, but with a <code>POST</code> HTTP method:</p>
-<div class="source">
-<pre>Request post = request.method(Request.POST);
-post.fetch();</pre></div>
-<p>This is a bigger example of <a href="./apidocs-2.0.0/com/jcabi/http/Request.html"><code>Request</code></a> usage:</p>
-<div class="source">
-<pre>Response response = new JdkRequest(&quot;http://my.example.com&quot;)
+String body = response.body();</code></pre>
+<p><a href="./apidocs-2.1.0/com/jcabi/http/Request.html"><code>Request</code></a> is a truly immutable class, which means that you can't change any of its properties. However, you can create new requests. For example, you want to make a similar request, but with a <code>POST</code> HTTP method:</p>
+<pre><code>Request post = request.method(Request.POST);
+post.fetch();</code></pre>
+<p>This is a bigger example of <a href="./apidocs-2.1.0/com/jcabi/http/Request.html"><code>Request</code></a> usage:</p>
+<pre><code>Response response = new JdkRequest(&quot;http://my.example.com&quot;)
   .uri().path(&quot;/users&quot;).queryParam(&quot;id&quot;, &quot;456&quot;).back()
   .method(Request.POST)
   .body()
@@ -196,12 +180,11 @@ post.fetch();</pre></div>
   .back()
   .header(&quot;Content-Type&quot;, &quot;application/json&quot;)
   .header(&quot;User-Agent&quot;, &quot;My Custom App&quot;)
-  .fetch();</pre></div>
+  .fetch();</code></pre>
 <p>This code will make a <code>POST</code> HTTP request to <code>http://my.example.com/users?id=456</code>. Request body will be set to <code>salary=55000&amp;department=IT</code>. There will be two HTTP headers in the request: <code>Content-Type</code> and <code>User-Agent</code>.</p>
-<p><a href="./apidocs-2.0.0/com/jcabi/http/Response.html"><code>Response</code></a> has a few methods that return its data, including <code>status()</code>, <code>reason()</code>, <code>headers()</code>, <code>body()</code>, and <code>binary()</code>. Besides that, there is a method <code>as(Class)</code>, which allows you to wrap an existing response with a new custom decorator, that implements more methods, suitable for a particular use case.</p>
-<p>The simpliest decorator is <a href="./apidocs-2.0.0/com/jcabi/http/response/RestResponse.html"><code>RestResponse</code></a>. It helps you to make assertions on the response and follow redirects, for example:</p>
-<div class="source">
-<pre>String page = new JdkRequest(&quot;http://my.example.com&quot;)
+<p><a href="./apidocs-2.1.0/com/jcabi/http/Response.html"><code>Response</code></a> has a few methods that return its data, including <code>status()</code>, <code>reason()</code>, <code>headers()</code>, <code>body()</code>, and <code>binary()</code>. Besides that, there is a method <code>as(Class)</code>, which allows you to wrap an existing response with a new custom decorator, that implements more methods, suitable for a particular use case.</p>
+<p>The simplest decorator is <a href="./apidocs-2.1.0/com/jcabi/http/response/RestResponse.html"><code>RestResponse</code></a>. It helps you to make assertions on the response and follow redirects, for example:</p>
+<pre><code>String page = new JdkRequest(&quot;http://my.example.com&quot;)
   .fetch()
   .as(RestResponse.class)
   .assertStatus(301) // AssertionError if status is not equal to 301
@@ -209,13 +192,12 @@ post.fetch();</pre></div>
   .fetch()
   .as(RestResponse.class)
   .assertStatus(200)
-  .body();</pre></div>
-<p><a href="./apidocs-2.0.0/com/jcabi/http/response/RestResponse.html"><code>RestResponse</code></a> also helps you to retrieve cookies from a response:</p>
-<div class="source">
-<pre>String cookie = new JdkRequest(&quot;http://my.example.com&quot;)
+  .body();</code></pre>
+<p><a href="./apidocs-2.1.0/com/jcabi/http/response/RestResponse.html"><code>RestResponse</code></a> also helps you to retrieve cookies from a response:</p>
+<pre><code>String cookie = new JdkRequest(&quot;http://my.example.com&quot;)
   .fetch()
   .as(RestResponse.class)
-  .cookie(&quot;SessionId&quot;);</pre></div>
+  .cookie(&quot;SessionId&quot;);</code></pre>
 <p>Read also about <a href="./example-xml-response.html"><code>XmlResponse</code></a> and <a href="./example-json-response.html"><code>JsonResponse</code></a>.</p></section>
                         </article>
                     </div>
@@ -223,10 +205,10 @@ post.fetch();</pre></div>
                 <footer class="legal-notes">
                     <div>
                         Copyright &#169;
-                                                                            2012-2023
+                                                                            2012-${currentYear}
                                             </div>
                     <div>jcabi.com, All Rights Reserved.</div>
-                    <div><a href="http://maven.apache.org/privacy-policy.html">Privacy Policy</a>.</div>
+                    <div><a href="https://maven.apache.org/privacy-policy.html">Privacy Policy</a>.</div>
                 </footer>
             </div>
         </div>
