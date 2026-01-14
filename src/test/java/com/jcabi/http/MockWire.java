@@ -1,5 +1,5 @@
 /*
- * SPDX-FileCopyrightText: Copyright (c) 2011-2025 Yegor Bugayenko
+ * SPDX-FileCopyrightText: Copyright (c) 2011-2026 Yegor Bugayenko
  * SPDX-License-Identifier: MIT
  */
 package com.jcabi.http;
@@ -21,14 +21,14 @@ import java.util.Map.Entry;
 public class MockWire implements Wire {
 
     /**
-     * The actual mock object we delegate the <code>Wire.send</code> call to.
+     * The actual mock object we delegate the {@code Wire.send} call to.
      */
     private static Wire mockDelegate;
 
     /**
      * Creates a new mock wire instance.
      * <p>
-     * The given target wire is ignored and <code>Wire.send</code> is delegated
+     * The given target wire is ignored and {@code Wire.send} is delegated
      * to the static mock delegate.
      *
      * @param wire The original wire which is ignored
@@ -55,7 +55,7 @@ public class MockWire implements Wire {
     }
 
     /**
-     * Sets the mock the <code>Request.send</code> method is delegated to.
+     * Sets the mock the {@code Request.send} method is delegated to.
      *
      * @param mock The mock to assert variables passed by the request
      *  implementation

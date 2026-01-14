@@ -1,5 +1,5 @@
 /*
- * SPDX-FileCopyrightText: Copyright (c) 2011-2025 Yegor Bugayenko
+ * SPDX-FileCopyrightText: Copyright (c) 2011-2026 Yegor Bugayenko
  * SPDX-License-Identifier: MIT
  */
 package com.jcabi.http;
@@ -17,10 +17,9 @@ final class ImmutableHeaderTest {
 
     /**
      * ImmutableHeader can normalize headers.
-     * @throws Exception If something goes wrong inside
      */
     @Test
-    void normalizesHeaderKey() throws Exception {
+    void normalizesHeaderKey() {
         final Map.Entry<String, String> header =
             new ImmutableHeader("content-type", "text/plain");
         MatcherAssert.assertThat(

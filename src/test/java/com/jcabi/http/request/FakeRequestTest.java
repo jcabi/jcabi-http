@@ -1,5 +1,5 @@
 /*
- * SPDX-FileCopyrightText: Copyright (c) 2011-2025 Yegor Bugayenko
+ * SPDX-FileCopyrightText: Copyright (c) 2011-2026 Yegor Bugayenko
  * SPDX-License-Identifier: MIT
  */
 package com.jcabi.http.request;
@@ -16,7 +16,6 @@ import org.hamcrest.MatcherAssert;
 import org.hamcrest.Matchers;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
-import org.junit.jupiter.api.function.Executable;
 
 /**
  * Test case for {@link FakeRequest}.
@@ -97,19 +96,14 @@ final class FakeRequestTest {
     void fetchThrowsExceptionWhenBodyIsNotEmpty() {
         Assertions.assertThrows(
             IllegalStateException.class,
-            new Executable() {
-                @Override
-                public void execute() throws Throwable {
-                    new FakeRequest()
-                        .withStatus(HttpURLConnection.HTTP_OK)
-                        .withBody("blah")
-                        .fetch(
-                            new ByteArrayInputStream(
-                                "foo".getBytes(StandardCharsets.UTF_8)
-                            )
-                        );
-                }
-            }
+            () -> new FakeRequest()
+                .withStatus(HttpURLConnection.HTTP_OK)
+                .withBody("blah")
+                .fetch(
+                    new ByteArrayInputStream(
+                        "foo".getBytes(StandardCharsets.UTF_8)
+                    )
+                )
         );
     }
 

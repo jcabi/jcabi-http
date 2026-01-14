@@ -1,5 +1,5 @@
 /*
- * SPDX-FileCopyrightText: Copyright (c) 2011-2025 Yegor Bugayenko
+ * SPDX-FileCopyrightText: Copyright (c) 2011-2026 Yegor Bugayenko
  * SPDX-License-Identifier: MIT
  */
 package com.jcabi.http.wire;
@@ -22,7 +22,6 @@ import org.hamcrest.MatcherAssert;
 import org.hamcrest.Matchers;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
-import org.junit.jupiter.api.function.Executable;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.CsvSource;
 
@@ -34,7 +33,7 @@ import org.junit.jupiter.params.provider.CsvSource;
 final class BasicAuthWireTest {
 
     /**
-     * The format of the credentials as <code>username:password</code>.
+     * The format of the credentials as {@code username:password}.
      */
     private static final String CRED_FORMAT = "%s:%s";
 
@@ -104,16 +103,11 @@ final class BasicAuthWireTest {
             "should not contains user info",
             Assertions.assertThrows(
                 AssertionError.class,
-                new Executable() {
-                    @Override
-                    public void execute() throws Throwable {
-                        new JdkRequest(uri)
-                            .through(BasicAuthWire.class)
-                            .fetch()
-                            .as(RestResponse.class)
-                            .assertStatus(HttpURLConnection.HTTP_OK);
-                    }
-                }
+                () -> new JdkRequest(uri)
+                    .through(BasicAuthWire.class)
+                    .fetch()
+                    .as(RestResponse.class)
+                    .assertStatus(HttpURLConnection.HTTP_OK)
             ),
             Matchers.<AssertionError>hasToString(
                 Matchers.not(
@@ -131,7 +125,7 @@ final class BasicAuthWireTest {
      * @param username The username to create the header for
      * @param password The password to create the header for
      * @return The header value in the form
-     *  <code>Basic &lt;base64 of username:password&gt;</code>
+     *  {@code Basic <base64 of username:password>}
      */
     private static String expectHeader(
         final String username,

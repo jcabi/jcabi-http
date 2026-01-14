@@ -1,5 +1,5 @@
 /*
- * SPDX-FileCopyrightText: Copyright (c) 2011-2025 Yegor Bugayenko
+ * SPDX-FileCopyrightText: Copyright (c) 2011-2026 Yegor Bugayenko
  * SPDX-License-Identifier: MIT
  */
 package com.jcabi.http.request;
@@ -102,25 +102,15 @@ public final class FakeRequest implements Request {
         this.phrase = reason;
         this.hdrs = new Array<>(headers);
         this.content = body.clone();
+        // @checkstyle ParameterNumber (6 lines)
         this.base = new BaseRequest(
-            new Wire() {
-                @Override
-                // @checkstyle ParameterNumber (6 lines)
-                public Response send(final Request req, final String home,
-                    final String method,
-                    final Collection<Map.Entry<String, String>> headers,
-                    final InputStream text,
-                    final int connect,
-                    final int read) {
-                    return new DefaultResponse(
-                        req,
-                        FakeRequest.this.code,
-                        FakeRequest.this.phrase,
-                        FakeRequest.this.hdrs,
-                        FakeRequest.this.content
-                    );
-                }
-            },
+            (req, home, method, headers1, text, connect, read) -> new DefaultResponse(
+                req,
+                this.code,
+                this.phrase,
+                this.hdrs,
+                this.content
+            ),
             "http://localhost:12345/see-FakeRequest-class"
         );
     }

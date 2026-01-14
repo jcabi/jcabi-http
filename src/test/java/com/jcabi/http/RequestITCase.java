@@ -1,5 +1,5 @@
 /*
- * SPDX-FileCopyrightText: Copyright (c) 2011-2025 Yegor Bugayenko
+ * SPDX-FileCopyrightText: Copyright (c) 2011-2026 Yegor Bugayenko
  * SPDX-License-Identifier: MIT
  */
 package com.jcabi.http;
@@ -23,7 +23,6 @@ import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.Timeout;
 import org.junit.jupiter.api.condition.DisabledOnOs;
 import org.junit.jupiter.api.condition.OS;
-import org.junit.jupiter.api.function.Executable;
 import org.junit.jupiter.params.ParameterizedTest;
 
 /**
@@ -63,7 +62,7 @@ final class RequestITCase extends RequestTestTemplate {
     void processesNotOkHttpResponse(
         final Class<? extends Request> type
     ) throws Exception {
-        RequestTestTemplate.request(new URI("https://example.com/file-not-found.txt"), type)
+        RequestTestTemplate.request(new URI("https://badssl.com/404"), type)
             .fetch().as(RestResponse.class)
             .assertStatus(HttpURLConnection.HTTP_NOT_FOUND);
     }
@@ -77,15 +76,10 @@ final class RequestITCase extends RequestTestTemplate {
     void continuesOnConnectionError(final Class<? extends Request> type) {
         Assertions.assertThrows(
             IOException.class,
-            new Executable() {
-                @Override
-                public void execute() throws Throwable {
-                    RequestTestTemplate.request(
-                        new URI("http://localhost:6868/"),
-                        type
-                    ).method(Request.GET).fetch();
-                }
-            }
+            () -> RequestTestTemplate.request(
+                new URI("http://localhost:6868/"),
+                type
+            ).method(Request.GET).fetch()
         );
     }
 

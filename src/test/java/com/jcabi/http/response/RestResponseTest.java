@@ -1,5 +1,5 @@
 /*
- * SPDX-FileCopyrightText: Copyright (c) 2011-2025 Yegor Bugayenko
+ * SPDX-FileCopyrightText: Copyright (c) 2011-2026 Yegor Bugayenko
  * SPDX-License-Identifier: MIT
  */
 package com.jcabi.http.response;
@@ -14,7 +14,6 @@ import org.hamcrest.MatcherAssert;
 import org.hamcrest.Matchers;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
-import org.junit.jupiter.api.function.Executable;
 
 /**
  * Test case for {@link RestResponse}.
@@ -30,16 +29,11 @@ final class RestResponseTest {
     void assertsHttpStatusCode() {
         Assertions.assertThrows(
             AssertionError.class,
-            new Executable() {
-                @Override
-                public void execute() throws Throwable {
-                    new RestResponse(
-                        new FakeRequest()
-                            .withStatus(HttpURLConnection.HTTP_OK)
-                            .fetch()
-                    ).assertStatus(HttpURLConnection.HTTP_NOT_FOUND);
-                }
-            }
+            () -> new RestResponse(
+                new FakeRequest()
+                    .withStatus(HttpURLConnection.HTTP_OK)
+                    .fetch()
+            ).assertStatus(HttpURLConnection.HTTP_NOT_FOUND)
         );
     }
 

@@ -1,5 +1,5 @@
 /*
- * SPDX-FileCopyrightText: Copyright (c) 2011-2025 Yegor Bugayenko
+ * SPDX-FileCopyrightText: Copyright (c) 2011-2026 Yegor Bugayenko
  * SPDX-License-Identifier: MIT
  */
 package com.jcabi.http;
@@ -66,7 +66,7 @@ public interface Response {
     String body();
 
     /**
-     * Raw body as a an array of bytes.
+     * Raw body as an array of bytes.
      * @return The body, as a UTF-8 string
      */
     byte[] binary();

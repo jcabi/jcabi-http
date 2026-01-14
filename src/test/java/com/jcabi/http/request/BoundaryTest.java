@@ -1,5 +1,5 @@
 /*
- * SPDX-FileCopyrightText: Copyright (c) 2011-2025 Yegor Bugayenko
+ * SPDX-FileCopyrightText: Copyright (c) 2011-2026 Yegor Bugayenko
  * SPDX-License-Identifier: MIT
  */
 package com.jcabi.http.request;
@@ -17,10 +17,9 @@ final class BoundaryTest {
 
     /**
      * Boundary builds valid string.
-     * @throws Exception If something goes wrong inside.
      */
     @Test
-    void buildsExpectedBoundary() throws Exception {
+    void buildsExpectedBoundary() {
         MatcherAssert.assertThat(
             "should be match",
             new Boundary(new Random(0L)).value(),
