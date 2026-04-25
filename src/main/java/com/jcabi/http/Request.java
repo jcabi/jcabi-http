@@ -90,6 +90,18 @@ public interface Request {
     String PATCH = "PATCH";
 
     /**
+     * TRACE method name.
+     * @since 2.0
+     */
+    String TRACE = "TRACE";
+
+    /**
+     * CONNECT method name.
+     * @since 2.0
+     */
+    String CONNECT = "CONNECT";
+
+    /**
      * Get destination URI.
      * @return The destination it is currently pointing to
      */
