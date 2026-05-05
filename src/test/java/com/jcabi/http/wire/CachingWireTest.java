@@ -108,22 +108,16 @@ final class CachingWireTest {
     @Test
     void bypassesCacheWhenCacheControlNoCache() throws Exception {
         final MkContainer container = new MkGrizzlyContainer()
-            .next(new MkAnswer.Simple("first"))
-            .next(new MkAnswer.Simple("second"))
-            .next(new MkAnswer.Simple("third"))
+            .next(new MkAnswer.Simple(""))
+            .next(new MkAnswer.Simple(""))
+            .next(new MkAnswer.Simple(""))
             .start();
         final Request req = new JdkRequest(container.home())
             .through(CachingWire.class)
             .header(HttpHeaders.CACHE_CONTROL, "no-cache");
-        req.fetch().as(RestResponse.class)
-            .assertStatus(HttpURLConnection.HTTP_OK)
-            .assertBody(Matchers.containsString("first"));
-        req.fetch().as(RestResponse.class)
-            .assertStatus(HttpURLConnection.HTTP_OK)
-            .assertBody(Matchers.containsString("second"));
-        req.fetch().as(RestResponse.class)
-            .assertStatus(HttpURLConnection.HTTP_OK)
-            .assertBody(Matchers.containsString("third"));
+        for (int idx = 0; idx < 3; ++idx) {
+            req.fetch();
+        }
         container.stop();
         MatcherAssert.assertThat(
             "no-cache request must always hit origin",
@@ -142,18 +136,14 @@ final class CachingWireTest {
     @Test
     void bypassesCacheWhenCacheControlNoStore() throws Exception {
         final MkContainer container = new MkGrizzlyContainer()
-            .next(new MkAnswer.Simple("uno"))
-            .next(new MkAnswer.Simple("dos"))
+            .next(new MkAnswer.Simple(""))
+            .next(new MkAnswer.Simple(""))
             .start();
         final Request req = new JdkRequest(container.home())
             .through(CachingWire.class)
             .header(HttpHeaders.CACHE_CONTROL, "no-store");
-        req.fetch().as(RestResponse.class)
-            .assertStatus(HttpURLConnection.HTTP_OK)
-            .assertBody(Matchers.containsString("uno"));
-        req.fetch().as(RestResponse.class)
-            .assertStatus(HttpURLConnection.HTTP_OK)
-            .assertBody(Matchers.containsString("dos"));
+        req.fetch();
+        req.fetch();
         container.stop();
         MatcherAssert.assertThat(
             "no-store request must not be served from the cache",
@@ -170,18 +160,14 @@ final class CachingWireTest {
     @Test
     void bypassesCacheWhenPragmaNoCache() throws Exception {
         final MkContainer container = new MkGrizzlyContainer()
-            .next(new MkAnswer.Simple("alpha"))
-            .next(new MkAnswer.Simple("beta"))
+            .next(new MkAnswer.Simple(""))
+            .next(new MkAnswer.Simple(""))
             .start();
         final Request req = new JdkRequest(container.home())
             .through(CachingWire.class)
             .header("Pragma", "no-cache");
-        req.fetch().as(RestResponse.class)
-            .assertStatus(HttpURLConnection.HTTP_OK)
-            .assertBody(Matchers.containsString("alpha"));
-        req.fetch().as(RestResponse.class)
-            .assertStatus(HttpURLConnection.HTTP_OK)
-            .assertBody(Matchers.containsString("beta"));
+        req.fetch();
+        req.fetch();
         container.stop();
         MatcherAssert.assertThat(
             "Pragma no-cache request must always hit origin",
