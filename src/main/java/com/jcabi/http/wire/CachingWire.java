@@ -11,10 +11,12 @@ import com.jcabi.aspects.Immutable;
 import com.jcabi.http.Request;
 import com.jcabi.http.Response;
 import com.jcabi.http.Wire;
+import jakarta.ws.rs.core.HttpHeaders;
 import java.io.IOException;
 import java.io.InputStream;
 import java.net.URI;
 import java.util.Collection;
+import java.util.Locale;
 import java.util.Map;
 import java.util.concurrent.Callable;
 import java.util.concurrent.ExecutionException;
@@ -103,6 +105,23 @@ public final class CachingWire implements Wire {
     private static final String NEVER = "$never";
 
     /**
+     * Pragma HTTP header name (RFC 7234 §5.4).
+     */
+    private static final String PRAGMA = "Pragma";
+
+    /**
+     * No-cache directive value used in {@code Cache-Control}
+     * and {@code Pragma} request headers.
+     */
+    private static final String NO_CACHE = "no-cache";
+
+    /**
+     * No-store directive value used in {@code Cache-Control}
+     * request headers.
+     */
+    private static final String NO_STORE = "no-store";
+
+    /**
      * Original wire.
      */
     private final transient Wire origin;
@@ -187,7 +206,7 @@ public final class CachingWire implements Wire {
             this.cache.invalidateAll();
         }
         final Response rsp;
-        if (method.equals(Request.GET)) {
+        if (method.equals(Request.GET) && !CachingWire.bypass(headers)) {
             try {
                 rsp = this.cache.get(
                     new CachingWire.Query(
@@ -214,6 +233,42 @@ public final class CachingWire implements Wire {
     @SuppressWarnings("PMD.ProhibitPublicStaticMethods")
     public static void invalidate() {
         CachingWire.CACHE.invalidateAll();
+    }
+
+    /**
+     * Should the cache be bypassed for this request?
+     *
+     * <p>Per RFC 7234 §5.2.1, a request that carries
+     * {@code Cache-Control: no-cache} or {@code no-store} must not be
+     * served from a cached response, and a {@code no-store} request must
+     * not be stored either. {@code Pragma: no-cache} is the HTTP/1.0
+     * backwards-compatible equivalent of {@code Cache-Control: no-cache}
+     * (RFC 7234 §5.4).
+     *
+     * @param headers Request headers
+     * @return Whether the request asks the cache to be skipped
+     */
+    private static boolean bypass(
+        final Collection<Map.Entry<String, String>> headers
+    ) {
+        boolean bypass = false;
+        for (final Map.Entry<String, String> header : headers) {
+            final String name = header.getKey();
+            final String value = header.getValue()
+                .toLowerCase(Locale.ENGLISH);
+            if (HttpHeaders.CACHE_CONTROL.equals(name)
+                && (value.contains(CachingWire.NO_CACHE)
+                || value.contains(CachingWire.NO_STORE))) {
+                bypass = true;
+                break;
+            }
+            if (CachingWire.PRAGMA.equals(name)
+                && value.contains(CachingWire.NO_CACHE)) {
+                bypass = true;
+                break;
+            }
+        }
+        return bypass;
     }
 
     /**

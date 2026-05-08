@@ -14,6 +14,7 @@ import com.jcabi.http.mock.MkContainer;
 import com.jcabi.http.mock.MkGrizzlyContainer;
 import com.jcabi.http.request.JdkRequest;
 import com.jcabi.http.response.RestResponse;
+import jakarta.ws.rs.core.HttpHeaders;
 import java.net.HttpURLConnection;
 import java.util.concurrent.Callable;
 import org.hamcrest.MatcherAssert;
@@ -94,6 +95,84 @@ final class CachingWireTest {
             "should be equal 3",
             container.queries(),
             Matchers.equalTo(3)
+        );
+    }
+
+    /**
+     * CachingWire bypasses the cache on every request that carries
+     * a {@code Cache-Control: no-cache} directive (RFC 7234 §5.2.1.4),
+     * even when an identical request with the same header has already
+     * been served.
+     * @throws Exception If something goes wrong inside
+     */
+    @Test
+    void bypassesCacheWhenCacheControlNoCache() throws Exception {
+        final MkContainer container = new MkGrizzlyContainer()
+            .next(new MkAnswer.Simple(""))
+            .next(new MkAnswer.Simple(""))
+            .next(new MkAnswer.Simple(""))
+            .start();
+        final Request req = new JdkRequest(container.home())
+            .through(CachingWire.class)
+            .header(HttpHeaders.CACHE_CONTROL, "no-cache");
+        for (int idx = 0; idx < 3; ++idx) {
+            req.fetch();
+        }
+        container.stop();
+        MatcherAssert.assertThat(
+            "no-cache request must always hit origin",
+            container.queries(),
+            Matchers.equalTo(3)
+        );
+    }
+
+    /**
+     * CachingWire bypasses the cache when the request carries
+     * a {@code Cache-Control: no-store} directive (RFC 7234 §5.2.1.5).
+     * The response must not be stored in the cache either, so subsequent
+     * identical no-store requests also reach the origin.
+     * @throws Exception If something goes wrong inside
+     */
+    @Test
+    void bypassesCacheWhenCacheControlNoStore() throws Exception {
+        final MkContainer container = new MkGrizzlyContainer()
+            .next(new MkAnswer.Simple(""))
+            .next(new MkAnswer.Simple(""))
+            .start();
+        final Request req = new JdkRequest(container.home())
+            .through(CachingWire.class)
+            .header(HttpHeaders.CACHE_CONTROL, "no-store");
+        req.fetch();
+        req.fetch();
+        container.stop();
+        MatcherAssert.assertThat(
+            "no-store request must not be served from the cache",
+            container.queries(),
+            Matchers.equalTo(2)
+        );
+    }
+
+    /**
+     * CachingWire bypasses the cache when the request carries
+     * a {@code Pragma: no-cache} directive (RFC 7234 §5.4).
+     * @throws Exception If something goes wrong inside
+     */
+    @Test
+    void bypassesCacheWhenPragmaNoCache() throws Exception {
+        final MkContainer container = new MkGrizzlyContainer()
+            .next(new MkAnswer.Simple(""))
+            .next(new MkAnswer.Simple(""))
+            .start();
+        final Request req = new JdkRequest(container.home())
+            .through(CachingWire.class)
+            .header("Pragma", "no-cache");
+        req.fetch();
+        req.fetch();
+        container.stop();
+        MatcherAssert.assertThat(
+            "Pragma no-cache request must always hit origin",
+            container.queries(),
+            Matchers.equalTo(2)
         );
     }
 
