@@ -26,5 +26,6 @@ jobs:
       - run: mvn install -Pjacoco
       - uses: codecov/codecov-action@v5
         with:
+          token: ${{ secrets.CODECOV_TOKEN }}
           files: ./target/site/jacoco/jacoco.xml
           fail_ci_if_error: true
