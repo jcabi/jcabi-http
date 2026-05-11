@@ -709,6 +709,34 @@ final class RequestTest extends RequestTestTemplate {
     }
 
     /**
+     * RestResponse.assertBody matches only the response body, not HTTP headers.
+     * Reproduces https://github.com/jcabi/jcabi-http/issues/177
+     * @param type Request type
+     * @throws Exception If something goes wrong inside
+     */
+    @Values
+    @ParameterizedTest
+    void assertBodyMatchesOnlyBodyNotHttpHeaders(
+        final Class<? extends Request> type
+    ) throws Exception {
+        final String expected = "hello";
+        final MkContainer container = new MkGrizzlyContainer().next(
+            new MkAnswer.Simple(expected)
+        ).start();
+        try {
+            RequestTestTemplate.request(container.home(), type)
+                .method(Request.POST)
+                .body().set("request").back()
+                .fetch().as(RestResponse.class)
+                .assertBody(
+                    Matchers.equalTo(expected)
+                );
+        } finally {
+            container.stop();
+        }
+    }
+
+    /**
      * Content type stream.
      * @return Content type header.
      */
