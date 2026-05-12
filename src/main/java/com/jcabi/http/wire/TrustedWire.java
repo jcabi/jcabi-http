@@ -88,16 +88,27 @@ public final class TrustedWire implements Wire {
         synchronized (TrustedWire.class) {
             final SSLSocketFactory def =
                 HttpsURLConnection.getDefaultSSLSocketFactory();
+            final SSLContext ctx = TrustedWire.context();
+            final SSLContext defctx;
+            try {
+                defctx = SSLContext.getDefault();
+            } catch (final NoSuchAlgorithmException ex) {
+                throw new IOException(
+                    "Failed to obtain default SSL context", ex
+                );
+            }
             try {
                 HttpsURLConnection.setDefaultSSLSocketFactory(
-                    TrustedWire.context().getSocketFactory()
+                    ctx.getSocketFactory()
                 );
+                SSLContext.setDefault(ctx);
                 return this.origin.send(
                     req, home, method, headers, content,
                     connect, read
                 );
             } finally {
                 HttpsURLConnection.setDefaultSSLSocketFactory(def);
+                SSLContext.setDefault(defctx);
             }
         }
     }
