@@ -36,7 +36,7 @@
     </site>
   </distributionManagement>
   <properties>
-    <byte-buddy.version>1.17.8</byte-buddy.version>
+    <byte-buddy.version>1.18.8-jdk5</byte-buddy.version>
     <lombok.version>1.18.42</lombok.version>
   </properties>
   <dependencies>
