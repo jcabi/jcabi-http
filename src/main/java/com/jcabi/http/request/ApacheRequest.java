@@ -39,9 +39,6 @@ import org.apache.http.util.EntityUtils;
  * <p>The class is immutable and thread-safe.
  *
  * @since 0.8
- * @todo #200:30m TrustedWire does not support ApacheRequest.
- *  Investigate if it's possible for them to work together,
- *  if not see jcabi-http#178 for discussion about alternative solutions.
  * @checkstyle ClassDataAbstractionCoupling (500 lines)
  */
 @Immutable
@@ -64,12 +61,13 @@ public final class ApacheRequest implements Request {
             final InputStream content,
             final int connect,
             final int read) throws IOException {
-            try (CloseableHttpResponse response = HttpClients.createSystem().execute(
-                this.httpRequest(
-                    home, method, headers, content,
-                    connect, read
-                )
-            )) {
+            try (CloseableHttpResponse response = HttpClients.createSystem()
+                .execute(
+                    this.httpRequest(
+                        home, method, headers, content,
+                        connect, read
+                    )
+                )) {
                 return new DefaultResponse(
                     req,
                     response.getStatusLine().getStatusCode(),
