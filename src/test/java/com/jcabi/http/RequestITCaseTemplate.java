@@ -4,7 +4,6 @@
  */
 package com.jcabi.http;
 
-import com.jcabi.http.request.JdkRequest;
 import com.jcabi.http.response.JsonResponse;
 import com.jcabi.http.response.RestResponse;
 import com.jcabi.http.response.XmlResponse;
@@ -26,7 +25,6 @@ import org.hamcrest.MatcherAssert;
 import org.hamcrest.Matchers;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
-import org.junit.jupiter.api.condition.DisabledIf;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.ValueSource;
 
@@ -162,7 +160,6 @@ public abstract class RequestITCaseTemplate {
     }
 
     @Test
-    @DisabledIf("isJdkRequest")
     final void readsDeflatedJsonResponse() throws Exception {
         MatcherAssert.assertThat(
             "Must undeflate & parse Json response",
@@ -179,7 +176,6 @@ public abstract class RequestITCaseTemplate {
     }
 
     @Test
-    @DisabledIf("isJdkRequest")
     final void readsGzippedJsonResponse() throws Exception {
         MatcherAssert.assertThat(
             "Must unzip & parse Json response",
@@ -223,14 +219,5 @@ public abstract class RequestITCaseTemplate {
                 .xml(),
             Matchers.notNullValue(XML.class)
         );
-    }
-
-    /**
-     * Is JdkRequest being tested?
-     * @return True if so.
-     */
-    @SuppressWarnings("PMD.UnusedPrivateMethod")
-    private boolean isJdkRequest() {
-        return JdkRequest.class.equals(this.type);
     }
 }

@@ -25,7 +25,10 @@ import java.net.URLConnection;
 import java.util.Collection;
 import java.util.LinkedList;
 import java.util.List;
+import java.util.Locale;
 import java.util.Map;
+import java.util.zip.GZIPInputStream;
+import java.util.zip.InflaterInputStream;
 import lombok.EqualsAndHashCode;
 import lombok.ToString;
 
@@ -153,7 +156,8 @@ public final class JdkRequest implements Request {
             }
             byte[] body = new byte[0];
             if (inp != null) {
-                try (InputStream is = inp; ByteArrayOutputStream os = new ByteArrayOutputStream()) {
+                try (InputStream is = this.decode(inp, conn.getContentEncoding());
+                    ByteArrayOutputStream os = new ByteArrayOutputStream()) {
                     final byte[] buffer = new byte[8192];
                     int bytes;
                     while (true) {
@@ -167,6 +171,32 @@ public final class JdkRequest implements Request {
                 }
             }
             return body;
+        }
+
+        /**
+         * Wrap the response stream in a decoder when the server set
+         * {@code Content-Encoding} to {@code gzip} or {@code deflate}.
+         * @param raw Raw response stream
+         * @param encoding Value of the {@code Content-Encoding} header, may be {@code null}
+         * @return Stream that yields the decoded payload
+         * @throws IOException If wrapping fails
+         */
+        private InputStream decode(final InputStream raw, final String encoding)
+            throws IOException {
+            final InputStream out;
+            if (encoding == null) {
+                out = raw;
+            } else {
+                final String normalized = encoding.trim().toLowerCase(Locale.ENGLISH);
+                if ("gzip".equals(normalized) || "x-gzip".equals(normalized)) {
+                    out = new GZIPInputStream(raw);
+                } else if ("deflate".equals(normalized)) {
+                    out = new InflaterInputStream(raw);
+                } else {
+                    out = raw;
+                }
+            }
+            return out;
         }
     };
 
