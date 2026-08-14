@@ -13,7 +13,6 @@ import lombok.EqualsAndHashCode;
 
 /**
  * Abstract response.
- *
  * @since 0.8
  */
 @Immutable
@@ -68,11 +67,8 @@ abstract class AbstractResponse implements Response {
         return this.response.binary();
     }
 
-    // @checkstyle MethodName (4 lines)
     @Override
-    @SuppressWarnings("PMD.ShortMethodName")
     public final <T extends Response> T as(final Class<T> type) {
         return this.response.as(type);
     }
-
 }

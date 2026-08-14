@@ -82,13 +82,14 @@ final class RequestITCase extends RequestTestTemplate {
 
     @Test
     void handlesGet() throws Exception {
-        try (MkContainer container = new MkGrizzlyContainer()
-            .next(
+        try (
+            MkContainer container = new MkGrizzlyContainer().next(
                 new MkAnswer.Simple(
                     HttpURLConnection.HTTP_OK,
                     Json.createObjectBuilder().toString()
                 )
-            ).start()) {
+            ).start()
+        ) {
             new ApacheRequest(container.home())
                 .method(Request.GET)
                 .fetch();
@@ -102,13 +103,14 @@ final class RequestITCase extends RequestTestTemplate {
 
     @Test
     void handlesDelete() throws Exception {
-        try (MkContainer container = new MkGrizzlyContainer()
-            .next(
+        try (
+            MkContainer container = new MkGrizzlyContainer().next(
                 new MkAnswer.Simple(
                     HttpURLConnection.HTTP_OK,
                     Json.createObjectBuilder().toString()
                 )
-            ).start()) {
+            ).start()
+        ) {
             new ApacheRequest(container.home())
                 .method(Request.DELETE)
                 .fetch();
@@ -122,13 +124,14 @@ final class RequestITCase extends RequestTestTemplate {
 
     @Test
     void handlesDeleteWithBody() throws Exception {
-        try (MkContainer container = new MkGrizzlyContainer()
-            .next(
+        try (
+            MkContainer container = new MkGrizzlyContainer().next(
                 new MkAnswer.Simple(
                     HttpURLConnection.HTTP_OK,
                     Json.createObjectBuilder().toString()
                 )
-            ).start()) {
+            ).start()
+        ) {
             new ApacheRequest(container.home())
                 .method(Request.DELETE)
                 .body().set("{}").back()

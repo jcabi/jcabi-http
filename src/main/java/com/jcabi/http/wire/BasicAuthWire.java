@@ -17,8 +17,8 @@ import java.io.InputStream;
 import java.net.URI;
 import java.nio.charset.Charset;
 import java.nio.charset.StandardCharsets;
+import java.util.ArrayList;
 import java.util.Collection;
-import java.util.LinkedList;
 import java.util.Map;
 import lombok.EqualsAndHashCode;
 import lombok.ToString;
@@ -65,7 +65,6 @@ public final class BasicAuthWire implements Wire {
         this.origin = wire;
     }
 
-    // @checkstyle ParameterNumber (7 lines)
     @Override
     public Response send(final Request req, final String home,
         final String method,
@@ -74,7 +73,7 @@ public final class BasicAuthWire implements Wire {
         final int connect,
         final int read) throws IOException {
         final Collection<Map.Entry<String, String>> hdrs =
-            new LinkedList<>();
+            new ArrayList<>(0);
         boolean absent = true;
         for (final Map.Entry<String, String> header : headers) {
             if (header.getKey().equals(HttpHeaders.AUTHORIZATION)) {

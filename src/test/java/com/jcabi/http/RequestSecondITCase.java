@@ -7,17 +7,15 @@ package com.jcabi.http;
 import com.jcabi.http.request.ApacheRequest;
 import com.jcabi.http.request.JdkRequest;
 import java.net.URI;
-import org.junit.jupiter.api.AfterAll;
-import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Nested;
 import org.junit.jupiter.api.TestInstance;
 import org.testcontainers.containers.GenericContainer;
+import org.testcontainers.junit.jupiter.Container;
 import org.testcontainers.junit.jupiter.Testcontainers;
 import org.testcontainers.utility.DockerImageName;
 
 /**
  * Integration test for {@link Request}.
- *
  * @since 1.17.8
  */
 @TestInstance(TestInstance.Lifecycle.PER_CLASS)
@@ -27,30 +25,22 @@ final class RequestSecondITCase {
     /**
      * Container with HttpBin.
      */
-    private final GenericContainer<?> container = new GenericContainer<>(
-        DockerImageName.parse("kennethreitz/httpbin")
-    ).withExposedPorts(80);
-
-    @BeforeAll
-    void beforeAll() {
-        this.container.start();
-    }
-
-    @AfterAll
-    void tearDown() {
-        this.container.stop();
-    }
+    @Container
+    private static final GenericContainer<?> CONTAINER =
+        new GenericContainer<>(
+            DockerImageName.parse("kennethreitz/httpbin")
+        ).withExposedPorts(80);
 
     /**
      * URI of the container.
-     * @return URI.
+     * @return URI
      */
     private URI uri() {
         return URI.create(
             String.format(
                 "http://%s:%d",
-                this.container.getHost(),
-                this.container.getFirstMappedPort()
+                RequestSecondITCase.CONTAINER.getHost(),
+                RequestSecondITCase.CONTAINER.getFirstMappedPort()
             )
         );
     }
@@ -62,6 +52,7 @@ final class RequestSecondITCase {
     @Nested
     @SuppressWarnings("PMD.TestClassWithoutTestCases")
     final class JdkRequestITCase extends RequestITCaseTemplate {
+
         JdkRequestITCase() {
             super(JdkRequest.class, RequestSecondITCase.this.uri());
         }
@@ -74,6 +65,7 @@ final class RequestSecondITCase {
     @Nested
     @SuppressWarnings("PMD.TestClassWithoutTestCases")
     final class ApacheRequestITCase extends RequestITCaseTemplate {
+
         ApacheRequestITCase() {
             super(ApacheRequest.class, RequestSecondITCase.this.uri());
         }

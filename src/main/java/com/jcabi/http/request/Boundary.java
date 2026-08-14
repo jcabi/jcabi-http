@@ -11,12 +11,12 @@ import java.util.Random;
 /**
  * Boundary for content-type multipart/form-data.
  * This is a copy of boundary created by Apache HttpComponents HttpClient 4.5.
- *
  * @since 1.0
  */
 @Immutable
 @Loggable(Loggable.DEBUG)
 public final class Boundary {
+
     /**
      * The pool of ASCII chars to be used for generating a multipart boundary.
      */
@@ -38,7 +38,7 @@ public final class Boundary {
 
     /**
      * Ctor.
-     * @param random Random number generation.
+     * @param random Random number generation
      */
     public Boundary(final Random random) {
         this.rand = random;
@@ -46,7 +46,7 @@ public final class Boundary {
 
     /**
      * Generates random boundary with random size from 30 to 40.
-     * @return Boundary value.
+     * @return Boundary value
      */
     public String value() {
         final StringBuilder buffer = new StringBuilder();
@@ -54,8 +54,7 @@ public final class Boundary {
         for (int index = 0; index < count; ++index) {
             buffer.append(
                 Boundary.MULTIPART_CHARS[
-                    this.rand.nextInt(Boundary.MULTIPART_CHARS.length)
-                    ]
+                    this.rand.nextInt(Boundary.MULTIPART_CHARS.length)]
             );
         }
         return buffer.toString();

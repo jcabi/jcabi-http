@@ -86,8 +86,7 @@ final class MkContainerTest {
                 .start();
             new JdkRequest(container.home())
                 .through(VerboseWire.class)
-                .fetch().as(RestResponse.class)
-                .assertBody(
+                .fetch().as(RestResponse.class).assertBody(
                     Matchers.allOf(
                         Matchers.is(match),
                         Matchers.not(mismatch)
@@ -132,9 +131,7 @@ final class MkContainerTest {
                         .through(VerboseWire.class)
                         .fetch()
                         .as(RestResponse.class)
-                        .assertStatus(
-                            HttpURLConnection.HTTP_INTERNAL_ERROR
-                        );
+                        .assertStatus(HttpURLConnection.HTTP_INTERNAL_ERROR);
                     container.take();
                 }
             }
@@ -180,8 +177,7 @@ final class MkContainerTest {
                 .start();
             new JdkRequest(container.home())
                 .through(VerboseWire.class)
-                .fetch().as(RestResponse.class)
-                .assertBody(
+                .fetch().as(RestResponse.class).assertBody(
                     Matchers.allOf(
                         Matchers.is(first),
                         Matchers.not(second)

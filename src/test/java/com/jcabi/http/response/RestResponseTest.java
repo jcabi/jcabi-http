@@ -70,8 +70,7 @@ final class RestResponseTest {
             "should contains value & path",
             new RestResponse(
                 new FakeRequest()
-                    .withBody("<hello/>")
-                    .withHeader(
+                    .withBody("<hello/>").withHeader(
                         HttpHeaders.SET_COOKIE,
                         "cookie1=foo1;Path=/;Comment=\"\", bar=1;"
                     )
@@ -133,5 +132,4 @@ final class RestResponseTest {
             Matchers.hasToString("http://locahost:888/foo/bar?hey")
         );
     }
-
 }

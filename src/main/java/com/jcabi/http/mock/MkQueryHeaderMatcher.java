@@ -54,5 +54,4 @@ final class MkQueryHeaderMatcher extends TypeSafeMatcher<MkQuery> {
         return item.headers().containsKey(this.header)
             && this.matcher.matches(item.headers().get(this.header));
     }
-
 }

@@ -86,5 +86,4 @@ public interface RequestURI {
      * @return New altered URI
      */
     RequestURI port(int num);
-
 }

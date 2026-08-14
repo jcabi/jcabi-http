@@ -58,12 +58,11 @@ final class LastModifiedCachingWireTest {
      */
     @Test
     void requestWithoutHeaderPassed() throws Exception {
-        final MkContainer container = new MkGrizzlyContainer()
-            .next(
-                new MkAnswer.Simple(
-                    HttpURLConnection.HTTP_OK, LastModifiedCachingWireTest.BODY
-                )
-            ).start();
+        final MkContainer container = new MkGrizzlyContainer().next(
+            new MkAnswer.Simple(
+                HttpURLConnection.HTTP_OK, LastModifiedCachingWireTest.BODY
+            )
+        ).start();
         try {
             final RestResponse response = new JdkRequest(container.home())
                 .through(LastModifiedCachingWire.class)
@@ -91,24 +90,22 @@ final class LastModifiedCachingWireTest {
     @Test
     void cachesGetRequest() throws Exception {
         final int count = 10;
-        final MkContainer container = new MkGrizzlyContainer()
-            .next(
-                new MkAnswer.Simple(
-                    HttpURLConnection.HTTP_OK,
-                    Collections.singletonMap(
-                        HttpHeaders.LAST_MODIFIED,
-                        "Wed, 15 Nov 1995 04:58:08 GMT"
-                    ).entrySet(),
-                    LastModifiedCachingWireTest.bytes(
-                        LastModifiedCachingWireTest.BODY
-                    )
+        final MkContainer container = new MkGrizzlyContainer().next(
+            new MkAnswer.Simple(
+                HttpURLConnection.HTTP_OK,
+                Collections.singletonMap(
+                    HttpHeaders.LAST_MODIFIED,
+                    "Wed, 15 Nov 1995 04:58:08 GMT"
+                ).entrySet(),
+                LastModifiedCachingWireTest.bytes(
+                    LastModifiedCachingWireTest.BODY
                 )
             )
-            .next(
-                new MkAnswer.Simple(HttpURLConnection.HTTP_NOT_MODIFIED),
-                new IsAnything<MkQuery>(),
-                count
-            ).start();
+        ).next(
+            new MkAnswer.Simple(HttpURLConnection.HTTP_NOT_MODIFIED),
+            new IsAnything<MkQuery>(),
+            count
+        ).start();
         try {
             final Collection<String> bodies =
                 LastModifiedCachingWireTest.bodies(
@@ -148,34 +145,31 @@ final class LastModifiedCachingWireTest {
         final String first = "Body 1";
         final String second = "Body 2";
         final String third = "Body 3";
-        final MkContainer container = new MkGrizzlyContainer()
-            .next(
-                new MkAnswer.Simple(
-                    HttpURLConnection.HTTP_OK,
-                    Collections.singletonMap(
-                        HttpHeaders.LAST_MODIFIED,
-                        "Wed, 15 Nov 1995 05:58:08 GMT"
-                    ).entrySet(),
-                    LastModifiedCachingWireTest.bytes(first)
-                ),
-                Matchers.not(queryContainsIfModifiedSinceHeader())
-            )
-            .next(
-                new MkAnswer.Simple(
-                    HttpURLConnection.HTTP_OK,
-                    Collections.<Map.Entry<String, String>>emptySet(),
-                    LastModifiedCachingWireTest.bytes(second)
-                ),
-                queryContainsIfModifiedSinceHeader()
-            )
-            .next(
-                new MkAnswer.Simple(
-                    HttpURLConnection.HTTP_OK,
-                    Collections.<Map.Entry<String, String>>emptySet(),
-                    LastModifiedCachingWireTest.bytes(third)
-                ),
-                Matchers.not(queryContainsIfModifiedSinceHeader())
-            ).start();
+        final MkContainer container = new MkGrizzlyContainer().next(
+            new MkAnswer.Simple(
+                HttpURLConnection.HTTP_OK,
+                Collections.singletonMap(
+                    HttpHeaders.LAST_MODIFIED,
+                    "Wed, 15 Nov 1995 05:58:08 GMT"
+                ).entrySet(),
+                LastModifiedCachingWireTest.bytes(first)
+            ),
+            Matchers.not(queryContainsIfModifiedSinceHeader())
+        ).next(
+            new MkAnswer.Simple(
+                HttpURLConnection.HTTP_OK,
+                Collections.<Map.Entry<String, String>>emptySet(),
+                LastModifiedCachingWireTest.bytes(second)
+            ),
+            queryContainsIfModifiedSinceHeader()
+        ).next(
+            new MkAnswer.Simple(
+                HttpURLConnection.HTTP_OK,
+                Collections.<Map.Entry<String, String>>emptySet(),
+                LastModifiedCachingWireTest.bytes(third)
+            ),
+            Matchers.not(queryContainsIfModifiedSinceHeader())
+        ).start();
         try {
             final Request req = new JdkRequest(container.home())
                 .through(LastModifiedCachingWire.class);
@@ -208,29 +202,25 @@ final class LastModifiedCachingWireTest {
      *  so unlikely to be returned in future.
      */
     @Test
-    void doesNotEvictCacheOnNonOk()
-        throws Exception {
+    void doesNotEvictCacheOnNonOk() throws Exception {
         final String body = "Body";
-        final MkContainer container = new MkGrizzlyContainer()
-            .next(
-                new MkAnswer.Simple(
-                    HttpURLConnection.HTTP_OK,
-                    Collections.singletonMap(
-                        HttpHeaders.LAST_MODIFIED,
-                        "Wed, 15 Nov 1995 06:58:08 GMT"
-                    ).entrySet(),
-                    LastModifiedCachingWireTest.bytes(body)
-                ),
-                Matchers.not(queryContainsIfModifiedSinceHeader())
-            )
-            .next(
-                new MkAnswer.Simple(HttpURLConnection.HTTP_NOT_FOUND),
-                queryContainsIfModifiedSinceHeader()
-            )
-            .next(
-                new MkAnswer.Simple(HttpURLConnection.HTTP_NOT_MODIFIED),
-                queryContainsIfModifiedSinceHeader()
-            ).start();
+        final MkContainer container = new MkGrizzlyContainer().next(
+            new MkAnswer.Simple(
+                HttpURLConnection.HTTP_OK,
+                Collections.singletonMap(
+                    HttpHeaders.LAST_MODIFIED,
+                    "Wed, 15 Nov 1995 06:58:08 GMT"
+                ).entrySet(),
+                LastModifiedCachingWireTest.bytes(body)
+            ),
+            Matchers.not(queryContainsIfModifiedSinceHeader())
+        ).next(
+            new MkAnswer.Simple(HttpURLConnection.HTTP_NOT_FOUND),
+            queryContainsIfModifiedSinceHeader()
+        ).next(
+            new MkAnswer.Simple(HttpURLConnection.HTTP_NOT_MODIFIED),
+            queryContainsIfModifiedSinceHeader()
+        ).start();
         try {
             final Request req = new JdkRequest(container.home())
                 .through(LastModifiedCachingWire.class);
@@ -258,28 +248,27 @@ final class LastModifiedCachingWireTest {
             HttpHeaders.LAST_MODIFIED,
             "Wed, 16 Nov 1995 04:58:08 GMT"
         );
-        final MkContainer container = new MkGrizzlyContainer()
-            .next(
-                new MkAnswer.Simple(
-                    HttpURLConnection.HTTP_OK,
-                    headers.entrySet(),
-                    LastModifiedCachingWireTest.bytes(
-                        LastModifiedCachingWireTest.BODY
-                    )
+        final MkContainer container = new MkGrizzlyContainer().next(
+            new MkAnswer.Simple(
+                HttpURLConnection.HTTP_OK,
+                headers.entrySet(),
+                LastModifiedCachingWireTest.bytes(
+                    LastModifiedCachingWireTest.BODY
                 )
             )
-            .next(new MkAnswer.Simple(HttpURLConnection.HTTP_NOT_MODIFIED))
-            .next(
-                new MkAnswer.Simple(
-                    HttpURLConnection.HTTP_OK,
-                    headers.entrySet(),
-                    LastModifiedCachingWireTest.bytes(
-                        LastModifiedCachingWireTest.BODY_UPDATED
-                    )
+        ).next(
+            new MkAnswer.Simple(HttpURLConnection.HTTP_NOT_MODIFIED)
+        ).next(
+            new MkAnswer.Simple(
+                HttpURLConnection.HTTP_OK,
+                headers.entrySet(),
+                LastModifiedCachingWireTest.bytes(
+                    LastModifiedCachingWireTest.BODY_UPDATED
                 )
             )
-            .next(new MkAnswer.Simple(HttpURLConnection.HTTP_NOT_MODIFIED))
-            .start();
+        ).next(
+            new MkAnswer.Simple(HttpURLConnection.HTTP_NOT_MODIFIED)
+        ).start();
         try {
             final Collection<String> bodies =
                 LastModifiedCachingWireTest.bodies(
@@ -316,18 +305,15 @@ final class LastModifiedCachingWireTest {
      */
     @Test
     void sendsRequestDirectly() throws Exception {
-        final MkContainer container = new MkGrizzlyContainer()
-            .next(
-                new MkAnswer.Simple(
-                    HttpURLConnection.HTTP_OK, LastModifiedCachingWireTest.BODY
-                )
+        final MkContainer container = new MkGrizzlyContainer().next(
+            new MkAnswer.Simple(
+                HttpURLConnection.HTTP_OK, LastModifiedCachingWireTest.BODY
             )
-            .next(
-                new MkAnswer.Simple(
-                    HttpURLConnection.HTTP_OK, LastModifiedCachingWireTest.BODY
-                )
+        ).next(
+            new MkAnswer.Simple(
+                HttpURLConnection.HTTP_OK, LastModifiedCachingWireTest.BODY
             )
-            .start();
+        ).start();
         try {
             final Collection<String> bodies =
                 LastModifiedCachingWireTest.bodies(

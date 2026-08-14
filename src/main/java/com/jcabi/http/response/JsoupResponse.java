@@ -24,13 +24,13 @@ import org.jsoup.nodes.Entities;
  *   .body();</pre>
  *
  * <p>{@link #body()} will try to output clean HTML even for
- *  malformed responses. For example:
+ * malformed responses. For example:
  * <ul>
- *  <li>Unclosed tags will be closed ("&lt;p&gt;Hello" will become
- *      "&lt;p&gt;Hello&lt;/p&gt;")
- *  <li>Implicit tags will be made explicit (e.g. a naked &lt;td&gt; will be
- *      wrapped in a &lt;table&gt;&lt;tr&gt;&lt;td&gt;)
- *  <li>Basic structure is guaranteed (i.e. html, head, body elements)
+ * <li>Unclosed tags will be closed ("&lt;p&gt;Hello" will become
+ * "&lt;p&gt;Hello&lt;/p&gt;")
+ * <li>Implicit tags will be made explicit (e.g. a naked &lt;td&gt; will be
+ * wrapped in a &lt;table&gt;&lt;tr&gt;&lt;td&gt;)
+ * <li>Basic structure is guaranteed (i.e. html, head, body elements)
  * </ul>
  *
  * <p>The class is immutable and thread-safe.
@@ -57,5 +57,4 @@ public final class JsoupResponse extends AbstractResponse {
         html.outputSettings().escapeMode(Entities.EscapeMode.xhtml);
         return html.html();
     }
-
 }

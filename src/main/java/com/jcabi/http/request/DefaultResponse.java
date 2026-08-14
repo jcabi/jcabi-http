@@ -13,7 +13,7 @@ import com.jcabi.immutable.Array;
 import com.jcabi.log.Logger;
 import java.lang.reflect.InvocationTargetException;
 import java.nio.charset.StandardCharsets;
-import java.util.LinkedList;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
@@ -22,7 +22,6 @@ import lombok.EqualsAndHashCode;
 
 /**
  * Default implementation of {@link com.jcabi.http.Response}.
- *
  * @since 1.0
  */
 @Immutable
@@ -33,7 +32,7 @@ public final class DefaultResponse implements Response {
     /**
      * UTF-8 error marker.
      */
-    private static final String ERR = "\uFFFD";
+    private static final String ERR = "�";
 
     /**
      * Request.
@@ -59,7 +58,6 @@ public final class DefaultResponse implements Response {
      * Content received.
      */
     @Immutable.Array
-    //@checkstyle ParameterNumber (15 lines)
     private final transient byte[] content;
 
     /**
@@ -100,7 +98,7 @@ public final class DefaultResponse implements Response {
         final ConcurrentMap<String, List<String>> map =
             new ConcurrentHashMap<>(0);
         for (final Map.Entry<String, String> header : this.hdrs) {
-            map.putIfAbsent(header.getKey(), new LinkedList<String>());
+            map.putIfAbsent(header.getKey(), new ArrayList<>(0));
             map.get(header.getKey()).add(header.getValue());
         }
         return map;
@@ -113,7 +111,7 @@ public final class DefaultResponse implements Response {
             throw new IllegalStateException(
                 Logger.format(
                     "broken Unicode text at line #%d in '%[text]s' (%d bytes)",
-                    body.length() - body.replace("\n", "").length(),
+                    body.chars().filter(chr -> chr == '\n').count(),
                     body,
                     this.content.length
                 )
@@ -127,9 +125,7 @@ public final class DefaultResponse implements Response {
         return this.content.clone();
     }
 
-    // @checkstyle MethodName (4 lines)
     @Override
-    @SuppressWarnings("PMD.ShortMethodName")
     public <T extends Response> T as(final Class<T> type) {
         try {
             return type.getDeclaredConstructor(Response.class)
@@ -148,11 +144,11 @@ public final class DefaultResponse implements Response {
             .append(this.phrase)
             .append(" [")
             .append(this.back().uri().get())
-            .append("]\n");
+            .append(']').append(System.lineSeparator());
         for (final Map.Entry<String, String> header : this.hdrs) {
             text.append(
                 Logger.format(
-                    "%s: %s\n",
+                    "%s: %s%n",
                     header.getKey(),
                     header.getValue()
                 )
@@ -162,5 +158,4 @@ public final class DefaultResponse implements Response {
             .append(new RequestBody.Printable(this.content))
             .toString();
     }
-
 }

@@ -4,6 +4,7 @@
  */
 package com.jcabi.http.response;
 
+import com.google.common.base.Splitter;
 import com.jcabi.aspects.Immutable;
 import com.jcabi.http.Request;
 import com.jcabi.http.Response;
@@ -11,6 +12,7 @@ import com.jcabi.immutable.ArrayMap;
 import java.io.IOException;
 import java.net.URI;
 import java.util.Collection;
+import java.util.List;
 import java.util.Locale;
 import java.util.Map;
 import java.util.Set;
@@ -41,7 +43,6 @@ import lombok.EqualsAndHashCode;
  */
 @Immutable
 @EqualsAndHashCode(callSuper = true)
-@SuppressWarnings("PMD.TooManyMethods")
 public final class WebLinkingResponse extends AbstractResponse {
 
     /**
@@ -93,7 +94,7 @@ public final class WebLinkingResponse extends AbstractResponse {
             this.headers().get(WebLinkingResponse.HEADER);
         if (headers != null) {
             for (final String header : headers) {
-                for (final String part : header.split(",")) {
+                for (final String part : Splitter.on(',').split(header)) {
                     final WebLinkingResponse.Link link =
                         new WebLinkingResponse.SimpleLink(part.trim());
                     final String rel = link.get(WebLinkingResponse.REL);
@@ -108,11 +109,11 @@ public final class WebLinkingResponse extends AbstractResponse {
 
     /**
      * Single link.
-     *
      * @since 1.0
      */
     @Immutable
     public interface Link extends Map<String, String> {
+
         /**
          * Its URI.
          * @return URI
@@ -122,7 +123,6 @@ public final class WebLinkingResponse extends AbstractResponse {
 
     /**
      * Implementation of a link.
-     *
      * @since 1.0
      */
     @Immutable
@@ -135,6 +135,11 @@ public final class WebLinkingResponse extends AbstractResponse {
         private static final Pattern PTN = Pattern.compile(
             "<([^>]+)>\\s*;(.*)"
         );
+
+        /**
+         * Pattern to split parameters.
+         */
+        private static final Pattern SPLIT = Pattern.compile("\\s*;\\s*");
 
         /**
          * URI encapsulated.
@@ -157,7 +162,7 @@ public final class WebLinkingResponse extends AbstractResponse {
 
         /**
          * Secondary ctor.
-         * @param matcher Matcher object.
+         * @param matcher Matcher object
          */
         private SimpleLink(final Matcher matcher) {
             this(
@@ -244,7 +249,7 @@ public final class WebLinkingResponse extends AbstractResponse {
 
         /**
          * Match link with regexp.
-         * @param link A link.
+         * @param link A link
          * @return Matcher object
          * @throws IOException If fails
          */
@@ -270,15 +275,15 @@ public final class WebLinkingResponse extends AbstractResponse {
             final ConcurrentMap<String, String> args =
                 new ConcurrentHashMap<>(0);
             for (final String pair
-                : param.trim().split("\\s*;\\s*")) {
-                final String[] parts = pair.split("=");
+                : Splitter.on(SimpleLink.SPLIT).split(param.trim())) {
+                final List<String> parts =
+                    Splitter.on('=').limit(2).splitToList(pair);
                 args.put(
-                    parts[0].trim().toLowerCase(Locale.ENGLISH),
-                    parts[1].trim().replaceAll("(^\"|\"$)", "")
+                    parts.get(0).trim().toLowerCase(Locale.ENGLISH),
+                    parts.get(1).trim().replaceAll("(^\"|\"$)", "")
                 );
             }
             return args;
         }
     }
-
 }

@@ -30,10 +30,8 @@ final class DefaultResponseTest {
                 HttpURLConnection.HTTP_OK,
                 "some text",
                 new Array<Map.Entry<String, String>>(),
-                // @checkstyle MagicNumber (1 line)
                 new byte[]{(byte) 0xC0, (byte) 0xC0}
             ).body()
         );
     }
-
 }

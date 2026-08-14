@@ -162,7 +162,6 @@ public interface Request {
      * {@link InputStream} being passed as the request body. Note that the
      * request MUST have an empty body when this method is being invoked, or
      * it will throw an {@link IllegalStateException}.
-     *
      * @param stream The input stream to use
      * @return Response
      * @throws IOException If fails to fetch HTTP request

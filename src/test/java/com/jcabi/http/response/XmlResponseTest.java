@@ -15,7 +15,6 @@ import org.junit.jupiter.api.Test;
 /**
  * Test case for {@link XmlResponse}.
  * @since 1.1
- * @checkstyle ClassDataAbstractionCoupling (500 lines)
  */
 final class XmlResponseTest {
 
@@ -29,10 +28,10 @@ final class XmlResponseTest {
             "should list both text nodes in order",
             new XmlResponse(
                 new FakeRequest()
-                    .withBody("<r><a>\u0443\u0440\u0430!</a><a>B</a></r>")
+                    .withBody("<r><a>ура!</a><a>B</a></r>")
                     .fetch()
             ).xml().xpath("//a/text()"),
-            Matchers.contains("\u0443\u0440\u0430!", "B")
+            Matchers.contains("ура!", "B")
         );
     }
 
@@ -44,14 +43,14 @@ final class XmlResponseTest {
     void assertsWithXpath() throws Exception {
         final XmlResponse response = new XmlResponse(
             new FakeRequest()
-                .withBody("<x a='1'><!-- hi --><y>\u0443\u0440\u0430!</y></x>")
+                .withBody("<x a='1'><!-- hi --><y>ура!</y></x>")
                 .fetch()
         );
         Assertions.assertAll(
-            () -> response.assertXPath("//y[.='\u0443\u0440\u0430!']"),
+            () -> response.assertXPath("//y[.='ура!']"),
             () -> response.assertXPath("/x/@a"),
             () -> response.assertXPath("/x/comment()"),
-            () -> response.assertXPath("/x/y[contains(.,'\u0430')]")
+            () -> response.assertXPath("/x/y[contains(.,'а')]")
         );
     }
 
@@ -65,13 +64,13 @@ final class XmlResponseTest {
             new FakeRequest().withBody(
                 StringUtils.join(
                     "<html xmlns='http://www.w3.org/1999/xhtml'>",
-                    "<div>\u0443\u0440\u0430!</div></html>"
+                    "<div>ура!</div></html>"
                 )
             ).fetch()
         );
         Assertions.assertAll(
             () -> response.assertXPath("/xhtml:html/xhtml:div"),
-            () -> response.assertXPath("//xhtml:div[.='\u0443\u0440\u0430!']")
+            () -> response.assertXPath("//xhtml:div[.='ура!']")
         );
     }
 
@@ -124,5 +123,4 @@ final class XmlResponseTest {
             )
         );
     }
-
 }

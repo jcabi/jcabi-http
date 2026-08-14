@@ -60,7 +60,8 @@ final class TrustedWireTest {
     @Test
     void replacesDefaultSslContextDuringSend() throws Exception {
         final SSLContext before = SSLContext.getDefault();
-        final SslContextCapture capture = new SslContextCapture();
+        final TrustedWireTest.SslContextCapture capture =
+            new TrustedWireTest.SslContextCapture();
         new TrustedWire(capture).send(
             new FakeRequest(),
             "https://localhost/",
@@ -87,7 +88,7 @@ final class TrustedWireTest {
     @Test
     void restoresDefaultSslContextAfterSend() throws Exception {
         final SSLContext before = SSLContext.getDefault();
-        new TrustedWire(new SslContextCapture()).send(
+        new TrustedWire(new TrustedWireTest.SslContextCapture()).send(
             new FakeRequest(),
             "https://localhost/",
             "GET",
@@ -118,7 +119,6 @@ final class TrustedWireTest {
         private volatile SSLContext context;
 
         @Override
-        // @checkstyle ParameterNumber (5 lines)
         public Response send(final Request req, final String home,
             final String method,
             final Collection<Map.Entry<String, String>> headers,
@@ -140,5 +140,4 @@ final class TrustedWireTest {
             return this.context;
         }
     }
-
 }

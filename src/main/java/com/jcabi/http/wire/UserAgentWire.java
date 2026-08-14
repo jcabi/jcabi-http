@@ -13,11 +13,10 @@ import com.jcabi.manifests.Manifests;
 import jakarta.ws.rs.core.HttpHeaders;
 import java.io.IOException;
 import java.io.InputStream;
+import java.util.ArrayList;
 import java.util.Collection;
-import java.util.LinkedList;
 import java.util.Map;
 import lombok.EqualsAndHashCode;
-import lombok.RequiredArgsConstructor;
 import lombok.ToString;
 
 /**
@@ -45,7 +44,6 @@ import lombok.ToString;
 @Immutable
 @ToString(of = "origin")
 @EqualsAndHashCode(of = "origin")
-@RequiredArgsConstructor
 public final class UserAgentWire implements Wire {
 
     /**
@@ -74,7 +72,16 @@ public final class UserAgentWire implements Wire {
         );
     }
 
-    // @checkstyle ParameterNumber (7 lines)
+    /**
+     * Public ctor.
+     * @param wire Original wire
+     * @param agnt Agent to send
+     */
+    public UserAgentWire(final Wire wire, final String agnt) {
+        this.origin = wire;
+        this.agent = agnt;
+    }
+
     @Override
     public Response send(final Request req, final String home,
         final String method,
@@ -83,7 +90,7 @@ public final class UserAgentWire implements Wire {
         final int connect,
         final int read) throws IOException {
         final Collection<Map.Entry<String, String>> hdrs =
-            new LinkedList<>();
+            new ArrayList<>(0);
         boolean absent = true;
         for (final Map.Entry<String, String> header : headers) {
             hdrs.add(header);

@@ -45,6 +45,7 @@ import lombok.ToString;
 @ToString(of = "origin")
 @EqualsAndHashCode(of = { "origin", "max" })
 public final class AutoRedirectingWire implements Wire {
+
     /**
      * Original wire.
      */
@@ -73,7 +74,6 @@ public final class AutoRedirectingWire implements Wire {
         this.max = retries;
     }
 
-    // @checkstyle ParameterNumber (5 lines)
     @Override
     public Response send(final Request req, final String home,
         final String method,
@@ -114,5 +114,4 @@ public final class AutoRedirectingWire implements Wire {
         }
         return response;
     }
-
 }

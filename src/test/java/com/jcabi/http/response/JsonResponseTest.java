@@ -26,9 +26,9 @@ final class JsonResponseTest {
     @Test
     void readsJsonDocument() throws Exception {
         final JsonResponse response = new JsonResponse(
-            new FakeRequest()
-                .withBody("{\n\t\r\"foo-foo\":2,\n\"bar\":\"\u20ac\"}")
-                .fetch()
+            new FakeRequest().withBody(
+                String.format("{%n\t\"foo-foo\":2,%n\"bar\":\"€\"}")
+            ).fetch()
         );
         Assertions.assertAll(
             () -> MatcherAssert.assertThat(
@@ -37,34 +37,32 @@ final class JsonResponseTest {
                 Matchers.equalTo(2)
             ),
             () -> MatcherAssert.assertThat(
-                "should be equal \u20ac",
+                "should be equal €",
                 response.json().readObject().getString("bar"),
-                Matchers.equalTo("\u20ac")
+                Matchers.equalTo("€")
             )
         );
     }
 
     /**
      * JsonResponse can read control characters.
-     *
      * @throws Exception If something goes wrong inside
      */
     @Test
     void readsControlCharacters() throws Exception {
         MatcherAssert.assertThat(
-            "should be \u001fblah\ufffdcwhoa\u0000!",
+            "should be \037blah�cwhoa\0!",
             new JsonResponse(
-                new FakeRequest()
-                    .withBody("{\"test\":\n\"\u001fblah\ufffdcwhoa\u0000!\"}")
-                    .fetch()
+                new FakeRequest().withBody(
+                    String.format("{\"test\":%n\"\037blah�cwhoa\0!\"}")
+                ).fetch()
             ).json().readObject().getString("test"),
-            Matchers.is("\u001fblah\ufffdcwhoa\u0000!")
+            Matchers.is("\037blah�cwhoa\0!")
         );
     }
 
     /**
      * JsonResponse logs the JSON body for JSON object parse errors.
-     *
      * @throws Exception If something goes wrong inside
      */
     @Test
@@ -83,7 +81,6 @@ final class JsonResponseTest {
 
     /**
      * JsonResponse logs the JSON body for JSON array parse errors.
-     *
      * @throws Exception If something goes wrong inside
      */
     @Test
@@ -102,7 +99,6 @@ final class JsonResponseTest {
 
     /**
      * JsonResponse logs the JSON body for JSON read() parse errors.
-     *
      * @throws Exception If something goes wrong inside
      */
     @Test
@@ -129,5 +125,4 @@ final class JsonResponseTest {
         final Executable exec) {
         return Assertions.assertThrows(type, exec);
     }
-
 }

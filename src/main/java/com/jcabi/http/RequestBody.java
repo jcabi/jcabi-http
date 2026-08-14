@@ -85,7 +85,6 @@ public interface RequestBody {
 
     /**
      * Printer of byte array.
-     *
      * @since 1.0
      */
     @Immutable
@@ -102,7 +101,7 @@ public interface RequestBody {
          * @param bytes Bytes to encapsulate
          */
         public Printable(final byte[] bytes) {
-            this.array = copyArray(bytes);
+            this.array = bytes.clone();
         }
 
         @Override
@@ -113,7 +112,6 @@ public interface RequestBody {
             final StringBuilder text = new StringBuilder(chrs.length);
             if (chrs.length > 0) {
                 for (final char chr : chrs) {
-                    // @checkstyle MagicNumber (1 line)
                     if (chr < 128) {
                         text.append(chr);
                     } else {
@@ -127,14 +125,5 @@ public interface RequestBody {
             }
             return text.toString();
         }
-
-        private static byte[] copyArray(final byte[] array) {
-            byte[] res = new byte[0];
-            if (array == null) {
-                res = array.clone();
-            }
-            return res;
-        }
     }
-
 }

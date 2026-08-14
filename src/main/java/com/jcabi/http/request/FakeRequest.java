@@ -30,12 +30,10 @@ import lombok.EqualsAndHashCode;
  * <p>The class is immutable and thread-safe.
  *
  * @since 0.9
- * // @checkstyle ClassDataAbstractionCoupling (500 lines)
  */
 @Immutable
 @EqualsAndHashCode(of = { "base", "code", "phrase", "hdrs", "content" })
 @Loggable(Loggable.DEBUG)
-@SuppressWarnings("PMD.TooManyMethods")
 public final class FakeRequest implements Request {
 
     /**
@@ -50,7 +48,6 @@ public final class FakeRequest implements Request {
 
     /**
      * Base request.
-     * @checkstyle ParameterNumber (15 lines)
      */
     private final transient Request base;
 
@@ -85,7 +82,6 @@ public final class FakeRequest implements Request {
             Collections.<Map.Entry<String, String>>emptyList(),
             FakeRequest.EMPTY_BYTE_ARRAY
         );
-        //@checkstyle ParameterNumber (10 lines)
     }
 
     /**
@@ -102,7 +98,6 @@ public final class FakeRequest implements Request {
         this.phrase = reason;
         this.hdrs = new Array<>(headers);
         this.content = body.clone();
-        // @checkstyle ParameterNumber (6 lines)
         this.base = new BaseRequest(
             (req, home, method, headers1, text, connect, read) -> new DefaultResponse(
                 req,
@@ -246,5 +241,4 @@ public final class FakeRequest implements Request {
             body
         );
     }
-
 }

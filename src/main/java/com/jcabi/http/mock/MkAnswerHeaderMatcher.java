@@ -17,6 +17,7 @@ import org.hamcrest.TypeSafeMatcher;
 @ToString
 @EqualsAndHashCode(callSuper = false, of = {"header", "matcher"})
 final class MkAnswerHeaderMatcher extends TypeSafeMatcher<MkAnswer> {
+
     /**
      * The header to match.
      */

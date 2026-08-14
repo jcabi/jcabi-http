@@ -22,8 +22,8 @@ import java.net.URI;
 import java.net.URISyntaxException;
 import java.net.URL;
 import java.net.URLConnection;
+import java.util.ArrayList;
 import java.util.Collection;
-import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
 import lombok.EqualsAndHashCode;
@@ -40,13 +40,11 @@ import lombok.ToString;
  * <p>The class is immutable and thread-safe.
  *
  * @since 0.8
- * // @checkstyle ClassDataAbstractionCoupling (500 lines)
  */
 @Immutable
 @EqualsAndHashCode(of = "base")
 @ToString(of = "base")
 @Loggable(Loggable.DEBUG)
-@SuppressWarnings("PMD.TooManyMethods")
 public final class JdkRequest implements Request {
 
     /**
@@ -54,7 +52,6 @@ public final class JdkRequest implements Request {
      * @checkstyle AnonInnerLength (200 lines)
      */
     private static final Wire WIRE = new Wire() {
-        // @checkstyle ParameterNumber (6 lines)
         @Override
         public Response send(
             final Request req, final String home,
@@ -96,7 +93,7 @@ public final class JdkRequest implements Request {
             }
         }
 
-        /**
+        /*
          * Fully write the input stream contents to the output stream.
          * @param content The content to write
          * @param conn The connection to write to
@@ -107,7 +104,6 @@ public final class JdkRequest implements Request {
             final HttpURLConnection conn
         ) throws IOException {
             try (OutputStream output = conn.getOutputStream()) {
-                // @checkstyle MagicNumber (1 line)
                 final byte[] buffer = new byte[8192];
                 for (int bytes = content.read(buffer); bytes != -1;
                     bytes = content.read(buffer)) {
@@ -116,7 +112,7 @@ public final class JdkRequest implements Request {
             }
         }
 
-        /**
+        /*
          * Get headers from response.
          * @param fields ImmutableHeader fields
          * @return Headers
@@ -125,7 +121,7 @@ public final class JdkRequest implements Request {
             final Map<String, List<String>> fields
         ) {
             final Collection<Map.Entry<String, String>> headers =
-                new LinkedList<>();
+                new ArrayList<>(0);
             for (final Map.Entry<String, List<String>> field
                 : fields.entrySet()) {
                 if (field.getKey() == null) {
@@ -138,11 +134,11 @@ public final class JdkRequest implements Request {
             return new Array<>(headers);
         }
 
-        /**
+        /*
          * Get response body of connection.
          * @param conn Connection
          * @return Body
-         * @throws IOException
+         * @throws IOException If fails
          */
         private byte[] body(final HttpURLConnection conn) throws IOException {
             final InputStream inp;
@@ -259,8 +255,8 @@ public final class JdkRequest implements Request {
 
     /**
      * Open HTTP connection.
-     * @param url URL.
-     * @return Connection.
+     * @param url URL
+     * @return Connection
      * @throws IOException if unable to connect.
      */
     private static HttpURLConnection openConnection(
@@ -285,5 +281,4 @@ public final class JdkRequest implements Request {
         }
         return HttpURLConnection.class.cast(raw);
     }
-
 }

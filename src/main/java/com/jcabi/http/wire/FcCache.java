@@ -22,22 +22,21 @@ import java.io.ByteArrayInputStream;
 import java.io.File;
 import java.io.IOException;
 import java.io.InputStream;
-import java.io.UnsupportedEncodingException;
 import java.net.URLEncoder;
 import java.nio.charset.StandardCharsets;
 import java.nio.file.Files;
 import java.util.AbstractMap;
+import java.util.ArrayList;
 import java.util.Collection;
-import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
+import java.util.regex.Pattern;
 import lombok.EqualsAndHashCode;
 import lombok.ToString;
 import org.apache.commons.io.FileUtils;
 
 /**
  * Cache for FcWire.
- *
  * @since 1.16
  */
 @Immutable
@@ -64,6 +63,11 @@ final class FcCache {
      * Headers key.
      */
     private static final String HEADERS = "headers";
+
+    /**
+     * Pattern to split a label into chunks of four characters.
+     */
+    private static final Pattern CHUNKS = Pattern.compile("(?<=\\G.{4})");
 
     /**
      * Directory to keep files in.
@@ -98,7 +102,7 @@ final class FcCache {
      * Invalidate all.
      * @throws IOException If fails
      */
-    public void invalidate() throws IOException {
+    void invalidate() throws IOException {
         final File file = this.file("").getParentFile();
         if (file.exists()) {
             FileUtils.deleteDirectory(file);
@@ -121,7 +125,7 @@ final class FcCache {
      * @throws IOException If fails
      * @checkstyle ParameterNumberCheck (10 lines)
      */
-    public Response get(final String label, final Wire wire,
+    Response get(final String label, final Wire wire,
         final Request request, final String home, final String method,
         final Collection<Map.Entry<String, String>> headers,
         final InputStream input, final int connect, final int read)
@@ -156,7 +160,7 @@ final class FcCache {
                 FileUtils.readFileToByteArray(file)
             )
         ).readObject();
-        final List<Map.Entry<String, String>> map = new LinkedList<>();
+        final List<Map.Entry<String, String>> map = new ArrayList<>(0);
         final JsonObject headers = json.getJsonObject(FcCache.HEADERS);
         for (final String name : headers.keySet()) {
             for (final JsonString value
@@ -200,8 +204,11 @@ final class FcCache {
         if (file.getParentFile().mkdirs()) {
             Logger.debug(this, "directory created for %s", file);
         }
-        try (JsonWriter writer =
-            Json.createWriter(Files.newOutputStream(file.toPath()))) {
+        try (
+            JsonWriter writer = Json.createWriter(
+                Files.newOutputStream(file.toPath())
+            )
+        ) {
             writer.write(json.build());
         }
         Logger.debug(this, "cache saved into %s", file);
@@ -214,19 +221,19 @@ final class FcCache {
      * @return File
      */
     private File file(final String label) {
-        final String path;
-        try {
-            path = Joiner.on("/").join(
-                URLEncoder.encode(label, StandardCharsets.UTF_8.toString())
-                    .replaceAll("_", "__")
-                    .replaceAll("\\+", "_")
-                    .replaceAll("%", "_")
-                    .split("(?<=\\G.{4})")
-            );
-        } catch (final UnsupportedEncodingException ex) {
-            throw new IllegalStateException(ex);
-        }
-        return new File(this.dir, String.format("%s.json", path));
+        return new File(
+            this.dir,
+            String.format(
+                "%s.json",
+                Joiner.on("/").join(
+                    FcCache.CHUNKS.split(
+                        URLEncoder.encode(label, StandardCharsets.UTF_8)
+                            .replaceAll("_", "__")
+                            .replaceAll("\\+", "_")
+                            .replaceAll("%", "_")
+                    )
+                )
+            )
+        );
     }
-
 }

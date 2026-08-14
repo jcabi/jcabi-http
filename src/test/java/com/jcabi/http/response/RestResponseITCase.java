@@ -13,17 +13,15 @@ import org.junit.jupiter.api.Test;
 
 /**
  * Integration test for {@link RestResponse}.
- *
  * @since 1.17.5
  */
 final class RestResponseITCase {
+
     @Test
     void readsCookiesSeveralValues() throws IOException {
         final RestResponse resp = new JdkRequest(
             "https://httpbin.org/cookies/set?ijk=efg&xyz=abc"
-        )
-            .fetch()
-            .as(RestResponse.class);
+        ).fetch().as(RestResponse.class);
         Assertions.assertAll(
             () -> MatcherAssert.assertThat(
                 "should contains value 'efg'",

@@ -20,7 +20,6 @@ import org.hamcrest.core.IsAnything;
  * @see MkContainer
  * @since 0.10
  */
-@SuppressWarnings("PMD.TooManyMethods")
 @EqualsAndHashCode(of = {"adapter", "gws", "port"})
 @Loggable(Loggable.DEBUG)
 public final class MkGrizzlyContainer implements MkContainer {
@@ -120,7 +119,7 @@ public final class MkGrizzlyContainer implements MkContainer {
     @Override
     public void stop() {
         if (this.gws != null) {
-            this.gws.shutdown();
+            this.gws.shutdownNow();
         }
         Logger.info(this, "stopped on port #%s", this.port);
         this.port = 0;
@@ -137,5 +136,4 @@ public final class MkGrizzlyContainer implements MkContainer {
     public void close() {
         this.stop();
     }
-
 }

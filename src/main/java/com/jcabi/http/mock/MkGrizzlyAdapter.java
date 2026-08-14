@@ -8,11 +8,12 @@ import com.jcabi.log.Logger;
 import java.io.IOException;
 import java.io.OutputStreamWriter;
 import java.io.PrintWriter;
-import java.io.UnsupportedEncodingException;
 import java.net.HttpURLConnection;
+import java.nio.charset.StandardCharsets;
+import java.util.ArrayDeque;
+import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Iterator;
-import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
 import java.util.NoSuchElementException;
@@ -20,7 +21,6 @@ import java.util.Queue;
 import java.util.concurrent.ConcurrentLinkedQueue;
 import java.util.concurrent.atomic.AtomicInteger;
 import lombok.EqualsAndHashCode;
-import lombok.RequiredArgsConstructor;
 import org.apache.http.HttpHeaders;
 import org.glassfish.grizzly.http.server.HttpHandler;
 import org.glassfish.grizzly.http.server.Request;
@@ -29,17 +29,9 @@ import org.hamcrest.Matcher;
 
 /**
  * Mocker of Java Servlet container.
- *
  * @since 0.10
- * @checkstyle ClassDataAbstractionCouplingCheck (300 lines)
  */
-@SuppressWarnings("PMD.TooManyMethods")
 final class MkGrizzlyAdapter extends HttpHandler {
-
-    /**
-     * The encoding to use.
-     */
-    private static final String ENCODING = "UTF-8";
 
     /**
      * Queries received.
@@ -53,13 +45,9 @@ final class MkGrizzlyAdapter extends HttpHandler {
     private final transient Queue<Conditional> conditionals =
         new ConcurrentLinkedQueue<>();
 
-    // @checkstyle ExecutableStatementCount (55 lines)
     @Override
     @SuppressWarnings("rawtypes")
-    public void service(
-        final Request request,
-        final Response response
-    ) {
+    public void service(final Request request, final Response response) {
         try {
             this.handleRequest(request, response);
         } catch (final IOException ex) {
@@ -75,18 +63,20 @@ final class MkGrizzlyAdapter extends HttpHandler {
      * @param count The number of times this answer can be returned for matching
      *  requests
      */
-    public void next(
+    void next(
         final MkAnswer answer, final Matcher<MkQuery> query,
         final int count
     ) {
-        this.conditionals.add(new Conditional(answer, query, count));
+        this.conditionals.add(
+            new MkGrizzlyAdapter.Conditional(answer, query, count)
+        );
     }
 
     /**
      * Get the oldest request received.
      * @return Request received
      */
-    public MkQuery take() {
+    MkQuery take() {
         return this.queue.remove().que;
     }
 
@@ -97,7 +87,7 @@ final class MkGrizzlyAdapter extends HttpHandler {
      * @param matcher The matcher specifying the condition
      * @return Request received satisfying the matcher
      */
-    public MkQuery take(final Matcher<MkAnswer> matcher) {
+    MkQuery take(final Matcher<MkAnswer> matcher) {
         return this.takeMatching(matcher).next();
     }
 
@@ -107,10 +97,10 @@ final class MkGrizzlyAdapter extends HttpHandler {
      * condition).
      * @param matcher The matcher specifying the condition
      * @return Collection of all requests satisfying the matcher, ordered from
-     *  oldest to newest.
+     *  oldest to newest
      */
-    public Collection<MkQuery> takeAll(final Matcher<MkAnswer> matcher) {
-        final Collection<MkQuery> results = new LinkedList<>();
+    Collection<MkQuery> takeAll(final Matcher<MkAnswer> matcher) {
+        final Collection<MkQuery> results = new ArrayList<>(0);
         final Iterator<MkQuery> iter = this.takeMatching(matcher);
         while (iter.hasNext()) {
             results.add(iter.next());
@@ -122,7 +112,7 @@ final class MkGrizzlyAdapter extends HttpHandler {
      * Total number of available queue.
      * @return Number of them
      */
-    public int queries() {
+    int queries() {
         return this.queue.size();
     }
 
@@ -134,7 +124,7 @@ final class MkGrizzlyAdapter extends HttpHandler {
      * @return Iterator over all requests
      */
     private Iterator<MkQuery> takeMatching(final Matcher<MkAnswer> matcher) {
-        final Iterator<MkQuery> result = new MkQueryIterator(
+        final Iterator<MkQuery> result = new MkGrizzlyAdapter.MkQueryIterator(
             this.queue.iterator(), matcher
         );
         if (!result.hasNext()) {
@@ -153,16 +143,15 @@ final class MkGrizzlyAdapter extends HttpHandler {
         final Throwable failure
     ) {
         response.setStatus(HttpURLConnection.HTTP_INTERNAL_ERROR);
-        try (PrintWriter writer = new PrintWriter(
-            new OutputStreamWriter(
-                response.createOutputStream(),
-                MkGrizzlyAdapter.ENCODING
+        try (
+            PrintWriter writer = new PrintWriter(
+                new OutputStreamWriter(
+                    response.createOutputStream(),
+                    StandardCharsets.UTF_8
+                )
             )
-        )
         ) {
             writer.print(Logger.format("%[exception]s", failure));
-        } catch (final UnsupportedEncodingException ex) {
-            throw new IllegalStateException(ex);
         }
     }
 
@@ -195,7 +184,7 @@ final class MkGrizzlyAdapter extends HttpHandler {
         final Response response
     ) {
         final MkAnswer answer = cond.answer();
-        this.queue.add(new QueryWithAnswer(query, answer));
+        this.queue.add(new MkGrizzlyAdapter.QueryWithAnswer(query, answer));
         addHeadersToResponse(answer.headers(), response);
         this.addServerHeader(response);
         setResponseStatusAndBody(response, answer);
@@ -240,11 +229,11 @@ final class MkGrizzlyAdapter extends HttpHandler {
 
     /**
      * Answer with condition.
-     *
      * @since 1.5
      */
     @EqualsAndHashCode(of = {"answr", "condition"})
     private static final class Conditional {
+
         /**
          * The MkAnswer.
          */
@@ -262,24 +251,37 @@ final class MkGrizzlyAdapter extends HttpHandler {
 
         /**
          * Ctor.
-         * @param ans The answer.
-         * @param matcher The matcher.
-         * @param times Number of times the answer should appear.
+         * @param ans The answer
+         * @param matcher The matcher
+         * @param times Number of times the answer should appear
          */
         Conditional(
             final MkAnswer ans, final Matcher<MkQuery> matcher,
             final int times
         ) {
+            this(ans, matcher, Conditional.positiveAtomic(times));
+        }
+
+        /**
+         * Ctor.
+         * @param ans The answer
+         * @param matcher The matcher
+         * @param times Number of times the answer should appear
+         */
+        private Conditional(
+            final MkAnswer ans, final Matcher<MkQuery> matcher,
+            final AtomicInteger times
+        ) {
             this.answr = ans;
             this.condition = matcher;
-            this.count = Conditional.positiveAtomic(times);
+            this.count = times;
         }
 
         /**
          * Get the answer.
          * @return The answer
          */
-        public MkAnswer answer() {
+        MkAnswer answer() {
             return this.answr;
         }
 
@@ -288,7 +290,7 @@ final class MkGrizzlyAdapter extends HttpHandler {
          * @param query The query to match
          * @return True, if the query matches the condition
          */
-        public boolean matches(final MkQuery query) {
+        boolean matches(final MkQuery query) {
             return this.condition.matches(query);
         }
 
@@ -296,7 +298,7 @@ final class MkGrizzlyAdapter extends HttpHandler {
          * Decrement the count for this conditional.
          * @return The updated count
          */
-        public int decrement() {
+        int decrement() {
             return this.count.decrementAndGet();
         }
 
@@ -313,16 +315,15 @@ final class MkGrizzlyAdapter extends HttpHandler {
             }
             return new AtomicInteger(num);
         }
-
     }
 
     /**
      * Query with answer.
-     *
      * @since 1.5
      */
     @EqualsAndHashCode(of = {"answr", "que"})
     private static final class QueryWithAnswer {
+
         /**
          * The answer.
          */
@@ -345,9 +346,9 @@ final class MkGrizzlyAdapter extends HttpHandler {
 
         /**
          * Get the query.
-         * @return The query.
+         * @return The query
          */
-        public MkQuery query() {
+        MkQuery query() {
             return this.que;
         }
 
@@ -355,23 +356,21 @@ final class MkGrizzlyAdapter extends HttpHandler {
          * Get the answer.
          * @return Answer
          */
-        public MkAnswer answer() {
+        MkAnswer answer() {
             return this.answr;
         }
     }
 
     /**
      * Iterator over matching answers.
-     *
      * @since 1.17.3
      */
-    @RequiredArgsConstructor
     private static final class MkQueryIterator implements Iterator<MkQuery> {
 
         /**
          * Queue of results.
          */
-        private final Queue<MkQuery> results = new LinkedList<>();
+        private final Queue<MkQuery> results;
 
         /**
          * Original iterator.
@@ -382,6 +381,18 @@ final class MkGrizzlyAdapter extends HttpHandler {
          * Matcher.
          */
         private final Matcher<MkAnswer> matcher;
+
+        /**
+         * Ctor.
+         * @param itr Original iterator
+         * @param mtchr Matcher
+         */
+        MkQueryIterator(final Iterator<QueryWithAnswer> itr,
+            final Matcher<MkAnswer> mtchr) {
+            this.results = new ArrayDeque<>(0);
+            this.iter = itr;
+            this.matcher = mtchr;
+        }
 
         @Override
         public boolean hasNext() {

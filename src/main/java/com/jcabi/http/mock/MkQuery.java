@@ -11,7 +11,6 @@ import java.util.Map;
 
 /**
  * Mock HTTP query/request.
- *
  * @since 0.10
  */
 @Immutable

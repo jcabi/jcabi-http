@@ -17,6 +17,7 @@ import org.hamcrest.TypeSafeMatcher;
 @ToString
 @EqualsAndHashCode(callSuper = false, of = "matcher")
 final class MkAnswerBodyBytesMatcher extends TypeSafeMatcher<MkAnswer> {
+
     /**
      * The Matcher to use against the body.
      */

@@ -85,7 +85,6 @@ public final class TrustedWire implements Wire {
         this.origin = wire;
     }
 
-    // @checkstyle ParameterNumber (13 lines)
     @Override
     public Response send(final Request req, final String home,
         final String method,
@@ -148,7 +147,6 @@ public final class TrustedWire implements Wire {
 
     /**
      * The SSL defaults of the JVM, as they were before we changed them.
-     *
      * @since 1.10
      */
     @Immutable
@@ -182,5 +180,4 @@ public final class TrustedWire implements Wire {
             SSLContext.setDefault(this.context);
         }
     }
-
 }

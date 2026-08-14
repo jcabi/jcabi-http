@@ -103,7 +103,6 @@ public final class FcWire implements Wire {
         this.cache = fcc;
     }
 
-    // @checkstyle ParameterNumber (5 lines)
     @Override
     public Response send(final Request req, final String home,
         final String method,
@@ -134,5 +133,4 @@ public final class FcWire implements Wire {
         }
         return rsp;
     }
-
 }

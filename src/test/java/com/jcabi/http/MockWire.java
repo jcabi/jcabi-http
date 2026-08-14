@@ -12,11 +12,10 @@ import java.util.Map.Entry;
 /**
  * Utility wire used for injecting a mock object into a {@link Request}
  * implementation.
- * <p>
- * NOTE: This is not threadsafe and access to it should be synchronized.
+ *
+ * <p>NOTE: This is not threadsafe and access to it should be synchronized.
  *
  * @since 1.17.1
- * @checkstyle ParameterNumberCheck (50 lines)
  */
 public class MockWire implements Wire {
 
@@ -27,8 +26,8 @@ public class MockWire implements Wire {
 
     /**
      * Creates a new mock wire instance.
-     * <p>
-     * The given target wire is ignored and {@code Wire.send} is delegated
+     *
+     * <p>The given target wire is ignored and {@code Wire.send} is delegated
      * to the static mock delegate.
      *
      * @param wire The original wire which is ignored
@@ -55,12 +54,10 @@ public class MockWire implements Wire {
 
     /**
      * Sets the mock the {@code Request.send} method is delegated to.
-     *
      * @param mock The mock to assert variables passed by the request
      *  implementation
      */
     static void setMockDelegate(final Wire mock) {
         MockWire.mockDelegate = mock;
     }
-
 }

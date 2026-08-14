@@ -11,12 +11,12 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.net.HttpURLConnection;
 import java.util.Collection;
+import java.util.HashMap;
 import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
 
 /**
  * This is the base class to handle http responses with 304 state.
- *
  * @since 2.0
  */
 public abstract class AbstractHeaderBasedCachingWire implements Wire {
@@ -57,7 +57,6 @@ public abstract class AbstractHeaderBasedCachingWire implements Wire {
         this.cache = new ConcurrentHashMap<>();
     }
 
-    // @checkstyle ParameterNumber (3 lines)
     @Override
     public final Response send(
         final Request req, final String home, final String method,
@@ -79,7 +78,6 @@ public abstract class AbstractHeaderBasedCachingWire implements Wire {
 
     /**
      * Check cache and update if needed.
-     *
      * @param req Request
      * @param home URI to fetch
      * @param method HTTP method
@@ -89,7 +87,6 @@ public abstract class AbstractHeaderBasedCachingWire implements Wire {
      * @param read The read timeout
      * @return Response obtained
      * @throws IOException if fails
-     * @checkstyle ParameterNumber (6 lines)
      */
     private Response consultCache(
         final Request req, final String home, final String method,
@@ -121,7 +118,6 @@ public abstract class AbstractHeaderBasedCachingWire implements Wire {
      * @param read The read timeout
      * @return Response obtained
      * @throws IOException if fails
-     * @checkstyle ParameterNumber (8 lines)
      */
     private Response validateCacheWithServer(
         final Request req, final String home, final String method,
@@ -156,7 +152,6 @@ public abstract class AbstractHeaderBasedCachingWire implements Wire {
 
     /**
      * Add identify content version header.
-     *
      * @param headers Original headers
      * @param rsp Cached response
      * @return Map with extra header
@@ -165,7 +160,7 @@ public abstract class AbstractHeaderBasedCachingWire implements Wire {
         final Collection<Map.Entry<String, String>> headers, final Response rsp
     ) {
         final Map<String, String> map =
-            new ConcurrentHashMap<>(headers.size() + 1);
+            new HashMap<>(headers.size() + 1);
         for (final Map.Entry<String, String> entry : headers) {
             map.put(entry.getKey(), entry.getValue());
         }
@@ -177,8 +172,8 @@ public abstract class AbstractHeaderBasedCachingWire implements Wire {
 
     /**
      * Check if the request send through this Wire has the cmch header.
-     * @param headers The headers of the request.
-     * @return True if the request contains the cmch header, false otherwise.
+     * @param headers The headers of the request
+     * @return True if the request contains the cmch header, false otherwise
      */
     private boolean requestHasCmcHeader(
         final Collection<Map.Entry<String, String>> headers

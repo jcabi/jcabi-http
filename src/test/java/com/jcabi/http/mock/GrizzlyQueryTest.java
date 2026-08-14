@@ -40,5 +40,4 @@ final class GrizzlyQueryTest {
             Matchers.is(body)
         );
     }
-
 }

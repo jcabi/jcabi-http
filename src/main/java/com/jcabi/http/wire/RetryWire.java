@@ -56,7 +56,6 @@ public final class RetryWire implements Wire {
         this.origin = wire;
     }
 
-    // @checkstyle ParameterNumber (13 lines)
     @Override
     public Response send(final Request req, final String home, final String method,
         final Collection<Map.Entry<String, String>> hdrs, final InputStream cont,
@@ -81,14 +80,12 @@ public final class RetryWire implements Wire {
         }
     }
 
-    // @checkstyle ParameterNumber (4 lines)
     private Response sendRequest(final Request req, final String home, final String method,
         final Collection<Map.Entry<String, String>> headers, final InputStream content,
         final int connect, final int read) throws IOException {
         return this.origin.send(req, home, method, headers, content, connect, read);
     }
 
-    // @checkstyle ParameterNumber (17 lines)
     private void logWarning(final String method, final String home, final int status,
         final int attempt) {
         if (Logger.isWarnEnabled(this)) {

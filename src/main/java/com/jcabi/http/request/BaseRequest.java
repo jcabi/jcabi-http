@@ -25,23 +25,20 @@ import java.io.ByteArrayInputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.StringWriter;
-import java.io.UnsupportedEncodingException;
 import java.lang.reflect.Constructor;
 import java.lang.reflect.InvocationTargetException;
 import java.net.URI;
 import java.net.URLEncoder;
-import java.nio.charset.Charset;
+import java.nio.charset.StandardCharsets;
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collection;
-import java.util.LinkedList;
 import java.util.Map;
 import java.util.concurrent.TimeUnit;
 import lombok.EqualsAndHashCode;
 
 /**
  * Base implementation of {@link Request}.
- *
- * // @checkstyle ClassDataAbstractionCoupling (500 lines)
  * @see Request
  * @see Response
  * @since 0.8
@@ -57,21 +54,7 @@ import lombok.EqualsAndHashCode;
 //  PMD.TooManyMethods might come together with getting rid of the
 //  first one, since maybe qulice is counting the methods in the inner
 //  classes too - if it doesn't, then it can be left.
-//@checkstyle LineLength (1 line)
-@SuppressWarnings("PMD.TooManyMethods")
 public final class BaseRequest implements Request {
-
-    /**
-     * The encoding to use.
-     */
-    private static final String ENCODING = "UTF-8";
-
-    /**
-     * The Charset to use.
-     * @checkstyle ConstantUsageCheck (3 lines)
-     */
-    private static final Charset CHARSET =
-        Charset.forName(BaseRequest.ENCODING);
 
     /**
      * An empty immutable {@code byte} array.
@@ -125,7 +108,6 @@ public final class BaseRequest implements Request {
             new Array<Map.Entry<String, String>>(),
             Request.GET, BaseRequest.EMPTY_BYTE_ARRAY
         );
-        //@checkstyle ParameterNumber (15 lines)
     }
 
     /**
@@ -142,7 +124,6 @@ public final class BaseRequest implements Request {
         final String method, final byte[] body
     ) {
         this(wre, uri, headers, method, body, 0, 0);
-        //@checkstyle ParameterNumber (15 lines)
     }
 
     /**
@@ -161,8 +142,30 @@ public final class BaseRequest implements Request {
         final String method, final byte[] body,
         final int cnct, final int rdd
     ) {
+        this(
+            wre, headers, BaseRequest.createUri(uri).toString(),
+            method, body, cnct, rdd
+        );
+    }
+
+    /**
+     * Private ctor.
+     * @param wre Wire
+     * @param headers Headers
+     * @param uri The resource to work with
+     * @param method HTTP method
+     * @param body HTTP request body
+     * @param cnct Connect timeout for http connection
+     * @param rdd Read timeout for http connection
+     */
+    private BaseRequest(
+        final Wire wre,
+        final Iterable<Map.Entry<String, String>> headers, final String uri,
+        final String method, final byte[] body,
+        final int cnct, final int rdd
+    ) {
         this.wire = wre;
-        this.home = BaseRequest.createUri(uri).toString();
+        this.home = uri;
         this.hdrs = new Array<>(headers);
         this.mtd = method;
         this.content = body.clone();
@@ -172,7 +175,7 @@ public final class BaseRequest implements Request {
 
     @Override
     public RequestURI uri() {
-        return new BaseUri(this, this.home);
+        return new BaseRequest.BaseUri(this, this.home);
     }
 
     @Override
@@ -191,7 +194,7 @@ public final class BaseRequest implements Request {
     @Override
     public Request reset(final String name) {
         final Collection<Map.Entry<String, String>> headers =
-            new LinkedList<>();
+            new ArrayList<>(0);
         for (final Map.Entry<String, String> header : this.hdrs) {
             if (!header.getKey().equals(ImmutableHeader.normalize(name))) {
                 headers.add(header);
@@ -288,11 +291,11 @@ public final class BaseRequest implements Request {
             .append(uri.getPath())
             .append(" (")
             .append(uri.getHost())
-            .append(")\n");
+            .append(')').append(System.lineSeparator());
         for (final Map.Entry<String, String> header : this.hdrs) {
             text.append(
                 Logger.format(
-                    "%s: %s\n",
+                    "%s: %s%n",
                     header.getKey(),
                     header.getValue()
                 )
@@ -305,10 +308,9 @@ public final class BaseRequest implements Request {
 
     /**
      * Create an instance of Wire.
-     *
-     * @param type Type of Wire.
-     * @param args Ctor arguments.
-     * @param <T> Type of Wire.
+     * @param type Type of Wire
+     * @param args Ctor arguments
+     * @param <T> Type of Wire
      * @return An instance of Wire
      */
     private <T extends Wire> Wire mkWire(
@@ -332,7 +334,7 @@ public final class BaseRequest implements Request {
 
     /**
      * Fetch response from server.
-     * @param stream The content to send.
+     * @param stream The content to send
      * @return The obtained response
      * @throws IOException If an IO exception occurs.
      */
@@ -378,10 +380,10 @@ public final class BaseRequest implements Request {
 
     /**
      * Find a ctor which match arguments.
-     * @param type A type.
-     * @param args Ctor arguments.
+     * @param type A type
+     * @param args Ctor arguments
      * @param <T> Type of object
-     * @return A proper ctor for args.
+     * @return A proper ctor for args
      */
     private static <T extends Wire> Constructor<?> findCtor(
         final Class<T> type, final Object... args
@@ -428,13 +430,13 @@ public final class BaseRequest implements Request {
 
     /**
      * Base URI.
-     *
      * @since 1.0
      */
     @Immutable
     @EqualsAndHashCode(of = "address")
     @Loggable(Loggable.DEBUG)
     private static final class BaseUri implements RequestURI {
+
         /**
          * URI encapsulated.
          */
@@ -480,12 +482,12 @@ public final class BaseRequest implements Request {
 
         @Override
         public RequestURI set(final URI uri) {
-            return new BaseUri(this.owner, uri.toString());
+            return new BaseRequest.BaseUri(this.owner, uri.toString());
         }
 
         @Override
         public RequestURI queryParam(final String name, final Object value) {
-            return new BaseUri(
+            return new BaseRequest.BaseUri(
                 this.owner,
                 UriBuilder.fromUri(this.address)
                     .queryParam(name, "{value}")
@@ -503,7 +505,7 @@ public final class BaseRequest implements Request {
                 values[idx] = pair.getValue();
                 ++idx;
             }
-            return new BaseUri(
+            return new BaseRequest.BaseUri(
                 this.owner,
                 uri.build(values).toString()
             );
@@ -511,7 +513,7 @@ public final class BaseRequest implements Request {
 
         @Override
         public RequestURI path(final String segment) {
-            return new BaseUri(
+            return new BaseRequest.BaseUri(
                 this.owner,
                 UriBuilder.fromUri(this.address)
                     .path(segment)
@@ -521,7 +523,7 @@ public final class BaseRequest implements Request {
 
         @Override
         public RequestURI userInfo(final String info) {
-            return new BaseUri(
+            return new BaseRequest.BaseUri(
                 this.owner,
                 UriBuilder.fromUri(this.address)
                     .userInfo(info)
@@ -531,7 +533,7 @@ public final class BaseRequest implements Request {
 
         @Override
         public RequestURI port(final int num) {
-            return new BaseUri(
+            return new BaseRequest.BaseUri(
                 this.owner,
                 UriBuilder.fromUri(this.address)
                     .port(num).build().toString()
@@ -541,10 +543,10 @@ public final class BaseRequest implements Request {
 
     /**
      * Body of a request with a form that has attachments.
-     *
      * @since 1.17
      */
     private static final class MultipartFormBody implements RequestBody {
+
         /**
          * Content encapsulated.
          */
@@ -586,12 +588,12 @@ public final class BaseRequest implements Request {
 
         @Override
         public String get() {
-            return new String(this.text, BaseRequest.CHARSET);
+            return new String(this.text, StandardCharsets.UTF_8);
         }
 
         @Override
         public RequestBody set(final String txt) {
-            return this.set(txt.getBytes(BaseRequest.CHARSET));
+            return this.set(txt.getBytes(StandardCharsets.UTF_8));
         }
 
         @Override
@@ -617,41 +619,37 @@ public final class BaseRequest implements Request {
                     Math.max(this.text.length - 2, 0),
                     this.text.length
                 ),
-                dashes.getBytes(BaseRequest.CHARSET)
+                dashes.getBytes(StandardCharsets.UTF_8)
             )) {
                 old = Arrays.copyOf(this.text, this.text.length - 2);
             } else {
                 old = String.format("%s%s", dashes, boundary)
-                    .getBytes(BaseRequest.CHARSET);
+                    .getBytes(StandardCharsets.UTF_8);
             }
             final byte[] bytes;
             if (value instanceof byte[]) {
                 bytes = (byte[]) value;
             } else {
-                bytes = value.toString().getBytes(BaseRequest.CHARSET);
+                bytes = value.toString().getBytes(StandardCharsets.UTF_8);
             }
             return new BaseRequest.MultipartFormBody(
                 this.owner,
                 new MultipartBodyBuilder()
-                    .appendLine(old)
-                    .appendLine(
-                        Joiner.on("; ")
-                            .join(
-                                "Content-Disposition: form-data",
-                                String.format("name=\"%s\"", name),
-                                "filename=\"binary\""
-                            ).getBytes(BaseRequest.CHARSET)
-                    )
-                    .appendLine(
+                    .appendLine(old).appendLine(
+                        Joiner.on("; ").join(
+                            "Content-Disposition: form-data",
+                            String.format("name=\"%s\"", name),
+                            "filename=\"binary\""
+                        ).getBytes(StandardCharsets.UTF_8)
+                    ).appendLine(
                         "Content-Type: application/octet-stream"
-                            .getBytes(BaseRequest.CHARSET)
+                            .getBytes(StandardCharsets.UTF_8)
                     )
                     .appendLine(new byte[0])
-                    .appendLine(bytes)
-                    .append(
+                    .appendLine(bytes).append(
                         String.format(
                             "%s%s%s", dashes, boundary, dashes
-                        ).getBytes(BaseRequest.CHARSET)
+                        ).getBytes(StandardCharsets.UTF_8)
                     )
                     .asBytes()
             );
@@ -668,7 +666,7 @@ public final class BaseRequest implements Request {
 
         /**
          * Boundary value found.
-         * @return Boundary string.
+         * @return Boundary string
          */
         private String boundary() {
             for (final Map.Entry<String, String> hdr : this.owner.hdrs) {
@@ -687,7 +685,6 @@ public final class BaseRequest implements Request {
     /**
      * Body of a request with a simple form.
      * (enctype application/x-www-form-urlencoded)
-     *
      * @since 1.17
      */
     @Immutable
@@ -711,9 +708,7 @@ public final class BaseRequest implements Request {
          * @param req Request
          * @param body Text to encapsulate
          */
-        FormEncodedBody(
-            final BaseRequest req, final byte[] body
-        ) {
+        FormEncodedBody(final BaseRequest req, final byte[] body) {
             this.owner = req;
             this.text = body.clone();
         }
@@ -738,12 +733,12 @@ public final class BaseRequest implements Request {
 
         @Override
         public String get() {
-            return new String(this.text, BaseRequest.CHARSET);
+            return new String(this.text, StandardCharsets.UTF_8);
         }
 
         @Override
         public RequestBody set(final String txt) {
-            return this.set(txt.getBytes(BaseRequest.CHARSET));
+            return this.set(txt.getBytes(StandardCharsets.UTF_8));
         }
 
         @Override
@@ -760,28 +755,23 @@ public final class BaseRequest implements Request {
 
         @Override
         public RequestBody formParam(final String name, final Object value) {
-            try {
-                final StringBuilder builder = new StringBuilder(this.get());
-                if (!builder.toString().isEmpty()) {
-                    builder.append('&');
-                }
-                return new BaseRequest.FormEncodedBody(
-                    this.owner,
-                    builder
-                        .append(name)
-                        .append('=')
-                        .append(
-                            URLEncoder.encode(
-                                value.toString(),
-                                BaseRequest.ENCODING
-                            )
-                        )
-                        .toString()
-                        .getBytes(BaseRequest.CHARSET)
-                );
-            } catch (final UnsupportedEncodingException ex) {
-                throw new IllegalStateException(ex);
+            final StringBuilder builder = new StringBuilder(this.get());
+            if (!builder.toString().isEmpty()) {
+                builder.append('&');
             }
+            return new BaseRequest.FormEncodedBody(
+                this.owner,
+                builder
+                    .append(name)
+                    .append('=').append(
+                        URLEncoder.encode(
+                            value.toString(),
+                            StandardCharsets.UTF_8
+                        )
+                    )
+                    .toString()
+                    .getBytes(StandardCharsets.UTF_8)
+            );
         }
 
         @Override
@@ -792,7 +782,5 @@ public final class BaseRequest implements Request {
             }
             return body;
         }
-
     }
-
 }

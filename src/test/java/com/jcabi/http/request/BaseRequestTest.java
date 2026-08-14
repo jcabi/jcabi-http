@@ -23,7 +23,6 @@ import org.mockito.Mockito;
 
 /**
  * Test case for {@link BaseRequest}.
- *
  * @since 1.0
  */
 final class BaseRequestTest {
@@ -41,9 +40,9 @@ final class BaseRequestTest {
         MatcherAssert.assertThat(
             "should has the right destination URI",
             new BaseRequest(Mockito.mock(Wire.class), "http://localhost:88/t/f")
-                .uri().path("/bar").queryParam("u1", "\u20ac")
+                .uri().path("/bar").queryParam("u1", "€")
                 .queryParams(new ArrayMap<String, String>().with("u2", ""))
-                .userInfo("hey:\u20ac").back().uri().get(),
+                .userInfo("hey:€").back().uri().get(),
             Matchers.hasToString(
                 "http://hey:%E2%82%AC@localhost:88/t/f/bar?u1=%E2%82%AC&u2="
             )
@@ -73,7 +72,6 @@ final class BaseRequestTest {
     void includesPort() {
         MatcherAssert.assertThat(
             "should has 'http://localhost:8080/'",
-            // @checkstyle MagicNumber (2 lines)
             new BaseRequest(Mockito.mock(Wire.class), "http://localhost")
                 .uri().port(8080).back().uri().get(),
             Matchers.hasToString("http://localhost:8080/")
@@ -138,12 +136,11 @@ final class BaseRequestTest {
             "should be error when multipart-body without content-type",
             BaseRequestTest.thrown(
                 IllegalStateException.class,
-                () -> new BaseRequest(wire, "")
-                    .header(
-                        HttpHeaders.CONTENT_TYPE,
-                        MediaType.MULTIPART_FORM_DATA
-                    )
-                    .multipartBody().formParam("b", "val").back()
+                () -> new BaseRequest(wire, "").header(
+                    HttpHeaders.CONTENT_TYPE,
+                    MediaType.MULTIPART_FORM_DATA
+                )
+                .multipartBody().formParam("b", "val").back()
             ),
             Matchers.hasProperty(
                 BaseRequestTest.MESSAGE,
@@ -153,7 +150,7 @@ final class BaseRequestTest {
     }
 
     @Test
-    void shouldHaveCorrectFormParameters() throws IOException {
+    void sendsCorrectFormParameters() throws IOException {
         final MkContainer srv = new MkGrizzlyContainer()
             .next(new MkAnswer.Simple("OK")).start();
         new JdkRequest(srv.home())
@@ -189,8 +186,7 @@ final class BaseRequestTest {
 
     /**
      * Boundary error message.
-     *
-     * @return Message error as String.
+     * @return Message error as String
      */
     private static String boundaryErrorMesg() {
         return "Content-Type: multipart/form-data requires boundary";

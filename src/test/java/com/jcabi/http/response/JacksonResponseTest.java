@@ -15,19 +15,18 @@ import org.junit.jupiter.api.function.Executable;
 
 /**
  * Test case for {@link JacksonResponse}.
- *
  * @since 1.17
  */
 final class JacksonResponseTest {
+
     /**
      * JacksonResponse can read and return a JSON document.
-     *
      * @throws IOException If anything goes wrong when parsing.
      */
     @Test
     void canReadJsonDocument() throws IOException {
         final JacksonResponse response = new FakeRequest()
-            .withBody("{\n\t\r\"foo-foo\":2,\n\"bar\":\"\u20ac\"}")
+            .withBody(String.format("{%n\t\"foo-foo\":2,%n\"bar\":\"€\"}"))
             .fetch().as(JacksonResponse.class);
         Assertions.assertAll(
             () -> MatcherAssert.assertThat(
@@ -36,34 +35,32 @@ final class JacksonResponseTest {
                 Matchers.equalTo(2)
             ),
             () -> MatcherAssert.assertThat(
-                "should be '\u20ac'",
+                "should be '€'",
                 response.json().read().path("bar").asText(),
-                Matchers.equalTo("\u20ac")
+                Matchers.equalTo("€")
             )
         );
     }
 
     /**
      * JacksonResponse can read control characters.
-     *
      * @throws IOException If anything goes wrong when parsing.
      */
     @Test
     void canParseUnquotedControlCharacters() throws IOException {
         MatcherAssert.assertThat(
-            "should be '\u001fblah\ufffdcwhoa\u0000!'",
-            new FakeRequest()
-                .withBody("{\"test\":\n\"\u001fblah\ufffdcwhoa\u0000!\"}")
-                .fetch().as(JacksonResponse.class)
+            "should be '\037blah�cwhoa\0!'",
+            new FakeRequest().withBody(
+                String.format("{\"test\":%n\"\037blah�cwhoa\0!\"}")
+            ).fetch().as(JacksonResponse.class)
                 .json().readObject().get("test").asText(),
-            Matchers.is("\u001fblah\ufffdcwhoa\u0000!")
+            Matchers.is("\037blah�cwhoa\0!")
         );
     }
 
     /**
      * If there's a problem parsing the body as JSON the error handling is done
      * by Jackson.
-     *
      * @throws IOException If anything goes wrong.
      */
     @Test
@@ -88,12 +85,10 @@ final class JacksonResponseTest {
     /**
      * If there's a problem parsing the body as JSON the error handling is done
      * by Jackson.
-     *
      * @throws IOException If anything goes wrong.
      */
     @Test
-    void invalidJsonArrayErrorHandlingIsLeftToJackson()
-        throws IOException {
+    void invalidJsonArrayErrorHandlingIsLeftToJackson() throws IOException {
         final JacksonResponse response = new FakeRequest()
             .withBody("{\"anInvalidArrayTest\":[}")
             .fetch().as(JacksonResponse.class);
@@ -111,7 +106,6 @@ final class JacksonResponseTest {
 
     /**
      * If the parsed JSON is a valid one but an array an exception is raised.
-     *
      * @throws IOException If anything goes wrong.
      */
     @Test
@@ -135,7 +129,6 @@ final class JacksonResponseTest {
 
     /**
      * Can retrieve the JSON as an array node if it's a valid one.
-     *
      * @throws IOException If anything goes wrong.
      */
     @Test
@@ -157,7 +150,6 @@ final class JacksonResponseTest {
     /**
      * If there's a problem parsing the body as JSON the error handling is done
      * by Jackson.
-     *
      * @throws IOException If anything goes wrong.
      */
     @Test
@@ -181,7 +173,6 @@ final class JacksonResponseTest {
 
     /**
      * If the parsed JSON is a valid one but an object an exception is raised.
-     *
      * @throws IOException If anything goes wrong.
      */
     @Test
@@ -205,7 +196,6 @@ final class JacksonResponseTest {
 
     /**
      * Can retrieve the JSON as an object node if it's a valid one.
-     *
      * @throws IOException If anything goes wrong.
      */
     @Test

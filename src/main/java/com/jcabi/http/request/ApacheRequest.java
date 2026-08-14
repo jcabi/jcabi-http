@@ -17,8 +17,8 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.net.URI;
 import java.net.URL;
+import java.util.ArrayList;
 import java.util.Collection;
-import java.util.LinkedList;
 import java.util.Map;
 import lombok.EqualsAndHashCode;
 import lombok.ToString;
@@ -39,13 +39,11 @@ import org.apache.http.util.EntityUtils;
  * <p>The class is immutable and thread-safe.
  *
  * @since 0.8
- * @checkstyle ClassDataAbstractionCoupling (500 lines)
  */
 @Immutable
 @EqualsAndHashCode(of = "base")
 @ToString(of = "base")
 @Loggable(Loggable.DEBUG)
-@SuppressWarnings("PMD.TooManyMethods")
 public final class ApacheRequest implements Request {
 
     /**
@@ -53,7 +51,6 @@ public final class ApacheRequest implements Request {
      * @checkstyle AnonInnerLength (200 lines)
      */
     private static final Wire WIRE = new Wire() {
-        // @checkstyle ParameterNumber (6 lines)
         @Override
         public Response send(final Request req, final String home,
             final String method,
@@ -61,13 +58,14 @@ public final class ApacheRequest implements Request {
             final InputStream content,
             final int connect,
             final int read) throws IOException {
-            try (CloseableHttpResponse response = HttpClients.createSystem()
-                .execute(
+            try (
+                CloseableHttpResponse response = HttpClients.createSystem().execute(
                     this.httpRequest(
                         home, method, headers, content,
                         connect, read
                     )
-                )) {
+                )
+            ) {
                 return new DefaultResponse(
                     req,
                     response.getStatusLine().getStatusCode(),
@@ -78,7 +76,7 @@ public final class ApacheRequest implements Request {
             }
         }
 
-        /**
+        /*
          * Create request.
          * @param home Home URI
          * @param method Method to use
@@ -90,7 +88,7 @@ public final class ApacheRequest implements Request {
          * @throws IOException If an IO Exception occurs
          * @checkstyle ParameterNumber (6 lines)
          */
-        public HttpEntityEnclosingRequestBase httpRequest(final String home,
+        HttpEntityEnclosingRequestBase httpRequest(final String home,
             final String method,
             final Collection<Map.Entry<String, String>> headers,
             final InputStream content,
@@ -121,7 +119,7 @@ public final class ApacheRequest implements Request {
             return req;
         }
 
-        /**
+        /*
          * Fetch body from http entity.
          * @param entity HTTP entity
          * @return Body in UTF-8
@@ -137,14 +135,14 @@ public final class ApacheRequest implements Request {
             return body;
         }
 
-        /**
+        /*
          * Make a list of all hdrs.
          * @param list Apache HTTP hdrs
          * @return Body in UTF-8
          */
         private Array<Map.Entry<String, String>> headers(final Header... list) {
             final Collection<Map.Entry<String, String>> headers =
-                new LinkedList<>();
+                new ArrayList<>(0);
             for (final Header header : list) {
                 headers.add(
                     new ImmutableHeader(

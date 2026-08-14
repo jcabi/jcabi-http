@@ -30,10 +30,12 @@ final class WebLinkingResponseTest {
      * @throws Exception If something goes wrong inside
      */
     @ParameterizedTest
-    @ValueSource(strings = {
-        "</hey/foo>; title=\"Hi!\"; rel=foo",
-        "</hey/foo>; title=\"\u20ac\"; rel=\"foo\"; media=\"text/xml\""
-    })
+    @ValueSource(
+        strings = {
+            "</hey/foo>; title=\"Hi!\"; rel=foo",
+            "</hey/foo>; title=\"€\"; rel=\"foo\"; media=\"text/xml\""
+        }
+    )
     void parsesLinksInHeaders(final String header) throws Exception {
         final WebLinkingResponse response = new WebLinkingResponse(
             new FakeRequest()
@@ -84,5 +86,4 @@ final class WebLinkingResponseTest {
             )
         );
     }
-
 }

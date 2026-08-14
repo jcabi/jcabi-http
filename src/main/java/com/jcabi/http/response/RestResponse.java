@@ -45,7 +45,6 @@ import org.hamcrest.Matchers;
  */
 @Immutable
 @EqualsAndHashCode(callSuper = true)
-@SuppressWarnings("PMD.TooManyMethods")
 public final class RestResponse extends AbstractResponse {
 
     /**
@@ -272,7 +271,6 @@ public final class RestResponse extends AbstractResponse {
 
     /**
      * Status matcher.
-     *
      * @since 1.2
      */
     private static final class StatusMatch extends CustomMatcher<Response> {
@@ -297,5 +295,4 @@ public final class RestResponse extends AbstractResponse {
             return Response.class.cast(resp).status() == this.status;
         }
     }
-
 }

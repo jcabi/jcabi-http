@@ -12,7 +12,6 @@ import org.junit.jupiter.params.provider.CsvSource;
 
 /**
  * Integration case for {@link TrustedWire}.
- *
  * @since 1.10.1
  */
 final class TrustedWireITCase {
@@ -35,5 +34,4 @@ final class TrustedWireITCase {
             .as(RestResponse.class)
             .assertStatus(HttpURLConnection.HTTP_OK);
     }
-
 }

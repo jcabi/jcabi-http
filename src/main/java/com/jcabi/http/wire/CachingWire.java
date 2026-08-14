@@ -43,7 +43,7 @@ import lombok.ToString;
  *   .uri().path("/save/123").back()
  *   .fetch();</pre>
  *
- * <p>Since 1.17.3, you can pass a {@see LoadingCache} alongside the wire.
+ * <p>Since 1.17.3, you can pass a {@link LoadingCache} alongside the wire.
  *
  * <pre>{@code
  * final LoadingCache<Callable<Response>, Response> cache = ...;
@@ -58,6 +58,7 @@ import lombok.ToString;
  * query part.
  *
  * <p>The class is immutable and thread-safe.
+ *
  * @since 1.0
  * @todo #179:30m This implementation depends on Guava. Investigate for a
  *  possible shared interface between this class and other implementations for
@@ -153,9 +154,11 @@ public final class CachingWire implements Wire {
     public CachingWire(final Wire wire, final String flsh) {
         this.origin = wire;
         this.regex = flsh;
+        // @checkstyle ConstructorsCodeFreeCheck (1 line)
         this.cache = CachingWire.CACHE.getUnchecked(this);
     }
 
+    // @checkstyle ConstructorsOrderCheck (30 lines)
     /**
      * Public ctor.
      * @param wire Original wire
@@ -186,7 +189,6 @@ public final class CachingWire implements Wire {
         this.cache = storage;
     }
 
-    // @checkstyle ParameterNumber (5 lines)
     @Override
     public Response send(
         final Request req, final String home,
@@ -273,12 +275,12 @@ public final class CachingWire implements Wire {
 
     /**
      * Query.
-     *
      * @since 1.8.3
      */
     @ToString
     @EqualsAndHashCode(of = {"origin", "request", "uri", "headers"})
     private static final class Query implements Callable<Response> {
+
         /**
          * Origin wire.
          */
@@ -323,7 +325,6 @@ public final class CachingWire implements Wire {
          * @param input Input body
          * @param cnct Connect timeout
          * @param rdd Read timeout
-         * @checkstyle ParameterNumberCheck (5 lines)
          */
         Query(
             final Wire wire, final Request req, final String home,
@@ -348,5 +349,4 @@ public final class CachingWire implements Wire {
             );
         }
     }
-
 }

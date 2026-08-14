@@ -10,12 +10,12 @@ import java.util.Arrays;
 
 /**
  * Byte builder for multipart body.
- *
  * @since 1.0
  */
 @Immutable
 @Loggable(Loggable.DEBUG)
 public final class MultipartBodyBuilder {
+
     /**
      * Carriage return constant.
      */
@@ -35,7 +35,7 @@ public final class MultipartBodyBuilder {
 
     /**
      * Ctor.
-     * @param values Initial byte array.
+     * @param values Initial byte array
      */
     public MultipartBodyBuilder(final byte[] values) {
         this.values = values.clone();
@@ -43,8 +43,8 @@ public final class MultipartBodyBuilder {
 
     /**
      * Append byte array to this multipart body including carriage return.
-     * @param bytes Byte array to append.
-     * @return New multipart body.
+     * @param bytes Byte array to append
+     * @return New multipart body
      */
     public MultipartBodyBuilder appendLine(final byte[] bytes) {
         return this.append(bytes).append(MultipartBodyBuilder.CRLF);
@@ -52,7 +52,7 @@ public final class MultipartBodyBuilder {
 
     /**
      * Bytes of multipart body.
-     * @return Bytes array.
+     * @return Bytes array
      */
     public byte[] asBytes() {
         return this.values.clone();
@@ -60,8 +60,8 @@ public final class MultipartBodyBuilder {
 
     /**
      * Append byte array to this multipart body.
-     * @param bytes Byte array to append.
-     * @return New multipart body.
+     * @param bytes Byte array to append
+     * @return New multipart body
      */
     public MultipartBodyBuilder append(final byte[] bytes) {
         final int offset = this.values.length;

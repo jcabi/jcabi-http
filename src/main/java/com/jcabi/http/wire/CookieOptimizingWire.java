@@ -12,8 +12,8 @@ import com.jcabi.http.Wire;
 import jakarta.ws.rs.core.HttpHeaders;
 import java.io.IOException;
 import java.io.InputStream;
+import java.util.ArrayList;
 import java.util.Collection;
-import java.util.LinkedList;
 import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.ConcurrentMap;
@@ -64,7 +64,6 @@ public final class CookieOptimizingWire implements Wire {
         this.origin = wire;
     }
 
-    // @checkstyle ParameterNumber (7 lines)
     @Override
     public Response send(final Request req, final String home,
         final String method,
@@ -73,7 +72,7 @@ public final class CookieOptimizingWire implements Wire {
         final int connect,
         final int read) throws IOException {
         final Collection<Map.Entry<String, String>> hdrs =
-            new LinkedList<>();
+            new ArrayList<>(0);
         final ConcurrentMap<String, String> cookies =
             new ConcurrentHashMap<>(0);
         headers.forEach(

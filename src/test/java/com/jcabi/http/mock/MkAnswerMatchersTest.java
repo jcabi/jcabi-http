@@ -21,7 +21,7 @@ final class MkAnswerMatchersTest {
      */
     @Test
     void canMatchBody() {
-        final String body = "Hello \u20ac!";
+        final String body = "Hello €!";
         final MkAnswer query = Mockito.mock(MkAnswer.class);
         Mockito.doReturn(body).when(query).body();
         MatcherAssert.assertThat(

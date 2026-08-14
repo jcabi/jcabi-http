@@ -11,7 +11,6 @@ import lombok.ToString;
 
 /**
  * Immutable HTTP header.
- *
  * @since 0.10
  */
 @Immutable
@@ -35,6 +34,7 @@ public final class ImmutableHeader implements Map.Entry<String, String> {
      * @param value The value
      */
     public ImmutableHeader(final String key, final String value) {
+        // @checkstyle ConstructorsCodeFreeCheck (1 line)
         this.left = ImmutableHeader.normalize(key);
         this.right = value;
     }
@@ -85,5 +85,4 @@ public final class ImmutableHeader implements Map.Entry<String, String> {
         }
         return upper;
     }
-
 }

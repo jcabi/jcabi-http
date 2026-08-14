@@ -31,16 +31,13 @@ final class ETagCachingWireTest {
     @Test
     void takesContentFromCache() throws IOException {
         final String body = "sample content";
-        final MkContainer container = new MkGrizzlyContainer()
-            .next(
-                new MkAnswer.Simple(body)
-                .withHeader(HttpHeaders.ETAG, "3e25")
-            )
-            .next(
-                new MkAnswer.Simple("")
-                .withStatus(HttpURLConnection.HTTP_NOT_MODIFIED)
-            )
-            .start();
+        final MkContainer container = new MkGrizzlyContainer().next(
+            new MkAnswer.Simple(body)
+            .withHeader(HttpHeaders.ETAG, "3e25")
+        ).next(
+            new MkAnswer.Simple("")
+            .withStatus(HttpURLConnection.HTTP_NOT_MODIFIED)
+        ).start();
         final Request req =
             new JdkRequest(container.home()).through(ETagCachingWire.class);
         final Collection<String> bodies = new ArrayList<>(2);
@@ -62,16 +59,13 @@ final class ETagCachingWireTest {
     void detectsContentModification() throws IOException {
         final String before = "before change";
         final String after = "after change";
-        final MkContainer container = new MkGrizzlyContainer()
-            .next(
-                new MkAnswer.Simple(before)
-                    .withHeader(HttpHeaders.ETAG, "3e26")
-            )
-            .next(
-                new MkAnswer.Simple(after)
-                    .withHeader(HttpHeaders.ETAG, "3e27")
-            )
-            .start();
+        final MkContainer container = new MkGrizzlyContainer().next(
+            new MkAnswer.Simple(before)
+                .withHeader(HttpHeaders.ETAG, "3e26")
+        ).next(
+            new MkAnswer.Simple(after)
+                .withHeader(HttpHeaders.ETAG, "3e27")
+        ).start();
         final Request req =
             new JdkRequest(container.home())
                 .through(ETagCachingWire.class);

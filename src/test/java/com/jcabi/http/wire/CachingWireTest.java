@@ -198,22 +198,20 @@ final class CachingWireTest {
         ).next(
             new MkAnswer.Simple(HttpURLConnection.HTTP_BAD_GATEWAY)
         ).start();
-        final Request req = new JdkRequest(container.home())
-            .through(
-                CachingWire.class,
-                CacheBuilder
-                    .newBuilder()
-                    .build(
-                        new CacheLoader<Callable<Response>, Response>() {
-                            @Override
-                            public Response load(
-                                final Callable<Response> query
-                            ) throws Exception {
-                                return query.call();
-                            }
+        final Request req = new JdkRequest(container.home()).through(
+            CachingWire.class,
+            CacheBuilder
+                .newBuilder().build(
+                    new CacheLoader<Callable<Response>, Response>() {
+                        @Override
+                        public Response load(
+                            final Callable<Response> query
+                        ) throws Exception {
+                            return query.call();
                         }
-                    )
-            );
+                    }
+                )
+        );
         for (int idx = 0; idx < 10; ++idx) {
             req.fetch();
         }
@@ -224,5 +222,4 @@ final class CachingWireTest {
             Matchers.equalTo(1)
         );
     }
-
 }

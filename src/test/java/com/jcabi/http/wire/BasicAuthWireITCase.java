@@ -13,10 +13,10 @@ import org.junit.jupiter.api.Test;
 
 /**
  * Integration case for {@link BasicAuthWire}.
- *
  * @since 1.17.4
  */
 final class BasicAuthWireITCase {
+
     @Test
     void basicAuthWorks() throws IOException {
         MatcherAssert.assertThat(
@@ -24,11 +24,11 @@ final class BasicAuthWireITCase {
             new JdkRequest(
                 "https://User:Pass@authenticationtest.com/HTTPAuth/"
             )
-                .through(BasicAuthWire.class)
-                .through(AutoRedirectingWire.class)
-                .fetch()
-                .as(XmlResponse.class)
-                .body(),
+            .through(BasicAuthWire.class)
+            .through(AutoRedirectingWire.class)
+            .fetch()
+            .as(XmlResponse.class)
+            .body(),
             Matchers.containsString("Success!")
         );
     }

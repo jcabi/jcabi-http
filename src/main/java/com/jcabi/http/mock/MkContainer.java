@@ -92,7 +92,7 @@ public interface MkContainer extends Closeable {
      * condition).
      * @param matcher The matcher specifying the condition
      * @return Collection of all requests satisfying the matcher, ordered from
-     *  oldest to newest.
+     *  oldest to newest
      */
     Collection<MkQuery> takeAll(Matcher<MkAnswer> matcher);
 
@@ -128,5 +128,4 @@ public interface MkContainer extends Closeable {
      * @return URI of the started container
      */
     URI home();
-
 }

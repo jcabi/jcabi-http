@@ -28,7 +28,6 @@ import org.junit.jupiter.params.provider.CsvSource;
 
 /**
  * Test case for {@link BasicAuthWire}.
- *
  * @since 1.17.1
  */
 final class BasicAuthWireTest {
@@ -40,7 +39,6 @@ final class BasicAuthWireTest {
 
     /**
      * Tests if the wire generates the authorization header correctly.
-     *
      * @param username The username to user for authentication
      * @param password The password to user for authentication
      * @throws Exception If something goes wrong
@@ -49,7 +47,7 @@ final class BasicAuthWireTest {
     @CsvSource({
         "Alice,  secret",
         "Bob,    s&e+c`ret",
-        "user,  \u20ac\u20ac"
+        "user,  €€"
     })
     void testHeader(
         final String username, final String password
@@ -61,17 +59,11 @@ final class BasicAuthWireTest {
             UriBuilder.fromUri(container.home()).userInfo(
                 String.format(
                     BasicAuthWireTest.CRED_FORMAT,
-                    URLEncoder.encode(
-                        username, StandardCharsets.UTF_8.displayName()
-                    ),
-                    URLEncoder.encode(
-                        password, StandardCharsets.UTF_8.displayName()
-                    )
+                    URLEncoder.encode(username, StandardCharsets.UTF_8),
+                    URLEncoder.encode(password, StandardCharsets.UTF_8)
                 )
             ).build()
-        )
-            .through(BasicAuthWire.class)
-            .fetch();
+        ).through(BasicAuthWire.class).fetch();
         container.stop();
         MatcherAssert.assertThat(
             "should be correct header",
@@ -84,11 +76,10 @@ final class BasicAuthWireTest {
 
     /**
      * Tests if the wire strips user info from URI, after the header was added.
-     *
      * @throws Exception If something goes wrong
      */
     @Test
-    void shouldStripUserInfo() throws Exception {
+    void stripsUserInfo() throws Exception {
         final MkContainer container = new MkGrizzlyContainer().next(
             new MkAnswer.Simple(HttpsURLConnection.HTTP_NOT_FOUND),
             MkQueryMatchers.hasHeader(
@@ -134,7 +125,6 @@ final class BasicAuthWireTest {
     /**
      * Creates the expected authorization header value for the
      * given username.
-     *
      * @param username The username to create the header for
      * @param password The password to create the header for
      * @return The header value in the form

@@ -33,7 +33,6 @@ import org.junit.jupiter.params.ParameterizedTest;
  * Test case for {@link Request} and its implementations.
  * @since 1.7
  */
-@SuppressWarnings("PMD.TooManyMethods")
 final class RequestTest extends RequestTestTemplate {
 
     /**
@@ -47,7 +46,7 @@ final class RequestTest extends RequestTestTemplate {
         final Class<? extends Request> type
     ) throws Exception {
         final MkContainer container = new MkGrizzlyContainer().next(
-            new MkAnswer.Simple("\u20ac! hello!")
+            new MkAnswer.Simple("€! hello!")
         ).start();
         final RestResponse response =
             RequestTestTemplate.request(container.home(), type)
@@ -59,7 +58,7 @@ final class RequestTest extends RequestTestTemplate {
         Assertions.assertAll(
             () -> response.assertBody(
                 Matchers.allOf(
-                    Matchers.containsString("\u20ac!"),
+                    Matchers.containsString("€!"),
                     Matchers.containsString("hello!")
                 )
             ),
@@ -133,7 +132,7 @@ final class RequestTest extends RequestTestTemplate {
         final RestResponse response =
             RequestTestTemplate.request(container.home(), type)
                 .uri()
-                .queryParam("q", "some value of this param &^%*;'\"\u20ac\"")
+                .queryParam("q", "some value of this param &^%*;'\"€\"")
                 .back()
                 .method(Request.GET)
                 .header(HttpHeaders.ACCEPT, MediaType.TEXT_XML)
@@ -144,9 +143,9 @@ final class RequestTest extends RequestTestTemplate {
                 "should be ends with euro sign",
                 URLDecoder.decode(
                     container.take().uri().toString(),
-                    String.valueOf(StandardCharsets.UTF_8)
+                    StandardCharsets.UTF_8
                 ),
-                Matchers.endsWith("\"\u20ac\"")
+                Matchers.endsWith("\"€\"")
             )
         );
         container.stop();
@@ -165,11 +164,10 @@ final class RequestTest extends RequestTestTemplate {
         final MkContainer container = new MkGrizzlyContainer().next(
             new MkAnswer.Simple("")
         ).start();
-        final String value = "some random value of \u20ac param \"&^%*;'\"";
+        final String value = "some random value of € param \"&^%*;'\"";
         RequestTestTemplate.request(container.home(), type)
             .method(Request.POST)
-            .body().formParam("p", value).back()
-            .header(
+            .body().formParam("p", value).back().header(
                 HttpHeaders.CONTENT_TYPE,
                 MediaType.APPLICATION_FORM_URLENCODED
             )
@@ -178,7 +176,7 @@ final class RequestTest extends RequestTestTemplate {
             "should be with param",
             URLDecoder.decode(
                 container.take().body(),
-                StandardCharsets.UTF_8.toString()
+                StandardCharsets.UTF_8
             ),
             Matchers.is(String.format("p=%s", value))
         );
@@ -198,15 +196,14 @@ final class RequestTest extends RequestTestTemplate {
         final MkContainer container = new MkGrizzlyContainer().next(
             new MkAnswer.Simple("")
         ).start();
-        final String value = "some value of \u20ac param \"&^%*;'\"";
-        final String follow = "other value of \u20ac param \"&^%*;'\"";
+        final String value = "some value of € param \"&^%*;'\"";
+        final String follow = "other value of € param \"&^%*;'\"";
         RequestTestTemplate.request(container.home(), type)
             .method(Request.POST)
             .body()
             .formParam("a", value)
             .formParam("b", follow)
-            .back()
-            .header(
+            .back().header(
                 HttpHeaders.CONTENT_TYPE,
                 MediaType.APPLICATION_FORM_URLENCODED
             )
@@ -215,7 +212,7 @@ final class RequestTest extends RequestTestTemplate {
             "should be with multiple params",
             URLDecoder.decode(
                 container.take().body(),
-                StandardCharsets.UTF_8.toString()
+                StandardCharsets.UTF_8
             ),
             Matchers.is(String.format("a=%s&b=%s", value, follow))
         );
@@ -227,7 +224,6 @@ final class RequestTest extends RequestTestTemplate {
      * with single byte param.
      * @param type Request type
      * @throws Exception If something goes wrong inside
-     * @checkstyle LineLength (36 lines)
      */
     @Values
     @ParameterizedTest
@@ -239,8 +235,7 @@ final class RequestTest extends RequestTestTemplate {
         ).start();
         final RestResponse response =
             RequestTestTemplate.request(container.home(), type)
-                .method(Request.POST)
-                .header(
+                .method(Request.POST).header(
                     HttpHeaders.CONTENT_TYPE,
                     String.format(
                         "%s; boundary=--xx", MediaType.MULTIPART_FORM_DATA
@@ -261,7 +256,7 @@ final class RequestTest extends RequestTestTemplate {
                         "Content-Disposition: form-data; name=\"x\"; filename=\"binary\"",
                         RequestTest.steamContentType(),
                         "",
-                        "\ufffd",
+                        "�",
                         "----xx--"
                     )
                 )
@@ -275,7 +270,6 @@ final class RequestTest extends RequestTestTemplate {
      * with single param.
      * @param type Request type
      * @throws Exception If something goes wrong inside
-     * @checkstyle LineLength (37 lines)
      */
     @Values
     @ParameterizedTest
@@ -285,10 +279,9 @@ final class RequestTest extends RequestTestTemplate {
         final MkContainer container = new MkGrizzlyContainer().next(
             new MkAnswer.Simple("")
         ).start();
-        final String value = "value of \u20ac part param \"&^%*;'\"";
+        final String value = "value of € part param \"&^%*;'\"";
         RequestTestTemplate.request(container.home(), type)
-            .method(Request.POST)
-            .header(
+            .method(Request.POST).header(
                 HttpHeaders.CONTENT_TYPE,
                 String.format(
                     "%s; boundary=--xyz", MediaType.MULTIPART_FORM_DATA
@@ -320,7 +313,6 @@ final class RequestTest extends RequestTestTemplate {
      * with two params.
      * @param type Request type
      * @throws Exception If something goes wrong inside
-     * @checkstyle LineLength (44 lines)
      */
     @Values
     @ParameterizedTest
@@ -330,12 +322,11 @@ final class RequestTest extends RequestTestTemplate {
         final MkContainer container = new MkGrizzlyContainer().next(
             new MkAnswer.Simple("")
         ).start();
-        final String value = "value of \u20ac one param \"&^%*;'\"";
-        final String other = "value of \u20ac two param \"&^%*;'\"";
+        final String value = "value of € one param \"&^%*;'\"";
+        final String other = "value of € two param \"&^%*;'\"";
         final String separator = "--xy--";
         RequestTestTemplate.request(container.home(), type)
-            .method(Request.POST)
-            .header(
+            .method(Request.POST).header(
                 HttpHeaders.CONTENT_TYPE,
                 String.format(
                     "%s; boundary=xy--", MediaType.MULTIPART_FORM_DATA
@@ -381,22 +372,21 @@ final class RequestTest extends RequestTestTemplate {
         final MkContainer container = new MkGrizzlyContainer().next(
             new MkAnswer.Simple("")
         ).start();
-        final String value = "\u20ac some body value with \"&^%*;'\"";
+        final String value = "€ some body value with \"&^%*;'\"";
         RequestTestTemplate.request(container.home(), type)
-            .method(Request.POST)
-            .header(
+            .method(Request.POST).header(
                 HttpHeaders.CONTENT_TYPE,
                 MediaType.APPLICATION_FORM_URLENCODED
             )
             .body()
-            .set(URLEncoder.encode(value, StandardCharsets.UTF_8.toString()))
+            .set(URLEncoder.encode(value, StandardCharsets.UTF_8))
             .back()
             .fetch();
         MatcherAssert.assertThat(
             "should be match body",
             URLDecoder.decode(
                 container.take().body(),
-                StandardCharsets.UTF_8.toString()
+                StandardCharsets.UTF_8
             ),
             Matchers.containsString(value)
         );
@@ -440,7 +430,7 @@ final class RequestTest extends RequestTestTemplate {
         final Class<? extends Request> type
     ) throws Exception {
         final MkContainer container = new MkGrizzlyContainer().next(
-            new MkAnswer.Simple("some text \u20ac")
+            new MkAnswer.Simple("some text €")
         ).start();
         final RestResponse response =
             RequestTestTemplate.request(container.home(), type)
@@ -449,7 +439,7 @@ final class RequestTest extends RequestTestTemplate {
         container.stop();
         Assertions.assertAll(
             () -> response.assertBody(
-                Matchers.containsString("text \u20ac")
+                Matchers.containsString("text €")
             ),
             () -> response.assertStatus(HttpURLConnection.HTTP_OK)
         );
@@ -501,7 +491,7 @@ final class RequestTest extends RequestTestTemplate {
         final Class<? extends Request> type
     ) throws Exception {
         final MkContainer container = new MkGrizzlyContainer().next(
-            new MkAnswer.Simple("<root><a>\u0443\u0440\u0430!</a></root>")
+            new MkAnswer.Simple("<root><a>ура!</a></root>")
         ).start();
         final RestResponse response =
             RequestTestTemplate.request(container.home(), type)
@@ -545,17 +535,16 @@ final class RequestTest extends RequestTestTemplate {
         final Class<? extends Request> type
     ) throws Exception {
         final MkContainer container = new MkGrizzlyContainer().next(
-            new MkAnswer.Simple("\u0443\u0440\u0430!").withHeader(
+            new MkAnswer.Simple("ура!").withHeader(
                 HttpHeaders.CONTENT_TYPE, "text/plain;charset=utf-8"
             )
         ).start();
         RequestTestTemplate.request(container.home(), type)
             .method(Request.GET)
             .uri().path("/abcdefff").back()
-            .fetch().as(RestResponse.class)
-            .assertBody(
+            .fetch().as(RestResponse.class).assertBody(
                 Matchers.allOf(
-                    Matchers.containsString("\u0443\u0440\u0430"),
+                    Matchers.containsString("ура"),
                     Matchers.containsString("!")
                 )
             );
@@ -573,7 +562,7 @@ final class RequestTest extends RequestTestTemplate {
         final Class<? extends Request> type
     ) throws Exception {
         final MkContainer container = new MkGrizzlyContainer().next(
-            new MkAnswer.Simple("<text>\u0443\u0440\u0430!</text>").withHeader(
+            new MkAnswer.Simple("<text>ура!</text>").withHeader(
                 HttpHeaders.CONTENT_TYPE, "text/xml;charset=utf-8"
             )
         ).start();
@@ -581,7 +570,7 @@ final class RequestTest extends RequestTestTemplate {
             .method(Request.GET)
             .uri().path("/barbar").back()
             .fetch().as(XmlResponse.class)
-            .assertXPath("/text[contains(.,'\u0443\u0440\u0430')]");
+            .assertXPath("/text[contains(.,'ура')]");
         container.stop();
     }
 
@@ -600,10 +589,9 @@ final class RequestTest extends RequestTestTemplate {
         ).start();
         final RestResponse response = RequestTestTemplate.request(
             UriBuilder.fromUri(container.home())
-                .userInfo("user:\u20ac\u20ac").build(),
+                .userInfo("user:€€").build(),
             type
-        )
-            .through(BasicAuthWire.class)
+        ).through(BasicAuthWire.class)
             .method(Request.GET)
             .uri().path("/abcde").back()
             .fetch().as(RestResponse.class);
@@ -690,14 +678,12 @@ final class RequestTest extends RequestTestTemplate {
         final MkContainer container = new MkGrizzlyContainer().next(
             new MkAnswer.Simple("")
         ).start();
-        final String value = "\u20ac body as stream \"&^%*;'\"";
+        final String value = "€ body as stream \"&^%*;'\"";
         RequestTestTemplate.request(container.home(), type)
-            .method(Request.POST)
-            .header(
+            .method(Request.POST).header(
                 HttpHeaders.CONTENT_TYPE,
                 MediaType.APPLICATION_FORM_URLENCODED
-            )
-            .fetch(
+            ).fetch(
                 new ByteArrayInputStream(
                     value.getBytes(StandardCharsets.UTF_8)
                 )
@@ -726,13 +712,12 @@ final class RequestTest extends RequestTestTemplate {
                 new URI("http://localhost:78787"),
                 type
             )
-                .method(Request.GET)
-                .body().set("already set").back()
-                .fetch(
-                    new ByteArrayInputStream(
-                        "hello".getBytes(StandardCharsets.UTF_8)
-                    )
+            .method(Request.GET)
+            .body().set("already set").back().fetch(
+                new ByteArrayInputStream(
+                    "hello".getBytes(StandardCharsets.UTF_8)
                 )
+            )
         );
     }
 
@@ -756,9 +741,7 @@ final class RequestTest extends RequestTestTemplate {
                 .method(Request.POST)
                 .body().set("request").back()
                 .fetch().as(RestResponse.class)
-                .assertBody(
-                    Matchers.equalTo(expected)
-                );
+                .assertBody(Matchers.equalTo(expected));
         } finally {
             container.stop();
         }
@@ -766,7 +749,7 @@ final class RequestTest extends RequestTestTemplate {
 
     /**
      * Content type stream.
-     * @return Content type header.
+     * @return Content type header
      */
     private static String steamContentType() {
         return "Content-Type: application/octet-stream";

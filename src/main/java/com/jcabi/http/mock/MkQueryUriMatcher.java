@@ -11,12 +11,12 @@ import org.hamcrest.TypeSafeDiagnosingMatcher;
 
 /**
  * Matcher for checking {@link MkQuery#uri()} contents.
- *
  * @since 1.17.4
  * @checkstyle ProtectedMethodInFinalClassCheck (50 lines)
  */
 public final class MkQueryUriMatcher
     extends TypeSafeDiagnosingMatcher<MkQuery> {
+
     /**
      * Path to match.
      */
@@ -24,8 +24,7 @@ public final class MkQueryUriMatcher
 
     /**
      * Constructor.
-     *
-     * @param mtrch Path to match.
+     * @param mtrch Path to match
      */
     MkQueryUriMatcher(final Matcher<URI> mtrch) {
         super();

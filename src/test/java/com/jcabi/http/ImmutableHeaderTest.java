@@ -25,5 +25,4 @@ final class ImmutableHeaderTest {
             Matchers.equalTo("Content-Type")
         );
     }
-
 }

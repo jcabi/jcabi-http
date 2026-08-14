@@ -17,15 +17,14 @@ import lombok.EqualsAndHashCode;
 
 /**
  * A JSON response provided by the Jackson Project.
- *
  * @since 1.17
  */
 @Immutable
 @EqualsAndHashCode(callSuper = true)
 public final class JacksonResponse extends AbstractResponse {
+
     /**
      * Ctor.
-     *
      * @param resp Response
      */
     public JacksonResponse(final Response resp) {
@@ -34,21 +33,18 @@ public final class JacksonResponse extends AbstractResponse {
 
     /**
      * Read the body as JSON.
-     *
-     * @return JSON reader.
+     * @return JSON reader
      */
     public JsonReader json() {
-        return new JsonReader(
-            this.binary()
-        );
+        return new JacksonResponse.JsonReader(this.binary());
     }
 
     /**
      * A tree representation views of JSON documents.
-     *
      * @since 1.17.1
      */
     public static final class JsonReader {
+
         /**
          * Jackson's ObjectMapper. Allow unquoted control characters when
          * parsing by default.
@@ -63,8 +59,7 @@ public final class JacksonResponse extends AbstractResponse {
 
         /**
          * Public constructor.
-         *
-         * @param bytes The HTTP response body as an array of bytes.
+         * @param bytes The HTTP response body as an array of bytes
          */
         public JsonReader(final byte[] bytes) {
             this.body = Arrays.copyOf(bytes, bytes.length);
@@ -73,8 +68,7 @@ public final class JacksonResponse extends AbstractResponse {
         /**
          * Returns a mutable JSON array node, if the parsed JSON is a valid
          * array.
-         *
-         * @return JSON array node.
+         * @return JSON array node
          * @throws IOException If the body is not a valid JSON or JSON array.
          */
         public ArrayNode readArray() throws IOException {
@@ -90,8 +84,7 @@ public final class JacksonResponse extends AbstractResponse {
         /**
          * Returns a mutable JSON object node, if the parsed JSON is a valid
          * object.
-         *
-         * @return JSON object node.
+         * @return JSON object node
          * @throws IOException If the body is not a valid JSON or JSON object.
          */
         public ObjectNode readObject() throws IOException {
@@ -106,8 +99,7 @@ public final class JacksonResponse extends AbstractResponse {
 
         /**
          * Returns an immutable JSON node.
-         *
-         * @return JSON node.
+         * @return JSON node
          * @throws IOException If the body is not a valid JSON.
          */
         public JsonNode read() throws IOException {

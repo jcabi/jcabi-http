@@ -12,9 +12,9 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.net.URI;
 import java.nio.charset.StandardCharsets;
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
-import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
@@ -24,7 +24,6 @@ import org.glassfish.grizzly.http.server.Request;
 
 /**
  * Mock HTTP query/request.
- *
  * @since 0.10
  */
 @Immutable
@@ -56,13 +55,28 @@ final class GrizzlyQuery implements MkQuery {
      * @param request Grizzly request
      * @throws IOException If fails
      */
-    @SuppressWarnings("PMD.ConstructorOnlyInitializesOrCallOtherConstructors")
     GrizzlyQuery(final Request request) throws IOException {
-        request.setCharacterEncoding(StandardCharsets.UTF_8.toString());
-        this.home = GrizzlyQuery.uri(request);
-        this.mtd = request.getMethod();
-        this.hdrs = GrizzlyQuery.headers(request);
-        this.content = GrizzlyQuery.input(request);
+        this(
+            GrizzlyQuery.uri(GrizzlyQuery.encoded(request)),
+            request.getMethod(),
+            GrizzlyQuery.headers(request),
+            GrizzlyQuery.input(request)
+        );
+    }
+
+    /**
+     * Ctor.
+     * @param uri Request URI
+     * @param method Request method
+     * @param headers Request headers
+     * @param body Request content
+     */
+    private GrizzlyQuery(final String uri, final Method method,
+        final ArrayMap<String, List<String>> headers, final byte[] body) {
+        this.home = uri;
+        this.mtd = method;
+        this.hdrs = headers;
+        this.content = body.clone();
     }
 
     @Override
@@ -88,6 +102,17 @@ final class GrizzlyQuery implements MkQuery {
     @Override
     public byte[] binary() {
         return Arrays.copyOf(this.content, this.content.length);
+    }
+
+    /**
+     * Set UTF-8 encoding to the request.
+     * @param request Request
+     * @return The same request
+     * @throws IOException If fails
+     */
+    private static Request encoded(final Request request) throws IOException {
+        request.setCharacterEncoding(StandardCharsets.UTF_8.toString());
+        return request;
     }
 
     /**
@@ -133,7 +158,7 @@ final class GrizzlyQuery implements MkQuery {
     private static List<String> headers(
         final Request request, final String name
     ) {
-        final List<String> list = new LinkedList<>();
+        final List<String> list = new ArrayList<>(0);
         final Iterable<?> values = request.getHeaders(name);
         for (final Object value : values) {
             list.add(value.toString());
@@ -148,7 +173,6 @@ final class GrizzlyQuery implements MkQuery {
      * @throws IOException If fails
      */
     private static byte[] input(final Request req) throws IOException {
-        // @checkstyle MagicNumber (1 line)
         final byte[] buffer = new byte[8192];
         final ByteArrayOutputStream output;
         try (InputStream input = req.getInputStream()) {

@@ -12,7 +12,6 @@ import org.junit.jupiter.api.Test;
 
 /**
  * Test case for {@link JsoupResponse}.
- *
  * @since 1.4
  */
 final class JsoupResponseTest {
@@ -40,5 +39,4 @@ final class JsoupResponseTest {
             )
         );
     }
-
 }

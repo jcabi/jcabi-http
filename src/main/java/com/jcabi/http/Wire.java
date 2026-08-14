@@ -50,5 +50,4 @@ public interface Wire {
         Collection<Map.Entry<String, String>> headers, InputStream content,
         int connect, int read)
         throws IOException;
-
 }

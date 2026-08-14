@@ -35,7 +35,7 @@ import lombok.EqualsAndHashCode;
  * <p>In <a href="http://en.wikipedia.org/wiki/HATEOAS">HATEOAS</a>
  * responses it is convenient to use this decorator's
  * method {@link #rel(String)}
- * in order to follow the link provided in {@code &lt;link&gt;} XML element,
+ * in order to follow the link provided in the {@code link} XML element,
  * for example:
  *
  * <pre> String data = new JdkRequest("http://my.example.com")
@@ -139,5 +139,4 @@ public final class XmlResponse extends AbstractResponse {
         }
         return context;
     }
-
 }

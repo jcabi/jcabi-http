@@ -13,7 +13,6 @@ import org.mockito.Mockito;
 
 /**
  * Test case for {@link MkQueryMatchers}.
- *
  * @since 1.5
  */
 final class MkQueryMatchersTest {
@@ -23,7 +22,7 @@ final class MkQueryMatchersTest {
      */
     @Test
     void canMatchBody() {
-        final String body = "Hello \u20ac!";
+        final String body = "Hello €!";
         final MkQuery query = Mockito.mock(MkQuery.class);
         Mockito.doReturn(body).when(query).body();
         MatcherAssert.assertThat(
@@ -91,5 +90,4 @@ final class MkQueryMatchersTest {
             )
         );
     }
-
 }

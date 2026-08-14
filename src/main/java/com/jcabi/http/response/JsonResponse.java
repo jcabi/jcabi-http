@@ -44,7 +44,7 @@ public final class JsonResponse extends AbstractResponse {
      * Pattern matching non-ASCII characters, to escape them before parsing.
      */
     private static final Pattern CONTROL = Pattern.compile(
-        "[\u0000-\u0008\u000e-\u001f\u007f-\uffff]"
+        "[\0-\b\016-\037\177-￿]"
     );
 
     /**
@@ -61,9 +61,9 @@ public final class JsonResponse extends AbstractResponse {
      * @param element Element in the JSON data of this object
      * @return This object
      */
+    @SuppressWarnings("DoNotCallSuggester")
     public JsonResponse assertJson(final String element) {
         throw new UnsupportedOperationException(
-            // @checkstyle LineLength (1 line)
             "assertJson() is not implemented yet, since we are not sure which JSON query standard to use"
         );
     }
@@ -86,7 +86,6 @@ public final class JsonResponse extends AbstractResponse {
 
     /**
      * Escape control characters in JSON parsing.
-     *
      * @param input The input JSON string
      * @return Escaped JSON
      * @see <a href="http://tools.ietf.org/html/rfc4627">RFC 4627</a>
@@ -106,7 +105,6 @@ public final class JsonResponse extends AbstractResponse {
 
     /**
      * Verbose reader.
-     *
      * @since 1.3.1
      */
     private static final class VerboseReader implements JsonReader {
@@ -169,5 +167,4 @@ public final class JsonResponse extends AbstractResponse {
             this.origin.close();
         }
     }
-
 }

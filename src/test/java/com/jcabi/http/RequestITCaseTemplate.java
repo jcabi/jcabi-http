@@ -20,8 +20,6 @@ import java.io.IOException;
 import java.net.HttpURLConnection;
 import java.net.URI;
 import java.util.Locale;
-import lombok.AccessLevel;
-import lombok.RequiredArgsConstructor;
 import org.hamcrest.MatcherAssert;
 import org.hamcrest.Matchers;
 import org.junit.jupiter.api.Assertions;
@@ -32,13 +30,12 @@ import org.junit.jupiter.params.provider.ValueSource;
 
 /**
  * Tests for any implementation of {@link Request}.
- *
  * @since 1.17.8
- * @checkstyle JavadocMethodCheck (500 lines)
  */
-@RequiredArgsConstructor(access = AccessLevel.PROTECTED)
-@SuppressWarnings({"PMD.AbstractClassWithoutAbstractMethod", "PMD.TooManyMethods",
-    "PMD.JUnitTestClassShouldBeFinal"})
+@SuppressWarnings({
+    "PMD.AbstractClassWithoutAbstractMethod",
+    "PMD.JUnitTestClassShouldBeFinal"
+})
 public abstract class RequestITCaseTemplate {
 
     /**
@@ -52,9 +49,20 @@ public abstract class RequestITCaseTemplate {
     private final URI uri;
 
     /**
+     * Ctor.
+     * @param tpe Type of Request
+     * @param base Base URI
+     */
+    protected RequestITCaseTemplate(final Class<? extends Request> tpe,
+        final URI base) {
+        this.type = tpe;
+        this.uri = base;
+    }
+
+    /**
      * Make request for a specific path.
-     * @param path Path.
-     * @return Request.
+     * @param path Path
+     * @return Request
      */
     protected final Request request(final String path) {
         return RequestTestTemplate.request(
@@ -64,11 +72,13 @@ public abstract class RequestITCaseTemplate {
     }
 
     @ParameterizedTest
-    @ValueSource(ints = {
-        HttpURLConnection.HTTP_NOT_FOUND,
-        HttpURLConnection.HTTP_OK,
-        HttpURLConnection.HTTP_UNAVAILABLE
-    })
+    @ValueSource(
+        ints = {
+            HttpURLConnection.HTTP_NOT_FOUND,
+            HttpURLConnection.HTTP_OK,
+            HttpURLConnection.HTTP_UNAVAILABLE
+        }
+    )
     final void readsReturnStatusCode(final int code) throws IOException {
         this.request(String.format("/status/%d", code))
             .fetch()
@@ -227,8 +237,9 @@ public abstract class RequestITCaseTemplate {
 
     /**
      * Is JdkRequest being tested?
-     * @return True if so.
+     * @return True if so
      */
+    @SuppressWarnings("UnusedMethod")
     private boolean isJdkRequest() {
         return JdkRequest.class.equals(this.type);
     }

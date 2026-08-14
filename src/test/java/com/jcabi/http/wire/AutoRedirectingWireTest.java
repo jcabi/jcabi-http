@@ -19,7 +19,6 @@ import org.junit.jupiter.api.Test;
 
 /**
  * Test case for {@link AutoRedirectingWire}.
- *
  * @since 1.7
  */
 final class AutoRedirectingWireTest {
@@ -27,14 +26,12 @@ final class AutoRedirectingWireTest {
     /**
      * AutoRedirectingWire retries up to the specified number of times for
      * HTTP Status 3xx responses.
-     *
      * @throws Exception If something goes wrong inside
      */
     @Test
     void retriesForHttpRedirectStatus() throws Exception {
         final MkContainer container = new MkGrizzlyContainer().next(
             new MkAnswer.Simple(HttpStatus.SC_MOVED_TEMPORARILY, "")
-                // @checkstyle MultipleStringLiteralsCheck (1 line)
                 .withHeader(HttpHeaders.LOCATION, "/"),
             Matchers.any(MkQuery.class),
             Integer.MAX_VALUE
@@ -84,5 +81,4 @@ final class AutoRedirectingWireTest {
             container.stop();
         }
     }
-
 }

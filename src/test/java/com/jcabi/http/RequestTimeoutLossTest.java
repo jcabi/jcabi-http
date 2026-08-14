@@ -28,6 +28,7 @@ import org.mockito.Mockito;
  * @since 1.17.3
  */
 final class RequestTimeoutLossTest extends RequestTestTemplate {
+
     /**
      * Placeholder URL used for testing purposes only.
      */
@@ -56,7 +57,6 @@ final class RequestTimeoutLossTest extends RequestTestTemplate {
     /**
      * The connect and read timeouts are properly set no matter in which order
      * {@code Request.timeout} is called.
-     *
      * @param type Type of Request
      * @throws Exception If something goes wrong inside
      */
@@ -70,8 +70,7 @@ final class RequestTimeoutLossTest extends RequestTestTemplate {
             RequestTimeoutLossTest.timeouts(
                 () -> RequestTimeoutLossTest.request(type)
                     .through(MockWire.class)
-                    .method(Request.GET)
-                    .timeout(
+                    .method(Request.GET).timeout(
                         RequestTimeoutLossTest.CONNECT_TIMEOUT,
                         RequestTimeoutLossTest.READ_TIMEOUT
                     )
@@ -89,7 +88,6 @@ final class RequestTimeoutLossTest extends RequestTestTemplate {
     /**
      * The connect and read timeouts are properly set no matter in which order
      * {@code Request.timeout} is called.
-     *
      * @param type Type of Request
      * @throws Exception If something goes wrong inside
      */
@@ -103,8 +101,7 @@ final class RequestTimeoutLossTest extends RequestTestTemplate {
             RequestTimeoutLossTest.timeouts(
                 () -> RequestTimeoutLossTest.request(type)
                     .through(MockWire.class)
-                    .method(Request.GET)
-                    .timeout(
+                    .method(Request.GET).timeout(
                         RequestTimeoutLossTest.CONNECT_TIMEOUT,
                         RequestTimeoutLossTest.READ_TIMEOUT
                     )
@@ -120,7 +117,6 @@ final class RequestTimeoutLossTest extends RequestTestTemplate {
     /**
      * The connect and read timeouts are properly set no matter in which order
      * {@code Request.timeout} is called.
-     *
      * @param type Type of Request
      * @throws Exception If something goes wrong inside
      */
@@ -134,15 +130,11 @@ final class RequestTimeoutLossTest extends RequestTestTemplate {
             RequestTimeoutLossTest.timeouts(
                 () -> RequestTimeoutLossTest.request(type)
                     .through(MockWire.class)
-                    .method(Request.GET)
-                    .timeout(
+                    .method(Request.GET).timeout(
                         RequestTimeoutLossTest.CONNECT_TIMEOUT,
                         RequestTimeoutLossTest.READ_TIMEOUT
                     )
-                    .header(
-                        RequestTimeoutLossTest.CONTENT_TYPE,
-                        "text/plain"
-                    )
+                    .header(RequestTimeoutLossTest.CONTENT_TYPE, "text/plain")
                     .fetch()
             ),
             Matchers.contains(
@@ -155,7 +147,6 @@ final class RequestTimeoutLossTest extends RequestTestTemplate {
     /**
      * The connect and read timeouts are properly set no matter in which order
      * {@code Request.timeout} is called.
-     *
      * @param type Type of Request
      * @throws Exception If something goes wrong inside
      */
@@ -168,8 +159,7 @@ final class RequestTimeoutLossTest extends RequestTestTemplate {
             "should keep timeouts set before method",
             RequestTimeoutLossTest.timeouts(
                 () -> RequestTimeoutLossTest.request(type)
-                    .through(MockWire.class)
-                    .timeout(
+                    .through(MockWire.class).timeout(
                         RequestTimeoutLossTest.CONNECT_TIMEOUT,
                         RequestTimeoutLossTest.READ_TIMEOUT
                     )
@@ -186,7 +176,6 @@ final class RequestTimeoutLossTest extends RequestTestTemplate {
     /**
      * The connect and read timeouts are properly set no matter in which order
      * {@code Request.timeout} is called.
-     *
      * @param type Type of Request
      * @throws Exception If something goes wrong inside
      */
@@ -200,8 +189,7 @@ final class RequestTimeoutLossTest extends RequestTestTemplate {
             RequestTimeoutLossTest.timeouts(
                 () -> RequestTimeoutLossTest.request(type)
                     .through(MockWire.class)
-                    .method(Request.GET)
-                    .timeout(
+                    .method(Request.GET).timeout(
                         RequestTimeoutLossTest.CONNECT_TIMEOUT,
                         RequestTimeoutLossTest.READ_TIMEOUT
                     )
@@ -219,7 +207,6 @@ final class RequestTimeoutLossTest extends RequestTestTemplate {
     /**
      * The connect and read timeouts are properly set no matter in which order
      * {@code Request.timeout} is called.
-     *
      * @param type Type of Request
      * @throws Exception If something goes wrong inside
      */
@@ -233,8 +220,7 @@ final class RequestTimeoutLossTest extends RequestTestTemplate {
             RequestTimeoutLossTest.timeouts(
                 () -> RequestTimeoutLossTest.request(type)
                     .through(MockWire.class)
-                    .method(Request.GET)
-                    .timeout(
+                    .method(Request.GET).timeout(
                         RequestTimeoutLossTest.CONNECT_TIMEOUT,
                         RequestTimeoutLossTest.READ_TIMEOUT
                     )
@@ -251,7 +237,6 @@ final class RequestTimeoutLossTest extends RequestTestTemplate {
     /**
      * The connect and read timeouts are properly set no matter in which order
      * {@code Request.timeout} is called.
-     *
      * @param type Type of Request
      * @throws Exception If something goes wrong inside
      */
@@ -265,8 +250,7 @@ final class RequestTimeoutLossTest extends RequestTestTemplate {
             RequestTimeoutLossTest.timeouts(
                 () -> RequestTimeoutLossTest.request(type)
                     .through(MockWire.class)
-                    .method(Request.GET)
-                    .timeout(
+                    .method(Request.GET).timeout(
                         RequestTimeoutLossTest.CONNECT_TIMEOUT,
                         RequestTimeoutLossTest.READ_TIMEOUT
                     )
@@ -284,7 +268,6 @@ final class RequestTimeoutLossTest extends RequestTestTemplate {
 
     /**
      * The wire passed to method "through" is used.
-     *
      * @throws IOException On error
      */
     @Test
@@ -323,7 +306,6 @@ final class RequestTimeoutLossTest extends RequestTestTemplate {
 
     /**
      * The connect and read timeouts the wire has been given.
-     *
      * @param exec The callable that contains the actual request
      * @return The pair of connect and read timeouts
      * @throws Exception If something goes wrong inside
@@ -379,5 +361,4 @@ final class RequestTimeoutLossTest extends RequestTestTemplate {
             type
         );
     }
-
 }

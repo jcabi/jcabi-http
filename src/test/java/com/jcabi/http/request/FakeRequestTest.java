@@ -48,8 +48,7 @@ final class FakeRequestTest {
      * @throws Exception If something goes wrong inside.
      */
     @Test
-    void sendsHttpRequestAndProcessesHttpBinaryResponse()
-        throws Exception {
+    void sendsHttpRequestAndProcessesHttpBinaryResponse() throws Exception {
         final byte[] content = "Binary body content"
             .getBytes(StandardCharsets.UTF_8);
         MatcherAssert.assertThat(
@@ -105,8 +104,7 @@ final class FakeRequestTest {
             IllegalStateException.class,
             () -> new FakeRequest()
                 .withStatus(HttpURLConnection.HTTP_OK)
-                .withBody("blah")
-                .fetch(
+                .withBody("blah").fetch(
                     new ByteArrayInputStream(
                         "foo".getBytes(StandardCharsets.UTF_8)
                     )
@@ -126,8 +124,7 @@ final class FakeRequestTest {
         new FakeRequest().withBody(response)
             .body().set(request).back()
             .fetch()
-            .as(RestResponse.class)
-            .assertBody(
+            .as(RestResponse.class).assertBody(
                 Matchers.allOf(
                     Matchers.is(response),
                     Matchers.not(Matchers.is(request))
@@ -160,7 +157,7 @@ final class FakeRequestTest {
 
     /**
      * Helper method that generates a FakeRequest.
-     * @return An instance of FakeRequest.
+     * @return An instance of FakeRequest
      */
     private FakeRequest generateMainRequest() {
         return new FakeRequest()
@@ -168,5 +165,4 @@ final class FakeRequestTest {
             .withReason("OK")
             .withHeader(HttpHeaders.CONTENT_TYPE, MediaType.TEXT_PLAIN);
     }
-
 }

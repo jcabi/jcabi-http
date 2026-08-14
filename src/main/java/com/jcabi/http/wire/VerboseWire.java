@@ -53,7 +53,6 @@ public final class VerboseWire implements Wire {
         this.origin = wire;
     }
 
-    // @checkstyle ParameterNumber (7 lines)
     @Override
     public Response send(final Request req, final String home,
         final String method,
@@ -85,7 +84,7 @@ public final class VerboseWire implements Wire {
         );
         Logger.info(
             this,
-            "#send(%s %s):\nHTTP Request (%s):\n%s\nHTTP Response (%s):\n%s",
+            "#send(%s %s):%nHTTP Request (%s):%n%s%nHTTP Response (%s):%n%s",
             method, home,
             req.getClass().getName(),
             VerboseWire.indent(text.toString()),
@@ -101,9 +100,6 @@ public final class VerboseWire implements Wire {
      * @return Indented text
      */
     private static String indent(final String text) {
-        return new StringBuilder("  ")
-            .append(text.replaceAll("(\n|\n\r)", "$1  "))
-            .toString();
+        return text.indent(2);
     }
-
 }

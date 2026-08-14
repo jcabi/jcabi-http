@@ -13,7 +13,7 @@ import com.jcabi.log.Logger;
 import java.net.HttpURLConnection;
 import java.nio.charset.Charset;
 import java.nio.charset.StandardCharsets;
-import java.util.LinkedList;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
@@ -22,7 +22,6 @@ import lombok.EqualsAndHashCode;
 
 /**
  * Mock response.
- *
  * @since 0.10
  */
 @Immutable
@@ -54,13 +53,13 @@ public interface MkAnswer {
 
     /**
      * Simple implementation.
-     *
      * @since 1.0
      */
     @Immutable
     @EqualsAndHashCode(of = {"code", "hdrs", "content"})
     @Loggable(Loggable.DEBUG)
     final class Simple implements MkAnswer {
+
         /**
          * The Charset to use.
          */
@@ -135,7 +134,7 @@ public interface MkAnswer {
             final ConcurrentMap<String, List<String>> map =
                 new ConcurrentHashMap<>(0);
             for (final Map.Entry<String, String> header : this.hdrs) {
-                map.putIfAbsent(header.getKey(), new LinkedList<String>());
+                map.putIfAbsent(header.getKey(), new ArrayList<>(0));
                 map.get(header.getKey()).add(header.getValue());
             }
             return map;
@@ -158,7 +157,7 @@ public interface MkAnswer {
             for (final Map.Entry<String, String> header : this.hdrs) {
                 text.append(
                     Logger.format(
-                        "%s: %s\n",
+                        "%s: %s%n",
                         header.getKey(),
                         header.getValue()
                     )
@@ -219,5 +218,4 @@ public interface MkAnswer {
             return new MkAnswer.Simple(this.code, this.hdrs, body);
         }
     }
-
 }
