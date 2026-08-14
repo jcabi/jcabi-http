@@ -153,7 +153,7 @@ public final class CachingWire implements Wire {
     public CachingWire(final Wire wire, final String flsh) {
         this.origin = wire;
         this.regex = flsh;
-        this.cache = CACHE.getUnchecked(this);
+        this.cache = CachingWire.CACHE.getUnchecked(this);
     }
 
     /**

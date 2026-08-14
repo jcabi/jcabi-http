@@ -54,7 +54,7 @@ public final class Boundary {
         for (int index = 0; index < count; ++index) {
             buffer.append(
                 Boundary.MULTIPART_CHARS[
-                    this.rand.nextInt(MULTIPART_CHARS.length)
+                    this.rand.nextInt(Boundary.MULTIPART_CHARS.length)
                     ]
             );
         }

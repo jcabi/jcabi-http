@@ -93,7 +93,6 @@ public final class RetryWire implements Wire {
         final int attempt) {
         if (Logger.isWarnEnabled(this)) {
             final URI uri = URI.create(home);
-            final String noauth = UriBuilder.fromUri(uri).userInfo("").toString();
             String authinfo = "";
             if (uri.getUserInfo() != null) {
                 authinfo = Logger.format(
@@ -103,7 +102,9 @@ public final class RetryWire implements Wire {
             }
             Logger.warn(
                 this, "%s %s%s returns %d status (attempt #%d)",
-                method, noauth, authinfo, status, attempt + 1
+                method,
+                UriBuilder.fromUri(uri).userInfo("").toString(),
+                authinfo, status, attempt + 1
             );
         }
     }

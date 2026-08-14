@@ -29,14 +29,18 @@ final class FakeRequestTest {
      */
     @Test
     void sendsHttpRequestAndProcessesHttpResponse() throws Exception {
-        this.generateMainRequest()
+        final RestResponse response = this.generateMainRequest()
             .withBody("how are you?")
             .uri().path("/helloall").back()
             .method(Request.POST)
-            .fetch().as(RestResponse.class)
-            .assertStatus(HttpURLConnection.HTTP_OK)
-            .assertHeader(HttpHeaders.CONTENT_TYPE, MediaType.TEXT_PLAIN)
-            .assertBody(Matchers.containsString("are you?"));
+            .fetch().as(RestResponse.class);
+        Assertions.assertAll(
+            () -> response.assertStatus(HttpURLConnection.HTTP_OK),
+            () -> response.assertHeader(
+                HttpHeaders.CONTENT_TYPE, MediaType.TEXT_PLAIN
+            ),
+            () -> response.assertBody(Matchers.containsString("are you?"))
+        );
     }
 
     /**
@@ -46,15 +50,18 @@ final class FakeRequestTest {
     @Test
     void sendsHttpRequestAndProcessesHttpBinaryResponse()
         throws Exception {
-        final byte[] content = "Binary body content".getBytes();
-        this.generateMainRequest()
-            .withBody(content)
-            .uri().path("/binContent").back()
-            .method(Request.POST)
-            .fetch().as(RestResponse.class)
-            .assertStatus(HttpURLConnection.HTTP_OK)
-            .assertHeader(HttpHeaders.CONTENT_TYPE, MediaType.TEXT_PLAIN)
-            .assertBinary(Matchers.equalTo(content));
+        final byte[] content = "Binary body content"
+            .getBytes(StandardCharsets.UTF_8);
+        MatcherAssert.assertThat(
+            "should return the binary body back",
+            this.generateMainRequest()
+                .withBody(content)
+                .uri().path("/binContent").back()
+                .method(Request.POST)
+                .fetch()
+                .binary(),
+            Matchers.equalTo(content)
+        );
     }
 
     /**
@@ -133,19 +140,21 @@ final class FakeRequestTest {
      */
     @Test
     void identifiesUniquely() {
-        MatcherAssert.assertThat(
-            "should not equals",
-            new FakeRequest().header("header-1", "value-1"),
-            Matchers.not(
-                Matchers.equalTo(
-                    new FakeRequest().header("header-2", "value-2")
+        Assertions.assertAll(
+            () -> MatcherAssert.assertThat(
+                "should not equals",
+                new FakeRequest().header("header-1", "value-1"),
+                Matchers.not(
+                    Matchers.equalTo(
+                        new FakeRequest().header("header-2", "value-2")
+                    )
                 )
+            ),
+            () -> MatcherAssert.assertThat(
+                "should equals",
+                new FakeRequest(),
+                Matchers.equalTo(new FakeRequest())
             )
-        );
-        MatcherAssert.assertThat(
-            "should equals",
-            new FakeRequest(),
-            Matchers.equalTo(new FakeRequest())
         );
     }
 

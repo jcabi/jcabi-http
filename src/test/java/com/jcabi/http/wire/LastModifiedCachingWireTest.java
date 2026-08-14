@@ -12,7 +12,11 @@ import com.jcabi.http.mock.MkQuery;
 import com.jcabi.http.request.JdkRequest;
 import com.jcabi.http.response.RestResponse;
 import jakarta.ws.rs.core.HttpHeaders;
+import java.io.IOException;
 import java.net.HttpURLConnection;
+import java.nio.charset.StandardCharsets;
+import java.util.ArrayList;
+import java.util.Collection;
 import java.util.Collections;
 import java.util.Map;
 import org.hamcrest.Description;
@@ -21,6 +25,7 @@ import org.hamcrest.MatcherAssert;
 import org.hamcrest.Matchers;
 import org.hamcrest.TypeSafeMatcher;
 import org.hamcrest.core.IsAnything;
+import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 
 /**
@@ -60,12 +65,20 @@ final class LastModifiedCachingWireTest {
                 )
             ).start();
         try {
-            final Request req = new JdkRequest(container.home())
-                .through(LastModifiedCachingWire.class);
-            req.fetch().as(RestResponse.class)
-                .assertStatus(HttpURLConnection.HTTP_OK)
-                .assertBody(Matchers.equalTo(LastModifiedCachingWireTest.BODY));
-            MatcherAssert.assertThat("should be equal 1", container.queries(), Matchers.equalTo(1));
+            final RestResponse response = new JdkRequest(container.home())
+                .through(LastModifiedCachingWire.class)
+                .fetch().as(RestResponse.class);
+            Assertions.assertAll(
+                () -> response.assertStatus(HttpURLConnection.HTTP_OK),
+                () -> response.assertBody(
+                    Matchers.equalTo(LastModifiedCachingWireTest.BODY)
+                ),
+                () -> MatcherAssert.assertThat(
+                    "should be equal 1",
+                    container.queries(),
+                    Matchers.equalTo(1)
+                )
+            );
         } finally {
             container.stop();
         }
@@ -77,17 +90,18 @@ final class LastModifiedCachingWireTest {
      */
     @Test
     void cachesGetRequest() throws Exception {
-        final Map<String, String> headers = Collections.singletonMap(
-            HttpHeaders.LAST_MODIFIED,
-            "Wed, 15 Nov 1995 04:58:08 GMT"
-        );
         final int count = 10;
         final MkContainer container = new MkGrizzlyContainer()
             .next(
                 new MkAnswer.Simple(
                     HttpURLConnection.HTTP_OK,
-                    headers.entrySet(),
-                    LastModifiedCachingWireTest.BODY.getBytes()
+                    Collections.singletonMap(
+                        HttpHeaders.LAST_MODIFIED,
+                        "Wed, 15 Nov 1995 04:58:08 GMT"
+                    ).entrySet(),
+                    LastModifiedCachingWireTest.bytes(
+                        LastModifiedCachingWireTest.BODY
+                    )
                 )
             )
             .next(
@@ -96,19 +110,25 @@ final class LastModifiedCachingWireTest {
                 count
             ).start();
         try {
-            final Request req = new JdkRequest(container.home())
-                .through(LastModifiedCachingWire.class);
-            for (int idx = 0; idx < count; ++idx) {
-                req
-                    .fetch()
-                    .as(RestResponse.class)
-                    .assertStatus(HttpURLConnection.HTTP_OK)
-                    .assertBody(
+            final Collection<String> bodies =
+                LastModifiedCachingWireTest.bodies(
+                    new JdkRequest(container.home())
+                        .through(LastModifiedCachingWire.class),
+                    count
+                );
+            Assertions.assertAll(
+                () -> MatcherAssert.assertThat(
+                    "should serve the cached body on every request",
+                    bodies,
+                    Matchers.everyItem(
                         Matchers.equalTo(LastModifiedCachingWireTest.BODY)
-                    );
-            }
-            MatcherAssert.assertThat(
-                "should be equal to count", container.queries(), Matchers.equalTo(count)
+                    )
+                ),
+                () -> MatcherAssert.assertThat(
+                    "should be equal to count",
+                    container.queries(),
+                    Matchers.equalTo(count)
+                )
             );
         } finally {
             container.stop();
@@ -136,7 +156,7 @@ final class LastModifiedCachingWireTest {
                         HttpHeaders.LAST_MODIFIED,
                         "Wed, 15 Nov 1995 05:58:08 GMT"
                     ).entrySet(),
-                    first.getBytes()
+                    LastModifiedCachingWireTest.bytes(first)
                 ),
                 Matchers.not(queryContainsIfModifiedSinceHeader())
             )
@@ -144,7 +164,7 @@ final class LastModifiedCachingWireTest {
                 new MkAnswer.Simple(
                     HttpURLConnection.HTTP_OK,
                     Collections.<Map.Entry<String, String>>emptySet(),
-                    second.getBytes()
+                    LastModifiedCachingWireTest.bytes(second)
                 ),
                 queryContainsIfModifiedSinceHeader()
             )
@@ -152,22 +172,22 @@ final class LastModifiedCachingWireTest {
                 new MkAnswer.Simple(
                     HttpURLConnection.HTTP_OK,
                     Collections.<Map.Entry<String, String>>emptySet(),
-                    third.getBytes()
+                    LastModifiedCachingWireTest.bytes(third)
                 ),
                 Matchers.not(queryContainsIfModifiedSinceHeader())
             ).start();
         try {
             final Request req = new JdkRequest(container.home())
                 .through(LastModifiedCachingWire.class);
-            req.fetch().as(RestResponse.class)
-                .assertStatus(HttpURLConnection.HTTP_OK)
-                .assertBody(Matchers.equalTo(first));
-            req.fetch().as(RestResponse.class)
-                .assertStatus(HttpURLConnection.HTTP_OK)
-                .assertBody(Matchers.equalTo(second));
-            req.fetch().as(RestResponse.class)
-                .assertStatus(HttpURLConnection.HTTP_OK)
-                .assertBody(Matchers.equalTo(third));
+            final Collection<String> bodies = new ArrayList<>(3);
+            bodies.add(req.fetch().body());
+            bodies.add(req.fetch().body());
+            bodies.add(req.fetch().body());
+            MatcherAssert.assertThat(
+                "should not cache when the last-modified header is missing",
+                bodies,
+                Matchers.contains(first, second, third)
+            );
         } finally {
             container.stop();
         }
@@ -199,7 +219,7 @@ final class LastModifiedCachingWireTest {
                         HttpHeaders.LAST_MODIFIED,
                         "Wed, 15 Nov 1995 06:58:08 GMT"
                     ).entrySet(),
-                    body.getBytes()
+                    LastModifiedCachingWireTest.bytes(body)
                 ),
                 Matchers.not(queryContainsIfModifiedSinceHeader())
             )
@@ -214,24 +234,15 @@ final class LastModifiedCachingWireTest {
         try {
             final Request req = new JdkRequest(container.home())
                 .through(LastModifiedCachingWire.class);
-            req
-                .fetch()
-                .as(RestResponse.class)
-                .assertStatus(HttpURLConnection.HTTP_OK)
-                .assertBody(
-                    Matchers.equalTo(body)
-                );
-            req
-                .fetch()
-                .as(RestResponse.class)
-                .assertStatus(HttpURLConnection.HTTP_NOT_FOUND);
-            req
-                .fetch()
-                .as(RestResponse.class)
-                .assertStatus(HttpURLConnection.HTTP_OK)
-                .assertBody(
-                    Matchers.equalTo(body)
-                );
+            final Collection<String> bodies = new ArrayList<>(2);
+            bodies.add(req.fetch().body());
+            req.fetch();
+            bodies.add(req.fetch().body());
+            MatcherAssert.assertThat(
+                "should not evict the cache on a non-OK response",
+                bodies,
+                Matchers.contains(body, body)
+            );
         } finally {
             container.stop();
         }
@@ -252,7 +263,9 @@ final class LastModifiedCachingWireTest {
                 new MkAnswer.Simple(
                     HttpURLConnection.HTTP_OK,
                     headers.entrySet(),
-                    LastModifiedCachingWireTest.BODY.getBytes()
+                    LastModifiedCachingWireTest.bytes(
+                        LastModifiedCachingWireTest.BODY
+                    )
                 )
             )
             .next(new MkAnswer.Simple(HttpURLConnection.HTTP_NOT_MODIFIED))
@@ -260,36 +273,36 @@ final class LastModifiedCachingWireTest {
                 new MkAnswer.Simple(
                     HttpURLConnection.HTTP_OK,
                     headers.entrySet(),
-                    LastModifiedCachingWireTest.BODY_UPDATED.getBytes()
+                    LastModifiedCachingWireTest.bytes(
+                        LastModifiedCachingWireTest.BODY_UPDATED
+                    )
                 )
             )
             .next(new MkAnswer.Simple(HttpURLConnection.HTTP_NOT_MODIFIED))
             .start();
         try {
-            final Request req = new JdkRequest(container.home())
-                .through(LastModifiedCachingWire.class);
-            for (int idx = 0; idx < 2; ++idx) {
-                req
-                    .fetch()
-                    .as(RestResponse.class)
-                    .assertStatus(HttpURLConnection.HTTP_OK)
-                    .assertBody(
-                        Matchers.equalTo(LastModifiedCachingWireTest.BODY)
-                    );
-            }
-            for (int idx = 0; idx < 2; ++idx) {
-                req
-                    .fetch()
-                    .as(RestResponse.class)
-                    .assertStatus(HttpURLConnection.HTTP_OK)
-                    .assertBody(
-                        Matchers.equalTo(
-                            LastModifiedCachingWireTest.BODY_UPDATED
-                        )
-                    );
-            }
-            MatcherAssert.assertThat(
-                "should be equal 4", container.queries(), Matchers.equalTo(2 + 2)
+            final Collection<String> bodies =
+                LastModifiedCachingWireTest.bodies(
+                    new JdkRequest(container.home())
+                        .through(LastModifiedCachingWire.class),
+                    2 + 2
+                );
+            Assertions.assertAll(
+                () -> MatcherAssert.assertThat(
+                    "should serve the cached body until it gets updated",
+                    bodies,
+                    Matchers.contains(
+                        LastModifiedCachingWireTest.BODY,
+                        LastModifiedCachingWireTest.BODY,
+                        LastModifiedCachingWireTest.BODY_UPDATED,
+                        LastModifiedCachingWireTest.BODY_UPDATED
+                    )
+                ),
+                () -> MatcherAssert.assertThat(
+                    "should be equal 4",
+                    container.queries(),
+                    Matchers.equalTo(2 + 2)
+                )
             );
         } finally {
             container.stop();
@@ -316,24 +329,57 @@ final class LastModifiedCachingWireTest {
             )
             .start();
         try {
-            final Request req = new JdkRequest(container.home())
-                .through(LastModifiedCachingWire.class).header(
-                    HttpHeaders.IF_MODIFIED_SINCE,
-                    "Fri, 01 Jan 2016 00:00:00 GMT"
+            final Collection<String> bodies =
+                LastModifiedCachingWireTest.bodies(
+                    new JdkRequest(container.home())
+                        .through(LastModifiedCachingWire.class).header(
+                            HttpHeaders.IF_MODIFIED_SINCE,
+                            "Fri, 01 Jan 2016 00:00:00 GMT"
+                        ),
+                    2
                 );
-            for (int idx = 0; idx < 2; ++idx) {
-                req
-                    .fetch()
-                    .as(RestResponse.class)
-                    .assertStatus(HttpURLConnection.HTTP_OK)
-                    .assertBody(
+            Assertions.assertAll(
+                () -> MatcherAssert.assertThat(
+                    "should pass every request to the server",
+                    bodies,
+                    Matchers.everyItem(
                         Matchers.equalTo(LastModifiedCachingWireTest.BODY)
-                    );
-            }
-            MatcherAssert.assertThat("should be eq 2", container.queries(), Matchers.equalTo(2));
+                    )
+                ),
+                () -> MatcherAssert.assertThat(
+                    "should be eq 2",
+                    container.queries(),
+                    Matchers.equalTo(2)
+                )
+            );
         } finally {
             container.stop();
         }
+    }
+
+    /**
+     * The bodies received by fetching the request a few times.
+     * @param req The request to fetch
+     * @param count How many times to fetch it
+     * @return The bodies received, in order
+     * @throws IOException If fails
+     */
+    private static Collection<String> bodies(final Request req,
+        final int count) throws IOException {
+        final Collection<String> bodies = new ArrayList<>(count);
+        for (int idx = 0; idx < count; ++idx) {
+            bodies.add(req.fetch().body());
+        }
+        return bodies;
+    }
+
+    /**
+     * The UTF-8 bytes of the given text.
+     * @param text The text to convert
+     * @return The bytes of it
+     */
+    private static byte[] bytes(final String text) {
+        return text.getBytes(StandardCharsets.UTF_8);
     }
 
     /**

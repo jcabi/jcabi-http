@@ -5,7 +5,6 @@
 package com.jcabi.http.response;
 
 import com.google.common.base.Joiner;
-import com.jcabi.http.Response;
 import com.jcabi.http.request.FakeRequest;
 import com.jcabi.matchers.XhtmlMatchers;
 import org.hamcrest.MatcherAssert;
@@ -24,16 +23,17 @@ final class JsoupResponseTest {
      */
     @Test
     void normalizesHtml() throws Exception {
-        final Response resp = new FakeRequest().withBody(
-            Joiner.on(' ').join(
-                "<html xmlns='http://www.w3.org/1999/xhtml'>",
-                "<head><meta name='test'></head>",
-                "<p>Hello world"
-            )
-        ).fetch();
         MatcherAssert.assertThat(
             "should contains normalized response",
-            new JsoupResponse(resp).body(),
+            new JsoupResponse(
+                new FakeRequest().withBody(
+                    Joiner.on(' ').join(
+                        "<html xmlns='http://www.w3.org/1999/xhtml'>",
+                        "<head><meta name='test'></head>",
+                        "<p>Hello world"
+                    )
+                ).fetch()
+            ).body(),
             XhtmlMatchers.hasXPaths(
                 "/xhtml:html/xhtml:head",
                 "/xhtml:html/xhtml:body/xhtml:p[.=\"Hello world\"]"

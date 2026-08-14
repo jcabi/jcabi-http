@@ -229,7 +229,6 @@ public abstract class RequestITCaseTemplate {
      * Is JdkRequest being tested?
      * @return True if so.
      */
-    @SuppressWarnings("PMD.UnusedPrivateMethod")
     private boolean isJdkRequest() {
         return JdkRequest.class.equals(this.type);
     }

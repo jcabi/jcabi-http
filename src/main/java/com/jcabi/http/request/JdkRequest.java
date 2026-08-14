@@ -77,9 +77,7 @@ public final class JdkRequest implements Request {
                 if (method.equals(Request.POST) || method.equals(Request.PUT)
                     || method.equals(Request.PATCH)) {
                     conn.setDoOutput(true);
-                    try (OutputStream output = conn.getOutputStream()) {
-                        this.writeFully(content, output);
-                    }
+                    this.writeFully(content, conn);
                 }
                 return new DefaultResponse(
                     req,
@@ -101,18 +99,20 @@ public final class JdkRequest implements Request {
         /**
          * Fully write the input stream contents to the output stream.
          * @param content The content to write
-         * @param output The output stream to write to
+         * @param conn The connection to write to
          * @throws IOException If an IO Exception occurs
          */
         private void writeFully(
             final InputStream content,
-            final OutputStream output
+            final HttpURLConnection conn
         ) throws IOException {
-            // @checkstyle MagicNumber (1 line)
-            final byte[] buffer = new byte[8192];
-            for (int bytes = content.read(buffer); bytes != -1;
-                bytes = content.read(buffer)) {
-                output.write(buffer, 0, bytes);
+            try (OutputStream output = conn.getOutputStream()) {
+                // @checkstyle MagicNumber (1 line)
+                final byte[] buffer = new byte[8192];
+                for (int bytes = content.read(buffer); bytes != -1;
+                    bytes = content.read(buffer)) {
+                    output.write(buffer, 0, bytes);
+                }
             }
         }
 

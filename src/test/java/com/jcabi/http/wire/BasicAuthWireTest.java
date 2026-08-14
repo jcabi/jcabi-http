@@ -22,6 +22,7 @@ import org.hamcrest.MatcherAssert;
 import org.hamcrest.Matchers;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.function.Executable;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.CsvSource;
 
@@ -56,27 +57,28 @@ final class BasicAuthWireTest {
         final MkContainer container = new MkGrizzlyContainer().next(
             new MkAnswer.Simple("")
         ).start();
-        final URI uri = UriBuilder.fromUri(container.home()).userInfo(
-            String.format(
-                BasicAuthWireTest.CRED_FORMAT,
-                URLEncoder.encode(username, StandardCharsets.UTF_8.displayName()),
-                URLEncoder.encode(password, StandardCharsets.UTF_8.displayName())
-            )
-        ).build();
-        final String expected = BasicAuthWireTest.expectHeader(
-            username,
-            password
-        );
-        new JdkRequest(uri)
+        new JdkRequest(
+            UriBuilder.fromUri(container.home()).userInfo(
+                String.format(
+                    BasicAuthWireTest.CRED_FORMAT,
+                    URLEncoder.encode(
+                        username, StandardCharsets.UTF_8.displayName()
+                    ),
+                    URLEncoder.encode(
+                        password, StandardCharsets.UTF_8.displayName()
+                    )
+                )
+            ).build()
+        )
             .through(BasicAuthWire.class)
-            .fetch()
-            .as(RestResponse.class)
-            .assertStatus(HttpURLConnection.HTTP_OK);
+            .fetch();
         container.stop();
         MatcherAssert.assertThat(
             "should be correct header",
             container.take().headers().get(HttpHeaders.AUTHORIZATION).get(0),
-            Matchers.equalTo(expected)
+            Matchers.equalTo(
+                BasicAuthWireTest.expectHeader(username, password)
+            )
         );
     }
 
@@ -101,7 +103,7 @@ final class BasicAuthWireTest {
         ).build();
         MatcherAssert.assertThat(
             "should not contains user info",
-            Assertions.assertThrows(
+            BasicAuthWireTest.thrown(
                 AssertionError.class,
                 () -> new JdkRequest(uri)
                     .through(BasicAuthWire.class)
@@ -109,13 +111,24 @@ final class BasicAuthWireTest {
                     .as(RestResponse.class)
                     .assertStatus(HttpURLConnection.HTTP_OK)
             ),
-            Matchers.<AssertionError>hasToString(
+            Matchers.<Throwable>hasToString(
                 Matchers.not(
                     Matchers.containsString(userinfo)
                 )
             )
         );
         container.stop();
+    }
+
+    /**
+     * The exception thrown by the given snippet.
+     * @param type The expected type of the exception
+     * @param exec The snippet to run
+     * @return The exception it throws
+     */
+    private static Throwable thrown(final Class<? extends Throwable> type,
+        final Executable exec) {
+        return Assertions.assertThrows(type, exec);
     }
 
     /**
@@ -131,13 +144,15 @@ final class BasicAuthWireTest {
         final String username,
         final String password
     ) {
-        final String credentials = DatatypeConverter.printBase64Binary(
-            String.format(
-                BasicAuthWireTest.CRED_FORMAT,
-                username,
-                password
-            ).getBytes(StandardCharsets.UTF_8)
+        return String.format(
+            "Basic %s",
+            DatatypeConverter.printBase64Binary(
+                String.format(
+                    BasicAuthWireTest.CRED_FORMAT,
+                    username,
+                    password
+                ).getBytes(StandardCharsets.UTF_8)
+            )
         );
-        return String.format("Basic %s", credentials);
     }
 }

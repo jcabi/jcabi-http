@@ -19,16 +19,16 @@ import org.junit.jupiter.api.Test;
 final class BasicAuthWireITCase {
     @Test
     void basicAuthWorks() throws IOException {
-        final XmlResponse res = new JdkRequest(
-            "https://User:Pass@authenticationtest.com/HTTPAuth/"
-        )
-            .through(BasicAuthWire.class)
-            .through(AutoRedirectingWire.class)
-            .fetch()
-            .as(XmlResponse.class);
         MatcherAssert.assertThat(
             "should be success",
-            res.body(),
+            new JdkRequest(
+                "https://User:Pass@authenticationtest.com/HTTPAuth/"
+            )
+                .through(BasicAuthWire.class)
+                .through(AutoRedirectingWire.class)
+                .fetch()
+                .as(XmlResponse.class)
+                .body(),
             Matchers.containsString("Success!")
         );
     }

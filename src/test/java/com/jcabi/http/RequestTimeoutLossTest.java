@@ -9,10 +9,12 @@ import com.jcabi.http.request.BaseRequest;
 import java.io.IOException;
 import java.io.InputStream;
 import java.net.URI;
-import java.util.Collection;
+import java.util.Arrays;
+import java.util.List;
 import java.util.Map;
 import java.util.concurrent.Callable;
-import java.util.function.Supplier;
+import java.util.concurrent.locks.Lock;
+import java.util.concurrent.locks.ReentrantLock;
 import org.hamcrest.MatcherAssert;
 import org.hamcrest.Matchers;
 import org.junit.jupiter.api.Test;
@@ -25,7 +27,6 @@ import org.mockito.Mockito;
  * Test case for loss of timeout parameters.
  * @since 1.17.3
  */
-@SuppressWarnings("PMD.TooManyMethods")
 final class RequestTimeoutLossTest extends RequestTestTemplate {
     /**
      * Placeholder URL used for testing purposes only.
@@ -48,6 +49,11 @@ final class RequestTimeoutLossTest extends RequestTestTemplate {
     private static final int READ_TIMEOUT = 2345;
 
     /**
+     * Guard of the static mock delegate of {@link MockWire}.
+     */
+    private static final Lock LOCK = new ReentrantLock();
+
+    /**
      * The connect and read timeouts are properly set no matter in which order
      * {@code Request.timeout} is called.
      *
@@ -58,19 +64,26 @@ final class RequestTimeoutLossTest extends RequestTestTemplate {
     @Values
     void testTimeoutOrderDoesntMatterBeforeBody(
         final Class<? extends Request> type
-    )
-        throws Exception {
-        final Callable<Response> execution = () -> RequestTimeoutLossTest.request(type)
-            .through(MockWire.class)
-            .method(Request.GET)
-            .timeout(
+    ) throws Exception {
+        MatcherAssert.assertThat(
+            "should keep timeouts set before body",
+            RequestTimeoutLossTest.timeouts(
+                () -> RequestTimeoutLossTest.request(type)
+                    .through(MockWire.class)
+                    .method(Request.GET)
+                    .timeout(
+                        RequestTimeoutLossTest.CONNECT_TIMEOUT,
+                        RequestTimeoutLossTest.READ_TIMEOUT
+                    )
+                    .body()
+                    .back()
+                    .fetch()
+            ),
+            Matchers.contains(
                 RequestTimeoutLossTest.CONNECT_TIMEOUT,
                 RequestTimeoutLossTest.READ_TIMEOUT
             )
-            .body()
-            .back()
-            .fetch();
-        this.testTimeoutOrderDoesntMatter(execution);
+        );
     }
 
     /**
@@ -84,17 +97,24 @@ final class RequestTimeoutLossTest extends RequestTestTemplate {
     @Values
     void testTimeoutOrderDoesntMatterBeforeFetch(
         final Class<? extends Request> type
-    )
-        throws Exception {
-        final Callable<Response> execution = () -> RequestTimeoutLossTest.request(type)
-            .through(MockWire.class)
-            .method(Request.GET)
-            .timeout(
+    ) throws Exception {
+        MatcherAssert.assertThat(
+            "should keep timeouts set before fetch",
+            RequestTimeoutLossTest.timeouts(
+                () -> RequestTimeoutLossTest.request(type)
+                    .through(MockWire.class)
+                    .method(Request.GET)
+                    .timeout(
+                        RequestTimeoutLossTest.CONNECT_TIMEOUT,
+                        RequestTimeoutLossTest.READ_TIMEOUT
+                    )
+                    .fetch()
+            ),
+            Matchers.contains(
                 RequestTimeoutLossTest.CONNECT_TIMEOUT,
                 RequestTimeoutLossTest.READ_TIMEOUT
             )
-            .fetch();
-        this.testTimeoutOrderDoesntMatter(execution);
+        );
     }
 
     /**
@@ -108,21 +128,28 @@ final class RequestTimeoutLossTest extends RequestTestTemplate {
     @Values
     void testTimeoutOrderDoesntMatterBeforeHeader(
         final Class<? extends Request> type
-    )
-        throws Exception {
-        final Callable<Response> execution = () -> RequestTimeoutLossTest.request(type)
-            .through(MockWire.class)
-            .method(Request.GET)
-            .timeout(
+    ) throws Exception {
+        MatcherAssert.assertThat(
+            "should keep timeouts set before header",
+            RequestTimeoutLossTest.timeouts(
+                () -> RequestTimeoutLossTest.request(type)
+                    .through(MockWire.class)
+                    .method(Request.GET)
+                    .timeout(
+                        RequestTimeoutLossTest.CONNECT_TIMEOUT,
+                        RequestTimeoutLossTest.READ_TIMEOUT
+                    )
+                    .header(
+                        RequestTimeoutLossTest.CONTENT_TYPE,
+                        "text/plain"
+                    )
+                    .fetch()
+            ),
+            Matchers.contains(
                 RequestTimeoutLossTest.CONNECT_TIMEOUT,
                 RequestTimeoutLossTest.READ_TIMEOUT
             )
-            .header(
-                RequestTimeoutLossTest.CONTENT_TYPE,
-                "text/plain"
-            )
-            .fetch();
-        this.testTimeoutOrderDoesntMatter(execution);
+        );
     }
 
     /**
@@ -136,17 +163,24 @@ final class RequestTimeoutLossTest extends RequestTestTemplate {
     @Values
     void testTimeoutOrderDoesntMatterBeforeMethod(
         final Class<? extends Request> type
-    )
-        throws Exception {
-        final Callable<Response> execution = () -> RequestTimeoutLossTest.request(type)
-            .through(MockWire.class)
-            .timeout(
+    ) throws Exception {
+        MatcherAssert.assertThat(
+            "should keep timeouts set before method",
+            RequestTimeoutLossTest.timeouts(
+                () -> RequestTimeoutLossTest.request(type)
+                    .through(MockWire.class)
+                    .timeout(
+                        RequestTimeoutLossTest.CONNECT_TIMEOUT,
+                        RequestTimeoutLossTest.READ_TIMEOUT
+                    )
+                    .method(Request.GET)
+                    .fetch()
+            ),
+            Matchers.contains(
                 RequestTimeoutLossTest.CONNECT_TIMEOUT,
                 RequestTimeoutLossTest.READ_TIMEOUT
             )
-            .method(Request.GET)
-            .fetch();
-        this.testTimeoutOrderDoesntMatter(execution);
+        );
     }
 
     /**
@@ -160,19 +194,26 @@ final class RequestTimeoutLossTest extends RequestTestTemplate {
     @Values
     void testTimeoutOrderDoesntMatterBeforeMultipartBody(
         final Class<? extends Request> type
-    )
-        throws Exception {
-        final Callable<Response> execution = () -> RequestTimeoutLossTest.request(type)
-            .through(MockWire.class)
-            .method(Request.GET)
-            .timeout(
+    ) throws Exception {
+        MatcherAssert.assertThat(
+            "should keep timeouts set before multipart body",
+            RequestTimeoutLossTest.timeouts(
+                () -> RequestTimeoutLossTest.request(type)
+                    .through(MockWire.class)
+                    .method(Request.GET)
+                    .timeout(
+                        RequestTimeoutLossTest.CONNECT_TIMEOUT,
+                        RequestTimeoutLossTest.READ_TIMEOUT
+                    )
+                    .multipartBody()
+                    .back()
+                    .fetch()
+            ),
+            Matchers.contains(
                 RequestTimeoutLossTest.CONNECT_TIMEOUT,
                 RequestTimeoutLossTest.READ_TIMEOUT
             )
-            .multipartBody()
-            .back()
-            .fetch();
-        this.testTimeoutOrderDoesntMatter(execution);
+        );
     }
 
     /**
@@ -186,18 +227,25 @@ final class RequestTimeoutLossTest extends RequestTestTemplate {
     @Values
     void testTimeoutOrderDoesntMatterBeforeReset(
         final Class<? extends Request> type
-    )
-        throws Exception {
-        final Callable<Response> execution = () -> RequestTimeoutLossTest.request(type)
-            .through(MockWire.class)
-            .method(Request.GET)
-            .timeout(
+    ) throws Exception {
+        MatcherAssert.assertThat(
+            "should keep timeouts set before reset",
+            RequestTimeoutLossTest.timeouts(
+                () -> RequestTimeoutLossTest.request(type)
+                    .through(MockWire.class)
+                    .method(Request.GET)
+                    .timeout(
+                        RequestTimeoutLossTest.CONNECT_TIMEOUT,
+                        RequestTimeoutLossTest.READ_TIMEOUT
+                    )
+                    .reset(RequestTimeoutLossTest.CONTENT_TYPE)
+                    .fetch()
+            ),
+            Matchers.contains(
                 RequestTimeoutLossTest.CONNECT_TIMEOUT,
                 RequestTimeoutLossTest.READ_TIMEOUT
             )
-            .reset(RequestTimeoutLossTest.CONTENT_TYPE)
-            .fetch();
-        this.testTimeoutOrderDoesntMatter(execution);
+        );
     }
 
     /**
@@ -211,20 +259,26 @@ final class RequestTimeoutLossTest extends RequestTestTemplate {
     @Values
     void testTimeoutOrderDoesntMatterBeforeUriBack(
         final Class<? extends Request> type
-    )
-        throws Exception {
-        this.testTimeoutOrderDoesntMatter(
-            () -> RequestTimeoutLossTest.request(type)
-                .through(MockWire.class)
-                .method(Request.GET)
-                .timeout(
-                    RequestTimeoutLossTest.CONNECT_TIMEOUT,
-                    RequestTimeoutLossTest.READ_TIMEOUT
-                )
-                .uri()
-                .path("/api")
-                .back()
-                .fetch()
+    ) throws Exception {
+        MatcherAssert.assertThat(
+            "should keep timeouts set before uri back",
+            RequestTimeoutLossTest.timeouts(
+                () -> RequestTimeoutLossTest.request(type)
+                    .through(MockWire.class)
+                    .method(Request.GET)
+                    .timeout(
+                        RequestTimeoutLossTest.CONNECT_TIMEOUT,
+                        RequestTimeoutLossTest.READ_TIMEOUT
+                    )
+                    .uri()
+                    .path("/api")
+                    .back()
+                    .fetch()
+            ),
+            Matchers.contains(
+                RequestTimeoutLossTest.CONNECT_TIMEOUT,
+                RequestTimeoutLossTest.READ_TIMEOUT
+            )
         );
     }
 
@@ -235,38 +289,32 @@ final class RequestTimeoutLossTest extends RequestTestTemplate {
      */
     @Test
     void passesThroughWire() throws IOException {
-        final Wire original = Mockito.mock(Wire.class);
         final Wire wire = Mockito.mock(Wire.class);
-        final Response response = Mockito.mock(Response.class);
-        final Supplier<Collection<Map.Entry<String, String>>> hdrs =
-            () -> ArgumentMatchers.anyCollection();
         final String url = "fake-url";
         Mockito.when(
             wire.send(
                 ArgumentMatchers.any(Request.class),
                 ArgumentMatchers.eq(url),
                 ArgumentMatchers.anyString(),
-                hdrs.get(),
+                ArgumentMatchers.<Map.Entry<String, String>>anyCollection(),
                 ArgumentMatchers.any(InputStream.class),
                 ArgumentMatchers.anyInt(),
                 ArgumentMatchers.anyInt()
             )
-        ).thenReturn(response);
-        new BaseRequest(original, url).through(wire).fetch();
-        Mockito.verify(original, Mockito.never()).send(
-            ArgumentMatchers.any(Request.class),
-            ArgumentMatchers.anyString(),
-            ArgumentMatchers.anyString(),
-            hdrs.get(),
-            ArgumentMatchers.any(InputStream.class),
-            ArgumentMatchers.anyInt(),
-            ArgumentMatchers.anyInt()
-        );
+        ).thenReturn(Mockito.mock(Response.class));
+        new BaseRequest(
+            (req, home, method, headers, content, connect, read) -> {
+                throw new IllegalStateException(
+                    "the original wire cannot be touched"
+                );
+            },
+            url
+        ).through(wire).fetch();
         Mockito.verify(wire).send(
             ArgumentMatchers.any(Request.class),
             ArgumentMatchers.anyString(),
             ArgumentMatchers.anyString(),
-            hdrs.get(),
+            ArgumentMatchers.<Map.Entry<String, String>>anyCollection(),
             ArgumentMatchers.any(InputStream.class),
             ArgumentMatchers.anyInt(),
             ArgumentMatchers.anyInt()
@@ -274,23 +322,23 @@ final class RequestTimeoutLossTest extends RequestTestTemplate {
     }
 
     /**
-     * The connect and read timeouts are properly set no matter in which order
-     * {@code Request.timeout} is called.
+     * The connect and read timeouts the wire has been given.
      *
      * @param exec The callable that contains the actual request
+     * @return The pair of connect and read timeouts
      * @throws Exception If something goes wrong inside
      */
     @SuppressWarnings("unchecked")
-    private void testTimeoutOrderDoesntMatter(final Callable<Response> exec)
+    private static List<Integer> timeouts(final Callable<Response> exec)
         throws Exception {
-        synchronized (MockWire.class) {
+        RequestTimeoutLossTest.LOCK.lock();
+        try {
             final Wire wire = Mockito.mock(Wire.class);
             final ArgumentCaptor<Integer> cnc = ArgumentCaptor
                 .forClass(Integer.class);
             final ArgumentCaptor<Integer> rdc = ArgumentCaptor
                 .forClass(Integer.class);
             MockWire.setMockDelegate(wire);
-            final Response response = Mockito.mock(Response.class);
             Mockito.when(
                 wire.send(
                     Mockito.any(Request.class),
@@ -301,7 +349,7 @@ final class RequestTimeoutLossTest extends RequestTestTemplate {
                     Mockito.anyInt(),
                     Mockito.anyInt()
                 )
-            ).thenReturn(response);
+            ).thenReturn(Mockito.mock(Response.class));
             exec.call();
             Mockito.verify(wire).send(
                 Mockito.any(Request.class),
@@ -312,16 +360,9 @@ final class RequestTimeoutLossTest extends RequestTestTemplate {
                 cnc.capture(),
                 rdc.capture()
             );
-            MatcherAssert.assertThat(
-                "should be connect timeout",
-                cnc.getValue().intValue(),
-                Matchers.is(RequestTimeoutLossTest.CONNECT_TIMEOUT)
-            );
-            MatcherAssert.assertThat(
-                "should be read timeout",
-                rdc.getValue().intValue(),
-                Matchers.is(RequestTimeoutLossTest.READ_TIMEOUT)
-            );
+            return Arrays.asList(cnc.getValue(), rdc.getValue());
+        } finally {
+            RequestTimeoutLossTest.LOCK.unlock();
         }
     }
 

@@ -6,6 +6,7 @@ package com.jcabi.http.request;
 
 import com.fasterxml.jackson.databind.util.ClassUtil;
 import com.google.common.base.Joiner;
+import com.google.common.base.Stopwatch;
 import com.jcabi.aspects.Immutable;
 import com.jcabi.aspects.Loggable;
 import com.jcabi.http.ImmutableHeader;
@@ -34,6 +35,7 @@ import java.util.Arrays;
 import java.util.Collection;
 import java.util.LinkedList;
 import java.util.Map;
+import java.util.concurrent.TimeUnit;
 import lombok.EqualsAndHashCode;
 
 /**
@@ -56,8 +58,7 @@ import lombok.EqualsAndHashCode;
 //  first one, since maybe qulice is counting the methods in the inner
 //  classes too - if it doesn't, then it can be left.
 //@checkstyle LineLength (1 line)
-@SuppressWarnings({"PMD.TooManyMethods", "PMD.GodClass",
-    "PMD.ExcessiveImports"})
+@SuppressWarnings("PMD.TooManyMethods")
 public final class BaseRequest implements Request {
 
     /**
@@ -191,9 +192,8 @@ public final class BaseRequest implements Request {
     public Request reset(final String name) {
         final Collection<Map.Entry<String, String>> headers =
             new LinkedList<>();
-        final String key = ImmutableHeader.normalize(name);
         for (final Map.Entry<String, String> header : this.hdrs) {
-            if (!header.getKey().equals(key)) {
+            if (!header.getKey().equals(ImmutableHeader.normalize(name))) {
                 headers.add(header);
             }
         }
@@ -281,7 +281,6 @@ public final class BaseRequest implements Request {
     }
 
     @Override
-    @SuppressWarnings("PMD.ConsecutiveLiteralAppends")
     public String toString() {
         final URI uri = URI.create(this.home);
         final StringBuilder text = new StringBuilder("HTTP/1.1 ")
@@ -316,13 +315,14 @@ public final class BaseRequest implements Request {
         final Class<T> type,
         final Object... args
     ) {
-        final Constructor<?> ctor = BaseRequest.findCtor(type, args);
         final Object[] params = new Object[args.length + 1];
         params[0] = this.wire;
         System.arraycopy(args, 0, params, 1, args.length);
         final Wire decorated;
         try {
-            decorated = Wire.class.cast(ctor.newInstance(params));
+            decorated = Wire.class.cast(
+                BaseRequest.findCtor(type, args).newInstance(params)
+            );
         } catch (final InstantiationException
             | IllegalAccessException | InvocationTargetException ex) {
             throw new IllegalStateException(ex);
@@ -338,12 +338,13 @@ public final class BaseRequest implements Request {
      */
     private Response fetchResponse(final InputStream stream)
         throws IOException {
-        final long start = System.currentTimeMillis();
+        final Stopwatch watch = Stopwatch.createStarted();
         final Response response = this.wire.send(
             this, this.home, this.mtd,
             this.hdrs, stream, this.connect,
             this.read
         );
+        watch.stop();
         final URI uri = URI.create(this.home);
         if (Logger.isInfoEnabled(this)) {
             Logger.info(
@@ -356,7 +357,7 @@ public final class BaseRequest implements Request {
                 uri.getPath(),
                 response.status(),
                 response.reason(),
-                System.currentTimeMillis() - start
+                watch.elapsed(TimeUnit.MILLISECONDS)
             );
         }
         return response;
@@ -609,13 +610,15 @@ public final class BaseRequest implements Request {
         public RequestBody formParam(final String name, final Object value) {
             final String boundary = this.boundary();
             final String dashes = "--";
-            final byte[] last = Arrays.copyOfRange(
-                this.text,
-                Math.max(this.text.length - 2, 0),
-                this.text.length
-            );
             final byte[] old;
-            if (Arrays.equals(last, dashes.getBytes(BaseRequest.CHARSET))) {
+            if (Arrays.equals(
+                Arrays.copyOfRange(
+                    this.text,
+                    Math.max(this.text.length - 2, 0),
+                    this.text.length
+                ),
+                dashes.getBytes(BaseRequest.CHARSET)
+            )) {
                 old = Arrays.copyOf(this.text, this.text.length - 2);
             } else {
                 old = String.format("%s%s", dashes, boundary)
@@ -627,27 +630,30 @@ public final class BaseRequest implements Request {
             } else {
                 bytes = value.toString().getBytes(BaseRequest.CHARSET);
             }
-            final byte[] disposition = Joiner.on("; ")
-                .join(
-                    "Content-Disposition: form-data",
-                    String.format("name=\"%s\"", name),
-                    "filename=\"binary\""
-                ).getBytes(BaseRequest.CHARSET);
-            final byte[] type = "Content-Type: application/octet-stream"
-                .getBytes(BaseRequest.CHARSET);
-            final byte[] footer = String.format(
-                "%s%s%s", dashes, boundary, dashes
-            ).getBytes(BaseRequest.CHARSET);
-            final MultipartBodyBuilder neww = new MultipartBodyBuilder()
-                .appendLine(old)
-                .appendLine(disposition)
-                .appendLine(type)
-                .appendLine(new byte[0])
-                .appendLine(bytes)
-                .append(footer);
             return new BaseRequest.MultipartFormBody(
                 this.owner,
-                neww.asBytes()
+                new MultipartBodyBuilder()
+                    .appendLine(old)
+                    .appendLine(
+                        Joiner.on("; ")
+                            .join(
+                                "Content-Disposition: form-data",
+                                String.format("name=\"%s\"", name),
+                                "filename=\"binary\""
+                            ).getBytes(BaseRequest.CHARSET)
+                    )
+                    .appendLine(
+                        "Content-Type: application/octet-stream"
+                            .getBytes(BaseRequest.CHARSET)
+                    )
+                    .appendLine(new byte[0])
+                    .appendLine(bytes)
+                    .append(
+                        String.format(
+                            "%s%s%s", dashes, boundary, dashes
+                        ).getBytes(BaseRequest.CHARSET)
+                    )
+                    .asBytes()
             );
         }
 

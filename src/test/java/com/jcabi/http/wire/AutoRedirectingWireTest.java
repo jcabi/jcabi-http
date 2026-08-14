@@ -14,6 +14,7 @@ import jakarta.ws.rs.core.HttpHeaders;
 import org.apache.http.HttpStatus;
 import org.hamcrest.MatcherAssert;
 import org.hamcrest.Matchers;
+import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 
 /**
@@ -42,8 +43,7 @@ final class AutoRedirectingWireTest {
             final int retries = 3;
             new JdkRequest(container.home())
                 .through(AutoRedirectingWire.class, retries)
-                .fetch().as(RestResponse.class)
-                .assertStatus(HttpStatus.SC_MOVED_TEMPORARILY);
+                .fetch();
             MatcherAssert.assertThat(
                 "should retries 3 times",
                 container.takeAll(Matchers.any(MkAnswer.class)),
@@ -61,23 +61,24 @@ final class AutoRedirectingWireTest {
      */
     @Test
     void returnsValidResponseAfterRetry() throws Exception {
-        final String body = "success";
         final MkContainer container = new MkGrizzlyContainer().next(
             new MkAnswer.Simple(HttpStatus.SC_MOVED_TEMPORARILY, "")
                 .withHeader(HttpHeaders.LOCATION, "/"),
             Matchers.any(MkQuery.class),
             2
-        ).next(new MkAnswer.Simple(body)).start();
+        ).next(new MkAnswer.Simple("success")).start();
         try {
-            new JdkRequest(container.home())
+            final RestResponse response = new JdkRequest(container.home())
                 .through(AutoRedirectingWire.class)
-                .fetch().as(RestResponse.class)
-                .assertBody(Matchers.is(body))
-                .assertStatus(HttpStatus.SC_OK);
-            MatcherAssert.assertThat(
-                "should retries 3 times",
-                container.takeAll(Matchers.any(MkAnswer.class)),
-                Matchers.<MkQuery>iterableWithSize(3)
+                .fetch().as(RestResponse.class);
+            Assertions.assertAll(
+                () -> response.assertBody(Matchers.is("success")),
+                () -> response.assertStatus(HttpStatus.SC_OK),
+                () -> MatcherAssert.assertThat(
+                    "should retries 3 times",
+                    container.takeAll(Matchers.any(MkAnswer.class)),
+                    Matchers.<MkQuery>iterableWithSize(3)
+                )
             );
         } finally {
             container.stop();

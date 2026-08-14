@@ -11,6 +11,7 @@ import org.hamcrest.MatcherAssert;
 import org.hamcrest.Matchers;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.function.Executable;
 
 /**
  * Test case for {@link JsonResponse}.
@@ -24,19 +25,22 @@ final class JsonResponseTest {
      */
     @Test
     void readsJsonDocument() throws Exception {
-        final Response resp = new FakeRequest()
-            .withBody("{\n\t\r\"foo-foo\":2,\n\"bar\":\"\u20ac\"}")
-            .fetch();
-        final JsonResponse response = new JsonResponse(resp);
-        MatcherAssert.assertThat(
-            "should be equal 2",
-            response.json().readObject().getInt("foo-foo"),
-            Matchers.equalTo(2)
+        final JsonResponse response = new JsonResponse(
+            new FakeRequest()
+                .withBody("{\n\t\r\"foo-foo\":2,\n\"bar\":\"\u20ac\"}")
+                .fetch()
         );
-        MatcherAssert.assertThat(
-            "should be equal \u20ac",
-            response.json().readObject().getString("bar"),
-            Matchers.equalTo("\u20ac")
+        Assertions.assertAll(
+            () -> MatcherAssert.assertThat(
+                "should be equal 2",
+                response.json().readObject().getInt("foo-foo"),
+                Matchers.equalTo(2)
+            ),
+            () -> MatcherAssert.assertThat(
+                "should be equal \u20ac",
+                response.json().readObject().getString("bar"),
+                Matchers.equalTo("\u20ac")
+            )
         );
     }
 
@@ -47,13 +51,14 @@ final class JsonResponseTest {
      */
     @Test
     void readsControlCharacters() throws Exception {
-        final Response resp = new FakeRequest()
-            .withBody("{\"test\":\n\"\u001Fblah\uFFFDcwhoa\u0000!\"}").fetch();
-        final JsonResponse response = new JsonResponse(resp);
         MatcherAssert.assertThat(
-            "should be \u001Fblah\uFFFDcwhoa\u0000!",
-            response.json().readObject().getString("test"),
-            Matchers.is("\u001Fblah\uFFFDcwhoa\u0000!")
+            "should be \u001fblah\ufffdcwhoa\u0000!",
+            new JsonResponse(
+                new FakeRequest()
+                    .withBody("{\"test\":\n\"\u001fblah\ufffdcwhoa\u0000!\"}")
+                    .fetch()
+            ).json().readObject().getString("test"),
+            Matchers.is("\u001fblah\ufffdcwhoa\u0000!")
         );
     }
 
@@ -67,11 +72,10 @@ final class JsonResponseTest {
         final String body = "{\"test\": \"logged!\"$@%#^&%@$#}";
         final Response resp = new FakeRequest().withBody(body).fetch();
         MatcherAssert.assertThat(
-            "should contains json body",
-            Assertions.assertThrows(
+            "readObject() should complain about the json body",
+            JsonResponseTest.thrown(
                 JsonParsingException.class,
-                () -> new JsonResponse(resp).json().readObject(),
-                "readObject() should have thrown JsonParsingException"
+                () -> new JsonResponse(resp).json().readObject()
             ),
             Matchers.hasToString(Matchers.containsString(body))
         );
@@ -87,17 +91,12 @@ final class JsonResponseTest {
         final String body = "[\"test\": \"logged!\"$@%#^&%@$#]";
         final Response resp = new FakeRequest().withBody(body).fetch();
         MatcherAssert.assertThat(
-            "should contains json body",
-            Assertions.assertThrows(
+            "readArray() should complain about the json body",
+            JsonResponseTest.thrown(
                 JsonParsingException.class,
-                () -> new JsonResponse(resp).json().readArray(),
-                "readArray() should have thrown JsonParsingException"
+                () -> new JsonResponse(resp).json().readArray()
             ),
-            Matchers.hasToString(
-                Matchers.containsString(
-                    body
-                )
-            )
+            Matchers.hasToString(Matchers.containsString(body))
         );
     }
 
@@ -111,18 +110,24 @@ final class JsonResponseTest {
         final String body = "{test:[]}}}";
         final Response resp = new FakeRequest().withBody(body).fetch();
         MatcherAssert.assertThat(
-            "should contains json body",
-            Assertions.assertThrows(
+            "read() should complain about the json body",
+            JsonResponseTest.thrown(
                 JsonParsingException.class,
-                () -> new JsonResponse(resp).json().read(),
-                "readStructure() should have thrown JsonParsingException"
+                () -> new JsonResponse(resp).json().read()
             ),
-            Matchers.<JsonParsingException>hasToString(
-                Matchers.containsString(
-                    body
-                )
-            )
+            Matchers.hasToString(Matchers.containsString(body))
         );
+    }
+
+    /**
+     * The exception thrown by the given executable.
+     * @param type Expected type of the exception
+     * @param exec The executable that must throw
+     * @return The exception thrown
+     */
+    private static Throwable thrown(final Class<? extends Throwable> type,
+        final Executable exec) {
+        return Assertions.assertThrows(type, exec);
     }
 
 }

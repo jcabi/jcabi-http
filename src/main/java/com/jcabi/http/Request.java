@@ -51,7 +51,7 @@ import java.io.InputStream;
  * @since 0.8
  */
 @Immutable
-@SuppressWarnings({"PMD.AvoidDuplicateLiterals", "PMD.TooManyMethods"})
+@SuppressWarnings("PMD.TooManyMethods")
 public interface Request {
 
     /**

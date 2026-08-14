@@ -4,7 +4,6 @@
  */
 package com.jcabi.http;
 
-import java.util.Map;
 import org.hamcrest.MatcherAssert;
 import org.hamcrest.Matchers;
 import org.junit.jupiter.api.Test;
@@ -20,11 +19,9 @@ final class ImmutableHeaderTest {
      */
     @Test
     void normalizesHeaderKey() {
-        final Map.Entry<String, String> header =
-            new ImmutableHeader("content-type", "text/plain");
         MatcherAssert.assertThat(
             "should be 'Content-Type'",
-            header.getKey(),
+            new ImmutableHeader("content-type", "text/plain").getKey(),
             Matchers.equalTo("Content-Type")
         );
     }

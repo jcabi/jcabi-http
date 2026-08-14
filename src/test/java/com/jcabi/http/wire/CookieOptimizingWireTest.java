@@ -14,6 +14,7 @@ import jakarta.ws.rs.core.HttpHeaders;
 import java.net.HttpURLConnection;
 import org.hamcrest.MatcherAssert;
 import org.hamcrest.Matchers;
+import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 
 /**
@@ -35,33 +36,35 @@ final class CookieOptimizingWireTest {
                 .withHeader(HttpHeaders.SET_COOKIE, "gamma=something; path=/")
                 .withHeader(HttpHeaders.LOCATION, "/")
         ).next(new MkAnswer.Simple("")).start();
-        new JdkRequest(container.home())
+        final RestResponse response = new JdkRequest(container.home())
             .through(VerboseWire.class)
             .through(CookieOptimizingWire.class)
             .header(HttpHeaders.COOKIE, "alpha=boom5")
             .fetch()
             .as(RestResponse.class)
             .follow()
-            .fetch().as(RestResponse.class)
-            .assertStatus(HttpURLConnection.HTTP_OK);
+            .fetch().as(RestResponse.class);
         container.stop();
         container.take();
         final MkQuery query = container.take();
-        MatcherAssert.assertThat(
-            "should be size 1",
-            query.headers().get(HttpHeaders.COOKIE),
-            Matchers.hasSize(1)
-        );
-        MatcherAssert.assertThat(
-            "should contains 3 items",
-            query.headers(),
-            Matchers.hasEntry(
-                Matchers.equalTo(HttpHeaders.COOKIE),
-                Matchers.<String>everyItem(
-                    Matchers.allOf(
-                        Matchers.containsString("beta=something"),
-                        Matchers.containsString("gamma=something"),
-                        Matchers.containsString("alpha=boom1")
+        Assertions.assertAll(
+            () -> response.assertStatus(HttpURLConnection.HTTP_OK),
+            () -> MatcherAssert.assertThat(
+                "should be size 1",
+                query.headers().get(HttpHeaders.COOKIE),
+                Matchers.hasSize(1)
+            ),
+            () -> MatcherAssert.assertThat(
+                "should contains 3 items",
+                query.headers(),
+                Matchers.hasEntry(
+                    Matchers.equalTo(HttpHeaders.COOKIE),
+                    Matchers.<String>everyItem(
+                        Matchers.allOf(
+                            Matchers.containsString("beta=something"),
+                            Matchers.containsString("gamma=something"),
+                            Matchers.containsString("alpha=boom1")
+                        )
                     )
                 )
             )
@@ -81,7 +84,7 @@ final class CookieOptimizingWireTest {
                 .withHeader(HttpHeaders.SET_COOKIE, "third=B; path=/")
                 .withHeader(HttpHeaders.LOCATION, "/a")
         ).next(new MkAnswer.Simple("")).start();
-        new JdkRequest(container.home())
+        final RestResponse response = new JdkRequest(container.home())
             .through(VerboseWire.class)
             .through(CookieOptimizingWire.class)
             .header(HttpHeaders.COOKIE, "second=initial-value")
@@ -89,26 +92,28 @@ final class CookieOptimizingWireTest {
             .as(RestResponse.class)
             .follow()
             .fetch()
-            .as(RestResponse.class)
-            .assertStatus(HttpURLConnection.HTTP_OK);
+            .as(RestResponse.class);
         container.stop();
         container.take();
         final MkQuery query = container.take();
-        MatcherAssert.assertThat(
-            "should be size 1",
-            query.headers().get(HttpHeaders.COOKIE),
-            Matchers.hasSize(1)
-        );
-        MatcherAssert.assertThat(
-            "should contains 2 items & not contains 1 item",
-            query.headers(),
-            Matchers.hasEntry(
-                Matchers.equalTo(HttpHeaders.COOKIE),
-                Matchers.hasItem(
-                    Matchers.allOf(
-                        Matchers.containsString("first=A"),
-                        Matchers.containsString("third=B"),
-                        Matchers.not(Matchers.containsString("second"))
+        Assertions.assertAll(
+            () -> response.assertStatus(HttpURLConnection.HTTP_OK),
+            () -> MatcherAssert.assertThat(
+                "should be size 1",
+                query.headers().get(HttpHeaders.COOKIE),
+                Matchers.hasSize(1)
+            ),
+            () -> MatcherAssert.assertThat(
+                "should contains 2 items & not contains 1 item",
+                query.headers(),
+                Matchers.hasEntry(
+                    Matchers.equalTo(HttpHeaders.COOKIE),
+                    Matchers.hasItem(
+                        Matchers.allOf(
+                            Matchers.containsString("first=A"),
+                            Matchers.containsString("third=B"),
+                            Matchers.not(Matchers.containsString("second"))
+                        )
                     )
                 )
             )

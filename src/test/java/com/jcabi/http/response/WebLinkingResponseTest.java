@@ -8,7 +8,10 @@ import com.jcabi.http.request.FakeRequest;
 import java.net.URI;
 import org.hamcrest.MatcherAssert;
 import org.hamcrest.Matchers;
+import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
+import org.junit.jupiter.params.ParameterizedTest;
+import org.junit.jupiter.params.provider.ValueSource;
 
 /**
  * Test case for {@link WebLinkingResponse}.
@@ -23,38 +26,37 @@ final class WebLinkingResponseTest {
 
     /**
      * WebLinkingResponse can recognize Links in headers.
+     * @param header The value of the Link header
      * @throws Exception If something goes wrong inside
      */
-    @Test
-    @SuppressWarnings("PMD.AvoidInstantiatingObjectsInLoops")
-    void parsesLinksInHeaders() throws Exception {
-        final String[] headers = {
-            "</hey/foo>; title=\"Hi!\"; rel=foo",
-            "</hey/foo>; title=\"\u20ac\"; rel=\"foo\"; media=\"text/xml\"",
-        };
-        for (final String header : headers) {
-            final WebLinkingResponse response = new WebLinkingResponse(
-                new FakeRequest()
-                    .withHeader(WebLinkingResponseTest.LINK, header)
-                    .fetch()
-            );
-            final WebLinkingResponse.Link link = response.links().get("foo");
-            MatcherAssert.assertThat(
+    @ParameterizedTest
+    @ValueSource(strings = {
+        "</hey/foo>; title=\"Hi!\"; rel=foo",
+        "</hey/foo>; title=\"\u20ac\"; rel=\"foo\"; media=\"text/xml\""
+    })
+    void parsesLinksInHeaders(final String header) throws Exception {
+        final WebLinkingResponse response = new WebLinkingResponse(
+            new FakeRequest()
+                .withHeader(WebLinkingResponseTest.LINK, header)
+                .fetch()
+        );
+        Assertions.assertAll(
+            () -> MatcherAssert.assertThat(
                 "should contains '/hey/foo'",
-                link.uri(),
+                response.links().get("foo").uri(),
                 Matchers.hasToString("/hey/foo")
-            );
-            MatcherAssert.assertThat(
+            ),
+            () -> MatcherAssert.assertThat(
                 "should contains key 'title'",
-                link,
+                response.links().get("foo"),
                 Matchers.hasKey("title")
-            );
-            MatcherAssert.assertThat(
+            ),
+            () -> MatcherAssert.assertThat(
                 "should not contains key 'something else'",
                 response.links(),
                 Matchers.not(Matchers.hasKey("something else"))
-            );
-        }
+            )
+        );
     }
 
     /**
@@ -69,15 +71,17 @@ final class WebLinkingResponseTest {
                 "</a>; rel=\"first\", <http://localhost/o>; rel=\"second\""
             ).uri().set(new URI("http://localhost/test")).back().fetch()
         );
-        MatcherAssert.assertThat(
-            "should equals 'http://localhost/a'",
-            response.follow("first").uri().get(),
-            Matchers.equalTo(new URI("http://localhost/a"))
-        );
-        MatcherAssert.assertThat(
-            "should equals 'http://localhost/o'",
-            response.follow("second").uri().get(),
-            Matchers.equalTo(new URI("http://localhost/o"))
+        Assertions.assertAll(
+            () -> MatcherAssert.assertThat(
+                "should equals 'http://localhost/a'",
+                response.follow("first").uri().get(),
+                Matchers.equalTo(new URI("http://localhost/a"))
+            ),
+            () -> MatcherAssert.assertThat(
+                "should equals 'http://localhost/o'",
+                response.follow("second").uri().get(),
+                Matchers.equalTo(new URI("http://localhost/o"))
+            )
         );
     }
 

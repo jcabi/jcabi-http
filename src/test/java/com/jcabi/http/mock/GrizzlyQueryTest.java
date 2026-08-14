@@ -5,6 +5,7 @@
 package com.jcabi.http.mock;
 
 import java.io.ByteArrayInputStream;
+import java.nio.charset.StandardCharsets;
 import java.util.Collections;
 import org.glassfish.grizzly.http.server.Request;
 import org.hamcrest.MatcherAssert;
@@ -29,7 +30,7 @@ final class GrizzlyQueryTest {
         Mockito.when(request.getHeaderNames()).thenReturn(
             Collections.<String>emptyList()
         );
-        final byte[] body = "body".getBytes();
+        final byte[] body = "body".getBytes(StandardCharsets.UTF_8);
         Mockito.when(request.getInputStream()).thenReturn(
             new ByteArrayInputStream(body)
         );

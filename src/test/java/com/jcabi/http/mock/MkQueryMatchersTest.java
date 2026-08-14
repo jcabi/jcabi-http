@@ -61,9 +61,10 @@ final class MkQueryMatchersTest {
      */
     @Test
     void canMatchPath() {
-        final URI body = URI.create("http://example.com/index.html?y=x");
         final MkQuery query = Mockito.mock(MkQuery.class);
-        Mockito.doReturn(body).when(query).uri();
+        Mockito.doReturn(
+            URI.create("http://example.com/index.html?y=x")
+        ).when(query).uri();
         MatcherAssert.assertThat(
             "should match the raw path",
             query,
@@ -78,9 +79,10 @@ final class MkQueryMatchersTest {
      */
     @Test
     void canMatchQuery() {
-        final URI body = URI.create("http://example.com/?x=10");
         final MkQuery query = Mockito.mock(MkQuery.class);
-        Mockito.doReturn(body).when(query).uri();
+        Mockito.doReturn(
+            URI.create("http://example.com/?x=10")
+        ).when(query).uri();
         MatcherAssert.assertThat(
             "should match the raw query",
             query,

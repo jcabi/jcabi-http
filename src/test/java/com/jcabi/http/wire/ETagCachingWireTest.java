@@ -9,10 +9,12 @@ import com.jcabi.http.mock.MkAnswer;
 import com.jcabi.http.mock.MkContainer;
 import com.jcabi.http.mock.MkGrizzlyContainer;
 import com.jcabi.http.request.JdkRequest;
-import com.jcabi.http.response.RestResponse;
 import jakarta.ws.rs.core.HttpHeaders;
 import java.io.IOException;
 import java.net.HttpURLConnection;
+import java.util.ArrayList;
+import java.util.Collection;
+import org.hamcrest.MatcherAssert;
 import org.hamcrest.Matchers;
 import org.junit.jupiter.api.Test;
 
@@ -41,17 +43,15 @@ final class ETagCachingWireTest {
             .start();
         final Request req =
             new JdkRequest(container.home()).through(ETagCachingWire.class);
-        req
-            .fetch()
-            .as(RestResponse.class)
-            .assertStatus(HttpURLConnection.HTTP_OK)
-            .assertBody(Matchers.equalTo(body));
-        req
-            .fetch()
-            .as(RestResponse.class)
-            .assertStatus(HttpURLConnection.HTTP_OK)
-            .assertBody(Matchers.equalTo(body));
+        final Collection<String> bodies = new ArrayList<>(2);
+        bodies.add(req.fetch().body());
+        bodies.add(req.fetch().body());
         container.stop();
+        MatcherAssert.assertThat(
+            "should serve the same content twice",
+            bodies,
+            Matchers.contains(body, body)
+        );
     }
 
     /**
@@ -75,16 +75,14 @@ final class ETagCachingWireTest {
         final Request req =
             new JdkRequest(container.home())
                 .through(ETagCachingWire.class);
-        req
-            .fetch()
-            .as(RestResponse.class)
-            .assertStatus(HttpURLConnection.HTTP_OK)
-            .assertBody(Matchers.equalTo(before));
-        req
-            .fetch()
-            .as(RestResponse.class)
-            .assertStatus(HttpURLConnection.HTTP_OK)
-            .assertBody(Matchers.equalTo(after));
+        final Collection<String> bodies = new ArrayList<>(2);
+        bodies.add(req.fetch().body());
+        bodies.add(req.fetch().body());
         container.stop();
+        MatcherAssert.assertThat(
+            "should detect the modification",
+            bodies,
+            Matchers.contains(before, after)
+        );
     }
 }

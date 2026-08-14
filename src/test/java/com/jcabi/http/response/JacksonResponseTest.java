@@ -5,13 +5,13 @@
 package com.jcabi.http.response;
 
 import com.fasterxml.jackson.databind.node.ArrayNode;
-import com.fasterxml.jackson.databind.node.ObjectNode;
 import com.jcabi.http.request.FakeRequest;
 import java.io.IOException;
 import org.hamcrest.MatcherAssert;
 import org.hamcrest.Matchers;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.function.Executable;
 
 /**
  * Test case for {@link JacksonResponse}.
@@ -29,15 +29,17 @@ final class JacksonResponseTest {
         final JacksonResponse response = new FakeRequest()
             .withBody("{\n\t\r\"foo-foo\":2,\n\"bar\":\"\u20ac\"}")
             .fetch().as(JacksonResponse.class);
-        MatcherAssert.assertThat(
-            "should be 2",
-            response.json().read().path("foo-foo").asInt(),
-            Matchers.equalTo(2)
-        );
-        MatcherAssert.assertThat(
-            "should be '\u20ac'",
-            response.json().read().path("bar").asText(),
-            Matchers.equalTo("\u20ac")
+        Assertions.assertAll(
+            () -> MatcherAssert.assertThat(
+                "should be 2",
+                response.json().read().path("foo-foo").asInt(),
+                Matchers.equalTo(2)
+            ),
+            () -> MatcherAssert.assertThat(
+                "should be '\u20ac'",
+                response.json().read().path("bar").asText(),
+                Matchers.equalTo("\u20ac")
+            )
         );
     }
 
@@ -48,13 +50,13 @@ final class JacksonResponseTest {
      */
     @Test
     void canParseUnquotedControlCharacters() throws IOException {
-        final JacksonResponse response = new FakeRequest()
-            .withBody("{\"test\":\n\"\u001Fblah\uFFFDcwhoa\u0000!\"}")
-            .fetch().as(JacksonResponse.class);
         MatcherAssert.assertThat(
-            "should be '\u001Fblah\uFFFDcwhoa\u0000!'",
-            response.json().readObject().get("test").asText(),
-            Matchers.is("\u001Fblah\uFFFDcwhoa\u0000!")
+            "should be '\u001fblah\ufffdcwhoa\u0000!'",
+            new FakeRequest()
+                .withBody("{\"test\":\n\"\u001fblah\ufffdcwhoa\u0000!\"}")
+                .fetch().as(JacksonResponse.class)
+                .json().readObject().get("test").asText(),
+            Matchers.is("\u001fblah\ufffdcwhoa\u0000!")
         );
     }
 
@@ -66,19 +68,19 @@ final class JacksonResponseTest {
      */
     @Test
     void invalidJsonErrorHandlingIsLeftToJackson() throws IOException {
-        final String body = "{test:[]}";
-        final String err = "was expecting double-quote to start field name";
         final JacksonResponse response = new FakeRequest()
-            .withBody(body).fetch().as(JacksonResponse.class);
+            .withBody("{test:[]}").fetch().as(JacksonResponse.class);
         MatcherAssert.assertThat(
-            "should contains error 'was expecting double-quote to start field name'",
-            Assertions.assertThrows(
+            "should complain about the missing double-quote",
+            JacksonResponseTest.thrown(
                 IOException.class,
                 () -> response.json().read()
             ),
             Matchers.hasProperty(
                 "message",
-                Matchers.containsString(err)
+                Matchers.containsString(
+                    "was expecting double-quote to start field name"
+                )
             )
         );
     }
@@ -96,8 +98,8 @@ final class JacksonResponseTest {
             .withBody("{\"anInvalidArrayTest\":[}")
             .fetch().as(JacksonResponse.class);
         MatcherAssert.assertThat(
-            "should contains error 'Unexpected close marker'",
-            Assertions.assertThrows(
+            "should complain about the unexpected close marker",
+            JacksonResponseTest.thrown(
                 IOException.class,
                 () -> response.json().readArray()
             ),
@@ -118,12 +120,12 @@ final class JacksonResponseTest {
             .withBody("{\"objectIsNotArray\": \"It's not!\"}")
             .fetch().as(JacksonResponse.class);
         MatcherAssert.assertThat(
-            "should contains 'Cannot read as an array. The JSON is not a valid array.'",
-            Assertions.assertThrows(
+            "should complain about the object not being an array",
+            JacksonResponseTest.thrown(
                 IOException.class,
                 () -> response.json().readArray()
             ),
-            Matchers.<IOException>hasToString(
+            Matchers.hasToString(
                 Matchers.containsString(
                     "Cannot read as an array. The JSON is not a valid array."
                 )
@@ -138,15 +140,17 @@ final class JacksonResponseTest {
      */
     @Test
     void canReadAsArrayIfOne() throws IOException {
-        final JacksonResponse response = new FakeRequest()
+        final ArrayNode array = new FakeRequest()
             .withBody("[\"one\", \"two\"]")
-            .fetch().as(JacksonResponse.class);
-        final ArrayNode array = response.json().readArray();
-        MatcherAssert.assertThat(
-            "should be 'one'", array.get(0).asText(), Matchers.is("one")
-        );
-        MatcherAssert.assertThat(
-            "should be 'one'", array.get(1).asText(), Matchers.is("two")
+            .fetch().as(JacksonResponse.class)
+            .json().readArray();
+        Assertions.assertAll(
+            () -> MatcherAssert.assertThat(
+                "should be 'one'", array.get(0).asText(), Matchers.is("one")
+            ),
+            () -> MatcherAssert.assertThat(
+                "should be 'two'", array.get(1).asText(), Matchers.is("two")
+            )
         );
     }
 
@@ -162,12 +166,12 @@ final class JacksonResponseTest {
             .withBody("{\"anInvalidObjectTest\":{}")
             .fetch().as(JacksonResponse.class);
         MatcherAssert.assertThat(
-            "should contains error 'Unexpected end-of-input: expected close marker for Object",
-            Assertions.assertThrows(
+            "should complain about the missing close marker",
+            JacksonResponseTest.thrown(
                 IOException.class,
                 () -> response.json().readObject()
             ),
-            Matchers.<IOException>hasToString(
+            Matchers.hasToString(
                 Matchers.containsString(
                     "Unexpected end-of-input: expected close marker for Object"
                 )
@@ -182,16 +186,16 @@ final class JacksonResponseTest {
      */
     @Test
     void cannotReadJsonAsObjectIfNotOne() throws IOException {
-        final String body = "[\"arrayIsNotObject\", \"It's not!\"]";
         final JacksonResponse response = new FakeRequest()
-            .withBody(body).fetch().as(JacksonResponse.class);
+            .withBody("[\"arrayIsNotObject\", \"It's not!\"]")
+            .fetch().as(JacksonResponse.class);
         MatcherAssert.assertThat(
-            "should contains error 'Cannot read as an object. The JSON is not a valid object.",
-            Assertions.assertThrows(
+            "should complain about the array not being an object",
+            JacksonResponseTest.thrown(
                 IOException.class,
                 () -> response.json().readObject()
             ),
-            Matchers.<IOException>hasToString(
+            Matchers.hasToString(
                 Matchers.containsString(
                     "Cannot read as an object. The JSON is not a valid object."
                 )
@@ -206,12 +210,24 @@ final class JacksonResponseTest {
      */
     @Test
     void canReadAsObjectIfOne() throws IOException {
-        final JacksonResponse response = new FakeRequest()
-            .withBody("{\"hooray\": \"Got milk?\"}")
-            .fetch().as(JacksonResponse.class);
-        final ObjectNode object = response.json().readObject();
         MatcherAssert.assertThat(
-            "should contains 'Got milk?", object.get("hooray").asText(), Matchers.is("Got milk?")
+            "should contains 'Got milk?'",
+            new FakeRequest()
+                .withBody("{\"hooray\": \"Got milk?\"}")
+                .fetch().as(JacksonResponse.class)
+                .json().readObject().get("hooray").asText(),
+            Matchers.is("Got milk?")
         );
+    }
+
+    /**
+     * The exception thrown by the given executable.
+     * @param type Expected type of the exception
+     * @param exec The executable that must throw
+     * @return The exception thrown
+     */
+    private static Throwable thrown(final Class<? extends Throwable> type,
+        final Executable exec) {
+        return Assertions.assertThrows(type, exec);
     }
 }

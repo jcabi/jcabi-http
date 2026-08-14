@@ -103,7 +103,6 @@ public final class ApacheRequest implements Request {
                         return method;
                     }
                 };
-            final URI uri = URI.create(home);
             req.setConfig(
                 RequestConfig.custom()
                     .setCircularRedirectsAllowed(false)
@@ -112,7 +111,7 @@ public final class ApacheRequest implements Request {
                     .setSocketTimeout(read)
                     .build()
             );
-            req.setURI(uri);
+            req.setURI(URI.create(home));
             req.setEntity(
                 new BufferedHttpEntity(new InputStreamEntity(content))
             );
@@ -143,7 +142,6 @@ public final class ApacheRequest implements Request {
          * @param list Apache HTTP hdrs
          * @return Body in UTF-8
          */
-        @SuppressWarnings("PMD.AvoidInstantiatingObjectsInLoops")
         private Array<Map.Entry<String, String>> headers(final Header... list) {
             final Collection<Map.Entry<String, String>> headers =
                 new LinkedList<>();

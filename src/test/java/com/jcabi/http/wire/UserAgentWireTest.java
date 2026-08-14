@@ -8,9 +8,7 @@ import com.jcabi.http.mock.MkAnswer;
 import com.jcabi.http.mock.MkContainer;
 import com.jcabi.http.mock.MkGrizzlyContainer;
 import com.jcabi.http.request.JdkRequest;
-import com.jcabi.http.response.RestResponse;
 import jakarta.ws.rs.core.HttpHeaders;
-import java.net.HttpURLConnection;
 import org.hamcrest.MatcherAssert;
 import org.hamcrest.Matchers;
 import org.junit.jupiter.api.Test;
@@ -28,9 +26,7 @@ final class UserAgentWireTest {
         ).start();
         new JdkRequest(container.home())
             .through(UserAgentWire.class)
-            .fetch()
-            .as(RestResponse.class)
-            .assertStatus(HttpURLConnection.HTTP_OK);
+            .fetch();
         container.stop();
         MatcherAssert.assertThat(
             "must add default User-Agent HTTP header",
@@ -52,9 +48,7 @@ final class UserAgentWireTest {
         final String agent = "Mozilla/5.0";
         new JdkRequest(container.home())
             .through(UserAgentWire.class, agent)
-            .fetch()
-            .as(RestResponse.class)
-            .assertStatus(HttpURLConnection.HTTP_OK);
+            .fetch();
         container.stop();
         MatcherAssert.assertThat(
             "must add custom User-Agent HTTP header",

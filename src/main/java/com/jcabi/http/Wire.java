@@ -30,6 +30,7 @@ import java.util.Map;
  * @since 0.9
  */
 @Immutable
+@FunctionalInterface
 //@checkstyle ParameterNumber (16 lines)
 public interface Wire {
 

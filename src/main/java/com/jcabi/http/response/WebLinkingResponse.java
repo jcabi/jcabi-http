@@ -86,7 +86,6 @@ public final class WebLinkingResponse extends AbstractResponse {
      * @return List of all links found
      * @throws IOException If fails
      */
-    @SuppressWarnings("PMD.AvoidInstantiatingObjectsInLoops")
     public Map<String, WebLinkingResponse.Link> links() throws IOException {
         final ConcurrentMap<String, WebLinkingResponse.Link> links =
             new ConcurrentHashMap<>(0);
@@ -133,7 +132,6 @@ public final class WebLinkingResponse extends AbstractResponse {
         /**
          * Pattern to match link value.
          */
-        @SuppressWarnings("PMD.UnusedPrivateField")
         private static final Pattern PTN = Pattern.compile(
             "<([^>]+)>\\s*;(.*)"
         );

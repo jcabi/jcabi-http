@@ -16,7 +16,7 @@ import org.junit.jupiter.api.Test;
  *
  * @since 1.17.5
  */
-@SuppressWarnings("PMD.AvoidDuplicateLiterals") final class RestResponseITCase {
+final class RestResponseITCase {
     @Test
     void readsCookiesSeveralValues() throws IOException {
         final RestResponse resp = new JdkRequest(

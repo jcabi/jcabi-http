@@ -20,7 +20,6 @@ import org.testcontainers.utility.DockerImageName;
  *
  * @since 1.17.8
  */
-@SuppressWarnings("PMD.AbstractClassWithoutAbstractMethod")
 @TestInstance(TestInstance.Lifecycle.PER_CLASS)
 @Testcontainers(disabledWithoutDocker = true)
 final class RequestSecondITCase {
@@ -61,6 +60,7 @@ final class RequestSecondITCase {
      * @since 1.17.8
      */
     @Nested
+    @SuppressWarnings("PMD.TestClassWithoutTestCases")
     final class JdkRequestITCase extends RequestITCaseTemplate {
         JdkRequestITCase() {
             super(JdkRequest.class, RequestSecondITCase.this.uri());
@@ -72,6 +72,7 @@ final class RequestSecondITCase {
      * @since 1.17.8
      */
     @Nested
+    @SuppressWarnings("PMD.TestClassWithoutTestCases")
     final class ApacheRequestITCase extends RequestITCaseTemplate {
         ApacheRequestITCase() {
             super(ApacheRequest.class, RequestSecondITCase.this.uri());

@@ -13,6 +13,7 @@ import org.hamcrest.MatcherAssert;
 import org.hamcrest.Matchers;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.function.Executable;
 
 /**
  * Integration case for {@link JdkRequest}.
@@ -31,19 +32,18 @@ final class JdkRequestITCase {
      */
     @Test
     void throwsDescriptiveException() {
-        final String uri = "http://localhost:6789";
-        final String method = HttpMethod.POST;
         MatcherAssert.assertThat(
             "should be error with a descriptive message",
-            Assertions.assertThrows(
+            JdkRequestITCase.thrown(
                 IOException.class,
-                () -> new JdkRequest(new URI(uri)).method(method).fetch()
+                () -> new JdkRequest(new URI("http://localhost:6789"))
+                    .method(HttpMethod.POST).fetch()
             ),
             Matchers.hasProperty(
                 JdkRequestITCase.MESSAGE,
                 Matchers.allOf(
-                    Matchers.containsString(uri),
-                    Matchers.containsString(method)
+                    Matchers.containsString("http://localhost:6789"),
+                    Matchers.containsString(HttpMethod.POST)
                 )
             )
         );
@@ -55,18 +55,17 @@ final class JdkRequestITCase {
      */
     @Test
     void failsNoProtocolNoPort() {
-        final String uri = "localhost";
         MatcherAssert.assertThat(
             "should be error with a descriptive message",
-            Assertions.assertThrows(
+            JdkRequestITCase.thrown(
                 IOException.class,
-                () -> new JdkRequest(uri).fetch()
+                () -> new JdkRequest("localhost").fetch()
             ),
             Matchers.hasProperty(
                 JdkRequestITCase.MESSAGE,
                 Matchers.allOf(
                     Matchers.containsString("is incorrect"),
-                    Matchers.containsString(uri)
+                    Matchers.containsString("localhost")
                 )
             )
         );
@@ -78,25 +77,19 @@ final class JdkRequestITCase {
      */
     @Test
     void failsWithPortButNoProtocol() {
-        final String url = "test.com";
-        final String colon = ":";
         MatcherAssert.assertThat(
             "should be error with a descriptive message",
-            Assertions.assertThrows(
+            JdkRequestITCase.thrown(
                 MalformedURLException.class,
                 () -> new JdkRequest(
-                    StringUtils.join(
-                        url,
-                        colon,
-                        "80"
-                    )
+                    StringUtils.join("test.com", ":", "80")
                 ).fetch()
             ),
             Matchers.hasProperty(
                 JdkRequestITCase.MESSAGE,
                 Matchers.allOf(
                     Matchers.containsString("unknown protocol: "),
-                    Matchers.containsString(url)
+                    Matchers.containsString("test.com")
                 )
             )
         );
@@ -108,20 +101,30 @@ final class JdkRequestITCase {
      */
     @Test
     void failsMalformedEntirely() {
-        final String uri = "bla bla url";
         MatcherAssert.assertThat(
             "should be error with a descriptive message",
-            Assertions.assertThrows(
+            JdkRequestITCase.thrown(
                 IllegalArgumentException.class,
-                () -> new JdkRequest(uri).fetch()
+                () -> new JdkRequest("bla bla url").fetch()
             ),
             Matchers.hasProperty(
                 JdkRequestITCase.MESSAGE,
                 Matchers.allOf(
                     Matchers.containsString("Illegal character in path"),
-                    Matchers.containsString(uri)
+                    Matchers.containsString("bla bla url")
                 )
             )
         );
+    }
+
+    /**
+     * The exception thrown by the given snippet.
+     * @param type The expected type of the exception
+     * @param exec The snippet to run
+     * @return The exception it throws
+     */
+    private static Throwable thrown(final Class<? extends Throwable> type,
+        final Executable exec) {
+        return Assertions.assertThrows(type, exec);
     }
 }

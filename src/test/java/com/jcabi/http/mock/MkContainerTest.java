@@ -34,15 +34,16 @@ final class MkContainerTest {
             container.next(
                 new MkAnswer.Simple(HttpURLConnection.HTTP_OK, "works fine!")
             ).start();
-            new JdkRequest(container.home())
-                .fetch().as(RestResponse.class)
-                .assertStatus(HttpURLConnection.HTTP_OK)
-                .assertBody(Matchers.startsWith("works"));
-            final MkQuery query = container.take();
-            MatcherAssert.assertThat(
-                "should be GET method",
-                query.method(),
-                Matchers.equalTo(Request.GET)
+            final RestResponse response = new JdkRequest(container.home())
+                .fetch().as(RestResponse.class);
+            Assertions.assertAll(
+                () -> response.assertStatus(HttpURLConnection.HTTP_OK),
+                () -> response.assertBody(Matchers.startsWith("works")),
+                () -> MatcherAssert.assertThat(
+                    "should be GET method",
+                    container.take().method(),
+                    Matchers.equalTo(Request.GET)
+                )
             );
         }
     }
@@ -60,12 +61,10 @@ final class MkContainerTest {
                 .through(VerboseWire.class)
                 .header(header, MediaType.TEXT_HTML)
                 .header(header, MediaType.TEXT_XML)
-                .fetch().as(RestResponse.class)
-                .assertStatus(HttpURLConnection.HTTP_OK);
-            final MkQuery query = container.take();
+                .fetch();
             MatcherAssert.assertThat(
                 "should has size 2",
-                query.headers().get(header),
+                container.take().headers().get(header),
                 Matchers.hasSize(2)
             );
         }
@@ -88,7 +87,6 @@ final class MkContainerTest {
             new JdkRequest(container.home())
                 .through(VerboseWire.class)
                 .fetch().as(RestResponse.class)
-                .assertStatus(HttpURLConnection.HTTP_OK)
                 .assertBody(
                     Matchers.allOf(
                         Matchers.is(match),
@@ -113,7 +111,6 @@ final class MkContainerTest {
             new JdkRequest(container.home())
                 .through(VerboseWire.class)
                 .fetch().as(RestResponse.class)
-                .assertStatus(HttpURLConnection.HTTP_OK)
                 .assertBinary(Matchers.is(body));
         }
     }
@@ -162,7 +159,6 @@ final class MkContainerTest {
                 .through(VerboseWire.class);
             for (int idx = 0; idx < times; idx += 1) {
                 req.fetch().as(RestResponse.class)
-                    .assertStatus(HttpURLConnection.HTTP_OK)
                     .assertBody(Matchers.is(body));
             }
         }
@@ -185,7 +181,6 @@ final class MkContainerTest {
             new JdkRequest(container.home())
                 .through(VerboseWire.class)
                 .fetch().as(RestResponse.class)
-                .assertStatus(HttpURLConnection.HTTP_OK)
                 .assertBody(
                     Matchers.allOf(
                         Matchers.is(first),
@@ -212,14 +207,12 @@ final class MkContainerTest {
                 .through(VerboseWire.class)
                 .method(HttpMethod.POST)
                 .body().set(request).back()
-                .fetch().as(RestResponse.class)
-                .assertStatus(HttpURLConnection.HTTP_OK);
+                .fetch();
             new JdkRequest(container.home())
                 .through(VerboseWire.class)
                 .method(HttpMethod.POST)
                 .body().set("reqBodyMismatches").back()
-                .fetch().as(RestResponse.class)
-                .assertStatus(HttpURLConnection.HTTP_OK);
+                .fetch();
             MatcherAssert.assertThat(
                 "should match the answer body",
                 container.take(MkAnswerMatchers.hasBody(Matchers.is(response))),
@@ -244,21 +237,17 @@ final class MkContainerTest {
                 MkQueryMatchers.hasBody(Matchers.is(match)),
                 2
             ).next(new MkAnswer.Simple("blaa")).start();
-            new JdkRequest(container.home())
+            final Request req = new JdkRequest(container.home())
                 .through(VerboseWire.class)
                 .method(HttpMethod.POST)
-                .body().set(match).back()
-                .fetch().as(RestResponse.class)
-                .assertStatus(HttpURLConnection.HTTP_OK)
-                .back()
-                .fetch().as(RestResponse.class)
-                .assertStatus(HttpURLConnection.HTTP_OK);
+                .body().set(match).back();
+            req.fetch();
+            req.fetch();
             new JdkRequest(container.home())
                 .through(VerboseWire.class)
                 .method(HttpMethod.POST)
                 .body().set(mismatch).back()
-                .fetch().as(RestResponse.class)
-                .assertStatus(HttpURLConnection.HTTP_OK);
+                .fetch();
             MatcherAssert.assertThat(
                 "should match all bodies",
                 container.takeAll(

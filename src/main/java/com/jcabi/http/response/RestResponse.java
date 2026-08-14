@@ -13,7 +13,6 @@ import jakarta.ws.rs.core.HttpHeaders;
 import java.net.HttpCookie;
 import java.net.URI;
 import java.util.Collections;
-import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 import lombok.EqualsAndHashCode;
@@ -78,16 +77,15 @@ public final class RestResponse extends AbstractResponse {
      * @return The same object
      */
     public RestResponse assertStatus(final int status) {
-        final String message = String.format(
-            "HTTP response with status %d", status
-        );
         MatcherAssert.assertThat(
             String.format(
                 "HTTP response status is not equal to %d:%n%s",
                 status, this
             ),
             this,
-            new RestResponse.StatusMatch(message, status)
+            new RestResponse.StatusMatch(
+                String.format("HTTP response with status %d", status), status
+            )
         );
         return this;
     }
@@ -190,7 +188,6 @@ public final class RestResponse extends AbstractResponse {
      * @param uri Destination to jump to
      * @return New request
      */
-    @SuppressWarnings("PMD.UseConcurrentHashMap")
     public Request jump(final URI uri) {
         Request req = this.back().uri()
             .set(this.back().uri().get().resolve(uri))
@@ -230,7 +227,6 @@ public final class RestResponse extends AbstractResponse {
      * @param name Cookie name
      * @return Cookie found
      */
-    @SuppressWarnings("PMD.UseConcurrentHashMap")
     public Cookie cookie(final String name) {
         final Map<String, List<String>> headers = this.headers();
         MatcherAssert.assertThat(
@@ -238,11 +234,9 @@ public final class RestResponse extends AbstractResponse {
             headers.containsKey(HttpHeaders.SET_COOKIE)
         );
         final List<String> cookies = headers.get(HttpHeaders.SET_COOKIE);
-        final Iterator<String> iterator = cookies.iterator();
         Cookie cookie = null;
-        while (iterator.hasNext()) {
-            final String obj = iterator.next();
-            for (final HttpCookie candidate : HttpCookie.parse(obj)) {
+        for (final String header : cookies) {
+            for (final HttpCookie candidate : HttpCookie.parse(header)) {
                 if (candidate.getName().equals(name)) {
                     cookie = RestResponse.cookie(candidate);
                     break;

@@ -18,6 +18,7 @@ import org.hamcrest.MatcherAssert;
 import org.hamcrest.Matchers;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.function.Executable;
 import org.mockito.Mockito;
 
 /**
@@ -37,10 +38,9 @@ final class BaseRequestTest {
      */
     @Test
     void buildsDestinationUri() {
-        final Wire wire = Mockito.mock(Wire.class);
         MatcherAssert.assertThat(
             "should has the right destination URI",
-            new BaseRequest(wire, "http://localhost:88/t/f")
+            new BaseRequest(Mockito.mock(Wire.class), "http://localhost:88/t/f")
                 .uri().path("/bar").queryParam("u1", "\u20ac")
                 .queryParams(new ArrayMap<String, String>().with("u2", ""))
                 .userInfo("hey:\u20ac").back().uri().get(),
@@ -55,10 +55,11 @@ final class BaseRequestTest {
      */
     @Test
     void printsJsonInBody() {
-        final Wire wire = Mockito.mock(Wire.class);
         MatcherAssert.assertThat(
             "should equals to '{\"foo\":\"test 1\"}'",
-            new BaseRequest(wire, "http://localhost:88/x").body().set(
+            new BaseRequest(
+                Mockito.mock(Wire.class), "http://localhost:88/x"
+            ).body().set(
                 Json.createObjectBuilder().add("foo", "test 1").build()
             ).get(),
             Matchers.equalTo("{\"foo\":\"test 1\"}")
@@ -70,11 +71,10 @@ final class BaseRequestTest {
      */
     @Test
     void includesPort() {
-        final Wire wire = Mockito.mock(Wire.class);
         MatcherAssert.assertThat(
             "should has 'http://localhost:8080/'",
             // @checkstyle MagicNumber (2 lines)
-            new BaseRequest(wire, "http://localhost")
+            new BaseRequest(Mockito.mock(Wire.class), "http://localhost")
                 .uri().port(8080).back().uri().get(),
             Matchers.hasToString("http://localhost:8080/")
         );
@@ -86,19 +86,21 @@ final class BaseRequestTest {
     @Test
     void identifiesUniquely() {
         final Wire wire = Mockito.mock(Wire.class);
-        MatcherAssert.assertThat(
-            "should not equals",
-            new BaseRequest(wire, "").header("header-1", "value-1"),
-            Matchers.not(
-                Matchers.equalTo(
-                    new BaseRequest(wire, "").header("header-2", "value-2")
+        Assertions.assertAll(
+            () -> MatcherAssert.assertThat(
+                "should not equals",
+                new BaseRequest(wire, "").header("header-1", "value-1"),
+                Matchers.not(
+                    Matchers.equalTo(
+                        new BaseRequest(wire, "").header("header-2", "value-2")
+                    )
                 )
+            ),
+            () -> MatcherAssert.assertThat(
+                "should equals",
+                new BaseRequest(wire, ""),
+                Matchers.equalTo(new BaseRequest(wire, ""))
             )
-        );
-        MatcherAssert.assertThat(
-            "should equals",
-            new BaseRequest(wire, ""),
-            Matchers.equalTo(new BaseRequest(wire, ""))
         );
     }
 
@@ -111,7 +113,7 @@ final class BaseRequestTest {
         final Wire wire = Mockito.mock(Wire.class);
         MatcherAssert.assertThat(
             "should be error when multipart-body without content-type",
-            Assertions.assertThrows(
+            BaseRequestTest.thrown(
                 IllegalStateException.class,
                 () -> new BaseRequest(wire, "")
                     .multipartBody()
@@ -134,7 +136,7 @@ final class BaseRequestTest {
         final Wire wire = Mockito.mock(Wire.class);
         MatcherAssert.assertThat(
             "should be error when multipart-body without content-type",
-            Assertions.assertThrows(
+            BaseRequestTest.thrown(
                 IllegalStateException.class,
                 () -> new BaseRequest(wire, "")
                     .header(
@@ -172,6 +174,17 @@ final class BaseRequestTest {
             srv.take().body(),
             Matchers.is("foo1=bar1&foo2=bar2&foo3=bar3&foo4=bar4")
         );
+    }
+
+    /**
+     * The exception thrown by the given snippet.
+     * @param type The expected type of the exception
+     * @param exec The snippet to run
+     * @return The exception it throws
+     */
+    private static Throwable thrown(final Class<? extends Throwable> type,
+        final Executable exec) {
+        return Assertions.assertThrows(type, exec);
     }
 
     /**

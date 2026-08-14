@@ -17,11 +17,11 @@ import jakarta.json.JsonArrayBuilder;
 import jakarta.json.JsonObject;
 import jakarta.json.JsonObjectBuilder;
 import jakarta.json.JsonString;
+import jakarta.json.JsonWriter;
 import java.io.ByteArrayInputStream;
 import java.io.File;
 import java.io.IOException;
 import java.io.InputStream;
-import java.io.OutputStream;
 import java.io.UnsupportedEncodingException;
 import java.net.URLEncoder;
 import java.nio.charset.StandardCharsets;
@@ -43,7 +43,6 @@ import org.apache.commons.io.FileUtils;
 @Immutable
 @ToString
 @EqualsAndHashCode
-@SuppressWarnings("PMD.ExcessiveImports")
 final class FcCache {
 
     /**
@@ -150,7 +149,6 @@ final class FcCache {
      * @return Response
      * @throws IOException If fails
      */
-    @SuppressWarnings("PMD.AvoidInstantiatingObjectsInLoops")
     private Response response(final Request req, final File file)
         throws IOException {
         final JsonObject json = Json.createReader(
@@ -202,8 +200,9 @@ final class FcCache {
         if (file.getParentFile().mkdirs()) {
             Logger.debug(this, "directory created for %s", file);
         }
-        try (OutputStream out = Files.newOutputStream(file.toPath())) {
-            Json.createWriter(out).write(json.build());
+        try (JsonWriter writer =
+            Json.createWriter(Files.newOutputStream(file.toPath()))) {
+            writer.write(json.build());
         }
         Logger.debug(this, "cache saved into %s", file);
         return response;

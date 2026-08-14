@@ -96,7 +96,6 @@ public final class DefaultResponse implements Response {
     }
 
     @Override
-    @SuppressWarnings("PMD.AvoidInstantiatingObjectsInLoops")
     public Map<String, List<String>> headers() {
         final ConcurrentMap<String, List<String>> map =
             new ConcurrentHashMap<>(0);
@@ -143,9 +142,8 @@ public final class DefaultResponse implements Response {
     }
 
     @Override
-    @SuppressWarnings("PMD.ConsecutiveLiteralAppends")
     public String toString() {
-        final StringBuilder text = new StringBuilder(0)
+        final StringBuilder text = new StringBuilder()
             .append(this.code).append(' ')
             .append(this.phrase)
             .append(" [")

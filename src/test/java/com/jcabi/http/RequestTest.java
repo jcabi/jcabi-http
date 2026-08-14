@@ -33,12 +33,7 @@ import org.junit.jupiter.params.ParameterizedTest;
  * Test case for {@link Request} and its implementations.
  * @since 1.7
  */
-@SuppressWarnings(
-    {
-        "PMD.TooManyMethods",
-        "PMD.AvoidDuplicateLiterals",
-        "PMD.TestClassWithoutTestCases"
-    })
+@SuppressWarnings("PMD.TooManyMethods")
 final class RequestTest extends RequestTestTemplate {
 
     /**
@@ -54,25 +49,32 @@ final class RequestTest extends RequestTestTemplate {
         final MkContainer container = new MkGrizzlyContainer().next(
             new MkAnswer.Simple("\u20ac! hello!")
         ).start();
-        RequestTestTemplate.request(container.home(), type)
-            .uri().path("/helloall").back()
-            .method(Request.GET)
-            .fetch().as(RestResponse.class)
-            .assertBody(Matchers.containsString("\u20ac!"))
-            .assertBody(Matchers.containsString("hello!"))
-            .assertStatus(HttpURLConnection.HTTP_OK);
+        final RestResponse response =
+            RequestTestTemplate.request(container.home(), type)
+                .uri().path("/helloall").back()
+                .method(Request.GET)
+                .fetch().as(RestResponse.class);
         final MkQuery query = container.take();
-        MatcherAssert.assertThat(
-            "should contains 'helloall'",
-            query,
-            MkQueryMatchers.hasPath(Matchers.containsString("helloall"))
-        );
-        MatcherAssert.assertThat(
-            "should be GET method",
-            query.method(),
-            Matchers.equalTo(Request.GET)
-        );
         container.stop();
+        Assertions.assertAll(
+            () -> response.assertBody(
+                Matchers.allOf(
+                    Matchers.containsString("\u20ac!"),
+                    Matchers.containsString("hello!")
+                )
+            ),
+            () -> response.assertStatus(HttpURLConnection.HTTP_OK),
+            () -> MatcherAssert.assertThat(
+                "should contains 'helloall'",
+                query,
+                MkQueryMatchers.hasPath(Matchers.containsString("helloall"))
+            ),
+            () -> MatcherAssert.assertThat(
+                "should be GET method",
+                query.method(),
+                Matchers.equalTo(Request.GET)
+            )
+        );
     }
 
     /**
@@ -88,25 +90,27 @@ final class RequestTest extends RequestTestTemplate {
         final MkContainer container = new MkGrizzlyContainer().next(
             new MkAnswer.Simple("")
         ).start();
-        RequestTestTemplate.request(container.home(), type)
-            .through(UserAgentWire.class)
-            .uri().path("/foo1").back()
-            .method(Request.GET)
-            .header(HttpHeaders.ACCEPT, "*/*")
-            .fetch().as(RestResponse.class)
-            .assertStatus(HttpURLConnection.HTTP_OK);
-        final MkQuery query = container.take();
-        MatcherAssert.assertThat(
-            "should be accept '*' and user-agent 'jcabi'",
-            query.headers(),
-            Matchers.allOf(
-                Matchers.hasEntry(
-                    Matchers.equalTo(HttpHeaders.ACCEPT),
-                    Matchers.hasItem(Matchers.containsString("*"))
-                ),
-                Matchers.hasEntry(
-                    Matchers.equalTo(HttpHeaders.USER_AGENT),
-                    Matchers.hasItem(Matchers.containsString("jcabi"))
+        final RestResponse response =
+            RequestTestTemplate.request(container.home(), type)
+                .through(UserAgentWire.class)
+                .uri().path("/foo1").back()
+                .method(Request.GET)
+                .header(HttpHeaders.ACCEPT, "*/*")
+                .fetch().as(RestResponse.class);
+        Assertions.assertAll(
+            () -> response.assertStatus(HttpURLConnection.HTTP_OK),
+            () -> MatcherAssert.assertThat(
+                "should be accept '*' and user-agent 'jcabi'",
+                container.take().headers(),
+                Matchers.allOf(
+                    Matchers.hasEntry(
+                        Matchers.equalTo(HttpHeaders.ACCEPT),
+                        Matchers.hasItem(Matchers.containsString("*"))
+                    ),
+                    Matchers.hasEntry(
+                        Matchers.equalTo(HttpHeaders.USER_AGENT),
+                        Matchers.hasItem(Matchers.containsString("jcabi"))
+                    )
                 )
             )
         );
@@ -126,21 +130,24 @@ final class RequestTest extends RequestTestTemplate {
         final MkContainer container = new MkGrizzlyContainer().next(
             new MkAnswer.Simple("")
         ).start();
-        final String value = "some value of this param &^%*;'\"\u20ac\"";
-        RequestTestTemplate.request(container.home(), type)
-            .uri().queryParam("q", value).back()
-            .method(Request.GET)
-            .header(HttpHeaders.ACCEPT, MediaType.TEXT_XML)
-            .fetch().as(RestResponse.class)
-            .assertStatus(HttpURLConnection.HTTP_OK);
-        final MkQuery query = container.take();
-        MatcherAssert.assertThat(
-            "should be ends with '€'",
-            URLDecoder.decode(
-                query.uri().toString(),
-                String.valueOf(StandardCharsets.UTF_8)
-            ),
-            Matchers.endsWith("\"€\"")
+        final RestResponse response =
+            RequestTestTemplate.request(container.home(), type)
+                .uri()
+                .queryParam("q", "some value of this param &^%*;'\"\u20ac\"")
+                .back()
+                .method(Request.GET)
+                .header(HttpHeaders.ACCEPT, MediaType.TEXT_XML)
+                .fetch().as(RestResponse.class);
+        Assertions.assertAll(
+            () -> response.assertStatus(HttpURLConnection.HTTP_OK),
+            () -> MatcherAssert.assertThat(
+                "should be ends with euro sign",
+                URLDecoder.decode(
+                    container.take().uri().toString(),
+                    String.valueOf(StandardCharsets.UTF_8)
+                ),
+                Matchers.endsWith("\"\u20ac\"")
+            )
         );
         container.stop();
     }
@@ -166,12 +173,13 @@ final class RequestTest extends RequestTestTemplate {
                 HttpHeaders.CONTENT_TYPE,
                 MediaType.APPLICATION_FORM_URLENCODED
             )
-            .fetch().as(RestResponse.class)
-            .assertStatus(HttpURLConnection.HTTP_OK);
-        final MkQuery query = container.take();
+            .fetch();
         MatcherAssert.assertThat(
             "should be with param",
-            URLDecoder.decode(query.body(), StandardCharsets.UTF_8.toString()),
+            URLDecoder.decode(
+                container.take().body(),
+                StandardCharsets.UTF_8.toString()
+            ),
             Matchers.is(String.format("p=%s", value))
         );
         container.stop();
@@ -202,15 +210,14 @@ final class RequestTest extends RequestTestTemplate {
                 HttpHeaders.CONTENT_TYPE,
                 MediaType.APPLICATION_FORM_URLENCODED
             )
-            .fetch().as(RestResponse.class)
-            .assertStatus(HttpURLConnection.HTTP_OK);
-        final MkQuery query = container.take();
+            .fetch();
         MatcherAssert.assertThat(
             "should be with multiple params",
-            URLDecoder.decode(query.body(), StandardCharsets.UTF_8.toString()),
-            Matchers.is(
-                String.format("a=%s&b=%s", value, follow)
-            )
+            URLDecoder.decode(
+                container.take().body(),
+                StandardCharsets.UTF_8.toString()
+            ),
+            Matchers.is(String.format("a=%s&b=%s", value, follow))
         );
         container.stop();
     }
@@ -220,7 +227,7 @@ final class RequestTest extends RequestTestTemplate {
      * with single byte param.
      * @param type Request type
      * @throws Exception If something goes wrong inside
-     * @checkstyle LineLength (30 lines)
+     * @checkstyle LineLength (36 lines)
      */
     @Values
     @ParameterizedTest
@@ -230,32 +237,33 @@ final class RequestTest extends RequestTestTemplate {
         final MkContainer container = new MkGrizzlyContainer().next(
             new MkAnswer.Simple("")
         ).start();
-        final byte[] value = {Byte.parseByte("-122")};
-        RequestTestTemplate.request(container.home(), type)
-            .method(Request.POST)
-            .header(
-                HttpHeaders.CONTENT_TYPE,
-                String.format(
-                    "%s; boundary=--xx", MediaType.MULTIPART_FORM_DATA
+        final RestResponse response =
+            RequestTestTemplate.request(container.home(), type)
+                .method(Request.POST)
+                .header(
+                    HttpHeaders.CONTENT_TYPE,
+                    String.format(
+                        "%s; boundary=--xx", MediaType.MULTIPART_FORM_DATA
+                    )
                 )
-            )
-            .multipartBody()
-            .formParam("x", value)
-            .back()
-            .fetch().as(RestResponse.class)
-            .assertStatus(HttpURLConnection.HTTP_OK);
-        final MkQuery query = container.take();
-        MatcherAssert.assertThat(
-            "should be match byte param",
-            query.body(),
-            Matchers.is(
-                Joiner.on(Constants.CRLF).join(
-                    "----xx",
-                    "Content-Disposition: form-data; name=\"x\"; filename=\"binary\"",
-                    RequestTest.steamContentType(),
-                    "",
-                    "�",
-                    "----xx--"
+                .multipartBody()
+                .formParam("x", new byte[] {Byte.parseByte("-122")})
+                .back()
+                .fetch().as(RestResponse.class);
+        Assertions.assertAll(
+            () -> response.assertStatus(HttpURLConnection.HTTP_OK),
+            () -> MatcherAssert.assertThat(
+                "should be match byte param",
+                container.take().body(),
+                Matchers.is(
+                    Joiner.on(Constants.CRLF).join(
+                        "----xx",
+                        "Content-Disposition: form-data; name=\"x\"; filename=\"binary\"",
+                        RequestTest.steamContentType(),
+                        "",
+                        "\ufffd",
+                        "----xx--"
+                    )
                 )
             )
         );
@@ -267,7 +275,7 @@ final class RequestTest extends RequestTestTemplate {
      * with single param.
      * @param type Request type
      * @throws Exception If something goes wrong inside
-     * @checkstyle LineLength (30 lines)
+     * @checkstyle LineLength (37 lines)
      */
     @Values
     @ParameterizedTest
@@ -289,19 +297,17 @@ final class RequestTest extends RequestTestTemplate {
             .multipartBody()
             .formParam("c", value)
             .back()
-            .fetch().as(RestResponse.class)
-            .assertStatus(HttpURLConnection.HTTP_OK);
-        final MkQuery query = container.take();
+            .fetch();
         MatcherAssert.assertThat(
             "should be match single param",
-            query.body(),
+            container.take().body(),
             Matchers.is(
                 Joiner.on(Constants.CRLF).join(
                     "----xyz",
                     "Content-Disposition: form-data; name=\"c\"; filename=\"binary\"",
                     RequestTest.steamContentType(),
                     "",
-                    "value of € part param \"&^%*;'\"",
+                    value,
                     "----xyz--"
                 )
             )
@@ -314,7 +320,7 @@ final class RequestTest extends RequestTestTemplate {
      * with two params.
      * @param type Request type
      * @throws Exception If something goes wrong inside
-     * @checkstyle LineLength (40 lines)
+     * @checkstyle LineLength (44 lines)
      */
     @Values
     @ParameterizedTest
@@ -326,6 +332,7 @@ final class RequestTest extends RequestTestTemplate {
         ).start();
         final String value = "value of \u20ac one param \"&^%*;'\"";
         final String other = "value of \u20ac two param \"&^%*;'\"";
+        final String separator = "--xy--";
         RequestTestTemplate.request(container.home(), type)
             .method(Request.POST)
             .header(
@@ -338,25 +345,22 @@ final class RequestTest extends RequestTestTemplate {
             .formParam("d", value)
             .formParam("e", other)
             .back()
-            .fetch().as(RestResponse.class)
-            .assertStatus(HttpURLConnection.HTTP_OK);
-        final MkQuery query = container.take();
-        final String separator = "--xy--";
+            .fetch();
         MatcherAssert.assertThat(
             "should be match two params",
-            query.body(),
+            container.take().body(),
             Matchers.is(
                 Joiner.on(Constants.CRLF).join(
                     separator,
                     "Content-Disposition: form-data; name=\"d\"; filename=\"binary\"",
                     RequestTest.steamContentType(),
                     "",
-                    "value of € one param \"&^%*;'\"",
+                    value,
                     separator,
                     "Content-Disposition: form-data; name=\"e\"; filename=\"binary\"",
                     RequestTest.steamContentType(),
                     "",
-                    "value of € two param \"&^%*;'\"",
+                    other,
                     "--xy----"
                 )
             )
@@ -387,12 +391,13 @@ final class RequestTest extends RequestTestTemplate {
             .body()
             .set(URLEncoder.encode(value, StandardCharsets.UTF_8.toString()))
             .back()
-            .fetch().as(RestResponse.class)
-            .assertStatus(HttpURLConnection.HTTP_OK);
-        final MkQuery query = container.take();
+            .fetch();
         MatcherAssert.assertThat(
             "should be match body",
-            URLDecoder.decode(query.body(), StandardCharsets.UTF_8.toString()),
+            URLDecoder.decode(
+                container.take().body(),
+                StandardCharsets.UTF_8.toString()
+            ),
             Matchers.containsString(value)
         );
         container.stop();
@@ -411,14 +416,17 @@ final class RequestTest extends RequestTestTemplate {
         final MkContainer container = new MkGrizzlyContainer().next(
             new MkAnswer.Simple(HttpURLConnection.HTTP_NOT_FOUND, "")
         ).start();
-        RequestTestTemplate.request(container.home(), type)
-            .method(Request.GET)
-            .fetch().as(RestResponse.class)
-            .assertStatus(HttpURLConnection.HTTP_NOT_FOUND)
-            .assertStatus(
-                Matchers.equalTo(HttpURLConnection.HTTP_NOT_FOUND)
-            );
+        final RestResponse response =
+            RequestTestTemplate.request(container.home(), type)
+                .method(Request.GET)
+                .fetch().as(RestResponse.class);
         container.stop();
+        Assertions.assertAll(
+            () -> response.assertStatus(HttpURLConnection.HTTP_NOT_FOUND),
+            () -> response.assertStatus(
+                Matchers.equalTo(HttpURLConnection.HTTP_NOT_FOUND)
+            )
+        );
     }
 
     /**
@@ -434,12 +442,17 @@ final class RequestTest extends RequestTestTemplate {
         final MkContainer container = new MkGrizzlyContainer().next(
             new MkAnswer.Simple("some text \u20ac")
         ).start();
-        RequestTestTemplate.request(container.home(), type)
-            .method(Request.GET)
-            .fetch().as(RestResponse.class)
-            .assertBody(Matchers.containsString("text \u20ac"))
-            .assertStatus(HttpURLConnection.HTTP_OK);
+        final RestResponse response =
+            RequestTestTemplate.request(container.home(), type)
+                .method(Request.GET)
+                .fetch().as(RestResponse.class);
         container.stop();
+        Assertions.assertAll(
+            () -> response.assertBody(
+                Matchers.containsString("text \u20ac")
+            ),
+            () -> response.assertStatus(HttpURLConnection.HTTP_OK)
+        );
     }
 
     /**
@@ -457,21 +470,24 @@ final class RequestTest extends RequestTestTemplate {
                 HttpHeaders.CONTENT_TYPE, MediaType.TEXT_PLAIN
             )
         ).start();
-        RequestTestTemplate.request(container.home(), type)
-            .method(Request.GET)
-            .fetch().as(RestResponse.class)
-            .assertStatus(HttpURLConnection.HTTP_OK)
-            .assertHeader(
+        final RestResponse response =
+            RequestTestTemplate.request(container.home(), type)
+                .method(Request.GET)
+                .fetch().as(RestResponse.class);
+        container.stop();
+        Assertions.assertAll(
+            () -> response.assertStatus(HttpURLConnection.HTTP_OK),
+            () -> response.assertHeader(
                 "absent-for-sure",
                 Matchers.emptyIterableOf(String.class)
-            )
-            .assertHeader(
+            ),
+            () -> response.assertHeader(
                 HttpHeaders.CONTENT_TYPE,
                 Matchers.everyItem(
                     Matchers.containsString(MediaType.TEXT_PLAIN)
                 )
-            );
-        container.stop();
+            )
+        );
     }
 
     /**
@@ -487,13 +503,16 @@ final class RequestTest extends RequestTestTemplate {
         final MkContainer container = new MkGrizzlyContainer().next(
             new MkAnswer.Simple("<root><a>\u0443\u0440\u0430!</a></root>")
         ).start();
-        RequestTestTemplate.request(container.home(), type)
-            .method(Request.GET)
-            .fetch().as(RestResponse.class)
-            .assertStatus(HttpURLConnection.HTTP_OK)
-            .as(XmlResponse.class)
-            .assertXPath("/root/a[contains(.,'!')]");
+        final RestResponse response =
+            RequestTestTemplate.request(container.home(), type)
+                .method(Request.GET)
+                .fetch().as(RestResponse.class);
         container.stop();
+        Assertions.assertAll(
+            () -> response.assertStatus(HttpURLConnection.HTTP_OK),
+            () -> response.as(XmlResponse.class)
+                .assertXPath("/root/a[contains(.,'!')]")
+        );
     }
 
     /**
@@ -534,8 +553,12 @@ final class RequestTest extends RequestTestTemplate {
             .method(Request.GET)
             .uri().path("/abcdefff").back()
             .fetch().as(RestResponse.class)
-            .assertBody(Matchers.containsString("\u0443\u0440\u0430"))
-            .assertBody(Matchers.containsString("!"));
+            .assertBody(
+                Matchers.allOf(
+                    Matchers.containsString("\u0443\u0440\u0430"),
+                    Matchers.containsString("!")
+                )
+            );
         container.stop();
     }
 
@@ -575,22 +598,25 @@ final class RequestTest extends RequestTestTemplate {
         final MkContainer container = new MkGrizzlyContainer().next(
             new MkAnswer.Simple("")
         ).start();
-        final URI uri = UriBuilder.fromUri(container.home())
-            .userInfo("user:\u20ac\u20ac").build();
-        RequestTestTemplate.request(uri, type)
+        final RestResponse response = RequestTestTemplate.request(
+            UriBuilder.fromUri(container.home())
+                .userInfo("user:\u20ac\u20ac").build(),
+            type
+        )
             .through(BasicAuthWire.class)
             .method(Request.GET)
             .uri().path("/abcde").back()
-            .fetch().as(RestResponse.class)
-            .assertStatus(HttpURLConnection.HTTP_OK);
+            .fetch().as(RestResponse.class);
         container.stop();
-        final MkQuery query = container.take();
-        MatcherAssert.assertThat(
-            "should be basic authorization",
-            query.headers(),
-            Matchers.hasEntry(
-                Matchers.equalTo(HttpHeaders.AUTHORIZATION),
-                Matchers.hasItem("Basic dXNlcjrigqzigqw=")
+        Assertions.assertAll(
+            () -> response.assertStatus(HttpURLConnection.HTTP_OK),
+            () -> MatcherAssert.assertThat(
+                "should be basic authorization",
+                container.take().headers(),
+                Matchers.hasEntry(
+                    Matchers.equalTo(HttpHeaders.AUTHORIZATION),
+                    Matchers.hasItem("Basic dXNlcjrigqzigqw=")
+                )
             )
         );
     }
@@ -613,18 +639,20 @@ final class RequestTest extends RequestTestTemplate {
         final Request req = RequestTestTemplate.request(container.home(), type)
             .uri().path("/foo-X").back()
             .header(HttpHeaders.CONTENT_TYPE, MediaType.TEXT_XML);
-        req.method(Request.GET).fetch().as(RestResponse.class)
-            .assertStatus(HttpURLConnection.HTTP_OK);
-        req.method(Request.POST).fetch().as(RestResponse.class)
-            .assertStatus(HttpURLConnection.HTTP_OK);
-        req.method(Request.GET).fetch().as(RestResponse.class)
-            .assertStatus(HttpURLConnection.HTTP_OK);
-        container.stop();
-        MatcherAssert.assertThat(
-            "should be ends with 'foo-X'",
-            container.take(),
-            MkQueryMatchers.hasPath(Matchers.endsWith("foo-X"))
+        Assertions.assertAll(
+            () -> req.method(Request.GET).fetch().as(RestResponse.class)
+                .assertStatus(HttpURLConnection.HTTP_OK),
+            () -> req.method(Request.POST).fetch().as(RestResponse.class)
+                .assertStatus(HttpURLConnection.HTTP_OK),
+            () -> req.method(Request.GET).fetch().as(RestResponse.class)
+                .assertStatus(HttpURLConnection.HTTP_OK),
+            () -> MatcherAssert.assertThat(
+                "should be ends with 'foo-X'",
+                container.take(),
+                MkQueryMatchers.hasPath(Matchers.endsWith("foo-X"))
+            )
         );
+        container.stop();
     }
 
     /**
@@ -663,20 +691,20 @@ final class RequestTest extends RequestTestTemplate {
             new MkAnswer.Simple("")
         ).start();
         final String value = "\u20ac body as stream \"&^%*;'\"";
-        final ByteArrayInputStream stream =
-            new ByteArrayInputStream(value.getBytes(StandardCharsets.UTF_8));
         RequestTestTemplate.request(container.home(), type)
             .method(Request.POST)
             .header(
                 HttpHeaders.CONTENT_TYPE,
                 MediaType.APPLICATION_FORM_URLENCODED
             )
-            .fetch(stream).as(RestResponse.class)
-            .assertStatus(HttpURLConnection.HTTP_OK);
-        final MkQuery query = container.take();
+            .fetch(
+                new ByteArrayInputStream(
+                    value.getBytes(StandardCharsets.UTF_8)
+                )
+            );
         MatcherAssert.assertThat(
             "should contains body as input stream",
-            query.body(),
+            container.take().body(),
             Matchers.containsString(value)
         );
         container.stop();

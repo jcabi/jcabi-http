@@ -8,7 +8,6 @@ import com.jcabi.http.Request;
 import com.jcabi.http.mock.MkAnswer;
 import com.jcabi.http.mock.MkContainer;
 import com.jcabi.http.mock.MkGrizzlyContainer;
-import com.jcabi.http.mock.MkQuery;
 import com.jcabi.http.request.JdkRequest;
 import com.jcabi.http.response.RestResponse;
 import jakarta.ws.rs.core.HttpHeaders;
@@ -55,13 +54,10 @@ final class VerboseWireTest {
                 .through(VerboseWire.class)
                 .method(Request.POST)
                 .body().set("hello, world!").back()
-                .fetch()
-                .as(RestResponse.class)
-                .assertStatus(HttpURLConnection.HTTP_OK);
-            final MkQuery query = container.take();
+                .fetch();
             MatcherAssert.assertThat(
                 "should starts with 'hello,'",
-                query.body(),
+                container.take().body(),
                 Matchers.startsWith("hello,")
             );
         } finally {

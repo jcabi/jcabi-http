@@ -73,7 +73,7 @@ public final class VerboseWire implements Wire {
             new ByteArrayInputStream(output.toByteArray()),
                 connect, read
         );
-        final StringBuilder text = new StringBuilder(0);
+        final StringBuilder text = new StringBuilder();
         for (final Map.Entry<String, String> header : headers) {
             text.append(header.getKey())
                 .append(": ")

@@ -33,7 +33,6 @@ public class MockWire implements Wire {
      *
      * @param wire The original wire which is ignored
      */
-    @SuppressWarnings("PMD.UnusedFormalParameter")
     public MockWire(final Wire wire) {
         // Instantiated by a Request implementation, wire is ignored
     }
@@ -43,7 +42,7 @@ public class MockWire implements Wire {
         final String method, final Collection<Entry<String, String>> headers,
         final InputStream content, final int connect, final int read)
         throws IOException {
-        return mockDelegate.send(
+        return MockWire.mockDelegate.send(
             req,
             home,
             method,
@@ -60,7 +59,6 @@ public class MockWire implements Wire {
      * @param mock The mock to assert variables passed by the request
      *  implementation
      */
-    @SuppressWarnings("PMD.DefaultPackage")
     static void setMockDelegate(final Wire mock) {
         MockWire.mockDelegate = mock;
     }

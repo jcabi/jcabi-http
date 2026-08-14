@@ -129,11 +129,9 @@ public abstract class AbstractHeaderBasedCachingWire implements Wire {
         final InputStream content, final int connect, final int read
     ) throws IOException {
         final Response cached = this.cache.get(req);
-        final Collection<Map.Entry<String, String>> hdrs = this.enrich(
-            headers, cached
-        );
         Response result = this.origin.send(
-            req, home, method, hdrs, content, connect, read
+            req, home, method, this.enrich(headers, cached),
+            content, connect, read
         );
         if (result.status() == HttpURLConnection.HTTP_NOT_MODIFIED) {
             result = cached;
@@ -166,16 +164,13 @@ public abstract class AbstractHeaderBasedCachingWire implements Wire {
     private Collection<Map.Entry<String, String>> enrich(
         final Collection<Map.Entry<String, String>> headers, final Response rsp
     ) {
-        final Collection<String> list = rsp.headers().get(
-            this.scvh
-        );
         final Map<String, String> map =
             new ConcurrentHashMap<>(headers.size() + 1);
         for (final Map.Entry<String, String> entry : headers) {
             map.put(entry.getKey(), entry.getValue());
         }
         map.put(
-            this.cmch, list.iterator().next()
+            this.cmch, rsp.headers().get(this.scvh).iterator().next()
         );
         return map.entrySet();
     }

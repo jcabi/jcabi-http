@@ -111,7 +111,7 @@ public final class JacksonResponse extends AbstractResponse {
          * @throws IOException If the body is not a valid JSON.
          */
         public JsonNode read() throws IOException {
-            return MAPPER.readTree(this.body);
+            return JacksonResponse.JsonReader.MAPPER.readTree(this.body);
         }
     }
 }

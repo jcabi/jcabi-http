@@ -73,9 +73,7 @@ public final class JsonResponse extends AbstractResponse {
      * @return Json reader
      */
     public JsonReader json() {
-        final byte[] body = this.binary();
-        final String json;
-        json = new String(body, StandardCharsets.UTF_8);
+        final String json = new String(this.binary(), StandardCharsets.UTF_8);
         return new JsonResponse.VerboseReader(
             Json.createReader(
                 new StringReader(

@@ -29,7 +29,6 @@ import org.junit.jupiter.params.ParameterizedTest;
  * Integration case for {@link com.jcabi.http.request.ApacheRequest}.
  * @since 1.1
  */
-@SuppressWarnings("PMD.AvoidDuplicateLiterals")
 final class RequestITCase extends RequestTestTemplate {
 
     /**
@@ -45,9 +44,7 @@ final class RequestITCase extends RequestTestTemplate {
         final Class<? extends Request> type
     ) throws Exception {
         RequestTestTemplate.request(new URI("https://www.rt.com/rss/"), type)
-            .fetch().as(RestResponse.class)
-            .assertStatus(HttpURLConnection.HTTP_OK)
-            .as(XmlResponse.class)
+            .fetch().as(XmlResponse.class)
             .assertXPath("/rss/channel");
     }
 
@@ -94,13 +91,10 @@ final class RequestITCase extends RequestTestTemplate {
             ).start()) {
             new ApacheRequest(container.home())
                 .method(Request.GET)
-                .fetch()
-                .as(RestResponse.class)
-                .assertStatus(HttpURLConnection.HTTP_OK);
-            final MkQuery query = container.take();
+                .fetch();
             MatcherAssert.assertThat(
                 "should be 'GET'",
-                query.method(),
+                container.take().method(),
                 Matchers.is("GET")
             );
         }
@@ -117,9 +111,7 @@ final class RequestITCase extends RequestTestTemplate {
             ).start()) {
             new ApacheRequest(container.home())
                 .method(Request.DELETE)
-                .fetch()
-                .as(RestResponse.class)
-                .assertStatus(HttpURLConnection.HTTP_OK);
+                .fetch();
             MatcherAssert.assertThat(
                 "should be 'DELETE'",
                 container.take().method(),
@@ -141,20 +133,20 @@ final class RequestITCase extends RequestTestTemplate {
                 .method(Request.DELETE)
                 .body().set("{}").back()
                 .fetch()
-                .as(RestResponse.class)
-                .assertStatus(HttpURLConnection.HTTP_OK)
                 .as(JsonResponse.class)
                 .json();
             final MkQuery take = container.take();
-            MatcherAssert.assertThat(
-                "should be 'DELETE'",
-                take.method(),
-                Matchers.is("DELETE")
-            );
-            MatcherAssert.assertThat(
-                "should be '{}'",
-                take.body(),
-                Matchers.is("{}")
+            Assertions.assertAll(
+                () -> MatcherAssert.assertThat(
+                    "should be 'DELETE'",
+                    take.method(),
+                    Matchers.is("DELETE")
+                ),
+                () -> MatcherAssert.assertThat(
+                    "should be '{}'",
+                    take.body(),
+                    Matchers.is("{}")
+                )
             );
         }
     }

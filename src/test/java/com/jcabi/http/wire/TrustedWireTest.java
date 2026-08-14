@@ -71,7 +71,10 @@ final class TrustedWireTest {
             0
         );
         MatcherAssert.assertThat(
-            "TrustedWire must replace the default SSL context during send",
+            String.format(
+                "TrustedWire must replace the default context %s during send",
+                before
+            ),
             capture.captured(),
             Matchers.not(Matchers.sameInstance(before))
         );
@@ -94,7 +97,10 @@ final class TrustedWireTest {
             0
         );
         MatcherAssert.assertThat(
-            "TrustedWire must restore the default SSL context after send",
+            String.format(
+                "TrustedWire must restore the default context %s after send",
+                before
+            ),
             SSLContext.getDefault(),
             Matchers.sameInstance(before)
         );
@@ -107,9 +113,9 @@ final class TrustedWireTest {
     private static final class SslContextCapture implements Wire {
 
         /**
-         * The SSLContext captured during send.
+         * The SSLContext seen during send.
          */
-        private volatile SSLContext captured;
+        private volatile SSLContext context;
 
         @Override
         // @checkstyle ParameterNumber (5 lines)
@@ -119,7 +125,7 @@ final class TrustedWireTest {
             final InputStream content,
             final int connect, final int read) throws IOException {
             try {
-                this.captured = SSLContext.getDefault();
+                this.context = SSLContext.getDefault();
             } catch (final NoSuchAlgorithmException ex) {
                 throw new IOException(ex);
             }
@@ -131,7 +137,7 @@ final class TrustedWireTest {
          * @return Captured context
          */
         SSLContext captured() {
-            return this.captured;
+            return this.context;
         }
     }
 

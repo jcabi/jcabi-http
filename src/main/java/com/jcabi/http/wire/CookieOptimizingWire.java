@@ -94,17 +94,16 @@ public final class CookieOptimizingWire implements Wire {
             }
         );
         if (!cookies.isEmpty()) {
-            final String text = cookies.entrySet().stream().filter(
-                cookie -> !cookie.getValue().isEmpty()
-            ).map(
-                cookie -> cookie.getKey() + '=' + cookie.getValue()
-            ).collect(
-                Collectors.joining("; ")
-            );
             hdrs.add(
                 new ImmutableHeader(
                     HttpHeaders.COOKIE,
-                        text
+                    cookies.entrySet().stream().filter(
+                        cookie -> !cookie.getValue().isEmpty()
+                    ).map(
+                        cookie -> cookie.getKey() + '=' + cookie.getValue()
+                    ).collect(
+                        Collectors.joining("; ")
+                    )
                 )
             );
         }

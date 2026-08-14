@@ -55,14 +55,7 @@ final class MkGrizzlyAdapter extends HttpHandler {
 
     // @checkstyle ExecutableStatementCount (55 lines)
     @Override
-    @SuppressWarnings
-        (
-        {
-        "PMD.AvoidCatchingThrowable",
-        "PMD.AvoidInstantiatingObjectsInLoops",
-        "rawtypes"
-        }
-        )
+    @SuppressWarnings("rawtypes")
     public void service(
         final Request request,
         final Response response
@@ -141,8 +134,9 @@ final class MkGrizzlyAdapter extends HttpHandler {
      * @return Iterator over all requests
      */
     private Iterator<MkQuery> takeMatching(final Matcher<MkAnswer> matcher) {
-        final Iterator<QueryWithAnswer> iter = this.queue.iterator();
-        final Iterator<MkQuery> result = new MkQueryIterator(iter, matcher);
+        final Iterator<MkQuery> result = new MkQueryIterator(
+            this.queue.iterator(), matcher
+        );
         if (!result.hasNext()) {
             throw new NoSuchElementException("No matching results found");
         }
@@ -173,9 +167,7 @@ final class MkGrizzlyAdapter extends HttpHandler {
     }
 
     private void handleRequest(final Request request, final Response response) throws IOException {
-        final MkQuery query = new GrizzlyQuery(request);
-        final boolean matched = this.processConditionals(query, response);
-        if (!matched) {
+        if (!this.processConditionals(new GrizzlyQuery(request), response)) {
             throw new NoSuchElementException("No matching answers found.");
         }
     }

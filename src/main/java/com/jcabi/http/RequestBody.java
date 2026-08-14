@@ -107,10 +107,10 @@ public interface RequestBody {
 
         @Override
         public String toString() {
-            final StringBuilder text = new StringBuilder(0);
             final char[] chrs = new String(
                 this.array, StandardCharsets.UTF_8
             ).toCharArray();
+            final StringBuilder text = new StringBuilder(chrs.length);
             if (chrs.length > 0) {
                 for (final char chr : chrs) {
                     // @checkstyle MagicNumber (1 line)

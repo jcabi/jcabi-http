@@ -4,7 +4,6 @@
  */
 package com.jcabi.http.response;
 
-import com.jcabi.http.Response;
 import com.jcabi.http.request.FakeRequest;
 import jakarta.ws.rs.core.HttpHeaders;
 import java.net.HttpURLConnection;
@@ -19,7 +18,6 @@ import org.junit.jupiter.api.Test;
  * Test case for {@link RestResponse}.
  * @since 1.1
  */
-@SuppressWarnings("PMD.AvoidDuplicateLiterals")
 final class RestResponseTest {
 
     /**
@@ -44,19 +42,21 @@ final class RestResponseTest {
     @Test
     @SuppressWarnings("unchecked")
     void assertsHttpHeaders() throws Exception {
-        final String name = "Abc";
-        final String value = "t66";
-        final Response rsp = new FakeRequest().withHeader(name, value).fetch();
-        new RestResponse(rsp).assertHeader(
-            name,
-            Matchers.allOf(
-                Matchers.hasItems(value),
-                Matcher.class.cast(Matchers.hasSize(1))
-            )
+        final RestResponse response = new RestResponse(
+            new FakeRequest().withHeader("Abc", "t66").fetch()
         );
-        new RestResponse(rsp).assertHeader(
-            "Something-Else-Which-Is-Absent",
-            Matcher.class.cast(Matchers.empty())
+        Assertions.assertAll(
+            () -> response.assertHeader(
+                "Abc",
+                Matchers.allOf(
+                    Matchers.hasItems("t66"),
+                    Matcher.class.cast(Matchers.hasSize(1))
+                )
+            ),
+            () -> response.assertHeader(
+                "Something-Else-Which-Is-Absent",
+                Matcher.class.cast(Matchers.empty())
+            )
         );
     }
 
@@ -66,18 +66,17 @@ final class RestResponseTest {
      */
     @Test
     void retrievesCookieByName() throws Exception {
-        final RestResponse response = new RestResponse(
-            new FakeRequest()
-                .withBody("<hello/>")
-                .withHeader(
-                    HttpHeaders.SET_COOKIE,
-                    "cookie1=foo1;Path=/;Comment=\"\", bar=1;"
-                )
-                .fetch()
-        );
         MatcherAssert.assertThat(
             "should contains value & path",
-            response.cookie("cookie1"),
+            new RestResponse(
+                new FakeRequest()
+                    .withBody("<hello/>")
+                    .withHeader(
+                        HttpHeaders.SET_COOKIE,
+                        "cookie1=foo1;Path=/;Comment=\"\", bar=1;"
+                    )
+                    .fetch()
+            ).cookie("cookie1"),
             Matchers.allOf(
                 Matchers.hasProperty("value", Matchers.equalTo("foo1")),
                 Matchers.hasProperty("path", Matchers.equalTo("/"))
@@ -98,20 +97,22 @@ final class RestResponseTest {
                 .withHeader(HttpHeaders.SET_COOKIE, "baz=goo; path=/l;")
                 .fetch()
         );
-        MatcherAssert.assertThat(
-            "should contains value & path",
-            response.cookie("baz"),
-            Matchers.allOf(
-                Matchers.hasProperty("value", Matchers.equalTo("goo")),
-                Matchers.hasProperty("path", Matchers.equalTo("/l"))
-            )
-        );
-        MatcherAssert.assertThat(
-            "should contains value & path",
-            response.cookie("foo"),
-            Matchers.allOf(
-                Matchers.hasProperty("value", Matchers.equalTo("bar")),
-                Matchers.hasProperty("path", Matchers.equalTo("/i"))
+        Assertions.assertAll(
+            () -> MatcherAssert.assertThat(
+                "should contains baz value & path",
+                response.cookie("baz"),
+                Matchers.allOf(
+                    Matchers.hasProperty("value", Matchers.equalTo("goo")),
+                    Matchers.hasProperty("path", Matchers.equalTo("/l"))
+                )
+            ),
+            () -> MatcherAssert.assertThat(
+                "should contains foo value & path",
+                response.cookie("foo"),
+                Matchers.allOf(
+                    Matchers.hasProperty("value", Matchers.equalTo("bar")),
+                    Matchers.hasProperty("path", Matchers.equalTo("/i"))
+                )
             )
         );
     }
@@ -123,7 +124,7 @@ final class RestResponseTest {
     @Test
     void jumpsToRelativeUrls() throws Exception {
         MatcherAssert.assertThat(
-            "should contains value & path",
+            "should jump to the relative URL",
             new RestResponse(
                 new FakeRequest()
                     .uri().set(new URI("http://locahost:888/tt")).back()

@@ -26,7 +26,6 @@ import lombok.EqualsAndHashCode;
  * @since 0.10
  */
 @Immutable
-@SuppressWarnings("PMD.TooManyMethods")
 public interface MkAnswer {
 
     /**
@@ -132,7 +131,6 @@ public interface MkAnswer {
         }
 
         @Override
-        @SuppressWarnings("PMD.AvoidInstantiatingObjectsInLoops")
         public Map<String, List<String>> headers() {
             final ConcurrentMap<String, List<String>> map =
                 new ConcurrentHashMap<>(0);
@@ -155,7 +153,7 @@ public interface MkAnswer {
 
         @Override
         public String toString() {
-            final StringBuilder text = new StringBuilder(0)
+            final StringBuilder text = new StringBuilder()
                 .append(this.code).append('\n');
             for (final Map.Entry<String, String> header : this.hdrs) {
                 text.append(
