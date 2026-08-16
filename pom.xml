@@ -36,6 +36,7 @@
     </site>
   </distributionManagement>
   <properties>
+    <argLine/>
     <byte-buddy.version>1.17.8</byte-buddy.version>
     <lombok.version>1.18.42</lombok.version>
   </properties>
@@ -340,7 +341,7 @@
         <groupId>org.apache.maven.plugins</groupId>
         <artifactId>maven-surefire-plugin</artifactId>
         <configuration>
-          <argLine>-javaagent:${project.basedir}/target/byte-buddy-agent-${byte-buddy.version}.jar</argLine>
+          <argLine>@{argLine} -javaagent:${project.basedir}/target/byte-buddy-agent-${byte-buddy.version}.jar</argLine>
         </configuration>
       </plugin>
       <plugin>
