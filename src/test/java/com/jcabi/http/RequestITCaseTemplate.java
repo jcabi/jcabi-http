@@ -50,12 +50,12 @@ public abstract class RequestITCaseTemplate {
 
     /**
      * Ctor.
-     * @param tpe Type of Request
+     * @param kind Type of Request
      * @param base Base URI
      */
-    protected RequestITCaseTemplate(final Class<? extends Request> tpe,
+    protected RequestITCaseTemplate(final Class<? extends Request> kind,
         final URI base) {
-        this.type = tpe;
+        this.type = kind;
         this.uri = base;
     }
 

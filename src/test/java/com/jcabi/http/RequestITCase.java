@@ -43,9 +43,17 @@ final class RequestITCase extends RequestTestTemplate {
     void sendsHttpRequestAndProcessesHttpResponse(
         final Class<? extends Request> type
     ) throws Exception {
-        RequestTestTemplate.request(new URI("https://www.rt.com/rss/"), type)
-            .fetch().as(XmlResponse.class)
-            .assertXPath("/rss/channel");
+        try (
+            MkContainer container = new MkGrizzlyContainer().next(
+                new MkAnswer.Simple(
+                    "<rss version='2.0'><channel><title>hi</title></channel></rss>"
+                )
+            ).start()
+        ) {
+            RequestTestTemplate.request(container.home(), type)
+                .fetch().as(XmlResponse.class)
+                .assertXPath("/rss/channel");
+        }
     }
 
     /**
