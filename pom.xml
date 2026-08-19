@@ -415,7 +415,6 @@
             <configuration>
               <excludes combine.children="append">
                 <exclude>duplicatefinder:.*</exclude>
-                <exclude>findbugs:.*</exclude>
               </excludes>
             </configuration>
           </plugin>
