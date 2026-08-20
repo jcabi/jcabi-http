@@ -253,12 +253,6 @@ public final class JdkRequest implements Request {
         return this.base.through(wire);
     }
 
-    /**
-     * Open HTTP connection.
-     * @param url URL
-     * @return Connection
-     * @throws IOException if unable to connect.
-     */
     private static HttpURLConnection openConnection(
         final String url
     ) throws IOException {

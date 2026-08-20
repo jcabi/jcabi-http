@@ -146,13 +146,6 @@ final class FcCache {
         return rsp;
     }
 
-    /**
-     * Get response from file.
-     * @param req Request
-     * @param file File to read
-     * @return Response
-     * @throws IOException If fails
-     */
     private Response response(final Request req, final File file)
         throws IOException {
         final JsonObject json = Json.createReader(
@@ -178,13 +171,6 @@ final class FcCache {
         );
     }
 
-    /**
-     * Save response to file.
-     * @param response Response to save
-     * @param file File to read
-     * @return Response
-     * @throws IOException If fails
-     */
     private Response saved(final Response response, final File file)
         throws IOException {
         final JsonObjectBuilder json = Json.createObjectBuilder();
@@ -215,11 +201,6 @@ final class FcCache {
         return response;
     }
 
-    /**
-     * Make file from label.
-     * @param label Label to use
-     * @return File
-     */
     private File file(final String label) {
         return new File(
             this.dir,

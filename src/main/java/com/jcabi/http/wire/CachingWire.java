@@ -211,7 +211,7 @@ public final class CachingWire implements Wire {
         if (method.equals(Request.GET) && !CachingWire.bypass(headers)) {
             try {
                 rsp = this.cache.get(
-                    new CachingWire.Query(
+                    new Query(
                         this.origin, req, home, headers, content,
                         connect, read
                     )
@@ -237,19 +237,6 @@ public final class CachingWire implements Wire {
         CachingWire.CACHE.invalidateAll();
     }
 
-    /**
-     * Should the cache be bypassed for this request?
-     *
-     * <p>Per RFC 7234 §5.2.1, a request that carries
-     * {@code Cache-Control: no-cache} or {@code no-store} must not be
-     * served from a cached response, and a {@code no-store} request must
-     * not be stored either. {@code Pragma: no-cache} is the HTTP/1.0
-     * backwards-compatible equivalent of {@code Cache-Control: no-cache}
-     * (RFC 7234 §5.4).
-     *
-     * @param headers Request headers
-     * @return Whether the request asks the cache to be skipped
-     */
     private static boolean bypass(
         final Collection<Map.Entry<String, String>> headers
     ) {
@@ -271,82 +258,5 @@ public final class CachingWire implements Wire {
             }
         }
         return bypass;
-    }
-
-    /**
-     * Query.
-     * @since 1.8.3
-     */
-    @ToString
-    @EqualsAndHashCode(of = {"origin", "request", "uri", "headers"})
-    private static final class Query implements Callable<Response> {
-
-        /**
-         * Origin wire.
-         */
-        private final transient Wire origin;
-
-        /**
-         * Request.
-         */
-        private final transient Request request;
-
-        /**
-         * URI.
-         */
-        private final transient String uri;
-
-        /**
-         * Headers.
-         */
-        private final transient Collection<Map.Entry<String, String>> headers;
-
-        /**
-         * Body.
-         */
-        private final transient InputStream body;
-
-        /**
-         * Connect timeout.
-         */
-        private final transient int connect;
-
-        /**
-         * Read timeout.
-         */
-        private final transient int read;
-
-        /**
-         * Ctor.
-         * @param wire Original wire
-         * @param req Request
-         * @param home URI to fetch
-         * @param hdrs Headers
-         * @param input Input body
-         * @param cnct Connect timeout
-         * @param rdd Read timeout
-         */
-        Query(
-            final Wire wire, final Request req, final String home,
-            final Collection<Map.Entry<String, String>> hdrs,
-            final InputStream input, final int cnct,
-            final int rdd
-        ) {
-            this.origin = wire;
-            this.request = req;
-            this.uri = home;
-            this.headers = hdrs;
-            this.body = input;
-            this.connect = cnct;
-            this.read = rdd;
-        }
-
-        @Override
-        public Response call() throws IOException {
-            return this.origin.send(
-                this.request, this.uri, Request.GET, this.headers, this.body,
-                this.connect, this.read
-            );
-        }
     }
 }

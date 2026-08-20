@@ -304,12 +304,6 @@ final class RequestTimeoutLossTest extends RequestTestTemplate {
         );
     }
 
-    /**
-     * The connect and read timeouts the wire has been given.
-     * @param exec The callable that contains the actual request
-     * @return The pair of connect and read timeouts
-     * @throws Exception If something goes wrong inside
-     */
     @SuppressWarnings("unchecked")
     private static List<Integer> timeouts(final Callable<Response> exec)
         throws Exception {
@@ -348,12 +342,6 @@ final class RequestTimeoutLossTest extends RequestTestTemplate {
         }
     }
 
-    /**
-     * Make a request with default url.
-     * @param type Type of Request
-     * @return Request
-     * @throws Exception If fails
-     */
     private static Request request(final Class<? extends Request> type)
         throws Exception {
         return RequestTestTemplate.request(

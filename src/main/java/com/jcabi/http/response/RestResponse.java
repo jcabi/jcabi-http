@@ -16,7 +16,6 @@ import java.util.Collections;
 import java.util.List;
 import java.util.Map;
 import lombok.EqualsAndHashCode;
-import org.hamcrest.CustomMatcher;
 import org.hamcrest.Matcher;
 import org.hamcrest.MatcherAssert;
 import org.hamcrest.Matchers;
@@ -82,7 +81,7 @@ public final class RestResponse extends AbstractResponse {
                 status, this
             ),
             this,
-            new RestResponse.StatusMatch(
+            new StatusMatch(
                 String.format("HTTP response with status %d", status), status
             )
         );
@@ -255,11 +254,6 @@ public final class RestResponse extends AbstractResponse {
         return cookie;
     }
 
-    /**
-     * Convert HTTP cookie to a standard one.
-     * @param cookie HTTP cookie
-     * @return Regular one
-     */
     private static Cookie cookie(final HttpCookie cookie) {
         return new Cookie.Builder(cookie.getName())
             .value(cookie.getValue())
@@ -267,32 +261,5 @@ public final class RestResponse extends AbstractResponse {
             .version(cookie.getVersion())
             .path(cookie.getPath())
             .build();
-    }
-
-    /**
-     * Status matcher.
-     * @since 1.2
-     */
-    private static final class StatusMatch extends CustomMatcher<Response> {
-
-        /**
-         * HTTP status to check.
-         */
-        private final transient int status;
-
-        /**
-         * Ctor.
-         * @param msg Message to show
-         * @param sts HTTP status to check
-         */
-        StatusMatch(final String msg, final int sts) {
-            super(msg);
-            this.status = sts;
-        }
-
-        @Override
-        public boolean matches(final Object resp) {
-            return Response.class.cast(resp).status() == this.status;
-        }
     }
 }

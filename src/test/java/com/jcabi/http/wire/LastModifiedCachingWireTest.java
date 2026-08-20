@@ -343,13 +343,6 @@ final class LastModifiedCachingWireTest {
         }
     }
 
-    /**
-     * The bodies received by fetching the request a few times.
-     * @param req The request to fetch
-     * @param count How many times to fetch it
-     * @return The bodies received, in order
-     * @throws IOException If fails
-     */
     private static Collection<String> bodies(final Request req,
         final int count) throws IOException {
         final Collection<String> bodies = new ArrayList<>(count);
@@ -359,31 +352,16 @@ final class LastModifiedCachingWireTest {
         return bodies;
     }
 
-    /**
-     * The UTF-8 bytes of the given text.
-     * @param text The text to convert
-     * @return The bytes of it
-     */
     private static byte[] bytes(final String text) {
         return text.getBytes(StandardCharsets.UTF_8);
     }
 
-    /**
-     * A Matcher that tests for the presence of the If-Modified-Since header.
-     * @return The query matcher
-     */
     private static Matcher<MkQuery> queryContainsIfModifiedSinceHeader() {
         return LastModifiedCachingWireTest.queryContainingHeader(
             "If-Modified-Since"
         );
     }
 
-    /**
-     * Provides a MkQuery matcher that tests if the request contains the
-     * specified header.
-     * @param header The header to look for
-     * @return A matcher which tests for the supplied header
-     */
     private static Matcher<MkQuery> queryContainingHeader(final String header) {
         return new TypeSafeMatcher<MkQuery>() {
             @Override

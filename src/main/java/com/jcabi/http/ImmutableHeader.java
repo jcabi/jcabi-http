@@ -71,11 +71,6 @@ public final class ImmutableHeader implements Map.Entry<String, String> {
         return new String(chars);
     }
 
-    /**
-     * Convert char to upper case, if required.
-     * @param chr The char to convert
-     * @return Upper-case char
-     */
     private static char upper(final char chr) {
         final char upper;
         if (chr >= 'a' && chr <= 'z') {

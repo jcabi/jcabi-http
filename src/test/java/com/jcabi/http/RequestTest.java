@@ -747,10 +747,6 @@ final class RequestTest extends RequestTestTemplate {
         }
     }
 
-    /**
-     * Content type stream.
-     * @return Content type header
-     */
     private static String steamContentType() {
         return "Content-Type: application/octet-stream";
     }

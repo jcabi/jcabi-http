@@ -117,12 +117,6 @@ final class JdkRequestITCase {
         );
     }
 
-    /**
-     * The exception thrown by the given snippet.
-     * @param type The expected type of the exception
-     * @param exec The snippet to run
-     * @return The exception it throws
-     */
     private static Throwable thrown(final Class<? extends Throwable> type,
         final Executable exec) {
         return Assertions.assertThrows(type, exec);

@@ -173,21 +173,11 @@ final class BaseRequestTest {
         );
     }
 
-    /**
-     * The exception thrown by the given snippet.
-     * @param type The expected type of the exception
-     * @param exec The snippet to run
-     * @return The exception it throws
-     */
     private static Throwable thrown(final Class<? extends Throwable> type,
         final Executable exec) {
         return Assertions.assertThrows(type, exec);
     }
 
-    /**
-     * Boundary error message.
-     * @return Message error as String
-     */
     private static String boundaryErrorMesg() {
         return "Content-Type: multipart/form-data requires boundary";
     }

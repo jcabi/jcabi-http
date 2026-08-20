@@ -31,10 +31,6 @@ final class RequestSecondITCase {
             DockerImageName.parse("kennethreitz/httpbin")
         ).withExposedPorts(80);
 
-    /**
-     * URI of the container.
-     * @return URI
-     */
     private URI uri() {
         return URI.create(
             String.format(

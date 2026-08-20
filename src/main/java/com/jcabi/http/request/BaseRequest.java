@@ -5,7 +5,6 @@
 package com.jcabi.http.request;
 
 import com.fasterxml.jackson.databind.util.ClassUtil;
-import com.google.common.base.Joiner;
 import com.google.common.base.Stopwatch;
 import com.jcabi.aspects.Immutable;
 import com.jcabi.aspects.Loggable;
@@ -17,21 +16,14 @@ import com.jcabi.http.Response;
 import com.jcabi.http.Wire;
 import com.jcabi.immutable.Array;
 import com.jcabi.log.Logger;
-import jakarta.json.Json;
-import jakarta.json.JsonStructure;
-import jakarta.ws.rs.core.HttpHeaders;
 import jakarta.ws.rs.core.UriBuilder;
 import java.io.ByteArrayInputStream;
 import java.io.IOException;
 import java.io.InputStream;
-import java.io.StringWriter;
 import java.lang.reflect.Constructor;
 import java.lang.reflect.InvocationTargetException;
 import java.net.URI;
-import java.net.URLEncoder;
-import java.nio.charset.StandardCharsets;
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.Collection;
 import java.util.Map;
 import java.util.concurrent.TimeUnit;
@@ -175,7 +167,7 @@ public final class BaseRequest implements Request {
 
     @Override
     public RequestURI uri() {
-        return new BaseRequest.BaseUri(this, this.home);
+        return new BaseUri(this, this.home);
     }
 
     @Override
@@ -213,12 +205,12 @@ public final class BaseRequest implements Request {
 
     @Override
     public RequestBody body() {
-        return new BaseRequest.FormEncodedBody(this, this.content);
+        return new FormEncodedBody(this, this.content);
     }
 
     @Override
     public RequestBody multipartBody() {
-        return new BaseRequest.MultipartFormBody(this, this.content);
+        return new MultipartFormBody(this, this.content);
     }
 
     @Override
@@ -306,13 +298,38 @@ public final class BaseRequest implements Request {
             .toString();
     }
 
-    /**
-     * Create an instance of Wire.
-     * @param type Type of Wire
-     * @param args Ctor arguments
-     * @param <T> Type of Wire
-     * @return An instance of Wire
-     */
+    String home() {
+        return this.home;
+    }
+
+    Iterable<Map.Entry<String, String>> headers() {
+        return this.hdrs;
+    }
+
+    Request uri(final String address) {
+        return new BaseRequest(
+            this.wire,
+            address,
+            this.hdrs,
+            this.mtd,
+            this.content,
+            this.connect,
+            this.read
+        );
+    }
+
+    Request body(final byte[] text) {
+        return new BaseRequest(
+            this.wire,
+            this.home,
+            this.hdrs,
+            this.mtd,
+            text,
+            this.connect,
+            this.read
+        );
+    }
+
     private <T extends Wire> Wire mkWire(
         final Class<T> type,
         final Object... args
@@ -332,12 +349,6 @@ public final class BaseRequest implements Request {
         return decorated;
     }
 
-    /**
-     * Fetch response from server.
-     * @param stream The content to send
-     * @return The obtained response
-     * @throws IOException If an IO exception occurs.
-     */
     private Response fetchResponse(final InputStream stream)
         throws IOException {
         final Stopwatch watch = Stopwatch.createStarted();
@@ -365,11 +376,6 @@ public final class BaseRequest implements Request {
         return response;
     }
 
-    /**
-     * Create uri from String.
-     * @param uri String
-     * @return URI
-     */
     private static URI createUri(final String uri) {
         URI addr = URI.create(uri);
         if (addr.getPath() != null && addr.getPath().isEmpty()) {
@@ -378,13 +384,6 @@ public final class BaseRequest implements Request {
         return addr;
     }
 
-    /**
-     * Find a ctor which match arguments.
-     * @param type A type
-     * @param args Ctor arguments
-     * @param <T> Type of object
-     * @return A proper ctor for args
-     */
     private static <T extends Wire> Constructor<?> findCtor(
         final Class<T> type, final Object... args
     ) {
@@ -415,372 +414,11 @@ public final class BaseRequest implements Request {
         return ctor;
     }
 
-    /**
-     * Wrap primitive types.
-     * @param type A type which could be primitive
-     * @return Wrapped type if it was a primitive
-     */
     private static Class<?> wrappedIfNeeded(final Class<?> type) {
         Class<?> arg = type;
         if (arg.isPrimitive()) {
             arg = ClassUtil.wrapperType(arg);
         }
         return arg;
-    }
-
-    /**
-     * Base URI.
-     * @since 1.0
-     */
-    @Immutable
-    @EqualsAndHashCode(of = "address")
-    @Loggable(Loggable.DEBUG)
-    private static final class BaseUri implements RequestURI {
-
-        /**
-         * URI encapsulated.
-         */
-        private final transient String address;
-
-        /**
-         * Base request encapsulated.
-         */
-        private final transient BaseRequest owner;
-
-        /**
-         * Public ctor.
-         * @param req Request
-         * @param uri The URI to start with
-         */
-        BaseUri(final BaseRequest req, final String uri) {
-            this.owner = req;
-            this.address = uri;
-        }
-
-        @Override
-        public String toString() {
-            return this.address;
-        }
-
-        @Override
-        public Request back() {
-            return new BaseRequest(
-                this.owner.wire,
-                this.address,
-                this.owner.hdrs,
-                this.owner.mtd,
-                this.owner.content,
-                this.owner.connect,
-                this.owner.read
-            );
-        }
-
-        @Override
-        public URI get() {
-            return URI.create(this.owner.home);
-        }
-
-        @Override
-        public RequestURI set(final URI uri) {
-            return new BaseRequest.BaseUri(this.owner, uri.toString());
-        }
-
-        @Override
-        public RequestURI queryParam(final String name, final Object value) {
-            return new BaseRequest.BaseUri(
-                this.owner,
-                UriBuilder.fromUri(this.address)
-                    .queryParam(name, "{value}")
-                    .build(value).toString()
-            );
-        }
-
-        @Override
-        public RequestURI queryParams(final Map<String, String> map) {
-            final UriBuilder uri = UriBuilder.fromUri(this.address);
-            final Object[] values = new Object[map.size()];
-            int idx = 0;
-            for (final Map.Entry<String, String> pair : map.entrySet()) {
-                uri.queryParam(pair.getKey(), String.format("{x%d}", idx));
-                values[idx] = pair.getValue();
-                ++idx;
-            }
-            return new BaseRequest.BaseUri(
-                this.owner,
-                uri.build(values).toString()
-            );
-        }
-
-        @Override
-        public RequestURI path(final String segment) {
-            return new BaseRequest.BaseUri(
-                this.owner,
-                UriBuilder.fromUri(this.address)
-                    .path(segment)
-                    .build().toString()
-            );
-        }
-
-        @Override
-        public RequestURI userInfo(final String info) {
-            return new BaseRequest.BaseUri(
-                this.owner,
-                UriBuilder.fromUri(this.address)
-                    .userInfo(info)
-                    .build().toString()
-            );
-        }
-
-        @Override
-        public RequestURI port(final int num) {
-            return new BaseRequest.BaseUri(
-                this.owner,
-                UriBuilder.fromUri(this.address)
-                    .port(num).build().toString()
-            );
-        }
-    }
-
-    /**
-     * Body of a request with a form that has attachments.
-     * @since 1.17
-     */
-    private static final class MultipartFormBody implements RequestBody {
-
-        /**
-         * Content encapsulated.
-         */
-        @Immutable.Array
-        private final transient byte[] text;
-
-        /**
-         * Base request encapsulated.
-         */
-        private final transient BaseRequest owner;
-
-        /**
-         * Public ctor.
-         * @param req Request
-         * @param body Text to encapsulate
-         */
-        MultipartFormBody(final BaseRequest req, final byte[] body) {
-            this.owner = req;
-            this.text = body.clone();
-        }
-
-        @Override
-        public String toString() {
-            return new RequestBody.Printable(this.text).toString();
-        }
-
-        @Override
-        public Request back() {
-            return new BaseRequest(
-                this.owner.wire,
-                this.owner.home,
-                this.owner.hdrs,
-                this.owner.mtd,
-                this.text,
-                this.owner.connect,
-                this.owner.read
-            );
-        }
-
-        @Override
-        public String get() {
-            return new String(this.text, StandardCharsets.UTF_8);
-        }
-
-        @Override
-        public RequestBody set(final String txt) {
-            return this.set(txt.getBytes(StandardCharsets.UTF_8));
-        }
-
-        @Override
-        public RequestBody set(final JsonStructure json) {
-            final StringWriter writer = new StringWriter();
-            Json.createWriter(writer).write(json);
-            return this.set(writer.toString());
-        }
-
-        @Override
-        public RequestBody set(final byte[] txt) {
-            return new BaseRequest.MultipartFormBody(this.owner, txt);
-        }
-
-        @Override
-        public RequestBody formParam(final String name, final Object value) {
-            final String boundary = this.boundary();
-            final String dashes = "--";
-            final byte[] old;
-            if (Arrays.equals(
-                Arrays.copyOfRange(
-                    this.text,
-                    Math.max(this.text.length - 2, 0),
-                    this.text.length
-                ),
-                dashes.getBytes(StandardCharsets.UTF_8)
-            )) {
-                old = Arrays.copyOf(this.text, this.text.length - 2);
-            } else {
-                old = String.format("%s%s", dashes, boundary)
-                    .getBytes(StandardCharsets.UTF_8);
-            }
-            final byte[] bytes;
-            if (value instanceof byte[]) {
-                bytes = (byte[]) value;
-            } else {
-                bytes = value.toString().getBytes(StandardCharsets.UTF_8);
-            }
-            return new BaseRequest.MultipartFormBody(
-                this.owner,
-                new MultipartBodyBuilder()
-                    .appendLine(old).appendLine(
-                        Joiner.on("; ").join(
-                            "Content-Disposition: form-data",
-                            String.format("name=\"%s\"", name),
-                            "filename=\"binary\""
-                        ).getBytes(StandardCharsets.UTF_8)
-                    ).appendLine(
-                        "Content-Type: application/octet-stream"
-                            .getBytes(StandardCharsets.UTF_8)
-                    )
-                    .appendLine(new byte[0])
-                    .appendLine(bytes).append(
-                        String.format(
-                            "%s%s%s", dashes, boundary, dashes
-                        ).getBytes(StandardCharsets.UTF_8)
-                    )
-                    .asBytes()
-            );
-        }
-
-        @Override
-        public RequestBody formParams(final Map<String, String> params) {
-            RequestBody body = this;
-            for (final Map.Entry<String, String> param : params.entrySet()) {
-                body = body.formParam(param.getKey(), param.getValue());
-            }
-            return body;
-        }
-
-        /**
-         * Boundary value found.
-         * @return Boundary string
-         */
-        private String boundary() {
-            for (final Map.Entry<String, String> hdr : this.owner.hdrs) {
-                if (hdr.getKey().equals(HttpHeaders.CONTENT_TYPE)
-                    && hdr.getValue().matches(".*;\\s*[bB]oundary=.*")) {
-                    return hdr.getValue()
-                        .replaceFirst(".*;\\s*[bB]oundary=", "");
-                }
-            }
-            throw new IllegalStateException(
-                "Content-Type: multipart/form-data requires boundary"
-            );
-        }
-    }
-
-    /**
-     * Body of a request with a simple form.
-     * (enctype application/x-www-form-urlencoded)
-     * @since 1.17
-     */
-    @Immutable
-    @EqualsAndHashCode(of = "text")
-    @Loggable(Loggable.DEBUG)
-    private static final class FormEncodedBody implements RequestBody {
-
-        /**
-         * Content encapsulated.
-         */
-        @Immutable.Array
-        private final transient byte[] text;
-
-        /**
-         * Base request encapsulated.
-         */
-        private final transient BaseRequest owner;
-
-        /**
-         * Public ctor.
-         * @param req Request
-         * @param body Text to encapsulate
-         */
-        FormEncodedBody(final BaseRequest req, final byte[] body) {
-            this.owner = req;
-            this.text = body.clone();
-        }
-
-        @Override
-        public String toString() {
-            return new RequestBody.Printable(this.text).toString();
-        }
-
-        @Override
-        public Request back() {
-            return new BaseRequest(
-                this.owner.wire,
-                this.owner.home,
-                this.owner.hdrs,
-                this.owner.mtd,
-                this.text,
-                this.owner.connect,
-                this.owner.read
-            );
-        }
-
-        @Override
-        public String get() {
-            return new String(this.text, StandardCharsets.UTF_8);
-        }
-
-        @Override
-        public RequestBody set(final String txt) {
-            return this.set(txt.getBytes(StandardCharsets.UTF_8));
-        }
-
-        @Override
-        public RequestBody set(final JsonStructure json) {
-            final StringWriter writer = new StringWriter();
-            Json.createWriter(writer).write(json);
-            return this.set(writer.toString());
-        }
-
-        @Override
-        public RequestBody set(final byte[] txt) {
-            return new BaseRequest.FormEncodedBody(this.owner, txt);
-        }
-
-        @Override
-        public RequestBody formParam(final String name, final Object value) {
-            final StringBuilder builder = new StringBuilder(this.get());
-            if (!builder.toString().isEmpty()) {
-                builder.append('&');
-            }
-            return new BaseRequest.FormEncodedBody(
-                this.owner,
-                builder
-                    .append(name)
-                    .append('=').append(
-                        URLEncoder.encode(
-                            value.toString(),
-                            StandardCharsets.UTF_8
-                        )
-                    )
-                    .toString()
-                    .getBytes(StandardCharsets.UTF_8)
-            );
-        }
-
-        @Override
-        public RequestBody formParams(final Map<String, String> params) {
-            RequestBody body = this;
-            for (final Map.Entry<String, String> param : params.entrySet()) {
-                body = body.formParam(param.getKey(), param.getValue());
-            }
-            return body;
-        }
     }
 }

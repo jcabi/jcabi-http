@@ -94,11 +94,6 @@ public final class VerboseWire implements Wire {
         return response;
     }
 
-    /**
-     * Indent provided text.
-     * @param text Text to indent
-     * @return Indented text
-     */
     private static String indent(final String text) {
         return text.indent(2);
     }

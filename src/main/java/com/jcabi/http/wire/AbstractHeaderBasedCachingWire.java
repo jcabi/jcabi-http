@@ -76,18 +76,6 @@ public abstract class AbstractHeaderBasedCachingWire implements Wire {
         return rsp;
     }
 
-    /**
-     * Check cache and update if needed.
-     * @param req Request
-     * @param home URI to fetch
-     * @param method HTTP method
-     * @param headers Headers
-     * @param content HTTP body
-     * @param connect The connect timeout
-     * @param read The read timeout
-     * @return Response obtained
-     * @throws IOException if fails
-     */
     private Response consultCache(
         final Request req, final String home, final String method,
         final Collection<Map.Entry<String, String>> headers,
@@ -107,18 +95,6 @@ public abstract class AbstractHeaderBasedCachingWire implements Wire {
         return rsp;
     }
 
-    /**
-     * Check response and update cache or evict from cache if needed.
-     * @param req Request
-     * @param home URI to fetch
-     * @param method HTTP method
-     * @param headers Headers
-     * @param content HTTP body
-     * @param connect The connect timeout
-     * @param read The read timeout
-     * @return Response obtained
-     * @throws IOException if fails
-     */
     private Response validateCacheWithServer(
         final Request req, final String home, final String method,
         final Collection<Map.Entry<String, String>> headers,
@@ -137,11 +113,6 @@ public abstract class AbstractHeaderBasedCachingWire implements Wire {
         return result;
     }
 
-    /**
-     * Add, update or evict response in cache.
-     * @param req The request to be used as key
-     * @param rsp The response to add/update
-     */
     private void updateCache(final Request req, final Response rsp) {
         if (rsp.headers().containsKey(this.scvh)) {
             this.cache.put(req, rsp);
@@ -150,12 +121,6 @@ public abstract class AbstractHeaderBasedCachingWire implements Wire {
         }
     }
 
-    /**
-     * Add identify content version header.
-     * @param headers Original headers
-     * @param rsp Cached response
-     * @return Map with extra header
-     */
     private Collection<Map.Entry<String, String>> enrich(
         final Collection<Map.Entry<String, String>> headers, final Response rsp
     ) {
@@ -170,11 +135,6 @@ public abstract class AbstractHeaderBasedCachingWire implements Wire {
         return map.entrySet();
     }
 
-    /**
-     * Check if the request send through this Wire has the cmch header.
-     * @param headers The headers of the request
-     * @return True if the request contains the cmch header, false otherwise
-     */
     private boolean requestHasCmcHeader(
         final Collection<Map.Entry<String, String>> headers
     ) {

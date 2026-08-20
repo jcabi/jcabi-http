@@ -210,12 +210,6 @@ final class JacksonResponseTest {
         );
     }
 
-    /**
-     * The exception thrown by the given executable.
-     * @param type Expected type of the exception
-     * @param exec The executable that must throw
-     * @return The exception thrown
-     */
     private static Throwable thrown(final Class<? extends Throwable> type,
         final Executable exec) {
         return Assertions.assertThrows(type, exec);

@@ -155,10 +155,6 @@ final class FakeRequestTest {
         );
     }
 
-    /**
-     * Helper method that generates a FakeRequest.
-     * @return An instance of FakeRequest
-     */
     private FakeRequest generateMainRequest() {
         return new FakeRequest()
             .withStatus(HttpURLConnection.HTTP_OK)

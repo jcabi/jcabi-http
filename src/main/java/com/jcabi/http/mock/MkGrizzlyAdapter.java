@@ -10,7 +10,6 @@ import java.io.OutputStreamWriter;
 import java.io.PrintWriter;
 import java.net.HttpURLConnection;
 import java.nio.charset.StandardCharsets;
-import java.util.ArrayDeque;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Iterator;
@@ -19,8 +18,6 @@ import java.util.Map;
 import java.util.NoSuchElementException;
 import java.util.Queue;
 import java.util.concurrent.ConcurrentLinkedQueue;
-import java.util.concurrent.atomic.AtomicInteger;
-import lombok.EqualsAndHashCode;
 import org.apache.http.HttpHeaders;
 import org.glassfish.grizzly.http.server.HttpHandler;
 import org.glassfish.grizzly.http.server.Request;
@@ -68,7 +65,7 @@ final class MkGrizzlyAdapter extends HttpHandler {
         final int count
     ) {
         this.conditionals.add(
-            new MkGrizzlyAdapter.Conditional(answer, query, count)
+            new Conditional(answer, query, count)
         );
     }
 
@@ -77,7 +74,7 @@ final class MkGrizzlyAdapter extends HttpHandler {
      * @return Request received
      */
     MkQuery take() {
-        return this.queue.remove().que;
+        return this.queue.remove().query();
     }
 
     /**
@@ -116,15 +113,8 @@ final class MkGrizzlyAdapter extends HttpHandler {
         return this.queue.size();
     }
 
-    /**
-     * Get the all requests received satisfying the given matcher.
-     * ({@link java.util.NoSuchElementException} if no elements satisfy the
-     * condition).
-     * @param matcher The matcher specifying the condition
-     * @return Iterator over all requests
-     */
     private Iterator<MkQuery> takeMatching(final Matcher<MkAnswer> matcher) {
-        final Iterator<MkQuery> result = new MkGrizzlyAdapter.MkQueryIterator(
+        final Iterator<MkQuery> result = new MkQueryIterator(
             this.queue.iterator(), matcher
         );
         if (!result.hasNext()) {
@@ -133,11 +123,6 @@ final class MkGrizzlyAdapter extends HttpHandler {
         return result;
     }
 
-    /**
-     * Notify this response about failure.
-     * @param response The response to notify
-     * @param failure The failure just happened
-     */
     private static void fail(
         final Response response,
         final Throwable failure
@@ -184,7 +169,7 @@ final class MkGrizzlyAdapter extends HttpHandler {
         final Response response
     ) {
         final MkAnswer answer = cond.answer();
-        this.queue.add(new MkGrizzlyAdapter.QueryWithAnswer(query, answer));
+        this.queue.add(new QueryWithAnswer(query, answer));
         addHeadersToResponse(answer.headers(), response);
         this.addServerHeader(response);
         setResponseStatusAndBody(response, answer);
@@ -225,199 +210,5 @@ final class MkGrizzlyAdapter extends HttpHandler {
             throw new RuntimeException("Failed to write response body", ex);
         }
         response.setContentLength(body.length);
-    }
-
-    /**
-     * Answer with condition.
-     * @since 1.5
-     */
-    @EqualsAndHashCode(of = {"answr", "condition"})
-    private static final class Conditional {
-
-        /**
-         * The MkAnswer.
-         */
-        private final transient MkAnswer answr;
-
-        /**
-         * Condition for this answer.
-         */
-        private final transient Matcher<MkQuery> condition;
-
-        /**
-         * The number of times the answer is expected to appear.
-         */
-        private final transient AtomicInteger count;
-
-        /**
-         * Ctor.
-         * @param ans The answer
-         * @param matcher The matcher
-         * @param times Number of times the answer should appear
-         */
-        Conditional(
-            final MkAnswer ans, final Matcher<MkQuery> matcher,
-            final int times
-        ) {
-            this(ans, matcher, Conditional.positiveAtomic(times));
-        }
-
-        /**
-         * Ctor.
-         * @param ans The answer
-         * @param matcher The matcher
-         * @param times Number of times the answer should appear
-         */
-        private Conditional(
-            final MkAnswer ans, final Matcher<MkQuery> matcher,
-            final AtomicInteger times
-        ) {
-            this.answr = ans;
-            this.condition = matcher;
-            this.count = times;
-        }
-
-        /**
-         * Get the answer.
-         * @return The answer
-         */
-        MkAnswer answer() {
-            return this.answr;
-        }
-
-        /**
-         * Does the query match the answer?
-         * @param query The query to match
-         * @return True, if the query matches the condition
-         */
-        boolean matches(final MkQuery query) {
-            return this.condition.matches(query);
-        }
-
-        /**
-         * Decrement the count for this conditional.
-         * @return The updated count
-         */
-        int decrement() {
-            return this.count.decrementAndGet();
-        }
-
-        /**
-         * Check if positive and convert to atomic.
-         * @param num Number
-         * @return Positive atomic integer
-         */
-        private static AtomicInteger positiveAtomic(final int num) {
-            if (num < 1) {
-                throw new IllegalArgumentException(
-                    "Answer must be returned at least once."
-                );
-            }
-            return new AtomicInteger(num);
-        }
-    }
-
-    /**
-     * Query with answer.
-     * @since 1.5
-     */
-    @EqualsAndHashCode(of = {"answr", "que"})
-    private static final class QueryWithAnswer {
-
-        /**
-         * The answer.
-         */
-        private final transient MkAnswer answr;
-
-        /**
-         * The query.
-         */
-        private final transient MkQuery que;
-
-        /**
-         * Ctor.
-         * @param qry The query
-         * @param ans The answer
-         */
-        QueryWithAnswer(final MkQuery qry, final MkAnswer ans) {
-            this.answr = ans;
-            this.que = qry;
-        }
-
-        /**
-         * Get the query.
-         * @return The query
-         */
-        MkQuery query() {
-            return this.que;
-        }
-
-        /**
-         * Get the answer.
-         * @return Answer
-         */
-        MkAnswer answer() {
-            return this.answr;
-        }
-    }
-
-    /**
-     * Iterator over matching answers.
-     * @since 1.17.3
-     */
-    private static final class MkQueryIterator implements Iterator<MkQuery> {
-
-        /**
-         * Queue of results.
-         */
-        private final Queue<MkQuery> results;
-
-        /**
-         * Original iterator.
-         */
-        private final Iterator<QueryWithAnswer> iter;
-
-        /**
-         * Matcher.
-         */
-        private final Matcher<MkAnswer> matcher;
-
-        /**
-         * Ctor.
-         * @param itr Original iterator
-         * @param mtchr Matcher
-         */
-        MkQueryIterator(final Iterator<QueryWithAnswer> itr,
-            final Matcher<MkAnswer> mtchr) {
-            this.results = new ArrayDeque<>(0);
-            this.iter = itr;
-            this.matcher = mtchr;
-        }
-
-        @Override
-        public boolean hasNext() {
-            while (this.iter.hasNext()) {
-                final QueryWithAnswer candidate = this.iter.next();
-                if (this.matcher.matches(candidate.answer())) {
-                    this.results.add(candidate.query());
-                    this.iter.remove();
-                    break;
-                }
-            }
-            return !this.results.isEmpty();
-        }
-
-        @Override
-        public MkQuery next() {
-            if (this.results.isEmpty()) {
-                throw new NoSuchElementException();
-            }
-            return this.results.remove();
-        }
-
-        @Override
-        public void remove() {
-            this.results.remove();
-        }
     }
 }

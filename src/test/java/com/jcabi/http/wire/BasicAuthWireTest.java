@@ -111,25 +111,11 @@ final class BasicAuthWireTest {
         container.stop();
     }
 
-    /**
-     * The exception thrown by the given snippet.
-     * @param type The expected type of the exception
-     * @param exec The snippet to run
-     * @return The exception it throws
-     */
     private static Throwable thrown(final Class<? extends Throwable> type,
         final Executable exec) {
         return Assertions.assertThrows(type, exec);
     }
 
-    /**
-     * Creates the expected authorization header value for the
-     * given username.
-     * @param username The username to create the header for
-     * @param password The password to create the header for
-     * @return The header value in the form
-     *  {@code Basic <base64 of username:password>}
-     */
     private static String expectHeader(
         final String username,
         final String password

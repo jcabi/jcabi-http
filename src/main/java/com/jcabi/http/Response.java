@@ -77,6 +77,5 @@ public interface Response {
      * @param <T> Type to use
      * @return New response
      */
-    //@checkstyle MethodName (1 lines)
     <T extends Response> T as(Class<T> type);
 }

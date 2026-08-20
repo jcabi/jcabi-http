@@ -20,7 +20,6 @@ import java.util.concurrent.locks.Lock;
 import java.util.concurrent.locks.ReentrantLock;
 import javax.net.ssl.HttpsURLConnection;
 import javax.net.ssl.SSLContext;
-import javax.net.ssl.SSLSocketFactory;
 import javax.net.ssl.TrustManager;
 import javax.net.ssl.X509TrustManager;
 import lombok.EqualsAndHashCode;
@@ -93,7 +92,7 @@ public final class TrustedWire implements Wire {
         final int connect, final int read) throws IOException {
         TrustedWire.LOCK.lock();
         try {
-            final TrustedWire.Defaults defaults = new TrustedWire.Defaults(
+            final Defaults defaults = new Defaults(
                 HttpsURLConnection.getDefaultSSLSocketFactory(),
                 TrustedWire.defaultContext()
             );
@@ -115,10 +114,6 @@ public final class TrustedWire implements Wire {
         }
     }
 
-    /**
-     * Get the current default SSL context, wrapping any checked exception.
-     * @return Default SSL context
-     */
     private static SSLContext defaultContext() {
         try {
             return SSLContext.getDefault();
@@ -127,10 +122,6 @@ public final class TrustedWire implements Wire {
         }
     }
 
-    /**
-     * Create context.
-     * @return Context
-     */
     private static SSLContext context() {
         try {
             final SSLContext ctx = SSLContext.getInstance("SSL");
@@ -142,42 +133,6 @@ public final class TrustedWire implements Wire {
             return ctx;
         } catch (final KeyManagementException | NoSuchAlgorithmException ex) {
             throw new IllegalStateException(ex);
-        }
-    }
-
-    /**
-     * The SSL defaults of the JVM, as they were before we changed them.
-     * @since 1.10
-     */
-    @Immutable
-    private static final class Defaults {
-
-        /**
-         * Default socket factory.
-         */
-        private final SSLSocketFactory factory;
-
-        /**
-         * Default context.
-         */
-        private final SSLContext context;
-
-        /**
-         * Ctor.
-         * @param sockets Default socket factory
-         * @param ctx Default context
-         */
-        Defaults(final SSLSocketFactory sockets, final SSLContext ctx) {
-            this.factory = sockets;
-            this.context = ctx;
-        }
-
-        /**
-         * Put them back into the JVM.
-         */
-        void restore() {
-            HttpsURLConnection.setDefaultSSLSocketFactory(this.factory);
-            SSLContext.setDefault(this.context);
         }
     }
 }

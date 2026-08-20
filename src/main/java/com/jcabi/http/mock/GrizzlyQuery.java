@@ -104,22 +104,11 @@ final class GrizzlyQuery implements MkQuery {
         return Arrays.copyOf(this.content, this.content.length);
     }
 
-    /**
-     * Set UTF-8 encoding to the request.
-     * @param request Request
-     * @return The same request
-     * @throws IOException If fails
-     */
     private static Request encoded(final Request request) throws IOException {
         request.setCharacterEncoding(StandardCharsets.UTF_8.toString());
         return request;
     }
 
-    /**
-     * Fetch URI from the request.
-     * @param request Request
-     * @return URI
-     */
     private static String uri(final Request request) {
         final StringBuilder uri = new StringBuilder(request.getRequestURI());
         final String query = request.getQueryString();
@@ -129,11 +118,6 @@ final class GrizzlyQuery implements MkQuery {
         return uri.toString();
     }
 
-    /**
-     * Fetch headers from the request.
-     * @param request Request
-     * @return Headers
-     */
     private static ArrayMap<String, List<String>> headers(
         final Request request
     ) {
@@ -149,12 +133,6 @@ final class GrizzlyQuery implements MkQuery {
         return new ArrayMap<>(headers);
     }
 
-    /**
-     * Get headers by name.
-     * @param request Grizzly request
-     * @param name Name of header
-     * @return List of values
-     */
     private static List<String> headers(
         final Request request, final String name
     ) {
@@ -166,12 +144,6 @@ final class GrizzlyQuery implements MkQuery {
         return list;
     }
 
-    /**
-     * Read req.
-     * @param req Grizzly req
-     * @return Bytes of input
-     * @throws IOException If fails
-     */
     private static byte[] input(final Request req) throws IOException {
         final byte[] buffer = new byte[8192];
         final ByteArrayOutputStream output;

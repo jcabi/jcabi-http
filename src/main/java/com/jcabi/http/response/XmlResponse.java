@@ -127,10 +127,6 @@ public final class XmlResponse extends AbstractResponse {
         );
     }
 
-    /**
-     * Create XPath context.
-     * @return Context
-     */
     private NamespaceContext context() {
         XPathContext context = new XPathContext();
         for (final Map.Entry<String, String> entry
