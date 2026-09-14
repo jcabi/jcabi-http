@@ -22,17 +22,13 @@ import lombok.EqualsAndHashCode;
 
 /**
  * Default implementation of {@link com.jcabi.http.Response}.
+ *
  * @since 1.0
  */
 @Immutable
 @EqualsAndHashCode(of = { "req", "code", "phrase", "hdrs", "content" })
 @Loggable(Loggable.DEBUG)
 public final class DefaultResponse implements Response {
-
-    /**
-     * UTF-8 error marker.
-     */
-    private static final String ERR = "�";
 
     /**
      * Request.
@@ -62,6 +58,7 @@ public final class DefaultResponse implements Response {
 
     /**
      * Public ctor.
+     *
      * @param request The request
      * @param status HTTP status
      * @param reason HTTP reason phrase
@@ -107,7 +104,7 @@ public final class DefaultResponse implements Response {
     @Override
     public String body() {
         final String body = new String(this.content, StandardCharsets.UTF_8);
-        if (body.contains(DefaultResponse.ERR)) {
+        if (body.contains("�")) {
             throw new IllegalStateException(
                 Logger.format(
                     "broken Unicode text at line #%d in '%[text]s' (%d bytes)",

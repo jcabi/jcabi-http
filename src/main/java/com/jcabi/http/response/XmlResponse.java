@@ -21,7 +21,7 @@ import lombok.EqualsAndHashCode;
  * XML response.
  *
  * <p>This response decorator is able to parse HTTP response body as
- * an XML document and manipulate with it afterwards, for example:
+ * an XML document and manipulate with it afterwards, for example:</p>
  *
  * <pre> String name = new JdkRequest("http://my.example.com")
  *   .header(HttpHeaders.ACCEPT, MediaType.TEXT_XML)
@@ -36,7 +36,7 @@ import lombok.EqualsAndHashCode;
  * responses it is convenient to use this decorator's
  * method {@link #rel(String)}
  * in order to follow the link provided in the {@code link} XML element,
- * for example:
+ * for example:</p>
  *
  * <pre> String data = new JdkRequest("http://my.example.com")
  *   .header(HttpHeaders.ACCEPT, MediaType.TEXT_XML)
@@ -46,7 +46,7 @@ import lombok.EqualsAndHashCode;
  *   .fetch()
  *   .body();</pre>
  *
- * <p>The class is immutable and thread-safe.
+ * <p>The class is immutable and thread-safe.</p>
  *
  * @since 0.8
  */
@@ -61,6 +61,7 @@ public final class XmlResponse extends AbstractResponse {
 
     /**
      * Public ctor.
+     *
      * @param resp Response
      */
     public XmlResponse(final Response resp) {
@@ -69,6 +70,7 @@ public final class XmlResponse extends AbstractResponse {
 
     /**
      * Public ctor.
+     *
      * @param resp Response
      * @param map Map of namespaces
      */
@@ -80,6 +82,7 @@ public final class XmlResponse extends AbstractResponse {
 
     /**
      * Get XML body.
+     *
      * @return XML body
      */
     public XML xml() {
@@ -88,6 +91,7 @@ public final class XmlResponse extends AbstractResponse {
 
     /**
      * Register this new namespace.
+     *
      * @param prefix Prefix to use
      * @param uri Namespace URI
      * @return This object
@@ -99,6 +103,7 @@ public final class XmlResponse extends AbstractResponse {
     /**
      * Verifies HTTP response body XHTML/XML content against XPath query,
      * and throws {@link AssertionError} in case of mismatch.
+     *
      * @param xpath Query to use
      * @return This object
      */
@@ -117,6 +122,7 @@ public final class XmlResponse extends AbstractResponse {
 
     /**
      * Follow XML link.
+     *
      * @param query XPath query to fetch new URI
      * @return New request
      */

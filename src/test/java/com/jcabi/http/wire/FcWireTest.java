@@ -18,12 +18,14 @@ import org.junit.jupiter.api.Test;
 
 /**
  * Test case for {@link FcWire}.
+ *
  * @since 1.0
  */
 final class FcWireTest {
 
     /**
      * FileCachingWire can cache GET requests.
+     *
      * @throws Exception If something goes wrong inside
      */
     @Test
@@ -46,6 +48,7 @@ final class FcWireTest {
 
     /**
      * CachingWire can ignore PUT requests.
+     *
      * @throws Exception If something goes wrong inside
      */
     @Test
@@ -69,6 +72,7 @@ final class FcWireTest {
 
     /**
      * CachingWire can flush on regular expression match.
+     *
      * @throws Exception If something goes wrong inside
      */
     @Test

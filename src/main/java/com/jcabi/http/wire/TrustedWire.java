@@ -28,14 +28,14 @@ import lombok.ToString;
 /**
  * Wire that ignores SSL PKIX verifications.
  *
- * <p>This wire ignores :
+ * <p>This wire ignores :</p>
  *
  * <pre> String html = new JdkRequest("http://goggle.com")
  *   .through(TrustedWire.class)
  *   .fetch()
  *   .body();</pre>
  *
- * <p>The class is immutable and thread-safe.
+ * <p>The class is immutable and thread-safe.</p>
  *
  * @since 1.10
  */
@@ -78,6 +78,7 @@ public final class TrustedWire implements Wire {
 
     /**
      * Public ctor.
+     *
      * @param wire Original wire
      */
     public TrustedWire(final Wire wire) {

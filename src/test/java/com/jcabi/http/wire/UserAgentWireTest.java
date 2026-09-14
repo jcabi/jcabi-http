@@ -15,6 +15,7 @@ import org.junit.jupiter.api.Test;
 
 /**
  * Test case for {@link UserAgentWire}.
+ *
  * @since 1.2
  */
 final class UserAgentWireTest {

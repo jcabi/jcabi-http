@@ -25,7 +25,7 @@ import lombok.ToString;
  * Wire that compresses cookies before sending.
  *
  * <p>This wire compresses all provided {@code Cookie} headers into one
- * and removes empty cookies, for example:
+ * and removes empty cookies, for example:</p>
  *
  * <pre> String html = new JdkRequest("http://goggle.com")
  *   .through(CookieOptimizingWire.class)
@@ -36,12 +36,12 @@ import lombok.ToString;
  *   .body();</pre>
  *
  * <p>An actual HTTP request will be sent with just one {@code Cookie}
- * header with a value {@code alpha=test; gamma=foo}.
+ * header with a value {@code alpha=test; gamma=foo}.</p>
  *
  * <p>It is highly recommended to use this wire decorator when you're
- * working with cookies.
+ * working with cookies.</p>
  *
- * <p>The class is immutable and thread-safe.
+ * <p>The class is immutable and thread-safe.</p>
  *
  * @see <a href="http://tools.ietf.org/html/rfc2965">RFC 2965 "HTTP State Management Mechanism"</a>
  * @since 0.10
@@ -58,6 +58,7 @@ public final class CookieOptimizingWire implements Wire {
 
     /**
      * Public ctor.
+     *
      * @param wire Original wire
      */
     public CookieOptimizingWire(final Wire wire) {

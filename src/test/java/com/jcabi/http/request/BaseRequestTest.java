@@ -23,6 +23,7 @@ import org.mockito.Mockito;
 
 /**
  * Test case for {@link BaseRequest}.
+ *
  * @since 1.0
  */
 final class BaseRequestTest {

@@ -16,6 +16,7 @@ import org.testcontainers.utility.DockerImageName;
 
 /**
  * Integration test for {@link Request}.
+ *
  * @since 1.17.8
  */
 @TestInstance(TestInstance.Lifecycle.PER_CLASS)
@@ -43,6 +44,7 @@ final class RequestSecondITCase {
 
     /**
      * Test for {@link JdkRequest}.
+     *
      * @since 1.17.8
      */
     @Nested
@@ -56,6 +58,7 @@ final class RequestSecondITCase {
 
     /**
      * Test for {@link ApacheRequest}.
+     *
      * @since 1.17.8
      */
     @Nested

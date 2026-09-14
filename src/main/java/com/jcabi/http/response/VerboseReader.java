@@ -12,6 +12,7 @@ import jakarta.json.stream.JsonParsingException;
 
 /**
  * Verbose reader.
+ *
  * @since 1.3.1
  */
 final class VerboseReader implements JsonReader {
@@ -28,6 +29,7 @@ final class VerboseReader implements JsonReader {
 
     /**
      * Ctor.
+     *
      * @param reader Original reader
      * @param body JSON body
      */

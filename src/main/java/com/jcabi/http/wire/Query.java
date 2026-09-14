@@ -17,6 +17,7 @@ import lombok.ToString;
 
 /**
  * Query.
+ *
  * @since 1.8.3
  */
 @ToString
@@ -60,6 +61,7 @@ final class Query implements Callable<Response> {
 
     /**
      * Ctor.
+     *
      * @param wire Original wire
      * @param req Request
      * @param home URI to fetch

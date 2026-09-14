@@ -27,7 +27,7 @@ import lombok.ToString;
  * Wire that caches GET requests.
  *
  * <p>This decorator can be used when you want to avoid duplicate
- * GET requests to load-sensitive resources, for example:
+ * GET requests to load-sensitive resources, for example:</p>
  *
  * <pre> String html = new JdkRequest("http://goggle.com")
  *   .through(CachingWire.class)
@@ -36,14 +36,14 @@ import lombok.ToString;
  *   .body();</pre>
  *
  * <p>Since 1.5, you can also configure it to flush the entire cache
- * on certain request URI's, for example:
+ * on certain request URI's, for example:</p>
  *
  * <pre>new JdkRequest(uri)
  *   .through(CachingWire.class, "GET /save/.*")
  *   .uri().path("/save/123").back()
  *   .fetch();</pre>
  *
- * <p>Since 1.17.3, you can pass a {@link LoadingCache} alongside the wire.
+ * <p>Since 1.17.3, you can pass a {@link LoadingCache} alongside the wire.</p>
  *
  * <pre>{@code
  * final LoadingCache<Callable<Response>, Response> cache = ...;
@@ -55,9 +55,9 @@ import lombok.ToString;
  *
  * <p>The regular expression provided will be used against a string
  * constructed as an HTTP method, space, path of the URI together with
- * query part.
+ * query part.</p>
  *
- * <p>The class is immutable and thread-safe.
+ * <p>The class is immutable and thread-safe.</p>
  *
  * @since 1.0
  * @todo #179:30m This implementation depends on Guava. Investigate for a
@@ -106,21 +106,10 @@ public final class CachingWire implements Wire {
     private static final String NEVER = "$never";
 
     /**
-     * Pragma HTTP header name (RFC 7234 §5.4).
-     */
-    private static final String PRAGMA = "Pragma";
-
-    /**
      * No-cache directive value used in {@code Cache-Control}
      * and {@code Pragma} request headers.
      */
     private static final String NO_CACHE = "no-cache";
-
-    /**
-     * No-store directive value used in {@code Cache-Control}
-     * request headers.
-     */
-    private static final String NO_STORE = "no-store";
 
     /**
      * Original wire.
@@ -139,6 +128,7 @@ public final class CachingWire implements Wire {
 
     /**
      * Public ctor.
+     *
      * @param wire Original wire
      */
     public CachingWire(final Wire wire) {
@@ -147,6 +137,7 @@ public final class CachingWire implements Wire {
 
     /**
      * Public ctor.
+     *
      * @param wire Original wire
      * @param flsh Flushing regular expression
      * @since 1.5
@@ -161,6 +152,7 @@ public final class CachingWire implements Wire {
     // @checkstyle ConstructorsOrderCheck (30 lines)
     /**
      * Public ctor.
+     *
      * @param wire Original wire
      * @param storage Cache
      * @since 1.17.4
@@ -174,6 +166,7 @@ public final class CachingWire implements Wire {
 
     /**
      * Public ctor.
+     *
      * @param wire Original wire
      * @param flsh Flushing regular expression
      * @param storage Cache
@@ -230,6 +223,7 @@ public final class CachingWire implements Wire {
 
     /**
      * Invalidate the entire cache.
+     *
      * @since 1.15
      */
     @SuppressWarnings("PMD.ProhibitPublicStaticMethods")
@@ -247,11 +241,11 @@ public final class CachingWire implements Wire {
                 .toLowerCase(Locale.ENGLISH);
             if (HttpHeaders.CACHE_CONTROL.equals(name)
                 && (value.contains(CachingWire.NO_CACHE)
-                || value.contains(CachingWire.NO_STORE))) {
+                || value.contains("no-store"))) {
                 bypass = true;
                 break;
             }
-            if (CachingWire.PRAGMA.equals(name)
+            if ("Pragma".equals(name)
                 && value.contains(CachingWire.NO_CACHE)) {
                 bypass = true;
                 break;

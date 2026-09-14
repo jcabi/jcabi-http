@@ -12,6 +12,7 @@ import org.hamcrest.Matcher;
 
 /**
  * Iterator over matching answers.
+ *
  * @since 1.17.3
  */
 final class MkQueryIterator implements Iterator<MkQuery> {
@@ -33,6 +34,7 @@ final class MkQueryIterator implements Iterator<MkQuery> {
 
     /**
      * Ctor.
+     *
      * @param itr Original iterator
      * @param mtchr Matcher
      */

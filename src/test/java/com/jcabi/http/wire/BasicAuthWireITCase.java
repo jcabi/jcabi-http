@@ -13,6 +13,7 @@ import org.junit.jupiter.api.Test;
 
 /**
  * Integration case for {@link BasicAuthWire}.
+ *
  * @since 1.17.4
  */
 final class BasicAuthWireITCase {

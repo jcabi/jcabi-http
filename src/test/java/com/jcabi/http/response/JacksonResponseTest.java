@@ -15,12 +15,14 @@ import org.junit.jupiter.api.function.Executable;
 
 /**
  * Test case for {@link JacksonResponse}.
+ *
  * @since 1.17
  */
 final class JacksonResponseTest {
 
     /**
      * JacksonResponse can read and return a JSON document.
+     *
      * @throws IOException If anything goes wrong when parsing.
      */
     @Test
@@ -44,6 +46,7 @@ final class JacksonResponseTest {
 
     /**
      * JacksonResponse can read control characters.
+     *
      * @throws IOException If anything goes wrong when parsing.
      */
     @Test
@@ -61,6 +64,7 @@ final class JacksonResponseTest {
     /**
      * If there's a problem parsing the body as JSON the error handling is done
      * by Jackson.
+     *
      * @throws IOException If anything goes wrong.
      */
     @Test
@@ -85,6 +89,7 @@ final class JacksonResponseTest {
     /**
      * If there's a problem parsing the body as JSON the error handling is done
      * by Jackson.
+     *
      * @throws IOException If anything goes wrong.
      */
     @Test
@@ -106,6 +111,7 @@ final class JacksonResponseTest {
 
     /**
      * If the parsed JSON is a valid one but an array an exception is raised.
+     *
      * @throws IOException If anything goes wrong.
      */
     @Test
@@ -129,6 +135,7 @@ final class JacksonResponseTest {
 
     /**
      * Can retrieve the JSON as an array node if it's a valid one.
+     *
      * @throws IOException If anything goes wrong.
      */
     @Test
@@ -150,6 +157,7 @@ final class JacksonResponseTest {
     /**
      * If there's a problem parsing the body as JSON the error handling is done
      * by Jackson.
+     *
      * @throws IOException If anything goes wrong.
      */
     @Test
@@ -173,6 +181,7 @@ final class JacksonResponseTest {
 
     /**
      * If the parsed JSON is a valid one but an object an exception is raised.
+     *
      * @throws IOException If anything goes wrong.
      */
     @Test
@@ -196,6 +205,7 @@ final class JacksonResponseTest {
 
     /**
      * Can retrieve the JSON as an object node if it's a valid one.
+     *
      * @throws IOException If anything goes wrong.
      */
     @Test

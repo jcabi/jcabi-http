@@ -11,6 +11,7 @@ import org.junit.jupiter.api.Test;
 
 /**
  * Test case {@link Boundary}.
+ *
  * @since 1.17.3
  */
 final class BoundaryTest {

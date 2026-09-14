@@ -27,12 +27,14 @@ import org.junit.jupiter.api.Test;
 
 /**
  * Test case for {@link TrustedWire}.
+ *
  * @since 1.10
  */
 final class TrustedWireTest {
 
     /**
      * TrustedWire can ignore PKIX errors.
+     *
      * @throws Exception If something goes wrong inside
      */
     @Test
@@ -55,6 +57,7 @@ final class TrustedWireTest {
      * TrustedWire must replace SSLContext.getDefault() during send so
      * that Apache HTTP client (HttpClients.createSystem()) also trusts
      * all certificates when ApacheRequest is the underlying wire.
+     *
      * @throws Exception If something goes wrong inside
      */
     @Test
@@ -83,6 +86,7 @@ final class TrustedWireTest {
 
     /**
      * TrustedWire must restore SSLContext.getDefault() after send completes.
+     *
      * @throws Exception If something goes wrong inside
      */
     @Test
@@ -109,6 +113,7 @@ final class TrustedWireTest {
 
     /**
      * Wire that captures SSLContext.getDefault() at the moment send() runs.
+     *
      * @since 1.10
      */
     private static final class SslContextCapture implements Wire {
@@ -134,6 +139,7 @@ final class TrustedWireTest {
 
         /**
          * The SSLContext that was active when send() ran.
+         *
          * @return Captured context
          */
         SSLContext captured() {

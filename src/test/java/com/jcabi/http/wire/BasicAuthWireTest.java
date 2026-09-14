@@ -28,6 +28,7 @@ import org.junit.jupiter.params.provider.CsvSource;
 
 /**
  * Test case for {@link BasicAuthWire}.
+ *
  * @since 1.17.1
  */
 final class BasicAuthWireTest {
@@ -39,6 +40,7 @@ final class BasicAuthWireTest {
 
     /**
      * Tests if the wire generates the authorization header correctly.
+     *
      * @param username The username to user for authentication
      * @param password The password to user for authentication
      * @throws Exception If something goes wrong
@@ -76,6 +78,7 @@ final class BasicAuthWireTest {
 
     /**
      * Tests if the wire strips user info from URI, after the header was added.
+     *
      * @throws Exception If something goes wrong
      */
     @Test

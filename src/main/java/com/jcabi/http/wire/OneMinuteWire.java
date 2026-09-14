@@ -22,7 +22,7 @@ import lombok.ToString;
  * than a minute.
  *
  * <p>It's recommended to use this decorator in production, in order
- * to avoid stuck requests:
+ * to avoid stuck requests:</p>
  *
  * <pre> String html = new JdkRequest("http://goggle.com")
  *   .through(OneMinuteWire.class)
@@ -30,7 +30,7 @@ import lombok.ToString;
  *   .fetch()
  *   .body();</pre>
  *
- * <p>The class is immutable and thread-safe.
+ * <p>The class is immutable and thread-safe.</p>
  *
  * @since 0.10
  */
@@ -46,6 +46,7 @@ public final class OneMinuteWire implements Wire {
 
     /**
      * Public ctor.
+     *
      * @param wire Original wire
      */
     public OneMinuteWire(final Wire wire) {

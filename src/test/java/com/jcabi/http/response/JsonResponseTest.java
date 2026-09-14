@@ -15,12 +15,14 @@ import org.junit.jupiter.api.function.Executable;
 
 /**
  * Test case for {@link JsonResponse}.
+ *
  * @since 1.1
  */
 final class JsonResponseTest {
 
     /**
      * JsonResponse can read and return a JSON document.
+     *
      * @throws Exception If something goes wrong inside
      */
     @Test
@@ -46,6 +48,7 @@ final class JsonResponseTest {
 
     /**
      * JsonResponse can read control characters.
+     *
      * @throws Exception If something goes wrong inside
      */
     @Test
@@ -63,6 +66,7 @@ final class JsonResponseTest {
 
     /**
      * JsonResponse logs the JSON body for JSON object parse errors.
+     *
      * @throws Exception If something goes wrong inside
      */
     @Test
@@ -81,6 +85,7 @@ final class JsonResponseTest {
 
     /**
      * JsonResponse logs the JSON body for JSON array parse errors.
+     *
      * @throws Exception If something goes wrong inside
      */
     @Test
@@ -99,6 +104,7 @@ final class JsonResponseTest {
 
     /**
      * JsonResponse logs the JSON body for JSON read() parse errors.
+     *
      * @throws Exception If something goes wrong inside
      */
     @Test

@@ -10,6 +10,7 @@ import org.hamcrest.Matcher;
 
 /**
  * Answer with condition.
+ *
  * @since 1.5
  */
 @EqualsAndHashCode(of = {"answr", "condition"})
@@ -32,6 +33,7 @@ final class Conditional {
 
     /**
      * Ctor.
+     *
      * @param ans The answer
      * @param matcher The matcher
      * @param times Number of times the answer should appear
@@ -45,6 +47,7 @@ final class Conditional {
 
     /**
      * Ctor.
+     *
      * @param ans The answer
      * @param matcher The matcher
      * @param times Number of times the answer should appear
@@ -60,6 +63,7 @@ final class Conditional {
 
     /**
      * Get the answer.
+     *
      * @return The answer
      */
     MkAnswer answer() {
@@ -68,6 +72,7 @@ final class Conditional {
 
     /**
      * Does the query match the answer?
+     *
      * @param query The query to match
      * @return True, if the query matches the condition
      */
@@ -77,6 +82,7 @@ final class Conditional {
 
     /**
      * Decrement the count for this conditional.
+     *
      * @return The updated count
      */
     int decrement() {

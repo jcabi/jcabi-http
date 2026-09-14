@@ -30,6 +30,7 @@ import org.junit.jupiter.params.provider.ValueSource;
 
 /**
  * Tests for any implementation of {@link Request}.
+ *
  * @since 1.17.8
  */
 @SuppressWarnings({
@@ -50,6 +51,7 @@ public abstract class RequestITCaseTemplate {
 
     /**
      * Ctor.
+     *
      * @param kind Type of Request
      * @param base Base URI
      */
@@ -61,6 +63,7 @@ public abstract class RequestITCaseTemplate {
 
     /**
      * Make request for a specific path.
+     *
      * @param path Path
      * @return Request
      */

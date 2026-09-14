@@ -24,6 +24,7 @@ import org.glassfish.grizzly.http.server.Request;
 
 /**
  * Mock HTTP query/request.
+ *
  * @since 0.10
  */
 @Immutable
@@ -52,6 +53,7 @@ final class GrizzlyQuery implements MkQuery {
 
     /**
      * Ctor.
+     *
      * @param request Grizzly request
      * @throws IOException If fails
      */
@@ -66,6 +68,7 @@ final class GrizzlyQuery implements MkQuery {
 
     /**
      * Ctor.
+     *
      * @param uri Request URI
      * @param method Request method
      * @param headers Request headers

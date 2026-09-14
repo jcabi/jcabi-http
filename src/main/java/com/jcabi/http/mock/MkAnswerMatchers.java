@@ -8,6 +8,7 @@ import org.hamcrest.Matcher;
 
 /**
  * Convenient set of matchers for {@link MkAnswer}.
+ *
  * @since 1.5
  */
 @SuppressWarnings({"PMD.ProhibitPublicStaticMethods", "PMD.LinguisticNaming"})
@@ -22,6 +23,7 @@ public final class MkAnswerMatchers {
 
     /**
      * Matches the value of the MkAnswer's body against the given matcher.
+     *
      * @param matcher The matcher to use
      * @return Matcher for checking the body of MkAnswer
      */
@@ -32,6 +34,7 @@ public final class MkAnswerMatchers {
     /**
      * Matches the value of the MkAnswer's body bytes against the given
      * matcher.
+     *
      * @param matcher The matcher to use
      * @return Matcher for checking the body of MkAnswer
      */
@@ -44,6 +47,7 @@ public final class MkAnswerMatchers {
      * Matches the content of the MkAnswer's header against the given
      * matcher. Note that for a valid match to occur, the header entry must
      * exist <i>and</i> its value(s) must match the given matcher.
+     *
      * @param header The header to check
      * @param matcher The matcher to use
      * @return Matcher for checking the body of MkAnswer

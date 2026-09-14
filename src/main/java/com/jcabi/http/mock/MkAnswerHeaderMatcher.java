@@ -12,6 +12,7 @@ import org.hamcrest.TypeSafeMatcher;
 
 /**
  * Matcher for checking {@link MkAnswer#headers()} contents.
+ *
  * @since 1.5
  */
 @ToString
@@ -30,6 +31,7 @@ final class MkAnswerHeaderMatcher extends TypeSafeMatcher<MkAnswer> {
 
     /**
      * Ctor.
+     *
      * @param hdr The header to match
      * @param match The matcher to use for the header
      */

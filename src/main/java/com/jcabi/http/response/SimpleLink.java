@@ -22,6 +22,7 @@ import lombok.EqualsAndHashCode;
 
 /**
  * Implementation of a link.
+ *
  * @since 1.0
  */
 @Immutable
@@ -52,6 +53,7 @@ final class SimpleLink implements WebLinkingResponse.Link {
 
     /**
      * Public ctor (parser).
+     *
      * @param text Text to parse
      * @throws IOException If fails
      */
@@ -61,6 +63,7 @@ final class SimpleLink implements WebLinkingResponse.Link {
 
     /**
      * Secondary ctor.
+     *
      * @param matcher Matcher object
      */
     private SimpleLink(final Matcher matcher) {
@@ -72,6 +75,7 @@ final class SimpleLink implements WebLinkingResponse.Link {
 
     /**
      * Primary ctor.
+     *
      * @param address Address
      * @param parameters Parameters
      */

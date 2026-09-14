@@ -15,6 +15,7 @@ import org.junit.jupiter.params.provider.ValueSource;
 
 /**
  * Test case for {@link WebLinkingResponse}.
+ *
  * @since 0.9
  */
 final class WebLinkingResponseTest {
@@ -26,6 +27,7 @@ final class WebLinkingResponseTest {
 
     /**
      * WebLinkingResponse can recognize Links in headers.
+     *
      * @param header The value of the Link header
      * @throws Exception If something goes wrong inside
      */
@@ -63,6 +65,7 @@ final class WebLinkingResponseTest {
 
     /**
      * WebLinkingResponse can follow a link.
+     *
      * @throws Exception If something goes wrong inside
      */
     @Test

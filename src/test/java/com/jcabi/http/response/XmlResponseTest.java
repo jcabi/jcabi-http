@@ -14,12 +14,14 @@ import org.junit.jupiter.api.Test;
 
 /**
  * Test case for {@link XmlResponse}.
+ *
  * @since 1.1
  */
 final class XmlResponseTest {
 
     /**
      * XmlResponse can find nodes with XPath.
+     *
      * @throws Exception If something goes wrong inside
      */
     @Test
@@ -37,6 +39,7 @@ final class XmlResponseTest {
 
     /**
      * XmlResponse can assert with XPath.
+     *
      * @throws Exception If something goes wrong inside
      */
     @Test
@@ -56,6 +59,7 @@ final class XmlResponseTest {
 
     /**
      * XmlResponse can assert with XPath and namespaces.
+     *
      * @throws Exception If something goes wrong inside
      */
     @Test
@@ -76,6 +80,7 @@ final class XmlResponseTest {
 
     /**
      * XmlResponse can assert with XPath with custom namespaces.
+     *
      * @throws Exception If something goes wrong inside
      */
     @Test
@@ -101,6 +106,7 @@ final class XmlResponseTest {
 
     /**
      * XmlResponse can find and return nodes with XPath.
+     *
      * @throws Exception If something goes wrong inside
      */
     @Test

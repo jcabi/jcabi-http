@@ -15,12 +15,14 @@ import org.mockito.Mockito;
 
 /**
  * Test case for {@link GrizzlyQuery}.
+ *
  * @since 1.13
  */
 final class GrizzlyQueryTest {
 
     /**
      * GrizzlyQuery can return a body as a byte array.
+     *
      * @throws Exception if something goes wrong.
      */
     @Test

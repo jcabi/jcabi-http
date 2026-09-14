@@ -13,7 +13,7 @@ import lombok.ToString;
  * Wire that caches requests with ETags.
  *
  * <p>This decorator can be used when you want to avoid duplicate
- * requests to load-sensitive resources and server supports ETags, for example:
+ * requests to load-sensitive resources and server supports ETags, for example:</p>
  *
  * <pre>{@code
  *    String html = new JdkRequest("http://goggle.com")
@@ -23,12 +23,12 @@ import lombok.ToString;
  * }</pre>
  *
  * <p>Client will automatically detect if server uses ETags and start adding
- * corresponding If-None-Match to outgoing requests
+ * corresponding If-None-Match to outgoing requests</p>
  *
  * <p>Client will take response from the cache if it is present
- * or will query resource for that.
+ * or will query resource for that.</p>
  *
- * <p>The class is immutable and thread-safe.
+ * <p>The class is immutable and thread-safe.</p>
  *
  * @since 2.0
  */
@@ -38,6 +38,7 @@ public final class ETagCachingWire extends AbstractHeaderBasedCachingWire {
 
     /**
      * Public ctor.
+     *
      * @param wire Original wire
      */
     public ETagCachingWire(final Wire wire) {

@@ -20,12 +20,14 @@ import org.junit.jupiter.api.Test;
 
 /**
  * Test case for {@link ETagCachingWire}.
+ *
  * @since 2.0
  */
 final class ETagCachingWireTest {
 
     /**
      * ETagCachingWire can take content from cache.
+     *
      * @throws IOException If something goes wrong inside
      */
     @Test
@@ -53,6 +55,7 @@ final class ETagCachingWireTest {
 
     /**
      * ETagCachingWire can detect content modification.
+     *
      * @throws IOException If something goes wrong inside
      */
     @Test

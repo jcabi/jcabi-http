@@ -14,12 +14,14 @@ import org.junit.jupiter.api.Test;
 
 /**
  * Test case for {@link RetryWire}.
+ *
  * @since 1.2
  */
 final class RetryWireTest {
 
     /**
      * RetryWire can make a few requests before giving up.
+     *
      * @throws Exception If something goes wrong inside
      */
     @Test

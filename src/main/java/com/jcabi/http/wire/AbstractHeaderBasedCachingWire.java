@@ -17,6 +17,7 @@ import java.util.concurrent.ConcurrentHashMap;
 
 /**
  * This is the base class to handle http responses with 304 state.
+ *
  * @since 2.0
  */
 public abstract class AbstractHeaderBasedCachingWire implements Wire {
@@ -44,6 +45,7 @@ public abstract class AbstractHeaderBasedCachingWire implements Wire {
 
     /**
      * Ctor.
+     *
      * @param scvh Server Response Version Header name
      * @param cmch Client Modification Check Header name
      * @param wire Original wire

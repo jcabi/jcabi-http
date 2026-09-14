@@ -11,6 +11,7 @@ import java.util.Random;
 /**
  * Boundary for content-type multipart/form-data.
  * This is a copy of boundary created by Apache HttpComponents HttpClient 4.5.
+ *
  * @since 1.0
  */
 @Immutable
@@ -38,6 +39,7 @@ public final class Boundary {
 
     /**
      * Ctor.
+     *
      * @param random Random number generation
      */
     public Boundary(final Random random) {
@@ -46,6 +48,7 @@ public final class Boundary {
 
     /**
      * Generates random boundary with random size from 30 to 40.
+     *
      * @return Boundary value
      */
     public String value() {

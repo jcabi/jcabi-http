@@ -24,7 +24,7 @@ import org.hamcrest.Matchers;
  * REST response.
  *
  * <p>This response decorator is able to make basic assertions on
- * HTTP response and manipulate with it afterwards, for example:
+ * HTTP response and manipulate with it afterwards, for example:</p>
  *
  * <pre> String name = new JdkRequest("http://my.example.com")
  *   .fetch()
@@ -36,9 +36,9 @@ import org.hamcrest.Matchers;
  *   .fetch();</pre>
  *
  * <p>Method {@link #jump(URI)} creates a new instance of class
- * {@link Request} with all cookies transferred from the current one.
+ * {@link Request} with all cookies transferred from the current one.</p>
  *
- * <p>The class is immutable and thread-safe.
+ * <p>The class is immutable and thread-safe.</p>
  *
  * @since 0.8
  */
@@ -48,6 +48,7 @@ public final class RestResponse extends AbstractResponse {
 
     /**
      * Public ctor.
+     *
      * @param resp Response
      */
     public RestResponse(final Response resp) {
@@ -56,6 +57,7 @@ public final class RestResponse extends AbstractResponse {
 
     /**
      * Assert using custom matcher.
+     *
      * @param matcher The matcher to use
      * @return The same object
      */
@@ -71,6 +73,7 @@ public final class RestResponse extends AbstractResponse {
     /**
      * Verifies HTTP response status code against the provided absolute value,
      * and throws {@link AssertionError} in case of mismatch.
+     *
      * @param status Expected status code
      * @return The same object
      */
@@ -91,6 +94,7 @@ public final class RestResponse extends AbstractResponse {
     /**
      * Verifies HTTP response status code against the provided matcher,
      * and throws {@link AssertionError} in case of mismatch.
+     *
      * @param matcher Matcher to validate status code
      * @return This object
      */
@@ -108,6 +112,7 @@ public final class RestResponse extends AbstractResponse {
     /**
      * Verifies HTTP response body content against provided matcher,
      * and throws {@link AssertionError} in case of mismatch.
+     *
      * @param matcher The matcher to use
      * @return This object
      */
@@ -125,6 +130,7 @@ public final class RestResponse extends AbstractResponse {
     /**
      * Verifies HTTP response body content against provided matcher,
      * and throws {@link AssertionError} in case of mismatch.
+     *
      * @param matcher The matcher to use
      * @return This object
      */
@@ -145,7 +151,7 @@ public final class RestResponse extends AbstractResponse {
      *
      * <p>The iterator for the matcher will always be a real object an never
      * {@code NULL}, even if such a header is absent in the response. If the
-     * header is absent the iterable will be empty.
+     * header is absent the iterable will be empty.</p>
      *
      * @param name Name of the header to match
      * @param matcher The matcher to use
@@ -172,6 +178,7 @@ public final class RestResponse extends AbstractResponse {
     /**
      * Verifies HTTP header against provided matcher, and throws
      * {@link AssertionError} in case of mismatch.
+     *
      * @param name Name of the header to match
      * @param value The value to expect in one of the headers
      * @return This object
@@ -183,6 +190,7 @@ public final class RestResponse extends AbstractResponse {
 
     /**
      * Jump to a new location.
+     *
      * @param uri Destination to jump to
      * @return New request
      */
@@ -208,6 +216,7 @@ public final class RestResponse extends AbstractResponse {
 
     /**
      * Follow LOCATION header.
+     *
      * @return New request
      */
     public Request follow() {
@@ -222,6 +231,7 @@ public final class RestResponse extends AbstractResponse {
 
     /**
      * Get one cookie by name.
+     *
      * @param name Cookie name
      * @return Cookie found
      */

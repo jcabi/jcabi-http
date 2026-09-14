@@ -17,6 +17,7 @@ import org.junit.jupiter.api.function.Executable;
 
 /**
  * Integration case for {@link JdkRequest}.
+ *
  * @since 1.4.1
  */
 final class JdkRequestITCase {

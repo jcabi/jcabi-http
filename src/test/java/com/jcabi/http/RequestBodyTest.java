@@ -11,6 +11,7 @@ import org.junit.jupiter.api.Test;
 
 /**
  * Test case for {@link RequestBody}.
+ *
  * @since 2.0
  */
 final class RequestBodyTest {

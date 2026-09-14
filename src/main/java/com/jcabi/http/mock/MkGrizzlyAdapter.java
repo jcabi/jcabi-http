@@ -26,6 +26,7 @@ import org.hamcrest.Matcher;
 
 /**
  * Mocker of Java Servlet container.
+ *
  * @since 0.10
  */
 final class MkGrizzlyAdapter extends HttpHandler {
@@ -55,6 +56,7 @@ final class MkGrizzlyAdapter extends HttpHandler {
     /**
      * Give this answer on the next request(s) if they match the given condition
      * a certain number of consecutive times.
+     *
      * @param answer Next answer to give
      * @param query The query that should be satisfied to return this answer
      * @param count The number of times this answer can be returned for matching
@@ -71,6 +73,7 @@ final class MkGrizzlyAdapter extends HttpHandler {
 
     /**
      * Get the oldest request received.
+     *
      * @return Request received
      */
     MkQuery take() {
@@ -81,6 +84,7 @@ final class MkGrizzlyAdapter extends HttpHandler {
      * Get the oldest request received subject to the matching condition.
      * ({@link java.util.NoSuchElementException} if no elements satisfy the
      * condition).
+     *
      * @param matcher The matcher specifying the condition
      * @return Request received satisfying the matcher
      */
@@ -92,6 +96,7 @@ final class MkGrizzlyAdapter extends HttpHandler {
      * Get the all requests received satisfying the given matcher.
      * ({@link java.util.NoSuchElementException} if no elements satisfy the
      * condition).
+     *
      * @param matcher The matcher specifying the condition
      * @return Collection of all requests satisfying the matcher, ordered from
      *  oldest to newest
@@ -107,6 +112,7 @@ final class MkGrizzlyAdapter extends HttpHandler {
 
     /**
      * Total number of available queue.
+     *
      * @return Number of them
      */
     int queries() {

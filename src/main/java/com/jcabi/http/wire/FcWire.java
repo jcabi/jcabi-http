@@ -20,7 +20,7 @@ import lombok.ToString;
  * Wire that caches GET requests.
  *
  * <p>This decorator can be used when you want to avoid duplicate
- * GET requests to load-sensitive resources, for example:
+ * GET requests to load-sensitive resources, for example:</p>
  *
  * <pre> String html = new JdkRequest("http://goggle.com")
  *   .through(FileCachingWire.class)
@@ -29,7 +29,7 @@ import lombok.ToString;
  *   .body();</pre>
  *
  * <p>You can also configure it to flush the entire cache
- * on certain request URI's, for example:
+ * on certain request URI's, for example:</p>
  *
  * <pre>new JdkRequest(uri)
  *   .through(CachingWire.class, "GET /save/.*")
@@ -38,9 +38,9 @@ import lombok.ToString;
  *
  * <p>The regular expression provided will be used against a string
  * constructed as an HTTP method, space, path of the URI together with
- * query part.
+ * query part.</p>
  *
- * <p>The class is immutable and thread-safe.
+ * <p>The class is immutable and thread-safe.</p>
  *
  * @since 1.16
  */
@@ -66,6 +66,7 @@ public final class FcWire implements Wire {
 
     /**
      * Public ctor.
+     *
      * @param wire Original wire
      */
     public FcWire(final Wire wire) {
@@ -74,6 +75,7 @@ public final class FcWire implements Wire {
 
     /**
      * Public ctor.
+     *
      * @param wire Original wire
      * @param flsh Flushing regular expression
      */
@@ -83,6 +85,7 @@ public final class FcWire implements Wire {
 
     /**
      * Public ctor.
+     *
      * @param wire Original wire
      * @param flsh Flushing regular expression
      * @param path Path for the files
@@ -93,6 +96,7 @@ public final class FcWire implements Wire {
 
     /**
      * Public ctor.
+     *
      * @param wire Original wire
      * @param flsh Flushing regular expression
      * @param fcc Cache

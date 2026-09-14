@@ -18,12 +18,14 @@ import org.junit.jupiter.api.Test;
 
 /**
  * Test case for {@link VerboseWire}.
+ *
  * @since 1.0
  */
 final class VerboseWireTest {
 
     /**
      * VerboseWire can log requests.
+     *
      * @throws Exception If something goes wrong inside
      */
     @Test
@@ -42,6 +44,7 @@ final class VerboseWireTest {
 
     /**
      * VerboseWire can log request body.
+     *
      * @throws Exception If something goes wrong inside
      */
     @Test

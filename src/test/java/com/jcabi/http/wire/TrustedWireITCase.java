@@ -12,12 +12,14 @@ import org.junit.jupiter.params.provider.CsvSource;
 
 /**
  * Integration case for {@link TrustedWire}.
+ *
  * @since 1.10.1
  */
 final class TrustedWireITCase {
 
     /**
      * TrustedWire can ignore SSL verifications.
+     *
      * @param url URL with SSL problems
      * @throws Exception If something goes wrong inside
      */

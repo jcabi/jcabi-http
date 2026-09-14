@@ -20,12 +20,14 @@ import org.junit.jupiter.api.Test;
 
 /**
  * Test case for {@link MkContainer}.
+ *
  * @since 1.0
  */
 final class MkContainerTest {
 
     /**
      * MkContainer can return required answers.
+     *
      * @throws Exception If something goes wrong inside
      */
     @Test
@@ -50,6 +52,7 @@ final class MkContainerTest {
 
     /**
      * MkContainer can understand duplicate headers.
+     *
      * @throws Exception If something goes wrong inside
      */
     @Test
@@ -72,6 +75,7 @@ final class MkContainerTest {
 
     /**
      * MkContainer can return certain answers for matching conditions.
+     *
      * @throws Exception If something goes wrong inside.
      */
     @Test
@@ -97,6 +101,7 @@ final class MkContainerTest {
 
     /**
      * MkContainer can return a correct binary answers.
+     *
      * @throws Exception If something goes wrong inside.
      */
     @Test
@@ -140,6 +145,7 @@ final class MkContainerTest {
 
     /**
      * MkContainer can answer multiple times for matching requests.
+     *
      * @throws Exception If something goes wrong inside
      */
     @Test
@@ -164,6 +170,7 @@ final class MkContainerTest {
     /**
      * MkContainer can prioritize multiple matching answers by using the
      * first matching request.
+     *
      * @throws Exception If something goes wrong inside.
      */
     @Test
@@ -188,6 +195,7 @@ final class MkContainerTest {
 
     /**
      * MkContainer can return the query that matched a certain response.
+     *
      * @throws Exception If something goes wrong inside
      */
     @Test
@@ -219,6 +227,7 @@ final class MkContainerTest {
 
     /**
      * MkContainer can return all queries that matched a certain response.
+     *
      * @throws Exception If something goes wrong inside
      */
     @Test

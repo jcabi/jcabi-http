@@ -13,6 +13,7 @@ import lombok.EqualsAndHashCode;
 
 /**
  * Abstract response.
+ *
  * @since 0.8
  */
 @Immutable
@@ -26,6 +27,7 @@ abstract class AbstractResponse implements Response {
 
     /**
      * Ctor.
+     *
      * @param resp Response
      */
     AbstractResponse(final Response resp) {

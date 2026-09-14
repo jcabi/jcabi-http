@@ -12,6 +12,7 @@ import org.hamcrest.TypeSafeMatcher;
 
 /**
  * Matcher for checking {@link MkQuery#body()} result.
+ *
  * @since 1.5
  */
 @ToString
@@ -25,6 +26,7 @@ final class MkQueryBodyMatcher extends TypeSafeMatcher<MkQuery> {
 
     /**
      * Ctor.
+     *
      * @param match The matcher to use for the body
      */
     MkQueryBodyMatcher(final Matcher<String> match) {

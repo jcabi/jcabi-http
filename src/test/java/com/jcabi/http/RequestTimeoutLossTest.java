@@ -25,14 +25,10 @@ import org.mockito.Mockito;
 
 /**
  * Test case for loss of timeout parameters.
+ *
  * @since 1.17.3
  */
 final class RequestTimeoutLossTest extends RequestTestTemplate {
-
-    /**
-     * Placeholder URL used for testing purposes only.
-     */
-    private static final String LOCALHOST_URL = "http://localhost";
 
     /**
      * Content type header name for testing purposes only.
@@ -57,6 +53,7 @@ final class RequestTimeoutLossTest extends RequestTestTemplate {
     /**
      * The connect and read timeouts are properly set no matter in which order
      * {@code Request.timeout} is called.
+     *
      * @param type Type of Request
      * @throws Exception If something goes wrong inside
      */
@@ -88,6 +85,7 @@ final class RequestTimeoutLossTest extends RequestTestTemplate {
     /**
      * The connect and read timeouts are properly set no matter in which order
      * {@code Request.timeout} is called.
+     *
      * @param type Type of Request
      * @throws Exception If something goes wrong inside
      */
@@ -117,6 +115,7 @@ final class RequestTimeoutLossTest extends RequestTestTemplate {
     /**
      * The connect and read timeouts are properly set no matter in which order
      * {@code Request.timeout} is called.
+     *
      * @param type Type of Request
      * @throws Exception If something goes wrong inside
      */
@@ -147,6 +146,7 @@ final class RequestTimeoutLossTest extends RequestTestTemplate {
     /**
      * The connect and read timeouts are properly set no matter in which order
      * {@code Request.timeout} is called.
+     *
      * @param type Type of Request
      * @throws Exception If something goes wrong inside
      */
@@ -176,6 +176,7 @@ final class RequestTimeoutLossTest extends RequestTestTemplate {
     /**
      * The connect and read timeouts are properly set no matter in which order
      * {@code Request.timeout} is called.
+     *
      * @param type Type of Request
      * @throws Exception If something goes wrong inside
      */
@@ -207,6 +208,7 @@ final class RequestTimeoutLossTest extends RequestTestTemplate {
     /**
      * The connect and read timeouts are properly set no matter in which order
      * {@code Request.timeout} is called.
+     *
      * @param type Type of Request
      * @throws Exception If something goes wrong inside
      */
@@ -237,6 +239,7 @@ final class RequestTimeoutLossTest extends RequestTestTemplate {
     /**
      * The connect and read timeouts are properly set no matter in which order
      * {@code Request.timeout} is called.
+     *
      * @param type Type of Request
      * @throws Exception If something goes wrong inside
      */
@@ -268,6 +271,7 @@ final class RequestTimeoutLossTest extends RequestTestTemplate {
 
     /**
      * The wire passed to method "through" is used.
+     *
      * @throws IOException On error
      */
     @Test
@@ -345,7 +349,7 @@ final class RequestTimeoutLossTest extends RequestTestTemplate {
     private static Request request(final Class<? extends Request> type)
         throws Exception {
         return RequestTestTemplate.request(
-            new URI(RequestTimeoutLossTest.LOCALHOST_URL),
+            new URI("http://localhost"),
             type
         );
     }

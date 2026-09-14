@@ -11,6 +11,7 @@ import javax.net.ssl.SSLSocketFactory;
 
 /**
  * The SSL defaults of the JVM, as they were before we changed them.
+ *
  * @since 1.10
  */
 @Immutable
@@ -28,6 +29,7 @@ final class Defaults {
 
     /**
      * Ctor.
+     *
      * @param sockets Default socket factory
      * @param ctx Default context
      */

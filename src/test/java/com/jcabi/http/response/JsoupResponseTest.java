@@ -12,12 +12,14 @@ import org.junit.jupiter.api.Test;
 
 /**
  * Test case for {@link JsoupResponse}.
+ *
  * @since 1.4
  */
 final class JsoupResponseTest {
 
     /**
      * JsoupResponse normalizes malformed HTML responses.
+     *
      * @throws Exception If a problem occurs.
      */
     @Test

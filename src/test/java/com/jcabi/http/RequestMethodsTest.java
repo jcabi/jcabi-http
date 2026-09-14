@@ -12,6 +12,7 @@ import org.junit.jupiter.api.Test;
 
 /**
  * Test case for HTTP method constants exposed by {@link Request}.
+ *
  * @since 2.0
  */
 final class RequestMethodsTest {

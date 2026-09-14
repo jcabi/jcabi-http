@@ -17,6 +17,7 @@ import org.hamcrest.core.IsAnything;
 
 /**
  * Implementation of {@link MkContainer} based on Grizzly Server.
+ *
  * @see MkContainer
  * @since 0.10
  */
@@ -27,8 +28,7 @@ public final class MkGrizzlyContainer implements MkContainer {
     /**
      * Grizzly adapter.
      */
-    private final transient MkGrizzlyAdapter adapter =
-        new MkGrizzlyAdapter();
+    private final transient MkGrizzlyAdapter adapter;
 
     /**
      * Grizzly container.
@@ -39,6 +39,13 @@ public final class MkGrizzlyContainer implements MkContainer {
      * Port where it works.
      */
     private transient int port;
+
+    /**
+     * Ctor.
+     */
+    public MkGrizzlyContainer() {
+        this.adapter = new MkGrizzlyAdapter();
+    }
 
     @Override
     public MkContainer next(final MkAnswer answer) {

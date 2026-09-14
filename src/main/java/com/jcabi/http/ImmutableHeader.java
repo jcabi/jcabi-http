@@ -11,6 +11,7 @@ import lombok.ToString;
 
 /**
  * Immutable HTTP header.
+ *
  * @since 0.10
  */
 @Immutable
@@ -30,6 +31,7 @@ public final class ImmutableHeader implements Map.Entry<String, String> {
 
     /**
      * Public ctor.
+     *
      * @param key The name of it
      * @param value The value
      */
@@ -56,6 +58,7 @@ public final class ImmutableHeader implements Map.Entry<String, String> {
 
     /**
      * Normalize key.
+     *
      * @param key The key to normalize
      * @return Normalized key
      */

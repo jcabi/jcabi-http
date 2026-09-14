@@ -16,6 +16,7 @@ import org.junit.jupiter.api.Test;
 
 /**
  * Test case for {@link RestResponse}.
+ *
  * @since 1.1
  */
 final class RestResponseTest {
@@ -37,6 +38,7 @@ final class RestResponseTest {
 
     /**
      * RestResponse can assert HTTP header.
+     *
      * @throws Exception If something goes wrong inside
      */
     @Test
@@ -62,6 +64,7 @@ final class RestResponseTest {
 
     /**
      * RestResponse can retrieve a cookie by name.
+     *
      * @throws Exception If something goes wrong inside
      */
     @Test
@@ -86,6 +89,7 @@ final class RestResponseTest {
     /**
      * RestResponse can retrieve a cookie by name if header occurs several
      * times.
+     *
      * @throws Exception If something goes wrong inside
      */
     @Test
@@ -118,6 +122,7 @@ final class RestResponseTest {
 
     /**
      * RestResponse can jump to a relative URL.
+     *
      * @throws Exception If something goes wrong inside
      */
     @Test

@@ -31,12 +31,14 @@ import org.junit.jupiter.params.ParameterizedTest;
 
 /**
  * Test case for {@link Request} and its implementations.
+ *
  * @since 1.7
  */
 final class RequestTest extends RequestTestTemplate {
 
     /**
      * BaseRequest can fetch HTTP request and process HTTP response.
+     *
      * @param type Request type
      * @throws Exception If something goes wrong inside
      */
@@ -78,6 +80,7 @@ final class RequestTest extends RequestTestTemplate {
 
     /**
      * BaseRequest can fetch HTTP headers.
+     *
      * @param type Request type
      * @throws Exception If something goes wrong inside
      */
@@ -118,6 +121,7 @@ final class RequestTest extends RequestTestTemplate {
 
     /**
      * BaseRequest can fetch GET request with query params.
+     *
      * @param type Request type
      * @throws Exception If something goes wrong inside
      */
@@ -153,6 +157,7 @@ final class RequestTest extends RequestTestTemplate {
 
     /**
      * BaseRequest can fetch body with HTTP POST request.
+     *
      * @param type Request type
      * @throws Exception If something goes wrong inside
      */
@@ -185,6 +190,7 @@ final class RequestTest extends RequestTestTemplate {
 
     /**
      * BaseRequest can fetch body with HTTP POST request with params.
+     *
      * @param type Request type
      * @throws Exception If something goes wrong inside
      */
@@ -222,6 +228,7 @@ final class RequestTest extends RequestTestTemplate {
     /**
      * BaseRequest can fetch multipart body with HTTP POST request
      * with single byte param.
+     *
      * @param type Request type
      * @throws Exception If something goes wrong inside
      */
@@ -268,6 +275,7 @@ final class RequestTest extends RequestTestTemplate {
     /**
      * BaseRequest can fetch multipart body with HTTP POST request
      * with single param.
+     *
      * @param type Request type
      * @throws Exception If something goes wrong inside
      */
@@ -311,6 +319,7 @@ final class RequestTest extends RequestTestTemplate {
     /**
      * BaseRequest can fetch multipart body with HTTP POST request
      * with two params.
+     *
      * @param type Request type
      * @throws Exception If something goes wrong inside
      */
@@ -361,6 +370,7 @@ final class RequestTest extends RequestTestTemplate {
 
     /**
      * BaseRequest can fetch body with HTTP POST request.
+     *
      * @param type Request type
      * @throws Exception If something goes wrong inside
      */
@@ -395,6 +405,7 @@ final class RequestTest extends RequestTestTemplate {
 
     /**
      * BaseRequest can assert HTTP status code value.
+     *
      * @param type Request type
      * @throws Exception If something goes wrong inside.
      */
@@ -421,6 +432,7 @@ final class RequestTest extends RequestTestTemplate {
 
     /**
      * BaseRequest can assert response body.
+     *
      * @param type Request type
      * @throws Exception If something goes wrong inside.
      */
@@ -447,6 +459,7 @@ final class RequestTest extends RequestTestTemplate {
 
     /**
      * BaseRequest can assert HTTP headers in response.
+     *
      * @param type Request type
      * @throws Exception If something goes wrong inside.
      */
@@ -482,6 +495,7 @@ final class RequestTest extends RequestTestTemplate {
 
     /**
      * BaseRequest can assert response body content with XPath query.
+     *
      * @param type Request type
      * @throws Exception If something goes wrong inside.
      */
@@ -507,6 +521,7 @@ final class RequestTest extends RequestTestTemplate {
 
     /**
      * BaseRequest can work with URL returned by ContainerMocker.
+     *
      * @throws Exception If something goes wrong inside
      */
     @Values
@@ -526,6 +541,7 @@ final class RequestTest extends RequestTestTemplate {
 
     /**
      * BaseRequest can handle unicode in plain text response.
+     *
      * @param type Request type
      * @throws Exception If something goes wrong inside
      */
@@ -553,6 +569,7 @@ final class RequestTest extends RequestTestTemplate {
 
     /**
      * BaseRequest can handle unicode in XML response.
+     *
      * @param type Request type
      * @throws Exception If something goes wrong inside
      */
@@ -576,6 +593,7 @@ final class RequestTest extends RequestTestTemplate {
 
     /**
      * BaseRequest can use basic authentication scheme.
+     *
      * @param type Request type
      * @throws Exception If something goes wrong inside
      */
@@ -611,6 +629,7 @@ final class RequestTest extends RequestTestTemplate {
 
     /**
      * BaseRequest can fetch GET request twice.
+     *
      * @param type Request type
      * @throws Exception If something goes wrong inside
      */
@@ -645,6 +664,7 @@ final class RequestTest extends RequestTestTemplate {
 
     /**
      * BaseRequest can return redirect status (without redirecting).
+     *
      * @param type Request type
      * @throws Exception If something goes wrong inside
      * @since 0.10
@@ -667,6 +687,7 @@ final class RequestTest extends RequestTestTemplate {
 
     /**
      * BaseRequest can fetch body with HTTP POST request.
+     *
      * @param type Request type
      * @throws Exception If something goes wrong inside
      */
@@ -699,6 +720,7 @@ final class RequestTest extends RequestTestTemplate {
     /**
      * BaseRequest.fetch(InputStream) throws an exception if the body has been
      * previously set.
+     *
      * @param type Request type
      */
     @Values
@@ -724,6 +746,7 @@ final class RequestTest extends RequestTestTemplate {
     /**
      * RestResponse.assertBody matches only the response body, not HTTP headers.
      * Reproduces https://github.com/jcabi/jcabi-http/issues/177
+     *
      * @param type Request type
      * @throws Exception If something goes wrong inside
      */

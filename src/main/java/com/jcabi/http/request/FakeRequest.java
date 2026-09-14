@@ -16,7 +16,6 @@ import com.jcabi.immutable.Array;
 import java.io.IOException;
 import java.io.InputStream;
 import java.net.HttpURLConnection;
-import java.nio.charset.Charset;
 import java.nio.charset.StandardCharsets;
 import java.util.Collection;
 import java.util.Collections;
@@ -27,7 +26,7 @@ import lombok.EqualsAndHashCode;
  * Implementation of {@link Request} that always returns the same
  * response, specified in the constructor.
  *
- * <p>The class is immutable and thread-safe.
+ * <p>The class is immutable and thread-safe.</p>
  *
  * @since 0.9
  */
@@ -40,11 +39,6 @@ public final class FakeRequest implements Request {
      * An empty immutable {@code byte} array.
      */
     private static final byte[] EMPTY_BYTE_ARRAY = new byte[0];
-
-    /**
-     * The Charset to use.
-     */
-    private static final Charset CHARSET = StandardCharsets.UTF_8;
 
     /**
      * Base request.
@@ -86,6 +80,7 @@ public final class FakeRequest implements Request {
 
     /**
      * Public ctor.
+     *
      * @param status HTTP status code to return
      * @param reason HTTP reason
      * @param headers HTTP headers
@@ -178,6 +173,7 @@ public final class FakeRequest implements Request {
 
     /**
      * Make a similar request, with the provided status code.
+     *
      * @param status The code
      * @return New request
      */
@@ -192,6 +188,7 @@ public final class FakeRequest implements Request {
 
     /**
      * Make a similar request, with the provided reason line.
+     *
      * @param reason Reason line
      * @return New request
      */
@@ -206,6 +203,7 @@ public final class FakeRequest implements Request {
 
     /**
      * Make a similar request, with the provided HTTP header.
+     *
      * @param name Name of the header
      * @param value Value of it
      * @return New request
@@ -221,15 +219,17 @@ public final class FakeRequest implements Request {
 
     /**
      * Make a similar request, with the provided body.
+     *
      * @param text Body
      * @return New request
      */
     public FakeRequest withBody(final String text) {
-        return this.withBody(text.getBytes(FakeRequest.CHARSET));
+        return this.withBody(text.getBytes(StandardCharsets.UTF_8));
     }
 
     /**
      * Make a similar request, with the provided body.
+     *
      * @param body Body
      * @return New request
      */

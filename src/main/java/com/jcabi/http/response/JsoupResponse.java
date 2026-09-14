@@ -15,7 +15,7 @@ import org.jsoup.nodes.Entities;
  * Jsoup response.
  *
  * <p>This response decorator is able to parse HTTP response body as an HTML
- * document. Example usage:
+ * document. Example usage:</p>
  *
  * <pre> String body = new JdkRequest("http://my.example.com")
  *   .header(HttpHeaders.ACCEPT, MediaType.APPLICATION_JSON)
@@ -24,7 +24,7 @@ import org.jsoup.nodes.Entities;
  *   .body();</pre>
  *
  * <p>{@link #body()} will try to output clean HTML even for
- * malformed responses. For example:
+ * malformed responses. For example:</p>
  * <ul>
  * <li>Unclosed tags will be closed ("&lt;p&gt;Hello" will become
  * "&lt;p&gt;Hello&lt;/p&gt;")
@@ -33,7 +33,7 @@ import org.jsoup.nodes.Entities;
  * <li>Basic structure is guaranteed (i.e. html, head, body elements)
  * </ul>
  *
- * <p>The class is immutable and thread-safe.
+ * <p>The class is immutable and thread-safe.</p>
  *
  * @see <a href="http://jsoup.org/">Jsoup website</a>
  * @since 1.4
@@ -44,6 +44,7 @@ public final class JsoupResponse extends AbstractResponse {
 
     /**
      * Public ctor.
+     *
      * @param resp Response
      */
     public JsoupResponse(final Response resp) {

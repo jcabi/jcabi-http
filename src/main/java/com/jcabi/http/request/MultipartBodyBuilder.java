@@ -10,6 +10,7 @@ import java.util.Arrays;
 
 /**
  * Byte builder for multipart body.
+ *
  * @since 1.0
  */
 @Immutable
@@ -35,6 +36,7 @@ public final class MultipartBodyBuilder {
 
     /**
      * Ctor.
+     *
      * @param values Initial byte array
      */
     public MultipartBodyBuilder(final byte[] values) {
@@ -43,6 +45,7 @@ public final class MultipartBodyBuilder {
 
     /**
      * Append byte array to this multipart body including carriage return.
+     *
      * @param bytes Byte array to append
      * @return New multipart body
      */
@@ -52,6 +55,7 @@ public final class MultipartBodyBuilder {
 
     /**
      * Bytes of multipart body.
+     *
      * @return Bytes array
      */
     public byte[] asBytes() {
@@ -60,6 +64,7 @@ public final class MultipartBodyBuilder {
 
     /**
      * Append byte array to this multipart body.
+     *
      * @param bytes Byte array to append
      * @return New multipart body
      */

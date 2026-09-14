@@ -23,7 +23,7 @@ import lombok.ToString;
  * Verbose wire.
  *
  * <p>This wire makes HTTP request and response details visible in
- * log (we're using SLF4J logging facility), for example:
+ * log (we're using SLF4J logging facility), for example:</p>
  *
  * <pre> String html = new JdkRequest("http://goggle.com")
  *   .through(VerboseWire.class)
@@ -31,7 +31,7 @@ import lombok.ToString;
  *   .fetch()
  *   .body();</pre>
  *
- * <p>The class is immutable and thread-safe.
+ * <p>The class is immutable and thread-safe.</p>
  *
  * @since 0.10
  */
@@ -47,6 +47,7 @@ public final class VerboseWire implements Wire {
 
     /**
      * Public ctor.
+     *
      * @param wire Original wire
      */
     public VerboseWire(final Wire wire) {

@@ -14,6 +14,7 @@ import org.junit.jupiter.params.provider.ValueSource;
 
 /**
  * Template for generic tests for {@link Request}.
+ *
  * @since 1.17.4
  */
 @SuppressWarnings("PMD.AbstractClassWithoutAbstractMethod")
@@ -21,6 +22,7 @@ abstract class RequestTestTemplate {
 
     /**
      * Annotation for a parameterized test case.
+     *
      * @since 1.17.4
      */
     @Retention(RetentionPolicy.RUNTIME)
@@ -30,6 +32,7 @@ abstract class RequestTestTemplate {
 
     /**
      * Make a request.
+     *
      * @param uri URI to start with
      * @param type Type of the request
      * @return Request

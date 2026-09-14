@@ -14,6 +14,7 @@ import java.util.Arrays;
 
 /**
  * A tree representation views of JSON documents.
+ *
  * @since 1.17.1
  */
 public final class JsonReader {
@@ -32,6 +33,7 @@ public final class JsonReader {
 
     /**
      * Public constructor.
+     *
      * @param bytes The HTTP response body as an array of bytes
      */
     public JsonReader(final byte[] bytes) {
@@ -41,6 +43,7 @@ public final class JsonReader {
     /**
      * Returns a mutable JSON array node, if the parsed JSON is a valid
      * array.
+     *
      * @return JSON array node
      * @throws IOException If the body is not a valid JSON or JSON array.
      */
@@ -57,6 +60,7 @@ public final class JsonReader {
     /**
      * Returns a mutable JSON object node, if the parsed JSON is a valid
      * object.
+     *
      * @return JSON object node
      * @throws IOException If the body is not a valid JSON or JSON object.
      */
@@ -72,6 +76,7 @@ public final class JsonReader {
 
     /**
      * Returns an immutable JSON node.
+     *
      * @return JSON node
      * @throws IOException If the body is not a valid JSON.
      */

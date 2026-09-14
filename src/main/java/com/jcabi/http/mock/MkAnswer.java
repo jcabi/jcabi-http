@@ -22,6 +22,7 @@ import lombok.EqualsAndHashCode;
 
 /**
  * Mock response.
+ *
  * @since 0.10
  */
 @Immutable
@@ -29,30 +30,35 @@ public interface MkAnswer {
 
     /**
      * HTTP response status.
+     *
      * @return The status code
      */
     int status();
 
     /**
      * HTTP response headers.
+     *
      * @return The headers
      */
     Map<String, List<String>> headers();
 
     /**
      * HTTP response body.
+     *
      * @return The body, as a UTF-8 string
      */
     String body();
 
     /**
      * HTTP response body as bytes.
+     *
      * @return The body, as byte array
      */
     byte[] bodyBytes();
 
     /**
      * Simple implementation.
+     *
      * @since 1.0
      */
     @Immutable
@@ -83,6 +89,7 @@ public interface MkAnswer {
 
         /**
          * Public ctor.
+         *
          * @param body Body of HTTP response
          */
         public Simple(final String body) {
@@ -91,6 +98,7 @@ public interface MkAnswer {
 
         /**
          * Public ctor (with empty HTTP body).
+         *
          * @param status HTTP status
          * @since 1.9
          */
@@ -100,6 +108,7 @@ public interface MkAnswer {
 
         /**
          * Public ctor.
+         *
          * @param status HTTP status
          * @param body Body of HTTP response
          */
@@ -112,6 +121,7 @@ public interface MkAnswer {
 
         /**
          * Public ctor.
+         *
          * @param status HTTP status
          * @param headers HTTP headers
          * @param body Body of HTTP response
@@ -170,6 +180,7 @@ public interface MkAnswer {
 
         /**
          * Make a copy of this answer, with an extra header.
+         *
          * @param name Name of the header
          * @param value ImmutableHeader value
          * @return New answer
@@ -185,6 +196,7 @@ public interface MkAnswer {
 
         /**
          * Make a copy of this answer, with another status code.
+         *
          * @param status Status code
          * @return New answer
          */
@@ -198,6 +210,7 @@ public interface MkAnswer {
 
         /**
          * Make a copy of this answer, with another body.
+         *
          * @param body Body
          * @return New answer
          */
@@ -211,6 +224,7 @@ public interface MkAnswer {
 
         /**
          * Make a copy of this answer, with another body.
+         *
          * @param body Body
          * @return New answer
          */

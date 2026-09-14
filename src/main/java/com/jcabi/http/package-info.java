@@ -7,7 +7,7 @@
  * RESTful client, for tests (but not only).
  *
  * <p>The only dependency you need is (check our latest version available
- * at <a href="http://www.rexsl.com">www.rexsl.com</a>):
+ * at <a href="http://www.rexsl.com">www.rexsl.com</a>):</p>
  *
  * <pre>&lt;dependency&gt;
  *   &lt;groupId&gt;com.rexsl&lt;/groupId&gt;

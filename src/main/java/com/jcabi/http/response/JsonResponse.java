@@ -18,7 +18,7 @@ import lombok.EqualsAndHashCode;
  * JSON response.
  *
  * <p>This response decorator is able to parse HTTP response body as
- * a JSON document and manipulate with it afterwards, for example:
+ * a JSON document and manipulate with it afterwards, for example:</p>
  *
  * <pre> String name = new JdkRequest("http://my.example.com")
  *   .header(HttpHeaders.ACCEPT, MediaType.APPLICATION_JSON)
@@ -28,7 +28,7 @@ import lombok.EqualsAndHashCode;
  *   .readObject()
  *   .getString("name");</pre>
  *
- * <p>The class is immutable and thread-safe.
+ * <p>The class is immutable and thread-safe.</p>
  *
  * @since 0.8
  */
@@ -45,6 +45,7 @@ public final class JsonResponse extends AbstractResponse {
 
     /**
      * Public ctor.
+     *
      * @param resp Response
      */
     public JsonResponse(final Response resp) {
@@ -54,6 +55,7 @@ public final class JsonResponse extends AbstractResponse {
     /**
      * Verifies the JSON data against the element identifier argument,
      * and throws {@link AssertionError} in case of mismatch.
+     *
      * @param element Element in the JSON data of this object
      * @return This object
      */
@@ -66,8 +68,10 @@ public final class JsonResponse extends AbstractResponse {
 
     /**
      * Read body as JSON.
+     *
      * @return Json reader
      */
+    @SuppressWarnings("PMD.CloseInlineResourceRule")
     public JsonReader json() {
         final String json = new String(this.binary(), StandardCharsets.UTF_8);
         return new VerboseReader(

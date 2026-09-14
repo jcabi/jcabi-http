@@ -10,6 +10,7 @@ import lombok.EqualsAndHashCode;
 
 /**
  * A JSON response provided by the Jackson Project.
+ *
  * @since 1.17
  */
 @Immutable
@@ -18,6 +19,7 @@ public final class JacksonResponse extends AbstractResponse {
 
     /**
      * Ctor.
+     *
      * @param resp Response
      */
     public JacksonResponse(final Response resp) {
@@ -26,6 +28,7 @@ public final class JacksonResponse extends AbstractResponse {
 
     /**
      * Read the body as JSON.
+     *
      * @return JSON reader
      */
     public JsonReader json() {

@@ -26,10 +26,10 @@ import lombok.ToString;
  * <p>This wire will retry a request a certain number of times (default: 5)
  * after a short delay when a HTTP response with a status code of 300-399 is
  * received. On every next attempt a new URL will be used, according
- * to the value of {@code Location} HTTP header of the response.
+ * to the value of {@code Location} HTTP header of the response.</p>
  *
  * <p>If the maximum number of retries are reached, the last response
- * received is returned to the caller, regardless of its status code.
+ * received is returned to the caller, regardless of its status code.</p>
  *
  * <pre> String html = new JdkRequest("http://goggle.com")
  *   .through(AutoRedirectingWire.class)
@@ -37,7 +37,7 @@ import lombok.ToString;
  *   .fetch()
  *   .body();</pre>
  *
- * <p>The class is immutable and thread-safe.
+ * <p>The class is immutable and thread-safe.</p>
  *
  * @since 1.6
  */
@@ -58,6 +58,7 @@ public final class AutoRedirectingWire implements Wire {
 
     /**
      * Public ctor.
+     *
      * @param wire Original wire
      */
     public AutoRedirectingWire(final Wire wire) {
@@ -66,6 +67,7 @@ public final class AutoRedirectingWire implements Wire {
 
     /**
      * Public ctor.
+     *
      * @param wire Original wire
      * @param retries Maximum number of retries
      */

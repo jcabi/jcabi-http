@@ -24,12 +24,14 @@ import org.junit.jupiter.api.Test;
 
 /**
  * Test case for {@link CachingWire}.
+ *
  * @since 1.0
  */
 final class CachingWireTest {
 
     /**
      * CachingWire can cache GET requests.
+     *
      * @throws Exception If something goes wrong inside
      */
     @Test
@@ -52,6 +54,7 @@ final class CachingWireTest {
 
     /**
      * CachingWire can ignore PUT requests.
+     *
      * @throws Exception If something goes wrong inside
      */
     @Test
@@ -75,6 +78,7 @@ final class CachingWireTest {
 
     /**
      * CachingWire can flush on regular expression match.
+     *
      * @throws Exception If something goes wrong inside
      */
     @Test
@@ -114,6 +118,7 @@ final class CachingWireTest {
      * a {@code Cache-Control: no-cache} directive (RFC 7234 §5.2.1.4),
      * even when an identical request with the same header has already
      * been served.
+     *
      * @throws Exception If something goes wrong inside
      */
     @Test
@@ -142,6 +147,7 @@ final class CachingWireTest {
      * a {@code Cache-Control: no-store} directive (RFC 7234 §5.2.1.5).
      * The response must not be stored in the cache either, so subsequent
      * identical no-store requests also reach the origin.
+     *
      * @throws Exception If something goes wrong inside
      */
     @Test
@@ -166,6 +172,7 @@ final class CachingWireTest {
     /**
      * CachingWire bypasses the cache when the request carries
      * a {@code Pragma: no-cache} directive (RFC 7234 §5.4).
+     *
      * @throws Exception If something goes wrong inside
      */
     @Test
@@ -189,6 +196,7 @@ final class CachingWireTest {
 
     /**
      * CachingWire can use custom cache.
+     *
      * @throws Exception If something goes wrong inside
      */
     @Test

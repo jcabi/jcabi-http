@@ -12,6 +12,7 @@ import org.hamcrest.TypeSafeMatcher;
 
 /**
  * Matcher for checking {@link MkAnswer#body()} result.
+ *
  * @since 1.5
  */
 @ToString
@@ -25,6 +26,7 @@ final class MkAnswerBodyMatcher extends TypeSafeMatcher<MkAnswer> {
 
     /**
      * Ctor.
+     *
      * @param match The matcher to use for the body
      */
     MkAnswerBodyMatcher(final Matcher<String> match) {

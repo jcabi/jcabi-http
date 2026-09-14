@@ -14,7 +14,7 @@ import java.util.Map;
  * <p>Instance of this interface is returned by {@link Request#uri()},
  * and can be modified using one of the methods below. When modification
  * is done, method {@code back()} returns a modified instance of
- * {@link Request}, for example:
+ * {@link Request}, for example:</p>
  *
  * <pre> new JdkRequest("http://my.example.com")
  *   .header("Accept", "application/json")
@@ -24,7 +24,7 @@ import java.util.Map;
  *   .back() // returns a modified instance of Request
  *   .fetch()</pre>
  *
- * <p>Instances of this interface are immutable and thread-safe.
+ * <p>Instances of this interface are immutable and thread-safe.</p>
  *
  * @since 0.8
  * @checkstyle AbbreviationAsWordInNameCheck (100 lines)
@@ -34,18 +34,21 @@ public interface RequestURI {
 
     /**
      * Get back to the request it's related to.
+     *
      * @return The request we're in
      */
     Request back();
 
     /**
      * Get URI.
+     *
      * @return The destination it is currently pointing to
      */
     URI get();
 
     /**
      * Set URI.
+     *
      * @param uri URI to set
      * @return New alternated URI
      */
@@ -53,6 +56,7 @@ public interface RequestURI {
 
     /**
      * Add query param.
+     *
      * @param name Query param name
      * @param value Value of the query param to set
      * @return New alternated URI
@@ -61,6 +65,7 @@ public interface RequestURI {
 
     /**
      * Add query params.
+     *
      * @param map Map of params to add
      * @return New alternated URI
      */
@@ -68,6 +73,7 @@ public interface RequestURI {
 
     /**
      * Add URI path.
+     *
      * @param segment Path segment to add
      * @return New alternated URI
      */
@@ -75,6 +81,7 @@ public interface RequestURI {
 
     /**
      * Set user info.
+     *
      * @param info User info part to set
      * @return New alternated URI
      */
@@ -82,6 +89,7 @@ public interface RequestURI {
 
     /**
      * Set port number.
+     *
      * @param num The port number to set
      * @return New altered URI
      */

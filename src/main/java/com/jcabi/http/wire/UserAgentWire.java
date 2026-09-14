@@ -23,7 +23,7 @@ import lombok.ToString;
  * Wire with default user agent.
  *
  * <p>This wire adds an extra HTTP header {@code User-Agent} to the request,
- * if it's not yet provided, for example:
+ * if it's not yet provided, for example:</p>
  *
  * <pre> String html = new JdkRequest("http://goggle.com")
  *   .through(UserAgentWire.class)
@@ -34,9 +34,9 @@ import lombok.ToString;
  * header with a value {@code ReXSL-0.1/abcdef0 Java/1.6} (for example). It
  * is recommended to use this wire decorator when you're working with
  * third party RESTful services, to properly identify yourself and avoid
- * troubles.
+ * troubles.</p>
  *
- * <p>The class is immutable and thread-safe.
+ * <p>The class is immutable and thread-safe.</p>
  *
  * @see <a href="http://tools.ietf.org/html/rfc2616#section-14.43">RFC 2616 section 14.43 "User-Agent"</a>
  * @since 0.10
@@ -58,6 +58,7 @@ public final class UserAgentWire implements Wire {
 
     /**
      * Public ctor.
+     *
      * @param wire Original wire
      */
     public UserAgentWire(final Wire wire) {
@@ -74,6 +75,7 @@ public final class UserAgentWire implements Wire {
 
     /**
      * Public ctor.
+     *
      * @param wire Original wire
      * @param agnt Agent to send
      */

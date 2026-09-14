@@ -22,7 +22,7 @@ import lombok.EqualsAndHashCode;
  * <p>This response decorator is able to understand and parse {@code Link}
  * HTTP header according to
  * <a href="http://tools.ietf.org/html/rfc5988">RFC 5988 "Web Linking"</a>,
- * for example:
+ * for example:</p>
  *
  * <pre> String name = new JdkRequest("http://my.example.com")
  *   .fetch()
@@ -30,7 +30,7 @@ import lombok.EqualsAndHashCode;
  *   .follow("next")
  *   .fetch();</pre>
  *
- * <p>The class is immutable and thread-safe.
+ * <p>The class is immutable and thread-safe.</p>
  *
  * @see <a href="http://tools.ietf.org/html/rfc5988">RFC 5988 "Web Linking"</a>
  * @since 0.9
@@ -40,17 +40,8 @@ import lombok.EqualsAndHashCode;
 public final class WebLinkingResponse extends AbstractResponse {
 
     /**
-     * ImmutableHeader name.
-     */
-    private static final String HEADER = "Link";
-
-    /**
-     * Param name.
-     */
-    private static final String REL = "rel";
-
-    /**
      * Public ctor.
+     *
      * @param resp Response
      */
     public WebLinkingResponse(final Response resp) {
@@ -59,6 +50,7 @@ public final class WebLinkingResponse extends AbstractResponse {
 
     /**
      * Follow link by REL.
+     *
      * @param rel Relation name
      * @return The same object
      * @throws IOException If fails
@@ -78,6 +70,7 @@ public final class WebLinkingResponse extends AbstractResponse {
 
     /**
      * Get all links provided.
+     *
      * @return List of all links found
      * @throws IOException If fails
      */
@@ -85,13 +78,13 @@ public final class WebLinkingResponse extends AbstractResponse {
         final ConcurrentMap<String, WebLinkingResponse.Link> links =
             new ConcurrentHashMap<>(0);
         final Collection<String> headers =
-            this.headers().get(WebLinkingResponse.HEADER);
+            this.headers().get("Link");
         if (headers != null) {
             for (final String header : headers) {
                 for (final String part : Splitter.on(',').split(header)) {
                     final WebLinkingResponse.Link link =
                         new SimpleLink(part.trim());
-                    final String rel = link.get(WebLinkingResponse.REL);
+                    final String rel = link.get("rel");
                     if (rel != null) {
                         links.put(rel, link);
                     }
@@ -103,6 +96,7 @@ public final class WebLinkingResponse extends AbstractResponse {
 
     /**
      * Single link.
+     *
      * @since 1.0
      */
     @Immutable
@@ -110,6 +104,7 @@ public final class WebLinkingResponse extends AbstractResponse {
 
         /**
          * Its URI.
+         *
          * @return URI
          */
         URI uri();

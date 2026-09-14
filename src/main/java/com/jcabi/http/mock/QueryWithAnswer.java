@@ -8,6 +8,7 @@ import lombok.EqualsAndHashCode;
 
 /**
  * Query with answer.
+ *
  * @since 1.5
  */
 @EqualsAndHashCode(of = {"answr", "que"})
@@ -25,6 +26,7 @@ final class QueryWithAnswer {
 
     /**
      * Ctor.
+     *
      * @param qry The query
      * @param ans The answer
      */
@@ -35,6 +37,7 @@ final class QueryWithAnswer {
 
     /**
      * Get the query.
+     *
      * @return The query
      */
     MkQuery query() {
@@ -43,6 +46,7 @@ final class QueryWithAnswer {
 
     /**
      * Get the answer.
+     *
      * @return Answer
      */
     MkAnswer answer() {

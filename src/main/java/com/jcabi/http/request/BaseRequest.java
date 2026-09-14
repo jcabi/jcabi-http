@@ -31,6 +31,7 @@ import lombok.EqualsAndHashCode;
 
 /**
  * Base implementation of {@link Request}.
+ *
  * @see Request
  * @see Response
  * @since 0.8
@@ -91,6 +92,7 @@ public final class BaseRequest implements Request {
 
     /**
      * Public ctor.
+     *
      * @param wre Wire
      * @param uri The resource to work with
      */
@@ -104,6 +106,7 @@ public final class BaseRequest implements Request {
 
     /**
      * Public ctor.
+     *
      * @param wre Wire
      * @param uri The resource to work with
      * @param headers Headers
@@ -120,6 +123,7 @@ public final class BaseRequest implements Request {
 
     /**
      * Public ctor.
+     *
      * @param wre Wire
      * @param uri The resource to work with
      * @param headers Headers
@@ -142,6 +146,7 @@ public final class BaseRequest implements Request {
 
     /**
      * Private ctor.
+     *
      * @param wre Wire
      * @param headers Headers
      * @param uri The resource to work with

@@ -27,12 +27,14 @@ import org.junit.jupiter.params.ParameterizedTest;
 
 /**
  * Integration case for {@link com.jcabi.http.request.ApacheRequest}.
+ *
  * @since 1.1
  */
 final class RequestITCase extends RequestTestTemplate {
 
     /**
      * BaseRequest can fetch HTTP request and process HTTP response.
+     *
      * @param type Request type
      * @throws Exception If something goes wrong inside
      */
@@ -58,6 +60,7 @@ final class RequestITCase extends RequestTestTemplate {
 
     /**
      * BaseRequest can process not-OK response.
+     *
      * @param type Request type
      * @throws Exception If something goes wrong inside
      */
@@ -74,6 +77,7 @@ final class RequestITCase extends RequestTestTemplate {
 
     /**
      * BaseRequest can throw a correct exception on connection error.
+     *
      * @param type Request type
      */
     @Values

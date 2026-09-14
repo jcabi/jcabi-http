@@ -18,6 +18,7 @@ import java.util.Map;
 
 /**
  * Body of a request with a form that has attachments.
+ *
  * @since 1.17
  */
 final class MultipartFormBody implements RequestBody {
@@ -35,6 +36,7 @@ final class MultipartFormBody implements RequestBody {
 
     /**
      * Public ctor.
+     *
      * @param req Request
      * @param body Text to encapsulate
      */

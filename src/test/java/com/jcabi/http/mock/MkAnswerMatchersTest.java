@@ -12,6 +12,7 @@ import org.mockito.Mockito;
 
 /**
  * Test case for {@link MkAnswerMatchers}.
+ *
  * @since 1.5
  */
 final class MkAnswerMatchersTest {

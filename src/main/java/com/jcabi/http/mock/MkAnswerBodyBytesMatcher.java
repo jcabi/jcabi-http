@@ -12,6 +12,7 @@ import org.hamcrest.TypeSafeMatcher;
 
 /**
  * Matcher for checking {@link MkAnswer#bodyBytes()} result.
+ *
  * @since 0.17
  */
 @ToString
@@ -25,6 +26,7 @@ final class MkAnswerBodyBytesMatcher extends TypeSafeMatcher<MkAnswer> {
 
     /**
      * Ctor.
+     *
      * @param match The matcher to use for the body
      */
     MkAnswerBodyBytesMatcher(final Matcher<byte[]> match) {

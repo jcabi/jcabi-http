@@ -15,6 +15,7 @@ import lombok.EqualsAndHashCode;
 
 /**
  * Base URI.
+ *
  * @since 1.0
  */
 @Immutable
@@ -34,6 +35,7 @@ final class BaseUri implements RequestURI {
 
     /**
      * Public ctor.
+     *
      * @param req Request
      * @param uri The URI to start with
      */

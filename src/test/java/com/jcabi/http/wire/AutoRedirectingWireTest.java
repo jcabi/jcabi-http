@@ -19,6 +19,7 @@ import org.junit.jupiter.api.Test;
 
 /**
  * Test case for {@link AutoRedirectingWire}.
+ *
  * @since 1.7
  */
 final class AutoRedirectingWireTest {
@@ -26,6 +27,7 @@ final class AutoRedirectingWireTest {
     /**
      * AutoRedirectingWire retries up to the specified number of times for
      * HTTP Status 3xx responses.
+     *
      * @throws Exception If something goes wrong inside
      */
     @Test
@@ -54,6 +56,7 @@ final class AutoRedirectingWireTest {
     /**
      * AutoRedirectingWire will retry a few times and immediately return if
      * a valid response is obtained.
+     *
      * @throws Exception If something goes wrong inside
      */
     @Test

@@ -10,6 +10,7 @@ import org.hamcrest.Matchers;
 
 /**
  * Convenient set of matchers for {@link MkQuery}.
+ *
  * @since 1.5
  */
 @SuppressWarnings({"PMD.ProhibitPublicStaticMethods", "PMD.LinguisticNaming"})
@@ -24,6 +25,7 @@ public final class MkQueryMatchers {
 
     /**
      * Matches the value of the MkQuery's body against the given matcher.
+     *
      * @param matcher The matcher to use
      * @return Matcher for checking the body of MkQuery
      */
@@ -35,6 +37,7 @@ public final class MkQueryMatchers {
      * Matches the content of the MkQuery's header against the given matcher.
      * Note that for a valid match to occur, the header entry must exist
      * <i>and</i> its value(s) must match the given matcher.
+     *
      * @param header The header to check
      * @param matcher The matcher to use
      * @return Matcher for checking the body of MkQuery
@@ -48,6 +51,7 @@ public final class MkQueryMatchers {
 
     /**
      * Matches the path of the MkQuery.
+     *
      * @param path The path to check
      * @return Matcher for checking the path of MkQuery
      */
@@ -59,6 +63,7 @@ public final class MkQueryMatchers {
 
     /**
      * Matches the query of the MkQuery.
+     *
      * @param query The query to check
      * @return Matcher for checking the query of MkQuery
      */

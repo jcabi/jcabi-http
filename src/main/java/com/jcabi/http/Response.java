@@ -11,15 +11,15 @@ import java.util.Map;
 /**
  * RESTful response returned by {@link Request#fetch()}.
  *
- * <p>You can get this response from one of implementations of {@link Request}:
+ * <p>You can get this response from one of implementations of {@link Request}:</p>
  *
  * <pre> Response response = new JdkRequest("https://www.google.com")
  *   .header("Accept", "text/html")
  *   .fetch();</pre>
  *
- * <p>Instances of this interface are immutable and thread-safe.
+ * <p>Instances of this interface are immutable and thread-safe.</p>
  *
- * @see com.jcabi.http.request.JdkRequest *
+ * @see com.jcabi.http.request.JdkRequest
  * @since 0.8
  */
 @Immutable
@@ -27,24 +27,28 @@ public interface Response {
 
     /**
      * Get back to the request it's related to.
+     *
      * @return The request we're in
      */
     Request back();
 
     /**
      * Get status of the response as a positive integer number.
+     *
      * @return The status code
      */
     int status();
 
     /**
      * Get status line reason phrase.
+     *
      * @return The status line reason phrase
      */
     String reason();
 
     /**
      * Get a collection of all headers.
+     *
      * @return The headers
      */
     Map<String, List<String>> headers();
@@ -59,7 +63,7 @@ public interface Response {
      * contains any chars that can't be used and should be replaced with
      * a "replacement character", a {@link RuntimeException} will be thrown. If
      * you need to use some other encodings, use
-     * {@link #binary()} instead.
+     * {@link #binary()} instead.</p>
      *
      * @return The body, as a UTF-8 string
      */
@@ -67,12 +71,14 @@ public interface Response {
 
     /**
      * Raw body as an array of bytes.
+     *
      * @return The body, as a UTF-8 string
      */
     byte[] binary();
 
     /**
      * Convert it to another type, by encapsulation.
+     *
      * @param type Type to use
      * @param <T> Type to use
      * @return New response

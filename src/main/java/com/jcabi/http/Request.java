@@ -11,7 +11,7 @@ import java.io.InputStream;
 /**
  * RESTful request.
  *
- * <p>Instance of this class is supposed to be used this way:
+ * <p>Instance of this class is supposed to be used this way:</p>
  *
  * <pre> String name = new ApacheRequest("https://www.example.com:8080")
  *   .uri().path("/users").queryParam("id", 333).back()
@@ -31,20 +31,20 @@ import java.io.InputStream;
  * <p>Since version 0.10 it is recommended to use
  * {@link com.jcabi.http.wire.RetryWire}
  * decorator to avoid accidental {@link IOException} when connection is weak
- * or unstable, for example:
+ * or unstable, for example:</p>
  *
  * <pre> String body = new JdkRequest("https://www.google.com")
  *   .through(RetryWire.class)
  *   .fetch()
  *   .body();</pre>
  *
- * <p>Instances of this interface are immutable and thread-safe.
+ * <p>Instances of this interface are immutable and thread-safe.</p>
  *
  * <p>You can use either ApacheRequest or JdkRequest,
  * according to your needs. JdkRequest won't require any additional
  * dependencies, while ApacheRequest will properly support all
  * possible HTTP methods (JdkRequest doesn't support {@code PATCH},
- * for example).
+ * for example).</p>
  *
  * @see com.jcabi.http.request.JdkRequest
  * @see com.jcabi.http.request.ApacheRequest
@@ -91,36 +91,42 @@ public interface Request {
 
     /**
      * TRACE method name.
+     *
      * @since 2.0
      */
     String TRACE = "TRACE";
 
     /**
      * CONNECT method name.
+     *
      * @since 2.0
      */
     String CONNECT = "CONNECT";
 
     /**
      * Get destination URI.
+     *
      * @return The destination it is currently pointing to
      */
     RequestURI uri();
 
     /**
      * Get request body.
+     *
      * @return New alternated request
      */
     RequestBody body();
 
     /**
      * Get multipart form (multipart/form-data) body.
+     *
      * @return New altered request
      */
     RequestBody multipartBody();
 
     /**
      * Set request header.
+     *
      * @param name ImmutableHeader name
      * @param value Value of the header to set
      * @return New alternated request
@@ -129,6 +135,7 @@ public interface Request {
 
     /**
      * Remove all headers with this name.
+     *
      * @param name ImmutableHeader name
      * @return New alternated request
      * @since 0.10
@@ -137,6 +144,7 @@ public interface Request {
 
     /**
      * Use this method.
+     *
      * @param method The method to use
      * @return New alternated request
      */
@@ -144,6 +152,7 @@ public interface Request {
 
     /**
      * Use this timeout values.
+     *
      * @param connect The connect timeout to use in ms
      * @param read The read timeout to use in ms
      * @return New alternated request
@@ -152,6 +161,7 @@ public interface Request {
 
     /**
      * Execute it with a specified HTTP method.
+     *
      * @return Response
      * @throws IOException If fails to fetch HTTP request
      */
@@ -162,6 +172,7 @@ public interface Request {
      * {@link InputStream} being passed as the request body. Note that the
      * request MUST have an empty body when this method is being invoked, or
      * it will throw an {@link IllegalStateException}.
+     *
      * @param stream The input stream to use
      * @return Response
      * @throws IOException If fails to fetch HTTP request
@@ -171,6 +182,7 @@ public interface Request {
 
     /**
      * Send it through a decorating {@link Wire}.
+     *
      * @param type Type of wire to use
      * @param args Optional arguments for the wire constructor
      * @param <T> Type to use
@@ -181,6 +193,7 @@ public interface Request {
 
     /**
      * Send it through a decorating {@link Wire}.
+     *
      * @param wire Wire to use
      * @return New request with a wire decorated
      * @since 0.10

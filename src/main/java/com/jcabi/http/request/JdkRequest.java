@@ -35,9 +35,9 @@ import lombok.ToString;
  * <p>This implementation will be enough in most situations. However,
  * sometimes you may need better tuning or an ability to fetch custom
  * HTTP methods (JDK doesn't support PATCH, for example). In this case,
- * use {@link ApacheRequest}.
+ * use {@link ApacheRequest}.</p>
  *
- * <p>The class is immutable and thread-safe.
+ * <p>The class is immutable and thread-safe.</p>
  *
  * @since 0.8
  */
@@ -49,6 +49,7 @@ public final class JdkRequest implements Request {
 
     /**
      * The wire to use.
+     *
      * @checkstyle AnonInnerLength (200 lines)
      */
     private static final Wire WIRE = new Wire() {
@@ -173,6 +174,7 @@ public final class JdkRequest implements Request {
 
     /**
      * Public ctor.
+     *
      * @param url The resource to work with
      */
     public JdkRequest(final URL url) {
@@ -181,6 +183,7 @@ public final class JdkRequest implements Request {
 
     /**
      * Public ctor.
+     *
      * @param uri The resource to work with
      */
     public JdkRequest(final URI uri) {
@@ -189,6 +192,7 @@ public final class JdkRequest implements Request {
 
     /**
      * Public ctor.
+     *
      * @param uri The resource to work with
      */
     public JdkRequest(final String uri) {

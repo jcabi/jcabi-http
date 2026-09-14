@@ -15,7 +15,6 @@ import jakarta.xml.bind.DatatypeConverter;
 import java.io.IOException;
 import java.io.InputStream;
 import java.net.URI;
-import java.nio.charset.Charset;
 import java.nio.charset.StandardCharsets;
 import java.util.ArrayList;
 import java.util.Collection;
@@ -27,7 +26,7 @@ import lombok.ToString;
  * Wire with HTTP basic authentication based on user info of URI.
  *
  * <p>This wire converts user info from URI into
- * {@code "Authorization"} HTTP header, for example:
+ * {@code "Authorization"} HTTP header, for example:</p>
  *
  * <pre> String html = new JdkRequest("http://jeff:12345@example.com")
  *   .through(BasicAuthWire.class)
@@ -35,9 +34,9 @@ import lombok.ToString;
  *   .body();</pre>
  *
  * <p>In this example, an additional HTTP header {@code Authorization}
- * will be added with a value {@code Basic amVmZjoxMjM0NQ==}.
+ * will be added with a value {@code Basic amVmZjoxMjM0NQ==}.</p>
  *
- * <p>The class is immutable and thread-safe.
+ * <p>The class is immutable and thread-safe.</p>
  *
  * @see <a href="http://tools.ietf.org/html/rfc2617">RFC 2617 "HTTP Authentication: Basic and Digest Access Authentication"</a>
  * @since 0.10
@@ -48,17 +47,13 @@ import lombok.ToString;
 public final class BasicAuthWire implements Wire {
 
     /**
-     * The Charset to use.
-     */
-    private static final Charset CHARSET = StandardCharsets.UTF_8;
-
-    /**
      * Original wire.
      */
     private final transient Wire origin;
 
     /**
      * Public ctor.
+     *
      * @param wire Original wire
      */
     public BasicAuthWire(final Wire wire) {
@@ -99,7 +94,7 @@ public final class BasicAuthWire implements Wire {
                                 "%s:%s",
                                 parts[0],
                                 parts[1]
-                            ).getBytes(BasicAuthWire.CHARSET)
+                            ).getBytes(StandardCharsets.UTF_8)
                         )
                     )
                 )

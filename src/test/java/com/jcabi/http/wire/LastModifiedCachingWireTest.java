@@ -30,12 +30,14 @@ import org.junit.jupiter.api.Test;
 
 /**
  * Test case for {@link LastModifiedCachingWire}.
+ *
  * @since 1.15
  */
 final class LastModifiedCachingWireTest {
 
     /**
      * Test body.
+     *
      * @todo #120:15min Clean tests shared fields and redundant variables
      *  Move constants in this file to their tests because tests must share
      *  nothing. Then also inline any redundant variables.
@@ -54,6 +56,7 @@ final class LastModifiedCachingWireTest {
 
     /**
      * LastModifiedCachingWire can handle requests without headers.
+     *
      * @throws Exception If fails
      */
     @Test
@@ -85,6 +88,7 @@ final class LastModifiedCachingWireTest {
 
     /**
      * LastModifiedCachingWire can cache GET requests.
+     *
      * @throws Exception If fails
      */
     @Test
@@ -137,6 +141,7 @@ final class LastModifiedCachingWireTest {
      * response does not have a last modified header.
      * We can observe this via the If-Modified-Since headers as when the cache
      * does not contain an entry, this is not present on the request.
+     *
      * @throws Exception If fails
      */
     @Test
@@ -190,6 +195,7 @@ final class LastModifiedCachingWireTest {
     /**
      * LastModifiedCachingWire can resist cache eviction in the event of a non
      * OK response without a last modified header.
+     *
      * @throws Exception If fails
      * @todo #120:30min Confirm cache clearing behaviour in all non-OK responses
      *  Non-OK behaviour was not specified in #120, so for example, if the
@@ -240,6 +246,7 @@ final class LastModifiedCachingWireTest {
 
     /**
      * LastModifiedCachingWire cache updates with newer response.
+     *
      * @throws Exception If fails
      */
     @Test
@@ -301,6 +308,7 @@ final class LastModifiedCachingWireTest {
     /**
      * LastModifiedCachingWire can send a request directly
      * if it contains the "If-Modified-Since" header.
+     *
      * @throws Exception - if the test fails
      */
     @Test

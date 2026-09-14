@@ -9,6 +9,7 @@ import org.hamcrest.CustomMatcher;
 
 /**
  * Status matcher.
+ *
  * @since 1.2
  */
 final class StatusMatch extends CustomMatcher<Response> {
@@ -20,6 +21,7 @@ final class StatusMatch extends CustomMatcher<Response> {
 
     /**
      * Ctor.
+     *
      * @param msg Message to show
      * @param sts HTTP status to check
      */

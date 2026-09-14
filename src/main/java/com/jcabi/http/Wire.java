@@ -15,7 +15,7 @@ import java.util.Map;
  *
  * <p>An instance of this interface can be used in
  * {@link Request#through(Class,Object...)} to decorate
- * an existing {@code wire}, for example:
+ * an existing {@code wire}, for example:</p>
  *
  * <pre> String html = new JdkRequest("http://google.com")
  *   .through(VerboseWire.class)
@@ -25,7 +25,7 @@ import java.util.Map;
  *   .body();</pre>
  *
  * <p>Every {@code Wire} decorator passed to {@code through()} method
- * wraps a previously existing one.
+ * wraps a previously existing one.</p>
  *
  * @since 0.9
  */
@@ -36,6 +36,7 @@ public interface Wire {
 
     /**
      * Send request and return response.
+     *
      * @param req Request
      * @param home URI to fetch
      * @param method HTTP method

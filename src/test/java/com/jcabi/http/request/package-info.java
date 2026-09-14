@@ -5,6 +5,7 @@
 
 /**
  * Requests, tests.
+ *
  * @since 0.10
  */
 package com.jcabi.http.request;

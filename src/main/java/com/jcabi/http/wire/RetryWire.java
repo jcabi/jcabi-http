@@ -23,7 +23,7 @@ import lombok.ToString;
  * Wire that retries a few times before giving up and throwing exception.
  *
  * <p>This wire retries again (at least three times) if an original one throws
- * {@link IOException}:
+ * {@link IOException}:</p>
  *
  * <pre> String html = new JdkRequest("http://goggle.com")
  *   .through(RetryWire.class)
@@ -32,9 +32,9 @@ import lombok.ToString;
  *   .body();</pre>
  *
  * <p>Since version 1.9 this wire retries also if HTTP status code
- * is between 500 and 599.
+ * is between 500 and 599.</p>
  *
- * <p>The class is immutable and thread-safe.
+ * <p>The class is immutable and thread-safe.</p>
  *
  * @since 0.10
  */
@@ -50,6 +50,7 @@ public final class RetryWire implements Wire {
 
     /**
      * Public ctor.
+     *
      * @param wire Original wire
      */
     public RetryWire(final Wire wire) {

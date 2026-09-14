@@ -15,7 +15,7 @@ import java.util.Map;
  * <p>Instance of this interface is returned by {@link Request#body()},
  * and can be modified using one of the methods below. When modification
  * is done, method {@code back()} returns a modified instance of
- * {@link Request}, for example:
+ * {@link Request}, for example:</p>
  *
  * <pre> new JdkRequest("http://my.example.com")
  *   .header("Content-Type", "application/x-www-form-urlencoded")
@@ -26,7 +26,7 @@ import java.util.Map;
  *   .back() // returns a modified instance of Request
  *   .fetch()</pre>
  *
- * <p>Instances of this interface are immutable and thread-safe.
+ * <p>Instances of this interface are immutable and thread-safe.</p>
  *
  * @since 0.8
  */
@@ -35,18 +35,21 @@ public interface RequestBody {
 
     /**
      * Get back to the request it's related to.
+     *
      * @return The request we're in
      */
     Request back();
 
     /**
      * Get text content.
+     *
      * @return Content in UTF-8
      */
     String get();
 
     /**
      * Set text content.
+     *
      * @param body Body content
      * @return New alternated body
      */
@@ -54,6 +57,7 @@ public interface RequestBody {
 
     /**
      * Set JSON content.
+     *
      * @param json JSON object
      * @return New alternated body
      * @since 0.11
@@ -62,6 +66,7 @@ public interface RequestBody {
 
     /**
      * Set byte array content.
+     *
      * @param body Body content
      * @return New alternated body
      */
@@ -69,6 +74,7 @@ public interface RequestBody {
 
     /**
      * Add form param.
+     *
      * @param name Query param name
      * @param value Value of the query param to set
      * @return New alternated body
@@ -77,6 +83,7 @@ public interface RequestBody {
 
     /**
      * Add form params.
+     *
      * @param params Map of params
      * @return New alternated body
      * @since 0.10
@@ -85,6 +92,7 @@ public interface RequestBody {
 
     /**
      * Printer of byte array.
+     *
      * @since 1.0
      */
     @Immutable
@@ -98,6 +106,7 @@ public interface RequestBody {
 
         /**
          * Ctor.
+         *
          * @param bytes Bytes to encapsulate
          */
         public Printable(final byte[] bytes) {

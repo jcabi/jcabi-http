@@ -19,12 +19,14 @@ import org.junit.jupiter.api.Test;
 
 /**
  * Test case for {@link FakeRequest}.
+ *
  * @since 1.0
  */
 final class FakeRequestTest {
 
     /**
      * FakeRequest can fetch a fake response.
+     *
      * @throws Exception If something goes wrong inside
      */
     @Test
@@ -45,6 +47,7 @@ final class FakeRequestTest {
 
     /**
      * FakeRequest can fetch a fake response with binary response.
+     *
      * @throws Exception If something goes wrong inside.
      */
     @Test
@@ -65,6 +68,7 @@ final class FakeRequestTest {
 
     /**
      * FakeRequest can change URI.
+     *
      * @throws Exception If something goes wrong inside
      */
     @Test
@@ -80,6 +84,7 @@ final class FakeRequestTest {
 
     /**
      * FakeRequest can change URI in response.
+     *
      * @throws Exception If something goes wrong inside
      */
     @Test
@@ -114,6 +119,7 @@ final class FakeRequestTest {
 
     /**
      * FakeRequest returns the Response Body if the Request Body is set.
+     *
      * @throws Exception If something goes wrong inside.
      * @link https://github.com/jcabi/jcabi-http/issues/47
      */

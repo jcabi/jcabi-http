@@ -11,6 +11,7 @@ import lombok.ToString;
 /**
  * Wire that caches requests based on Last-Modified
  * and If-Modified-Since headers.
+ *
  * @since 1.15
  */
 @ToString
@@ -19,6 +20,7 @@ public final class LastModifiedCachingWire
 
     /**
      * Public ctor.
+     *
      * @param origin Original wire
      */
     public LastModifiedCachingWire(final Wire origin) {

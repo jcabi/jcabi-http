@@ -15,6 +15,7 @@ import org.junit.jupiter.api.Test;
 
 /**
  * Integration test for {@link RestResponse}.
+ *
  * @since 1.17.5
  */
 final class RestResponseITCase {

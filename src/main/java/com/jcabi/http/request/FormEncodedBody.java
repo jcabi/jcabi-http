@@ -19,6 +19,7 @@ import lombok.EqualsAndHashCode;
 /**
  * Body of a request with a simple form.
  * (enctype application/x-www-form-urlencoded)
+ *
  * @since 1.17
  */
 @Immutable
@@ -39,6 +40,7 @@ final class FormEncodedBody implements RequestBody {
 
     /**
      * Public ctor.
+     *
      * @param req Request
      * @param body Text to encapsulate
      */

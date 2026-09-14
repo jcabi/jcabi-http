@@ -14,6 +14,7 @@ import org.mockito.Mockito;
 
 /**
  * Test case for {@link DefaultResponse}.
+ *
  * @since 1.0
  */
 final class DefaultResponseTest {

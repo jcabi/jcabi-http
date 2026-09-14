@@ -37,6 +37,7 @@ import org.apache.commons.io.FileUtils;
 
 /**
  * Cache for FcWire.
+ *
  * @since 1.16
  */
 @Immutable
@@ -92,6 +93,7 @@ final class FcCache {
 
     /**
      * Ctor.
+     *
      * @param path Dir with files
      */
     FcCache(final String path) {
@@ -100,6 +102,7 @@ final class FcCache {
 
     /**
      * Invalidate all.
+     *
      * @throws IOException If fails
      */
     void invalidate() throws IOException {
@@ -112,6 +115,7 @@ final class FcCache {
 
     /**
      * Get and cache.
+     *
      * @param label Label to use
      * @param wire Original wire
      * @param request The request
