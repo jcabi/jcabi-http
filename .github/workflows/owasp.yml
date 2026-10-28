@@ -22,13 +22,18 @@ jobs:
         with:
           java-version: 21
           distribution: 'temurin'
+      - name: Cache vulnerability data
+        uses: actions/cache@v4
+        with:
+          path: ${{ runner.temp }}/dependency-check-data
+          key: ${{ runner.os }}-dependency-check-${{ hashFiles('pom.xml') }}-${{ github.run_id }}
+          restore-keys: |
+            ${{ runner.os }}-dependency-check-${{ hashFiles('pom.xml') }}-
       - name: Maven
         run: |
             if [ -z "${NVD_API_KEY:-}" ]; then
-                echo "NVD_API_KEY is NOT set"
-                exit 1
-            else
-                mvn -DnvdApiKey="$NVD_API_KEY" --errors --batch-mode -Powasp dependency-check:check
+                echo "No NVD API key is available; updating vulnerability data anonymously"
             fi
+            mvn --errors --batch-mode -Powasp "-DdataDirectory=${RUNNER_TEMP}/dependency-check-data" dependency-check:check
         env:
           NVD_API_KEY: ${{ secrets.NVD_API_KEY }}
