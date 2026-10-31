@@ -1,31 +1,6 @@
 /*
- * Copyright (c) 2011-2025, jcabi.com
- * All rights reserved.
- *
- * Redistribution and use in source and binary forms, with or without
- * modification, are permitted provided that the following conditions
- * are met: 1) Redistributions of source code must retain the above
- * copyright notice, this list of conditions and the following
- * disclaimer. 2) Redistributions in binary form must reproduce the above
- * copyright notice, this list of conditions and the following
- * disclaimer in the documentation and/or other materials provided
- * with the distribution. 3) Neither the name of the jcabi.com nor
- * the names of its contributors may be used to endorse or promote
- * products derived from this software without specific prior written
- * permission.
- *
- * THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS
- * "AS IS" AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT
- * NOT LIMITED TO, THE IMPLIED WARRANTIES OF MERCHANTABILITY AND
- * FITNESS FOR A PARTICULAR PURPOSE ARE DISCLAIMED. IN NO EVENT SHALL
- * THE COPYRIGHT HOLDER OR CONTRIBUTORS BE LIABLE FOR ANY DIRECT,
- * INDIRECT, INCIDENTAL, SPECIAL, EXEMPLARY, OR CONSEQUENTIAL DAMAGES
- * (INCLUDING, BUT NOT LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR
- * SERVICES; LOSS OF USE, DATA, OR PROFITS; OR BUSINESS INTERRUPTION)
- * HOWEVER CAUSED AND ON ANY THEORY OF LIABILITY, WHETHER IN CONTRACT,
- * STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE)
- * ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED
- * OF THE POSSIBILITY OF SUCH DAMAGE.
+ * SPDX-FileCopyrightText: Copyright (c) 2011-2026 Yegor Bugayenko
+ * SPDX-License-Identifier: MIT
  */
 package com.jcabi.http.mock;
 
@@ -37,9 +12,9 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.net.URI;
 import java.nio.charset.StandardCharsets;
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
-import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
@@ -78,16 +53,33 @@ final class GrizzlyQuery implements MkQuery {
 
     /**
      * Ctor.
+     *
      * @param request Grizzly request
      * @throws IOException If fails
      */
-    @SuppressWarnings("PMD.ConstructorOnlyInitializesOrCallOtherConstructors")
     GrizzlyQuery(final Request request) throws IOException {
-        request.setCharacterEncoding(StandardCharsets.UTF_8.toString());
-        this.home = GrizzlyQuery.uri(request);
-        this.mtd = request.getMethod();
-        this.hdrs = GrizzlyQuery.headers(request);
-        this.content = GrizzlyQuery.input(request);
+        this(
+            GrizzlyQuery.uri(GrizzlyQuery.encoded(request)),
+            request.getMethod(),
+            GrizzlyQuery.headers(request),
+            GrizzlyQuery.input(request)
+        );
+    }
+
+    /**
+     * Ctor.
+     *
+     * @param uri Request URI
+     * @param method Request method
+     * @param headers Request headers
+     * @param body Request content
+     */
+    private GrizzlyQuery(final String uri, final Method method,
+        final ArrayMap<String, List<String>> headers, final byte[] body) {
+        this.home = uri;
+        this.mtd = method;
+        this.hdrs = headers;
+        this.content = body.clone();
     }
 
     @Override
@@ -115,11 +107,11 @@ final class GrizzlyQuery implements MkQuery {
         return Arrays.copyOf(this.content, this.content.length);
     }
 
-    /**
-     * Fetch URI from the request.
-     * @param request Request
-     * @return URI
-     */
+    private static Request encoded(final Request request) throws IOException {
+        request.setCharacterEncoding(StandardCharsets.UTF_8.toString());
+        return request;
+    }
+
     private static String uri(final Request request) {
         final StringBuilder uri = new StringBuilder(request.getRequestURI());
         final String query = request.getQueryString();
@@ -129,11 +121,6 @@ final class GrizzlyQuery implements MkQuery {
         return uri.toString();
     }
 
-    /**
-     * Fetch headers from the request.
-     * @param request Request
-     * @return Headers
-     */
     private static ArrayMap<String, List<String>> headers(
         final Request request
     ) {
@@ -149,16 +136,10 @@ final class GrizzlyQuery implements MkQuery {
         return new ArrayMap<>(headers);
     }
 
-    /**
-     * Get headers by name.
-     * @param request Grizzly request
-     * @param name Name of header
-     * @return List of values
-     */
     private static List<String> headers(
         final Request request, final String name
     ) {
-        final List<String> list = new LinkedList<>();
+        final List<String> list = new ArrayList<>(0);
         final Iterable<?> values = request.getHeaders(name);
         for (final Object value : values) {
             list.add(value.toString());
@@ -166,23 +147,18 @@ final class GrizzlyQuery implements MkQuery {
         return list;
     }
 
-    /**
-     * Read req.
-     * @param req Grizzly req
-     * @return Bytes of input
-     * @throws IOException If fails
-     */
     private static byte[] input(final Request req) throws IOException {
-        // @checkstyle MagicNumber (1 line)
         final byte[] buffer = new byte[8192];
-        final InputStream input = req.getInputStream();
-        final ByteArrayOutputStream output = new ByteArrayOutputStream();
-        while (true) {
-            final int bytes = input.read(buffer);
-            if (bytes == -1) {
-                break;
+        final ByteArrayOutputStream output;
+        try (InputStream input = req.getInputStream()) {
+            output = new ByteArrayOutputStream();
+            while (true) {
+                final int bytes = input.read(buffer);
+                if (bytes == -1) {
+                    break;
+                }
+                output.write(buffer, 0, bytes);
             }
-            output.write(buffer, 0, bytes);
         }
         return output.toByteArray();
     }

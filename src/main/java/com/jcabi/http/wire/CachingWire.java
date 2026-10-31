@@ -1,31 +1,6 @@
 /*
- * Copyright (c) 2011-2025, jcabi.com
- * All rights reserved.
- *
- * Redistribution and use in source and binary forms, with or without
- * modification, are permitted provided that the following conditions
- * are met: 1) Redistributions of source code must retain the above
- * copyright notice, this list of conditions and the following
- * disclaimer. 2) Redistributions in binary form must reproduce the above
- * copyright notice, this list of conditions and the following
- * disclaimer in the documentation and/or other materials provided
- * with the distribution. 3) Neither the name of the jcabi.com nor
- * the names of its contributors may be used to endorse or promote
- * products derived from this software without specific prior written
- * permission.
- *
- * THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS
- * "AS IS" AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT
- * NOT LIMITED TO, THE IMPLIED WARRANTIES OF MERCHANTABILITY AND
- * FITNESS FOR A PARTICULAR PURPOSE ARE DISCLAIMED. IN NO EVENT SHALL
- * THE COPYRIGHT HOLDER OR CONTRIBUTORS BE LIABLE FOR ANY DIRECT,
- * INDIRECT, INCIDENTAL, SPECIAL, EXEMPLARY, OR CONSEQUENTIAL DAMAGES
- * (INCLUDING, BUT NOT LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR
- * SERVICES; LOSS OF USE, DATA, OR PROFITS; OR BUSINESS INTERRUPTION)
- * HOWEVER CAUSED AND ON ANY THEORY OF LIABILITY, WHETHER IN CONTRACT,
- * STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE)
- * ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED
- * OF THE POSSIBILITY OF SUCH DAMAGE.
+ * SPDX-FileCopyrightText: Copyright (c) 2011-2026 Yegor Bugayenko
+ * SPDX-License-Identifier: MIT
  */
 package com.jcabi.http.wire;
 
@@ -36,10 +11,12 @@ import com.jcabi.aspects.Immutable;
 import com.jcabi.http.Request;
 import com.jcabi.http.Response;
 import com.jcabi.http.Wire;
+import jakarta.ws.rs.core.HttpHeaders;
 import java.io.IOException;
 import java.io.InputStream;
 import java.net.URI;
 import java.util.Collection;
+import java.util.Locale;
 import java.util.Map;
 import java.util.concurrent.Callable;
 import java.util.concurrent.ExecutionException;
@@ -50,7 +27,7 @@ import lombok.ToString;
  * Wire that caches GET requests.
  *
  * <p>This decorator can be used when you want to avoid duplicate
- * GET requests to load-sensitive resources, for example:
+ * GET requests to load-sensitive resources, for example:</p>
  *
  * <pre> String html = new JdkRequest("http://goggle.com")
  *   .through(CachingWire.class)
@@ -59,14 +36,14 @@ import lombok.ToString;
  *   .body();</pre>
  *
  * <p>Since 1.5, you can also configure it to flush the entire cache
- * on certain request URI's, for example:
+ * on certain request URI's, for example:</p>
  *
  * <pre>new JdkRequest(uri)
  *   .through(CachingWire.class, "GET /save/.*")
  *   .uri().path("/save/123").back()
  *   .fetch();</pre>
  *
- * <p>Since 1.17.3, you can pass a {@see LoadingCache} alongside the wire.
+ * <p>Since 1.17.3, you can pass a {@link LoadingCache} alongside the wire.</p>
  *
  * <pre>{@code
  * final LoadingCache<Callable<Response>, Response> cache = ...;
@@ -78,14 +55,15 @@ import lombok.ToString;
  *
  * <p>The regular expression provided will be used against a string
  * constructed as an HTTP method, space, path of the URI together with
- * query part.
+ * query part.</p>
  *
- * <p>The class is immutable and thread-safe.
+ * <p>The class is immutable and thread-safe.</p>
+ *
+ * @since 1.0
  * @todo #179:30m This implementation depends on Guava. Investigate for a
  *  possible shared interface between this class and other implementations for
  *  caching. If this shared interface is possible replace this task with a task
  *  for implementing it.
- * @since 1.0
  */
 @Immutable
 @ToString
@@ -128,6 +106,12 @@ public final class CachingWire implements Wire {
     private static final String NEVER = "$never";
 
     /**
+     * No-cache directive value used in {@code Cache-Control}
+     * and {@code Pragma} request headers.
+     */
+    private static final String NO_CACHE = "no-cache";
+
+    /**
      * Original wire.
      */
     private final transient Wire origin;
@@ -144,6 +128,7 @@ public final class CachingWire implements Wire {
 
     /**
      * Public ctor.
+     *
      * @param wire Original wire
      */
     public CachingWire(final Wire wire) {
@@ -152,6 +137,7 @@ public final class CachingWire implements Wire {
 
     /**
      * Public ctor.
+     *
      * @param wire Original wire
      * @param flsh Flushing regular expression
      * @since 1.5
@@ -159,11 +145,14 @@ public final class CachingWire implements Wire {
     public CachingWire(final Wire wire, final String flsh) {
         this.origin = wire;
         this.regex = flsh;
-        this.cache = CACHE.getUnchecked(this);
+        // @checkstyle ConstructorsCodeFreeCheck (1 line)
+        this.cache = CachingWire.CACHE.getUnchecked(this);
     }
 
+    // @checkstyle ConstructorsOrderCheck (30 lines)
     /**
      * Public ctor.
+     *
      * @param wire Original wire
      * @param storage Cache
      * @since 1.17.4
@@ -177,6 +166,7 @@ public final class CachingWire implements Wire {
 
     /**
      * Public ctor.
+     *
      * @param wire Original wire
      * @param flsh Flushing regular expression
      * @param storage Cache
@@ -192,7 +182,6 @@ public final class CachingWire implements Wire {
         this.cache = storage;
     }
 
-    // @checkstyle ParameterNumber (5 lines)
     @Override
     public Response send(
         final Request req, final String home,
@@ -212,10 +201,10 @@ public final class CachingWire implements Wire {
             this.cache.invalidateAll();
         }
         final Response rsp;
-        if (method.equals(Request.GET)) {
+        if (method.equals(Request.GET) && !CachingWire.bypass(headers)) {
             try {
                 rsp = this.cache.get(
-                    new CachingWire.Query(
+                    new Query(
                         this.origin, req, home, headers, content,
                         connect, read
                     )
@@ -234,6 +223,7 @@ public final class CachingWire implements Wire {
 
     /**
      * Invalidate the entire cache.
+     *
      * @since 1.15
      */
     @SuppressWarnings("PMD.ProhibitPublicStaticMethods")
@@ -241,82 +231,26 @@ public final class CachingWire implements Wire {
         CachingWire.CACHE.invalidateAll();
     }
 
-    /**
-     * Query.
-     *
-     * @since 1.8.3
-     */
-    @ToString
-    @EqualsAndHashCode(of = {"origin", "request", "uri", "headers"})
-    private static final class Query implements Callable<Response> {
-        /**
-         * Origin wire.
-         */
-        private final transient Wire origin;
-
-        /**
-         * Request.
-         */
-        private final transient Request request;
-
-        /**
-         * URI.
-         */
-        private final transient String uri;
-
-        /**
-         * Headers.
-         */
-        private final transient Collection<Map.Entry<String, String>> headers;
-
-        /**
-         * Body.
-         */
-        private final transient InputStream body;
-
-        /**
-         * Connect timeout.
-         */
-        private final transient int connect;
-
-        /**
-         * Read timeout.
-         */
-        private final transient int read;
-
-        /**
-         * Ctor.
-         * @param wire Original wire
-         * @param req Request
-         * @param home URI to fetch
-         * @param hdrs Headers
-         * @param input Input body
-         * @param cnct Connect timeout
-         * @param rdd Read timeout
-         * @checkstyle ParameterNumberCheck (5 lines)
-         */
-        Query(
-            final Wire wire, final Request req, final String home,
-            final Collection<Map.Entry<String, String>> hdrs,
-            final InputStream input, final int cnct,
-            final int rdd
-        ) {
-            this.origin = wire;
-            this.request = req;
-            this.uri = home;
-            this.headers = hdrs;
-            this.body = input;
-            this.connect = cnct;
-            this.read = rdd;
+    private static boolean bypass(
+        final Collection<Map.Entry<String, String>> headers
+    ) {
+        boolean bypass = false;
+        for (final Map.Entry<String, String> header : headers) {
+            final String name = header.getKey();
+            final String value = header.getValue()
+                .toLowerCase(Locale.ENGLISH);
+            if (HttpHeaders.CACHE_CONTROL.equals(name)
+                && (value.contains(CachingWire.NO_CACHE)
+                || value.contains("no-store"))) {
+                bypass = true;
+                break;
+            }
+            if ("Pragma".equals(name)
+                && value.contains(CachingWire.NO_CACHE)) {
+                bypass = true;
+                break;
+            }
         }
-
-        @Override
-        public Response call() throws IOException {
-            return this.origin.send(
-                this.request, this.uri, Request.GET, this.headers, this.body,
-                this.connect, this.read
-            );
-        }
+        return bypass;
     }
-
 }

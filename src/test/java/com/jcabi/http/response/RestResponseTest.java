@@ -1,35 +1,9 @@
 /*
- * Copyright (c) 2011-2025, jcabi.com
- * All rights reserved.
- *
- * Redistribution and use in source and binary forms, with or without
- * modification, are permitted provided that the following conditions
- * are met: 1) Redistributions of source code must retain the above
- * copyright notice, this list of conditions and the following
- * disclaimer. 2) Redistributions in binary form must reproduce the above
- * copyright notice, this list of conditions and the following
- * disclaimer in the documentation and/or other materials provided
- * with the distribution. 3) Neither the name of the jcabi.com nor
- * the names of its contributors may be used to endorse or promote
- * products derived from this software without specific prior written
- * permission.
- *
- * THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS
- * "AS IS" AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT
- * NOT LIMITED TO, THE IMPLIED WARRANTIES OF MERCHANTABILITY AND
- * FITNESS FOR A PARTICULAR PURPOSE ARE DISCLAIMED. IN NO EVENT SHALL
- * THE COPYRIGHT HOLDER OR CONTRIBUTORS BE LIABLE FOR ANY DIRECT,
- * INDIRECT, INCIDENTAL, SPECIAL, EXEMPLARY, OR CONSEQUENTIAL DAMAGES
- * (INCLUDING, BUT NOT LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR
- * SERVICES; LOSS OF USE, DATA, OR PROFITS; OR BUSINESS INTERRUPTION)
- * HOWEVER CAUSED AND ON ANY THEORY OF LIABILITY, WHETHER IN CONTRACT,
- * STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE)
- * ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED
- * OF THE POSSIBILITY OF SUCH DAMAGE.
+ * SPDX-FileCopyrightText: Copyright (c) 2011-2026 Yegor Bugayenko
+ * SPDX-License-Identifier: MIT
  */
 package com.jcabi.http.response;
 
-import com.jcabi.http.Response;
 import com.jcabi.http.request.FakeRequest;
 import jakarta.ws.rs.core.HttpHeaders;
 import java.net.HttpURLConnection;
@@ -42,9 +16,9 @@ import org.junit.jupiter.api.Test;
 
 /**
  * Test case for {@link RestResponse}.
+ *
  * @since 1.1
  */
-@SuppressWarnings("PMD.AvoidDuplicateLiterals")
 final class RestResponseTest {
 
     /**
@@ -64,44 +38,47 @@ final class RestResponseTest {
 
     /**
      * RestResponse can assert HTTP header.
+     *
      * @throws Exception If something goes wrong inside
      */
     @Test
     @SuppressWarnings("unchecked")
     void assertsHttpHeaders() throws Exception {
-        final String name = "Abc";
-        final String value = "t66";
-        final Response rsp = new FakeRequest().withHeader(name, value).fetch();
-        new RestResponse(rsp).assertHeader(
-            name,
-            Matchers.allOf(
-                Matchers.hasItems(value),
-                Matcher.class.cast(Matchers.hasSize(1))
-            )
+        final RestResponse response = new RestResponse(
+            new FakeRequest().withHeader("Abc", "t66").fetch()
         );
-        new RestResponse(rsp).assertHeader(
-            "Something-Else-Which-Is-Absent",
-            Matcher.class.cast(Matchers.empty())
+        Assertions.assertAll(
+            () -> response.assertHeader(
+                "Abc",
+                Matchers.allOf(
+                    Matchers.hasItems("t66"),
+                    Matcher.class.cast(Matchers.hasSize(1))
+                )
+            ),
+            () -> response.assertHeader(
+                "Something-Else-Which-Is-Absent",
+                Matcher.class.cast(Matchers.empty())
+            )
         );
     }
 
     /**
      * RestResponse can retrieve a cookie by name.
+     *
      * @throws Exception If something goes wrong inside
      */
     @Test
     void retrievesCookieByName() throws Exception {
-        final RestResponse response = new RestResponse(
-            new FakeRequest()
-                .withBody("<hello/>")
-                .withHeader(
-                    HttpHeaders.SET_COOKIE,
-                    "cookie1=foo1;Path=/;Comment=\"\", bar=1;"
-                )
-                .fetch()
-        );
         MatcherAssert.assertThat(
-            response.cookie("cookie1"),
+            "should contains value & path",
+            new RestResponse(
+                new FakeRequest()
+                    .withBody("<hello/>").withHeader(
+                        HttpHeaders.SET_COOKIE,
+                        "cookie1=foo1;Path=/;Comment=\"\", bar=1;"
+                    )
+                    .fetch()
+            ).cookie("cookie1"),
             Matchers.allOf(
                 Matchers.hasProperty("value", Matchers.equalTo("foo1")),
                 Matchers.hasProperty("path", Matchers.equalTo("/"))
@@ -112,6 +89,7 @@ final class RestResponseTest {
     /**
      * RestResponse can retrieve a cookie by name if header occurs several
      * times.
+     *
      * @throws Exception If something goes wrong inside
      */
     @Test
@@ -122,29 +100,35 @@ final class RestResponseTest {
                 .withHeader(HttpHeaders.SET_COOKIE, "baz=goo; path=/l;")
                 .fetch()
         );
-        MatcherAssert.assertThat(
-            response.cookie("baz"),
-            Matchers.allOf(
-                Matchers.hasProperty("value", Matchers.equalTo("goo")),
-                Matchers.hasProperty("path", Matchers.equalTo("/l"))
-            )
-        );
-        MatcherAssert.assertThat(
-            response.cookie("foo"),
-            Matchers.allOf(
-                Matchers.hasProperty("value", Matchers.equalTo("bar")),
-                Matchers.hasProperty("path", Matchers.equalTo("/i"))
+        Assertions.assertAll(
+            () -> MatcherAssert.assertThat(
+                "should contains baz value & path",
+                response.cookie("baz"),
+                Matchers.allOf(
+                    Matchers.hasProperty("value", Matchers.equalTo("goo")),
+                    Matchers.hasProperty("path", Matchers.equalTo("/l"))
+                )
+            ),
+            () -> MatcherAssert.assertThat(
+                "should contains foo value & path",
+                response.cookie("foo"),
+                Matchers.allOf(
+                    Matchers.hasProperty("value", Matchers.equalTo("bar")),
+                    Matchers.hasProperty("path", Matchers.equalTo("/i"))
+                )
             )
         );
     }
 
     /**
      * RestResponse can jump to a relative URL.
+     *
      * @throws Exception If something goes wrong inside
      */
     @Test
     void jumpsToRelativeUrls() throws Exception {
         MatcherAssert.assertThat(
+            "should jump to the relative URL",
             new RestResponse(
                 new FakeRequest()
                     .uri().set(new URI("http://locahost:888/tt")).back()
@@ -153,5 +137,4 @@ final class RestResponseTest {
             Matchers.hasToString("http://locahost:888/foo/bar?hey")
         );
     }
-
 }

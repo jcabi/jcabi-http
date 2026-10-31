@@ -1,31 +1,6 @@
 /*
- * Copyright (c) 2011-2025, jcabi.com
- * All rights reserved.
- *
- * Redistribution and use in source and binary forms, with or without
- * modification, are permitted provided that the following conditions
- * are met: 1) Redistributions of source code must retain the above
- * copyright notice, this list of conditions and the following
- * disclaimer. 2) Redistributions in binary form must reproduce the above
- * copyright notice, this list of conditions and the following
- * disclaimer in the documentation and/or other materials provided
- * with the distribution. 3) Neither the name of the jcabi.com nor
- * the names of its contributors may be used to endorse or promote
- * products derived from this software without specific prior written
- * permission.
- *
- * THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS
- * "AS IS" AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT
- * NOT LIMITED TO, THE IMPLIED WARRANTIES OF MERCHANTABILITY AND
- * FITNESS FOR A PARTICULAR PURPOSE ARE DISCLAIMED. IN NO EVENT SHALL
- * THE COPYRIGHT HOLDER OR CONTRIBUTORS BE LIABLE FOR ANY DIRECT,
- * INDIRECT, INCIDENTAL, SPECIAL, EXEMPLARY, OR CONSEQUENTIAL DAMAGES
- * (INCLUDING, BUT NOT LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR
- * SERVICES; LOSS OF USE, DATA, OR PROFITS; OR BUSINESS INTERRUPTION)
- * HOWEVER CAUSED AND ON ANY THEORY OF LIABILITY, WHETHER IN CONTRACT,
- * STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE)
- * ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED
- * OF THE POSSIBILITY OF SUCH DAMAGE.
+ * SPDX-FileCopyrightText: Copyright (c) 2011-2026 Yegor Bugayenko
+ * SPDX-License-Identifier: MIT
  */
 package com.jcabi.http.wire;
 
@@ -47,6 +22,7 @@ import org.hamcrest.MatcherAssert;
 import org.hamcrest.Matchers;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.function.Executable;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.CsvSource;
 
@@ -58,7 +34,7 @@ import org.junit.jupiter.params.provider.CsvSource;
 final class BasicAuthWireTest {
 
     /**
-     * The format of the credentials as <code>username:password</code>.
+     * The format of the credentials as {@code username:password}.
      */
     private static final String CRED_FORMAT = "%s:%s";
 
@@ -73,7 +49,7 @@ final class BasicAuthWireTest {
     @CsvSource({
         "Alice,  secret",
         "Bob,    s&e+c`ret",
-        "user,  \u20ac\u20ac"
+        "user,  €€"
     })
     void testHeader(
         final String username, final String password
@@ -81,26 +57,22 @@ final class BasicAuthWireTest {
         final MkContainer container = new MkGrizzlyContainer().next(
             new MkAnswer.Simple("")
         ).start();
-        final URI uri = UriBuilder.fromUri(container.home()).userInfo(
-            String.format(
-                BasicAuthWireTest.CRED_FORMAT,
-                URLEncoder.encode(username, StandardCharsets.UTF_8.displayName()),
-                URLEncoder.encode(password, StandardCharsets.UTF_8.displayName())
-            )
-        ).build();
-        final String expected = BasicAuthWireTest.expectHeader(
-            username,
-            password
-        );
-        new JdkRequest(uri)
-            .through(BasicAuthWire.class)
-            .fetch()
-            .as(RestResponse.class)
-            .assertStatus(HttpURLConnection.HTTP_OK);
+        new JdkRequest(
+            UriBuilder.fromUri(container.home()).userInfo(
+                String.format(
+                    BasicAuthWireTest.CRED_FORMAT,
+                    URLEncoder.encode(username, StandardCharsets.UTF_8),
+                    URLEncoder.encode(password, StandardCharsets.UTF_8)
+                )
+            ).build()
+        ).through(BasicAuthWire.class).fetch();
         container.stop();
         MatcherAssert.assertThat(
+            "should be correct header",
             container.take().headers().get(HttpHeaders.AUTHORIZATION).get(0),
-            Matchers.equalTo(expected)
+            Matchers.equalTo(
+                BasicAuthWireTest.expectHeader(username, password)
+            )
         );
     }
 
@@ -110,7 +82,7 @@ final class BasicAuthWireTest {
      * @throws Exception If something goes wrong
      */
     @Test
-    void shouldStripUserInfo() throws Exception {
+    void stripsUserInfo() throws Exception {
         final MkContainer container = new MkGrizzlyContainer().next(
             new MkAnswer.Simple(HttpsURLConnection.HTTP_NOT_FOUND),
             MkQueryMatchers.hasHeader(
@@ -124,7 +96,8 @@ final class BasicAuthWireTest {
             userinfo
         ).build();
         MatcherAssert.assertThat(
-            Assertions.assertThrows(
+            "should not contains user info",
+            BasicAuthWireTest.thrown(
                 AssertionError.class,
                 () -> new JdkRequest(uri)
                     .through(BasicAuthWire.class)
@@ -132,7 +105,7 @@ final class BasicAuthWireTest {
                     .as(RestResponse.class)
                     .assertStatus(HttpURLConnection.HTTP_OK)
             ),
-            Matchers.<AssertionError>hasToString(
+            Matchers.<Throwable>hasToString(
                 Matchers.not(
                     Matchers.containsString(userinfo)
                 )
@@ -141,26 +114,24 @@ final class BasicAuthWireTest {
         container.stop();
     }
 
-    /**
-     * Creates the expected authorization header value for the
-     * given username.
-     *
-     * @param username The username to create the header for
-     * @param password The password to create the header for
-     * @return The header value in the form
-     *  <code>Basic &lt;base64 of username:password&gt;</code>
-     */
+    private static Throwable thrown(final Class<? extends Throwable> type,
+        final Executable exec) {
+        return Assertions.assertThrows(type, exec);
+    }
+
     private static String expectHeader(
         final String username,
         final String password
     ) {
-        final String credentials = DatatypeConverter.printBase64Binary(
-            String.format(
-                BasicAuthWireTest.CRED_FORMAT,
-                username,
-                password
-            ).getBytes(StandardCharsets.UTF_8)
+        return String.format(
+            "Basic %s",
+            DatatypeConverter.printBase64Binary(
+                String.format(
+                    BasicAuthWireTest.CRED_FORMAT,
+                    username,
+                    password
+                ).getBytes(StandardCharsets.UTF_8)
+            )
         );
-        return String.format("Basic %s", credentials);
     }
 }

@@ -1,31 +1,6 @@
 /*
- * Copyright (c) 2011-2025, jcabi.com
- * All rights reserved.
- *
- * Redistribution and use in source and binary forms, with or without
- * modification, are permitted provided that the following conditions
- * are met: 1) Redistributions of source code must retain the above
- * copyright notice, this list of conditions and the following
- * disclaimer. 2) Redistributions in binary form must reproduce the above
- * copyright notice, this list of conditions and the following
- * disclaimer in the documentation and/or other materials provided
- * with the distribution. 3) Neither the name of the jcabi.com nor
- * the names of its contributors may be used to endorse or promote
- * products derived from this software without specific prior written
- * permission.
- *
- * THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS
- * "AS IS" AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT
- * NOT LIMITED TO, THE IMPLIED WARRANTIES OF MERCHANTABILITY AND
- * FITNESS FOR A PARTICULAR PURPOSE ARE DISCLAIMED. IN NO EVENT SHALL
- * THE COPYRIGHT HOLDER OR CONTRIBUTORS BE LIABLE FOR ANY DIRECT,
- * INDIRECT, INCIDENTAL, SPECIAL, EXEMPLARY, OR CONSEQUENTIAL DAMAGES
- * (INCLUDING, BUT NOT LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR
- * SERVICES; LOSS OF USE, DATA, OR PROFITS; OR BUSINESS INTERRUPTION)
- * HOWEVER CAUSED AND ON ANY THEORY OF LIABILITY, WHETHER IN CONTRACT,
- * STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE)
- * ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED
- * OF THE POSSIBILITY OF SUCH DAMAGE.
+ * SPDX-FileCopyrightText: Copyright (c) 2011-2026 Yegor Bugayenko
+ * SPDX-License-Identifier: MIT
  */
 package com.jcabi.http.request;
 
@@ -42,8 +17,8 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.net.URI;
 import java.net.URL;
+import java.util.ArrayList;
 import java.util.Collection;
-import java.util.LinkedList;
 import java.util.Map;
 import lombok.EqualsAndHashCode;
 import lombok.ToString;
@@ -61,27 +36,22 @@ import org.apache.http.util.EntityUtils;
  * Implementation of {@link Request},
  * based on Apache HTTP client.
  *
- * <p>The class is immutable and thread-safe.
+ * <p>The class is immutable and thread-safe.</p>
  *
  * @since 0.8
- * @checkstyle ClassDataAbstractionCoupling (500 lines)
- * @todo #200:30m TrustedWire does not support ApacheRequest.
- *  Investigate if it's possible for them to work together,
- *  if not see jcabi-http#178 for discussion about alternative solutions.
  */
 @Immutable
 @EqualsAndHashCode(of = "base")
 @ToString(of = "base")
 @Loggable(Loggable.DEBUG)
-@SuppressWarnings("PMD.TooManyMethods")
 public final class ApacheRequest implements Request {
 
     /**
      * The wire to use.
+     *
      * @checkstyle AnonInnerLength (200 lines)
      */
     private static final Wire WIRE = new Wire() {
-        // @checkstyle ParameterNumber (6 lines)
         @Override
         public Response send(final Request req, final String home,
             final String method,
@@ -89,14 +59,14 @@ public final class ApacheRequest implements Request {
             final InputStream content,
             final int connect,
             final int read) throws IOException {
-            final CloseableHttpResponse response =
-                HttpClients.createSystem().execute(
+            try (
+                CloseableHttpResponse response = HttpClients.createSystem().execute(
                     this.httpRequest(
                         home, method, headers, content,
                         connect, read
                     )
-                );
-            try {
+                )
+            ) {
                 return new DefaultResponse(
                     req,
                     response.getStatusLine().getStatusCode(),
@@ -104,12 +74,10 @@ public final class ApacheRequest implements Request {
                     this.headers(response.getAllHeaders()),
                     this.consume(response.getEntity())
                 );
-            } finally {
-                response.close();
             }
         }
 
-        /**
+        /*
          * Create request.
          * @param home Home URI
          * @param method Method to use
@@ -121,7 +89,7 @@ public final class ApacheRequest implements Request {
          * @throws IOException If an IO Exception occurs
          * @checkstyle ParameterNumber (6 lines)
          */
-        public HttpEntityEnclosingRequestBase httpRequest(final String home,
+        HttpEntityEnclosingRequestBase httpRequest(final String home,
             final String method,
             final Collection<Map.Entry<String, String>> headers,
             final InputStream content,
@@ -134,7 +102,6 @@ public final class ApacheRequest implements Request {
                         return method;
                     }
                 };
-            final URI uri = URI.create(home);
             req.setConfig(
                 RequestConfig.custom()
                     .setCircularRedirectsAllowed(false)
@@ -143,7 +110,7 @@ public final class ApacheRequest implements Request {
                     .setSocketTimeout(read)
                     .build()
             );
-            req.setURI(uri);
+            req.setURI(URI.create(home));
             req.setEntity(
                 new BufferedHttpEntity(new InputStreamEntity(content))
             );
@@ -153,7 +120,7 @@ public final class ApacheRequest implements Request {
             return req;
         }
 
-        /**
+        /*
          * Fetch body from http entity.
          * @param entity HTTP entity
          * @return Body in UTF-8
@@ -169,15 +136,14 @@ public final class ApacheRequest implements Request {
             return body;
         }
 
-        /**
+        /*
          * Make a list of all hdrs.
          * @param list Apache HTTP hdrs
          * @return Body in UTF-8
          */
-        @SuppressWarnings("PMD.AvoidInstantiatingObjectsInLoops")
         private Array<Map.Entry<String, String>> headers(final Header... list) {
             final Collection<Map.Entry<String, String>> headers =
-                new LinkedList<>();
+                new ArrayList<>(0);
             for (final Header header : list) {
                 headers.add(
                     new ImmutableHeader(
@@ -197,6 +163,7 @@ public final class ApacheRequest implements Request {
 
     /**
      * Public ctor.
+     *
      * @param url The resource to work with
      */
     public ApacheRequest(final URL url) {
@@ -205,6 +172,7 @@ public final class ApacheRequest implements Request {
 
     /**
      * Public ctor.
+     *
      * @param uri The resource to work with
      */
     public ApacheRequest(final URI uri) {
@@ -213,6 +181,7 @@ public final class ApacheRequest implements Request {
 
     /**
      * Public ctor.
+     *
      * @param uri The resource to work with
      */
     public ApacheRequest(final String uri) {

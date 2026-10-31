@@ -1,31 +1,6 @@
 /*
- * Copyright (c) 2011-2025, jcabi.com
- * All rights reserved.
- *
- * Redistribution and use in source and binary forms, with or without
- * modification, are permitted provided that the following conditions
- * are met: 1) Redistributions of source code must retain the above
- * copyright notice, this list of conditions and the following
- * disclaimer. 2) Redistributions in binary form must reproduce the above
- * copyright notice, this list of conditions and the following
- * disclaimer in the documentation and/or other materials provided
- * with the distribution. 3) Neither the name of the jcabi.com nor
- * the names of its contributors may be used to endorse or promote
- * products derived from this software without specific prior written
- * permission.
- *
- * THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS
- * "AS IS" AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT
- * NOT LIMITED TO, THE IMPLIED WARRANTIES OF MERCHANTABILITY AND
- * FITNESS FOR A PARTICULAR PURPOSE ARE DISCLAIMED. IN NO EVENT SHALL
- * THE COPYRIGHT HOLDER OR CONTRIBUTORS BE LIABLE FOR ANY DIRECT,
- * INDIRECT, INCIDENTAL, SPECIAL, EXEMPLARY, OR CONSEQUENTIAL DAMAGES
- * (INCLUDING, BUT NOT LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR
- * SERVICES; LOSS OF USE, DATA, OR PROFITS; OR BUSINESS INTERRUPTION)
- * HOWEVER CAUSED AND ON ANY THEORY OF LIABILITY, WHETHER IN CONTRACT,
- * STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE)
- * ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED
- * OF THE POSSIBILITY OF SUCH DAMAGE.
+ * SPDX-FileCopyrightText: Copyright (c) 2011-2026 Yegor Bugayenko
+ * SPDX-License-Identifier: MIT
  */
 package com.jcabi.http.request;
 
@@ -38,9 +13,11 @@ import org.hamcrest.MatcherAssert;
 import org.hamcrest.Matchers;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.function.Executable;
 
 /**
  * Integration case for {@link JdkRequest}.
+ *
  * @since 1.4.1
  */
 final class JdkRequestITCase {
@@ -56,17 +33,18 @@ final class JdkRequestITCase {
      */
     @Test
     void throwsDescriptiveException() {
-        final String uri = "http://localhost:6789";
-        final String method = HttpMethod.POST;
         MatcherAssert.assertThat(
-            Assertions.assertThrows(
+            "should be error with a descriptive message",
+            JdkRequestITCase.thrown(
                 IOException.class,
-                () -> new JdkRequest(new URI(uri)).method(method).fetch()),
+                () -> new JdkRequest(new URI("http://localhost:6789"))
+                    .method(HttpMethod.POST).fetch()
+            ),
             Matchers.hasProperty(
                 JdkRequestITCase.MESSAGE,
                 Matchers.allOf(
-                    Matchers.containsString(uri),
-                    Matchers.containsString(method)
+                    Matchers.containsString("http://localhost:6789"),
+                    Matchers.containsString(HttpMethod.POST)
                 )
             )
         );
@@ -78,16 +56,17 @@ final class JdkRequestITCase {
      */
     @Test
     void failsNoProtocolNoPort() {
-        final String uri = "localhost";
         MatcherAssert.assertThat(
-            Assertions.assertThrows(
+            "should be error with a descriptive message",
+            JdkRequestITCase.thrown(
                 IOException.class,
-                () -> new JdkRequest(uri).fetch()),
+                () -> new JdkRequest("localhost").fetch()
+            ),
             Matchers.hasProperty(
                 JdkRequestITCase.MESSAGE,
                 Matchers.allOf(
                     Matchers.containsString("is incorrect"),
-                    Matchers.containsString(uri)
+                    Matchers.containsString("localhost")
                 )
             )
         );
@@ -99,24 +78,19 @@ final class JdkRequestITCase {
      */
     @Test
     void failsWithPortButNoProtocol() {
-        final String url = "test.com";
-        final String colon = ":";
         MatcherAssert.assertThat(
-            Assertions.assertThrows(
+            "should be error with a descriptive message",
+            JdkRequestITCase.thrown(
                 MalformedURLException.class,
                 () -> new JdkRequest(
-                    StringUtils.join(
-                        url,
-                        colon,
-                        "80"
-                    )
+                    StringUtils.join("test.com", ":", "80")
                 ).fetch()
             ),
             Matchers.hasProperty(
                 JdkRequestITCase.MESSAGE,
                 Matchers.allOf(
                     Matchers.containsString("unknown protocol: "),
-                    Matchers.containsString(url)
+                    Matchers.containsString("test.com")
                 )
             )
         );
@@ -128,18 +102,24 @@ final class JdkRequestITCase {
      */
     @Test
     void failsMalformedEntirely() {
-        final String uri = "bla bla url";
         MatcherAssert.assertThat(
-            Assertions.assertThrows(
+            "should be error with a descriptive message",
+            JdkRequestITCase.thrown(
                 IllegalArgumentException.class,
-                () -> new JdkRequest(uri).fetch()),
+                () -> new JdkRequest("bla bla url").fetch()
+            ),
             Matchers.hasProperty(
                 JdkRequestITCase.MESSAGE,
                 Matchers.allOf(
                     Matchers.containsString("Illegal character in path"),
-                    Matchers.containsString(uri)
+                    Matchers.containsString("bla bla url")
                 )
             )
         );
+    }
+
+    private static Throwable thrown(final Class<? extends Throwable> type,
+        final Executable exec) {
+        return Assertions.assertThrows(type, exec);
     }
 }

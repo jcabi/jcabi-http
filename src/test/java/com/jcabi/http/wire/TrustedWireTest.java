@@ -1,50 +1,40 @@
 /*
- * Copyright (c) 2011-2025, jcabi.com
- * All rights reserved.
- *
- * Redistribution and use in source and binary forms, with or without
- * modification, are permitted provided that the following conditions
- * are met: 1) Redistributions of source code must retain the above
- * copyright notice, this list of conditions and the following
- * disclaimer. 2) Redistributions in binary form must reproduce the above
- * copyright notice, this list of conditions and the following
- * disclaimer in the documentation and/or other materials provided
- * with the distribution. 3) Neither the name of the jcabi.com nor
- * the names of its contributors may be used to endorse or promote
- * products derived from this software without specific prior written
- * permission.
- *
- * THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS
- * "AS IS" AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT
- * NOT LIMITED TO, THE IMPLIED WARRANTIES OF MERCHANTABILITY AND
- * FITNESS FOR A PARTICULAR PURPOSE ARE DISCLAIMED. IN NO EVENT SHALL
- * THE COPYRIGHT HOLDER OR CONTRIBUTORS BE LIABLE FOR ANY DIRECT,
- * INDIRECT, INCIDENTAL, SPECIAL, EXEMPLARY, OR CONSEQUENTIAL DAMAGES
- * (INCLUDING, BUT NOT LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR
- * SERVICES; LOSS OF USE, DATA, OR PROFITS; OR BUSINESS INTERRUPTION)
- * HOWEVER CAUSED AND ON ANY THEORY OF LIABILITY, WHETHER IN CONTRACT,
- * STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE)
- * ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED
- * OF THE POSSIBILITY OF SUCH DAMAGE.
+ * SPDX-FileCopyrightText: Copyright (c) 2011-2026 Yegor Bugayenko
+ * SPDX-License-Identifier: MIT
  */
 package com.jcabi.http.wire;
 
+import com.jcabi.http.Request;
+import com.jcabi.http.Response;
+import com.jcabi.http.Wire;
 import com.jcabi.http.mock.MkAnswer;
 import com.jcabi.http.mock.MkContainer;
 import com.jcabi.http.mock.MkGrizzlyContainer;
+import com.jcabi.http.request.FakeRequest;
 import com.jcabi.http.request.JdkRequest;
 import com.jcabi.http.response.RestResponse;
+import java.io.IOException;
+import java.io.InputStream;
 import java.net.HttpURLConnection;
+import java.security.NoSuchAlgorithmException;
+import java.util.Collection;
+import java.util.Collections;
+import java.util.Map;
+import javax.net.ssl.SSLContext;
+import org.hamcrest.MatcherAssert;
+import org.hamcrest.Matchers;
 import org.junit.jupiter.api.Test;
 
 /**
  * Test case for {@link TrustedWire}.
+ *
  * @since 1.10
  */
 final class TrustedWireTest {
 
     /**
      * TrustedWire can ignore PKIX errors.
+     *
      * @throws Exception If something goes wrong inside
      */
     @Test
@@ -63,4 +53,97 @@ final class TrustedWireTest {
         }
     }
 
+    /**
+     * TrustedWire must replace SSLContext.getDefault() during send so
+     * that Apache HTTP client (HttpClients.createSystem()) also trusts
+     * all certificates when ApacheRequest is the underlying wire.
+     *
+     * @throws Exception If something goes wrong inside
+     */
+    @Test
+    void replacesDefaultSslContextDuringSend() throws Exception {
+        final SSLContext before = SSLContext.getDefault();
+        final TrustedWireTest.SslContextCapture capture =
+            new TrustedWireTest.SslContextCapture();
+        new TrustedWire(capture).send(
+            new FakeRequest(),
+            "https://localhost/",
+            "GET",
+            Collections.emptyList(),
+            InputStream.nullInputStream(),
+            0,
+            0
+        );
+        MatcherAssert.assertThat(
+            String.format(
+                "TrustedWire must replace the default context %s during send",
+                before
+            ),
+            capture.captured(),
+            Matchers.not(Matchers.sameInstance(before))
+        );
+    }
+
+    /**
+     * TrustedWire must restore SSLContext.getDefault() after send completes.
+     *
+     * @throws Exception If something goes wrong inside
+     */
+    @Test
+    void restoresDefaultSslContextAfterSend() throws Exception {
+        final SSLContext before = SSLContext.getDefault();
+        new TrustedWire(new TrustedWireTest.SslContextCapture()).send(
+            new FakeRequest(),
+            "https://localhost/",
+            "GET",
+            Collections.emptyList(),
+            InputStream.nullInputStream(),
+            0,
+            0
+        );
+        MatcherAssert.assertThat(
+            String.format(
+                "TrustedWire must restore the default context %s after send",
+                before
+            ),
+            SSLContext.getDefault(),
+            Matchers.sameInstance(before)
+        );
+    }
+
+    /**
+     * Wire that captures SSLContext.getDefault() at the moment send() runs.
+     *
+     * @since 1.10
+     */
+    private static final class SslContextCapture implements Wire {
+
+        /**
+         * The SSLContext seen during send.
+         */
+        private volatile SSLContext context;
+
+        @Override
+        public Response send(final Request req, final String home,
+            final String method,
+            final Collection<Map.Entry<String, String>> headers,
+            final InputStream content,
+            final int connect, final int read) throws IOException {
+            try {
+                this.context = SSLContext.getDefault();
+            } catch (final NoSuchAlgorithmException ex) {
+                throw new IOException(ex);
+            }
+            return new FakeRequest().fetch();
+        }
+
+        /**
+         * The SSLContext that was active when send() ran.
+         *
+         * @return Captured context
+         */
+        SSLContext captured() {
+            return this.context;
+        }
+    }
 }

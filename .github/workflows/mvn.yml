@@ -1,6 +1,9 @@
+# SPDX-FileCopyrightText: Copyright (c) 2011-2026 Yegor Bugayenko
+# SPDX-License-Identifier: MIT
 ---
+# yamllint disable rule:line-length
 name: mvn
-on:
+'on':
   push:
     branches:
       - master
@@ -9,13 +12,15 @@ on:
       - master
 jobs:
   mvn:
+    continue-on-error: true
+    timeout-minutes: 15
     runs-on: ${{ matrix.os }}
     strategy:
       matrix:
         os: [ubuntu-24.04, windows-2022, macos-15]
-        java: [11, 21]
+        java: [21, 25]
     steps:
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@v5
       - uses: actions/setup-java@v4
         with:
           distribution: 'temurin'

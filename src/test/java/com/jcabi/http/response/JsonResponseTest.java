@@ -1,31 +1,6 @@
 /*
- * Copyright (c) 2011-2025, jcabi.com
- * All rights reserved.
- *
- * Redistribution and use in source and binary forms, with or without
- * modification, are permitted provided that the following conditions
- * are met: 1) Redistributions of source code must retain the above
- * copyright notice, this list of conditions and the following
- * disclaimer. 2) Redistributions in binary form must reproduce the above
- * copyright notice, this list of conditions and the following
- * disclaimer in the documentation and/or other materials provided
- * with the distribution. 3) Neither the name of the jcabi.com nor
- * the names of its contributors may be used to endorse or promote
- * products derived from this software without specific prior written
- * permission.
- *
- * THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS
- * "AS IS" AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT
- * NOT LIMITED TO, THE IMPLIED WARRANTIES OF MERCHANTABILITY AND
- * FITNESS FOR A PARTICULAR PURPOSE ARE DISCLAIMED. IN NO EVENT SHALL
- * THE COPYRIGHT HOLDER OR CONTRIBUTORS BE LIABLE FOR ANY DIRECT,
- * INDIRECT, INCIDENTAL, SPECIAL, EXEMPLARY, OR CONSEQUENTIAL DAMAGES
- * (INCLUDING, BUT NOT LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR
- * SERVICES; LOSS OF USE, DATA, OR PROFITS; OR BUSINESS INTERRUPTION)
- * HOWEVER CAUSED AND ON ANY THEORY OF LIABILITY, WHETHER IN CONTRACT,
- * STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE)
- * ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED
- * OF THE POSSIBILITY OF SUCH DAMAGE.
+ * SPDX-FileCopyrightText: Copyright (c) 2011-2026 Yegor Bugayenko
+ * SPDX-License-Identifier: MIT
  */
 package com.jcabi.http.response;
 
@@ -36,30 +11,38 @@ import org.hamcrest.MatcherAssert;
 import org.hamcrest.Matchers;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.function.Executable;
 
 /**
  * Test case for {@link JsonResponse}.
+ *
  * @since 1.1
  */
 final class JsonResponseTest {
 
     /**
      * JsonResponse can read and return a JSON document.
+     *
      * @throws Exception If something goes wrong inside
      */
     @Test
     void readsJsonDocument() throws Exception {
-        final Response resp = new FakeRequest()
-            .withBody("{\n\t\r\"foo-foo\":2,\n\"bar\":\"\u20ac\"}")
-            .fetch();
-        final JsonResponse response = new JsonResponse(resp);
-        MatcherAssert.assertThat(
-            response.json().readObject().getInt("foo-foo"),
-            Matchers.equalTo(2)
+        final JsonResponse response = new JsonResponse(
+            new FakeRequest().withBody(
+                String.format("{%n\t\"foo-foo\":2,%n\"bar\":\"€\"}")
+            ).fetch()
         );
-        MatcherAssert.assertThat(
-            response.json().readObject().getString("bar"),
-            Matchers.equalTo("\u20ac")
+        Assertions.assertAll(
+            () -> MatcherAssert.assertThat(
+                "should be equal 2",
+                response.json().readObject().getInt("foo-foo"),
+                Matchers.equalTo(2)
+            ),
+            () -> MatcherAssert.assertThat(
+                "should be equal €",
+                response.json().readObject().getString("bar"),
+                Matchers.equalTo("€")
+            )
         );
     }
 
@@ -70,12 +53,14 @@ final class JsonResponseTest {
      */
     @Test
     void readsControlCharacters() throws Exception {
-        final Response resp = new FakeRequest()
-            .withBody("{\"test\":\n\"\u001Fblah\uFFFDcwhoa\u0000!\"}").fetch();
-        final JsonResponse response = new JsonResponse(resp);
         MatcherAssert.assertThat(
-            response.json().readObject().getString("test"),
-            Matchers.is("\u001Fblah\uFFFDcwhoa\u0000!")
+            "should be \037blah�cwhoa\0!",
+            new JsonResponse(
+                new FakeRequest().withBody(
+                    String.format("{\"test\":%n\"\037blah�cwhoa\0!\"}")
+                ).fetch()
+            ).json().readObject().getString("test"),
+            Matchers.is("\037blah�cwhoa\0!")
         );
     }
 
@@ -89,10 +74,10 @@ final class JsonResponseTest {
         final String body = "{\"test\": \"logged!\"$@%#^&%@$#}";
         final Response resp = new FakeRequest().withBody(body).fetch();
         MatcherAssert.assertThat(
-            Assertions.assertThrows(
+            "readObject() should complain about the json body",
+            JsonResponseTest.thrown(
                 JsonParsingException.class,
-                () -> new JsonResponse(resp).json().readObject(),
-                "readObject() should have thrown JsonParsingException"
+                () -> new JsonResponse(resp).json().readObject()
             ),
             Matchers.hasToString(Matchers.containsString(body))
         );
@@ -108,16 +93,12 @@ final class JsonResponseTest {
         final String body = "[\"test\": \"logged!\"$@%#^&%@$#]";
         final Response resp = new FakeRequest().withBody(body).fetch();
         MatcherAssert.assertThat(
-            Assertions.assertThrows(
+            "readArray() should complain about the json body",
+            JsonResponseTest.thrown(
                 JsonParsingException.class,
-                () -> new JsonResponse(resp).json().readArray(),
-                "readArray() should have thrown JsonParsingException"
+                () -> new JsonResponse(resp).json().readArray()
             ),
-            Matchers.hasToString(
-                Matchers.containsString(
-                    body
-                )
-            )
+            Matchers.hasToString(Matchers.containsString(body))
         );
     }
 
@@ -131,17 +112,17 @@ final class JsonResponseTest {
         final String body = "{test:[]}}}";
         final Response resp = new FakeRequest().withBody(body).fetch();
         MatcherAssert.assertThat(
-            Assertions.assertThrows(
+            "read() should complain about the json body",
+            JsonResponseTest.thrown(
                 JsonParsingException.class,
-                () -> new JsonResponse(resp).json().read(),
-                "readStructure() should have thrown JsonParsingException"
+                () -> new JsonResponse(resp).json().read()
             ),
-            Matchers.<JsonParsingException>hasToString(
-                Matchers.containsString(
-                    body
-                )
-            )
+            Matchers.hasToString(Matchers.containsString(body))
         );
     }
 
+    private static Throwable thrown(final Class<? extends Throwable> type,
+        final Executable exec) {
+        return Assertions.assertThrows(type, exec);
+    }
 }

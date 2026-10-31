@@ -1,31 +1,6 @@
 /*
- * Copyright (c) 2011-2025, jcabi.com
- * All rights reserved.
- *
- * Redistribution and use in source and binary forms, with or without
- * modification, are permitted provided that the following conditions
- * are met: 1) Redistributions of source code must retain the above
- * copyright notice, this list of conditions and the following
- * disclaimer. 2) Redistributions in binary form must reproduce the above
- * copyright notice, this list of conditions and the following
- * disclaimer in the documentation and/or other materials provided
- * with the distribution. 3) Neither the name of the jcabi.com nor
- * the names of its contributors may be used to endorse or promote
- * products derived from this software without specific prior written
- * permission.
- *
- * THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS
- * "AS IS" AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT
- * NOT LIMITED TO, THE IMPLIED WARRANTIES OF MERCHANTABILITY AND
- * FITNESS FOR A PARTICULAR PURPOSE ARE DISCLAIMED. IN NO EVENT SHALL
- * THE COPYRIGHT HOLDER OR CONTRIBUTORS BE LIABLE FOR ANY DIRECT,
- * INDIRECT, INCIDENTAL, SPECIAL, EXEMPLARY, OR CONSEQUENTIAL DAMAGES
- * (INCLUDING, BUT NOT LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR
- * SERVICES; LOSS OF USE, DATA, OR PROFITS; OR BUSINESS INTERRUPTION)
- * HOWEVER CAUSED AND ON ANY THEORY OF LIABILITY, WHETHER IN CONTRACT,
- * STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE)
- * ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED
- * OF THE POSSIBILITY OF SUCH DAMAGE.
+ * SPDX-FileCopyrightText: Copyright (c) 2011-2026 Yegor Bugayenko
+ * SPDX-License-Identifier: MIT
  */
 package com.jcabi.http.mock;
 
@@ -43,10 +18,9 @@ import org.hamcrest.core.IsAnything;
 /**
  * Implementation of {@link MkContainer} based on Grizzly Server.
  *
- * @since 0.10
  * @see MkContainer
+ * @since 0.10
  */
-@SuppressWarnings("PMD.TooManyMethods")
 @EqualsAndHashCode(of = {"adapter", "gws", "port"})
 @Loggable(Loggable.DEBUG)
 public final class MkGrizzlyContainer implements MkContainer {
@@ -54,8 +28,7 @@ public final class MkGrizzlyContainer implements MkContainer {
     /**
      * Grizzly adapter.
      */
-    private final transient MkGrizzlyAdapter adapter =
-        new MkGrizzlyAdapter();
+    private final transient MkGrizzlyAdapter adapter;
 
     /**
      * Grizzly container.
@@ -66,6 +39,13 @@ public final class MkGrizzlyContainer implements MkContainer {
      * Port where it works.
      */
     private transient int port;
+
+    /**
+     * Ctor.
+     */
+    public MkGrizzlyContainer() {
+        this.adapter = new MkGrizzlyAdapter();
+    }
 
     @Override
     public MkContainer next(final MkAnswer answer) {
@@ -146,7 +126,7 @@ public final class MkGrizzlyContainer implements MkContainer {
     @Override
     public void stop() {
         if (this.gws != null) {
-            this.gws.shutdown();
+            this.gws.shutdownNow();
         }
         Logger.info(this, "stopped on port #%s", this.port);
         this.port = 0;
@@ -163,5 +143,4 @@ public final class MkGrizzlyContainer implements MkContainer {
     public void close() {
         this.stop();
     }
-
 }

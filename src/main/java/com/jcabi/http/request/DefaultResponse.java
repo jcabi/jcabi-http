@@ -1,31 +1,6 @@
 /*
- * Copyright (c) 2011-2025, jcabi.com
- * All rights reserved.
- *
- * Redistribution and use in source and binary forms, with or without
- * modification, are permitted provided that the following conditions
- * are met: 1) Redistributions of source code must retain the above
- * copyright notice, this list of conditions and the following
- * disclaimer. 2) Redistributions in binary form must reproduce the above
- * copyright notice, this list of conditions and the following
- * disclaimer in the documentation and/or other materials provided
- * with the distribution. 3) Neither the name of the jcabi.com nor
- * the names of its contributors may be used to endorse or promote
- * products derived from this software without specific prior written
- * permission.
- *
- * THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS
- * "AS IS" AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT
- * NOT LIMITED TO, THE IMPLIED WARRANTIES OF MERCHANTABILITY AND
- * FITNESS FOR A PARTICULAR PURPOSE ARE DISCLAIMED. IN NO EVENT SHALL
- * THE COPYRIGHT HOLDER OR CONTRIBUTORS BE LIABLE FOR ANY DIRECT,
- * INDIRECT, INCIDENTAL, SPECIAL, EXEMPLARY, OR CONSEQUENTIAL DAMAGES
- * (INCLUDING, BUT NOT LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR
- * SERVICES; LOSS OF USE, DATA, OR PROFITS; OR BUSINESS INTERRUPTION)
- * HOWEVER CAUSED AND ON ANY THEORY OF LIABILITY, WHETHER IN CONTRACT,
- * STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE)
- * ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED
- * OF THE POSSIBILITY OF SUCH DAMAGE.
+ * SPDX-FileCopyrightText: Copyright (c) 2011-2026 Yegor Bugayenko
+ * SPDX-License-Identifier: MIT
  */
 package com.jcabi.http.request;
 
@@ -38,7 +13,7 @@ import com.jcabi.immutable.Array;
 import com.jcabi.log.Logger;
 import java.lang.reflect.InvocationTargetException;
 import java.nio.charset.StandardCharsets;
-import java.util.LinkedList;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
@@ -54,11 +29,6 @@ import lombok.EqualsAndHashCode;
 @EqualsAndHashCode(of = { "req", "code", "phrase", "hdrs", "content" })
 @Loggable(Loggable.DEBUG)
 public final class DefaultResponse implements Response {
-
-    /**
-     * UTF-8 error marker.
-     */
-    private static final String ERR = "\uFFFD";
 
     /**
      * Request.
@@ -84,11 +54,11 @@ public final class DefaultResponse implements Response {
      * Content received.
      */
     @Immutable.Array
-    //@checkstyle ParameterNumber (15 lines)
     private final transient byte[] content;
 
     /**
      * Public ctor.
+     *
      * @param request The request
      * @param status HTTP status
      * @param reason HTTP reason phrase
@@ -121,12 +91,11 @@ public final class DefaultResponse implements Response {
     }
 
     @Override
-    @SuppressWarnings("PMD.AvoidInstantiatingObjectsInLoops")
     public Map<String, List<String>> headers() {
         final ConcurrentMap<String, List<String>> map =
             new ConcurrentHashMap<>(0);
         for (final Map.Entry<String, String> header : this.hdrs) {
-            map.putIfAbsent(header.getKey(), new LinkedList<String>());
+            map.putIfAbsent(header.getKey(), new ArrayList<>(0));
             map.get(header.getKey()).add(header.getValue());
         }
         return map;
@@ -135,11 +104,11 @@ public final class DefaultResponse implements Response {
     @Override
     public String body() {
         final String body = new String(this.content, StandardCharsets.UTF_8);
-        if (body.contains(DefaultResponse.ERR)) {
+        if (body.contains("�")) {
             throw new IllegalStateException(
                 Logger.format(
                     "broken Unicode text at line #%d in '%[text]s' (%d bytes)",
-                    body.length() - body.replace("\n", "").length(),
+                    body.chars().filter(chr -> chr == '\n').count(),
                     body,
                     this.content.length
                 )
@@ -153,9 +122,7 @@ public final class DefaultResponse implements Response {
         return this.content.clone();
     }
 
-    // @checkstyle MethodName (4 lines)
     @Override
-    @SuppressWarnings("PMD.ShortMethodName")
     public <T extends Response> T as(final Class<T> type) {
         try {
             return type.getDeclaredConstructor(Response.class)
@@ -168,18 +135,17 @@ public final class DefaultResponse implements Response {
     }
 
     @Override
-    @SuppressWarnings("PMD.ConsecutiveLiteralAppends")
     public String toString() {
-        final StringBuilder text = new StringBuilder(0)
+        final StringBuilder text = new StringBuilder()
             .append(this.code).append(' ')
             .append(this.phrase)
             .append(" [")
             .append(this.back().uri().get())
-            .append("]\n");
+            .append(']').append(System.lineSeparator());
         for (final Map.Entry<String, String> header : this.hdrs) {
             text.append(
                 Logger.format(
-                    "%s: %s\n",
+                    "%s: %s%n",
                     header.getKey(),
                     header.getValue()
                 )
@@ -189,5 +155,4 @@ public final class DefaultResponse implements Response {
             .append(new RequestBody.Printable(this.content))
             .toString();
     }
-
 }

@@ -1,31 +1,6 @@
 /*
- * Copyright (c) 2011-2025, jcabi.com
- * All rights reserved.
- *
- * Redistribution and use in source and binary forms, with or without
- * modification, are permitted provided that the following conditions
- * are met: 1) Redistributions of source code must retain the above
- * copyright notice, this list of conditions and the following
- * disclaimer. 2) Redistributions in binary form must reproduce the above
- * copyright notice, this list of conditions and the following
- * disclaimer in the documentation and/or other materials provided
- * with the distribution. 3) Neither the name of the jcabi.com nor
- * the names of its contributors may be used to endorse or promote
- * products derived from this software without specific prior written
- * permission.
- *
- * THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS
- * "AS IS" AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT
- * NOT LIMITED TO, THE IMPLIED WARRANTIES OF MERCHANTABILITY AND
- * FITNESS FOR A PARTICULAR PURPOSE ARE DISCLAIMED. IN NO EVENT SHALL
- * THE COPYRIGHT HOLDER OR CONTRIBUTORS BE LIABLE FOR ANY DIRECT,
- * INDIRECT, INCIDENTAL, SPECIAL, EXEMPLARY, OR CONSEQUENTIAL DAMAGES
- * (INCLUDING, BUT NOT LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR
- * SERVICES; LOSS OF USE, DATA, OR PROFITS; OR BUSINESS INTERRUPTION)
- * HOWEVER CAUSED AND ON ANY THEORY OF LIABILITY, WHETHER IN CONTRACT,
- * STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE)
- * ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED
- * OF THE POSSIBILITY OF SUCH DAMAGE.
+ * SPDX-FileCopyrightText: Copyright (c) 2011-2026 Yegor Bugayenko
+ * SPDX-License-Identifier: MIT
  */
 package com.jcabi.http;
 
@@ -56,20 +31,16 @@ import org.junit.jupiter.params.ParameterizedTest;
 
 /**
  * Test case for {@link Request} and its implementations.
+ *
  * @since 1.7
  */
-@SuppressWarnings(
-    {
-        "PMD.TooManyMethods",
-        "PMD.AvoidDuplicateLiterals",
-        "PMD.TestClassWithoutTestCases"
-    })
 final class RequestTest extends RequestTestTemplate {
 
     /**
      * BaseRequest can fetch HTTP request and process HTTP response.
-     * @throws Exception If something goes wrong inside
+     *
      * @param type Request type
+     * @throws Exception If something goes wrong inside
      */
     @Values
     @ParameterizedTest
@@ -77,31 +48,41 @@ final class RequestTest extends RequestTestTemplate {
         final Class<? extends Request> type
     ) throws Exception {
         final MkContainer container = new MkGrizzlyContainer().next(
-            new MkAnswer.Simple("\u20ac! hello!")
+            new MkAnswer.Simple("€! hello!")
         ).start();
-        RequestTestTemplate.request(container.home(), type)
-            .uri().path("/helloall").back()
-            .method(Request.GET)
-            .fetch().as(RestResponse.class)
-            .assertBody(Matchers.containsString("\u20ac!"))
-            .assertBody(Matchers.containsString("hello!"))
-            .assertStatus(HttpURLConnection.HTTP_OK);
+        final RestResponse response =
+            RequestTestTemplate.request(container.home(), type)
+                .uri().path("/helloall").back()
+                .method(Request.GET)
+                .fetch().as(RestResponse.class);
         final MkQuery query = container.take();
-        MatcherAssert.assertThat(
-            query,
-            MkQueryMatchers.hasPath(Matchers.containsString("helloall"))
-        );
-        MatcherAssert.assertThat(
-            query.method(),
-            Matchers.equalTo(Request.GET)
-        );
         container.stop();
+        Assertions.assertAll(
+            () -> response.assertBody(
+                Matchers.allOf(
+                    Matchers.containsString("€!"),
+                    Matchers.containsString("hello!")
+                )
+            ),
+            () -> response.assertStatus(HttpURLConnection.HTTP_OK),
+            () -> MatcherAssert.assertThat(
+                "should contains 'helloall'",
+                query,
+                MkQueryMatchers.hasPath(Matchers.containsString("helloall"))
+            ),
+            () -> MatcherAssert.assertThat(
+                "should be GET method",
+                query.method(),
+                Matchers.equalTo(Request.GET)
+            )
+        );
     }
 
     /**
      * BaseRequest can fetch HTTP headers.
-     * @throws Exception If something goes wrong inside
+     *
      * @param type Request type
+     * @throws Exception If something goes wrong inside
      */
     @Values
     @ParameterizedTest
@@ -111,24 +92,27 @@ final class RequestTest extends RequestTestTemplate {
         final MkContainer container = new MkGrizzlyContainer().next(
             new MkAnswer.Simple("")
         ).start();
-        RequestTestTemplate.request(container.home(), type)
-            .through(UserAgentWire.class)
-            .uri().path("/foo1").back()
-            .method(Request.GET)
-            .header(HttpHeaders.ACCEPT, "*/*")
-            .fetch().as(RestResponse.class)
-            .assertStatus(HttpURLConnection.HTTP_OK);
-        final MkQuery query = container.take();
-        MatcherAssert.assertThat(
-            query.headers(),
-            Matchers.allOf(
-                Matchers.hasEntry(
-                    Matchers.equalTo(HttpHeaders.ACCEPT),
-                    Matchers.hasItem(Matchers.containsString("*"))
-                ),
-                Matchers.hasEntry(
-                    Matchers.equalTo(HttpHeaders.USER_AGENT),
-                    Matchers.hasItem(Matchers.containsString("jcabi"))
+        final RestResponse response =
+            RequestTestTemplate.request(container.home(), type)
+                .through(UserAgentWire.class)
+                .uri().path("/foo1").back()
+                .method(Request.GET)
+                .header(HttpHeaders.ACCEPT, "*/*")
+                .fetch().as(RestResponse.class);
+        Assertions.assertAll(
+            () -> response.assertStatus(HttpURLConnection.HTTP_OK),
+            () -> MatcherAssert.assertThat(
+                "should be accept '*' and user-agent 'jcabi'",
+                container.take().headers(),
+                Matchers.allOf(
+                    Matchers.hasEntry(
+                        Matchers.equalTo(HttpHeaders.ACCEPT),
+                        Matchers.hasItem(Matchers.containsString("*"))
+                    ),
+                    Matchers.hasEntry(
+                        Matchers.equalTo(HttpHeaders.USER_AGENT),
+                        Matchers.hasItem(Matchers.containsString("jcabi"))
+                    )
                 )
             )
         );
@@ -137,8 +121,9 @@ final class RequestTest extends RequestTestTemplate {
 
     /**
      * BaseRequest can fetch GET request with query params.
-     * @throws Exception If something goes wrong inside
+     *
      * @param type Request type
+     * @throws Exception If something goes wrong inside
      */
     @Values
     @ParameterizedTest
@@ -148,28 +133,33 @@ final class RequestTest extends RequestTestTemplate {
         final MkContainer container = new MkGrizzlyContainer().next(
             new MkAnswer.Simple("")
         ).start();
-        final String value = "some value of this param &^%*;'\"\u20ac\"";
-        RequestTestTemplate.request(container.home(), type)
-            .uri().queryParam("q", value).back()
-            .method(Request.GET)
-            .header(HttpHeaders.ACCEPT, MediaType.TEXT_XML)
-            .fetch().as(RestResponse.class)
-            .assertStatus(HttpURLConnection.HTTP_OK);
-        final MkQuery query = container.take();
-        MatcherAssert.assertThat(
-            URLDecoder.decode(
-                query.uri().toString(),
-                String.valueOf(StandardCharsets.UTF_8)
-            ),
-            Matchers.endsWith("\"€\"")
+        final RestResponse response =
+            RequestTestTemplate.request(container.home(), type)
+                .uri()
+                .queryParam("q", "some value of this param &^%*;'\"€\"")
+                .back()
+                .method(Request.GET)
+                .header(HttpHeaders.ACCEPT, MediaType.TEXT_XML)
+                .fetch().as(RestResponse.class);
+        Assertions.assertAll(
+            () -> response.assertStatus(HttpURLConnection.HTTP_OK),
+            () -> MatcherAssert.assertThat(
+                "should be ends with euro sign",
+                URLDecoder.decode(
+                    container.take().uri().toString(),
+                    StandardCharsets.UTF_8
+                ),
+                Matchers.endsWith("\"€\"")
+            )
         );
         container.stop();
     }
 
     /**
      * BaseRequest can fetch body with HTTP POST request.
-     * @throws Exception If something goes wrong inside
+     *
      * @param type Request type
+     * @throws Exception If something goes wrong inside
      */
     @Values
     @ParameterizedTest
@@ -179,19 +169,20 @@ final class RequestTest extends RequestTestTemplate {
         final MkContainer container = new MkGrizzlyContainer().next(
             new MkAnswer.Simple("")
         ).start();
-        final String value = "some random value of \u20ac param \"&^%*;'\"";
+        final String value = "some random value of € param \"&^%*;'\"";
         RequestTestTemplate.request(container.home(), type)
             .method(Request.POST)
-            .body().formParam("p", value).back()
-            .header(
+            .body().formParam("p", value).back().header(
                 HttpHeaders.CONTENT_TYPE,
                 MediaType.APPLICATION_FORM_URLENCODED
             )
-            .fetch().as(RestResponse.class)
-            .assertStatus(HttpURLConnection.HTTP_OK);
-        final MkQuery query = container.take();
+            .fetch();
         MatcherAssert.assertThat(
-            URLDecoder.decode(query.body(), StandardCharsets.UTF_8.toString()),
+            "should be with param",
+            URLDecoder.decode(
+                container.take().body(),
+                StandardCharsets.UTF_8
+            ),
             Matchers.is(String.format("p=%s", value))
         );
         container.stop();
@@ -199,8 +190,9 @@ final class RequestTest extends RequestTestTemplate {
 
     /**
      * BaseRequest can fetch body with HTTP POST request with params.
-     * @throws Exception If something goes wrong inside
+     *
      * @param type Request type
+     * @throws Exception If something goes wrong inside
      */
     @Values
     @ParameterizedTest
@@ -210,26 +202,25 @@ final class RequestTest extends RequestTestTemplate {
         final MkContainer container = new MkGrizzlyContainer().next(
             new MkAnswer.Simple("")
         ).start();
-        final String value = "some value of \u20ac param \"&^%*;'\"";
-        final String follow = "other value of \u20ac param \"&^%*;'\"";
+        final String value = "some value of € param \"&^%*;'\"";
+        final String follow = "other value of € param \"&^%*;'\"";
         RequestTestTemplate.request(container.home(), type)
             .method(Request.POST)
             .body()
             .formParam("a", value)
             .formParam("b", follow)
-            .back()
-            .header(
+            .back().header(
                 HttpHeaders.CONTENT_TYPE,
                 MediaType.APPLICATION_FORM_URLENCODED
             )
-            .fetch().as(RestResponse.class)
-            .assertStatus(HttpURLConnection.HTTP_OK);
-        final MkQuery query = container.take();
+            .fetch();
         MatcherAssert.assertThat(
-            URLDecoder.decode(query.body(), StandardCharsets.UTF_8.toString()),
-            Matchers.is(
-                String.format("a=%s&b=%s", value, follow)
-            )
+            "should be with multiple params",
+            URLDecoder.decode(
+                container.take().body(),
+                StandardCharsets.UTF_8
+            ),
+            Matchers.is(String.format("a=%s&b=%s", value, follow))
         );
         container.stop();
     }
@@ -237,9 +228,9 @@ final class RequestTest extends RequestTestTemplate {
     /**
      * BaseRequest can fetch multipart body with HTTP POST request
      * with single byte param.
-     * @throws Exception If something goes wrong inside
-     * @checkstyle LineLength (30 lines)
+     *
      * @param type Request type
+     * @throws Exception If something goes wrong inside
      */
     @Values
     @ParameterizedTest
@@ -249,31 +240,32 @@ final class RequestTest extends RequestTestTemplate {
         final MkContainer container = new MkGrizzlyContainer().next(
             new MkAnswer.Simple("")
         ).start();
-        final byte[] value = new byte[]{Byte.parseByte("-122")};
-        RequestTestTemplate.request(container.home(), type)
-            .method(Request.POST)
-            .header(
-                HttpHeaders.CONTENT_TYPE,
-                String.format(
-                    "%s; boundary=--xx", MediaType.MULTIPART_FORM_DATA
+        final RestResponse response =
+            RequestTestTemplate.request(container.home(), type)
+                .method(Request.POST).header(
+                    HttpHeaders.CONTENT_TYPE,
+                    String.format(
+                        "%s; boundary=--xx", MediaType.MULTIPART_FORM_DATA
+                    )
                 )
-            )
-            .multipartBody()
-            .formParam("x", value)
-            .back()
-            .fetch().as(RestResponse.class)
-            .assertStatus(HttpURLConnection.HTTP_OK);
-        final MkQuery query = container.take();
-        MatcherAssert.assertThat(
-            query.body(),
-            Matchers.is(
-                Joiner.on(Constants.CRLF).join(
-                    "----xx",
-                    "Content-Disposition: form-data; name=\"x\"; filename=\"binary\"",
-                    RequestTest.steamContentType(),
-                    "",
-                    "�",
-                    "----xx--"
+                .multipartBody()
+                .formParam("x", new byte[] {Byte.parseByte("-122")})
+                .back()
+                .fetch().as(RestResponse.class);
+        Assertions.assertAll(
+            () -> response.assertStatus(HttpURLConnection.HTTP_OK),
+            () -> MatcherAssert.assertThat(
+                "should be match byte param",
+                container.take().body(),
+                Matchers.is(
+                    Joiner.on(Constants.CRLF).join(
+                        "----xx",
+                        "Content-Disposition: form-data; name=\"x\"; filename=\"binary\"",
+                        RequestTest.steamContentType(),
+                        "",
+                        "�",
+                        "----xx--"
+                    )
                 )
             )
         );
@@ -283,9 +275,9 @@ final class RequestTest extends RequestTestTemplate {
     /**
      * BaseRequest can fetch multipart body with HTTP POST request
      * with single param.
-     * @throws Exception If something goes wrong inside
-     * @checkstyle LineLength (30 lines)
+     *
      * @param type Request type
+     * @throws Exception If something goes wrong inside
      */
     @Values
     @ParameterizedTest
@@ -295,10 +287,9 @@ final class RequestTest extends RequestTestTemplate {
         final MkContainer container = new MkGrizzlyContainer().next(
             new MkAnswer.Simple("")
         ).start();
-        final String value = "value of \u20ac part param \"&^%*;'\"";
+        final String value = "value of € part param \"&^%*;'\"";
         RequestTestTemplate.request(container.home(), type)
-            .method(Request.POST)
-            .header(
+            .method(Request.POST).header(
                 HttpHeaders.CONTENT_TYPE,
                 String.format(
                     "%s; boundary=--xyz", MediaType.MULTIPART_FORM_DATA
@@ -307,18 +298,17 @@ final class RequestTest extends RequestTestTemplate {
             .multipartBody()
             .formParam("c", value)
             .back()
-            .fetch().as(RestResponse.class)
-            .assertStatus(HttpURLConnection.HTTP_OK);
-        final MkQuery query = container.take();
+            .fetch();
         MatcherAssert.assertThat(
-            query.body(),
+            "should be match single param",
+            container.take().body(),
             Matchers.is(
                 Joiner.on(Constants.CRLF).join(
                     "----xyz",
                     "Content-Disposition: form-data; name=\"c\"; filename=\"binary\"",
                     RequestTest.steamContentType(),
                     "",
-                    "value of € part param \"&^%*;'\"",
+                    value,
                     "----xyz--"
                 )
             )
@@ -329,9 +319,9 @@ final class RequestTest extends RequestTestTemplate {
     /**
      * BaseRequest can fetch multipart body with HTTP POST request
      * with two params.
-     * @throws Exception If something goes wrong inside
-     * @checkstyle LineLength (40 lines)
+     *
      * @param type Request type
+     * @throws Exception If something goes wrong inside
      */
     @Values
     @ParameterizedTest
@@ -341,11 +331,11 @@ final class RequestTest extends RequestTestTemplate {
         final MkContainer container = new MkGrizzlyContainer().next(
             new MkAnswer.Simple("")
         ).start();
-        final String value = "value of \u20ac one param \"&^%*;'\"";
-        final String other = "value of \u20ac two param \"&^%*;'\"";
+        final String value = "value of € one param \"&^%*;'\"";
+        final String other = "value of € two param \"&^%*;'\"";
+        final String separator = "--xy--";
         RequestTestTemplate.request(container.home(), type)
-            .method(Request.POST)
-            .header(
+            .method(Request.POST).header(
                 HttpHeaders.CONTENT_TYPE,
                 String.format(
                     "%s; boundary=xy--", MediaType.MULTIPART_FORM_DATA
@@ -355,24 +345,22 @@ final class RequestTest extends RequestTestTemplate {
             .formParam("d", value)
             .formParam("e", other)
             .back()
-            .fetch().as(RestResponse.class)
-            .assertStatus(HttpURLConnection.HTTP_OK);
-        final MkQuery query = container.take();
-        final String separator = "--xy--";
+            .fetch();
         MatcherAssert.assertThat(
-            query.body(),
+            "should be match two params",
+            container.take().body(),
             Matchers.is(
                 Joiner.on(Constants.CRLF).join(
                     separator,
                     "Content-Disposition: form-data; name=\"d\"; filename=\"binary\"",
                     RequestTest.steamContentType(),
                     "",
-                    "value of € one param \"&^%*;'\"",
+                    value,
                     separator,
                     "Content-Disposition: form-data; name=\"e\"; filename=\"binary\"",
                     RequestTest.steamContentType(),
                     "",
-                    "value of € two param \"&^%*;'\"",
+                    other,
                     "--xy----"
                 )
             )
@@ -382,8 +370,9 @@ final class RequestTest extends RequestTestTemplate {
 
     /**
      * BaseRequest can fetch body with HTTP POST request.
-     * @throws Exception If something goes wrong inside
+     *
      * @param type Request type
+     * @throws Exception If something goes wrong inside
      */
     @Values
     @ParameterizedTest
@@ -393,21 +382,22 @@ final class RequestTest extends RequestTestTemplate {
         final MkContainer container = new MkGrizzlyContainer().next(
             new MkAnswer.Simple("")
         ).start();
-        final String value = "\u20ac some body value with \"&^%*;'\"";
+        final String value = "€ some body value with \"&^%*;'\"";
         RequestTestTemplate.request(container.home(), type)
-            .method(Request.POST)
-            .header(
+            .method(Request.POST).header(
                 HttpHeaders.CONTENT_TYPE,
                 MediaType.APPLICATION_FORM_URLENCODED
             )
             .body()
-            .set(URLEncoder.encode(value, StandardCharsets.UTF_8.toString()))
+            .set(URLEncoder.encode(value, StandardCharsets.UTF_8))
             .back()
-            .fetch().as(RestResponse.class)
-            .assertStatus(HttpURLConnection.HTTP_OK);
-        final MkQuery query = container.take();
+            .fetch();
         MatcherAssert.assertThat(
-            URLDecoder.decode(query.body(), StandardCharsets.UTF_8.toString()),
+            "should be match body",
+            URLDecoder.decode(
+                container.take().body(),
+                StandardCharsets.UTF_8
+            ),
             Matchers.containsString(value)
         );
         container.stop();
@@ -415,8 +405,9 @@ final class RequestTest extends RequestTestTemplate {
 
     /**
      * BaseRequest can assert HTTP status code value.
-     * @throws Exception If something goes wrong inside.
+     *
      * @param type Request type
+     * @throws Exception If something goes wrong inside.
      */
     @Values
     @ParameterizedTest
@@ -426,20 +417,24 @@ final class RequestTest extends RequestTestTemplate {
         final MkContainer container = new MkGrizzlyContainer().next(
             new MkAnswer.Simple(HttpURLConnection.HTTP_NOT_FOUND, "")
         ).start();
-        RequestTestTemplate.request(container.home(), type)
-            .method(Request.GET)
-            .fetch().as(RestResponse.class)
-            .assertStatus(HttpURLConnection.HTTP_NOT_FOUND)
-            .assertStatus(
-                Matchers.equalTo(HttpURLConnection.HTTP_NOT_FOUND)
-            );
+        final RestResponse response =
+            RequestTestTemplate.request(container.home(), type)
+                .method(Request.GET)
+                .fetch().as(RestResponse.class);
         container.stop();
+        Assertions.assertAll(
+            () -> response.assertStatus(HttpURLConnection.HTTP_NOT_FOUND),
+            () -> response.assertStatus(
+                Matchers.equalTo(HttpURLConnection.HTTP_NOT_FOUND)
+            )
+        );
     }
 
     /**
      * BaseRequest can assert response body.
-     * @throws Exception If something goes wrong inside.
+     *
      * @param type Request type
+     * @throws Exception If something goes wrong inside.
      */
     @Values
     @ParameterizedTest
@@ -447,20 +442,26 @@ final class RequestTest extends RequestTestTemplate {
         final Class<? extends Request> type
     ) throws Exception {
         final MkContainer container = new MkGrizzlyContainer().next(
-            new MkAnswer.Simple("some text \u20ac")
+            new MkAnswer.Simple("some text €")
         ).start();
-        RequestTestTemplate.request(container.home(), type)
-            .method(Request.GET)
-            .fetch().as(RestResponse.class)
-            .assertBody(Matchers.containsString("text \u20ac"))
-            .assertStatus(HttpURLConnection.HTTP_OK);
+        final RestResponse response =
+            RequestTestTemplate.request(container.home(), type)
+                .method(Request.GET)
+                .fetch().as(RestResponse.class);
         container.stop();
+        Assertions.assertAll(
+            () -> response.assertBody(
+                Matchers.containsString("text €")
+            ),
+            () -> response.assertStatus(HttpURLConnection.HTTP_OK)
+        );
     }
 
     /**
      * BaseRequest can assert HTTP headers in response.
-     * @throws Exception If something goes wrong inside.
+     *
      * @param type Request type
+     * @throws Exception If something goes wrong inside.
      */
     @Values
     @ParameterizedTest
@@ -472,27 +473,31 @@ final class RequestTest extends RequestTestTemplate {
                 HttpHeaders.CONTENT_TYPE, MediaType.TEXT_PLAIN
             )
         ).start();
-        RequestTestTemplate.request(container.home(), type)
-            .method(Request.GET)
-            .fetch().as(RestResponse.class)
-            .assertStatus(HttpURLConnection.HTTP_OK)
-            .assertHeader(
+        final RestResponse response =
+            RequestTestTemplate.request(container.home(), type)
+                .method(Request.GET)
+                .fetch().as(RestResponse.class);
+        container.stop();
+        Assertions.assertAll(
+            () -> response.assertStatus(HttpURLConnection.HTTP_OK),
+            () -> response.assertHeader(
                 "absent-for-sure",
                 Matchers.emptyIterableOf(String.class)
-            )
-            .assertHeader(
+            ),
+            () -> response.assertHeader(
                 HttpHeaders.CONTENT_TYPE,
                 Matchers.everyItem(
                     Matchers.containsString(MediaType.TEXT_PLAIN)
                 )
-            );
-        container.stop();
+            )
+        );
     }
 
     /**
      * BaseRequest can assert response body content with XPath query.
-     * @throws Exception If something goes wrong inside.
+     *
      * @param type Request type
+     * @throws Exception If something goes wrong inside.
      */
     @Values
     @ParameterizedTest
@@ -500,19 +505,23 @@ final class RequestTest extends RequestTestTemplate {
         final Class<? extends Request> type
     ) throws Exception {
         final MkContainer container = new MkGrizzlyContainer().next(
-            new MkAnswer.Simple("<root><a>\u0443\u0440\u0430!</a></root>")
+            new MkAnswer.Simple("<root><a>ура!</a></root>")
         ).start();
-        RequestTestTemplate.request(container.home(), type)
-            .method(Request.GET)
-            .fetch().as(RestResponse.class)
-            .assertStatus(HttpURLConnection.HTTP_OK)
-            .as(XmlResponse.class)
-            .assertXPath("/root/a[contains(.,'!')]");
+        final RestResponse response =
+            RequestTestTemplate.request(container.home(), type)
+                .method(Request.GET)
+                .fetch().as(RestResponse.class);
         container.stop();
+        Assertions.assertAll(
+            () -> response.assertStatus(HttpURLConnection.HTTP_OK),
+            () -> response.as(XmlResponse.class)
+                .assertXPath("/root/a[contains(.,'!')]")
+        );
     }
 
     /**
      * BaseRequest can work with URL returned by ContainerMocker.
+     *
      * @throws Exception If something goes wrong inside
      */
     @Values
@@ -524,6 +533,7 @@ final class RequestTest extends RequestTestTemplate {
         container.stop();
         final URI uri = container.home();
         MatcherAssert.assertThat(
+            "should be correct URI",
             uri.toString().matches("^http://localhost:\\d+/$"),
             Matchers.describedAs(uri.toString(), Matchers.is(true))
         );
@@ -531,8 +541,9 @@ final class RequestTest extends RequestTestTemplate {
 
     /**
      * BaseRequest can handle unicode in plain text response.
-     * @throws Exception If something goes wrong inside
+     *
      * @param type Request type
+     * @throws Exception If something goes wrong inside
      */
     @Values
     @ParameterizedTest
@@ -540,23 +551,27 @@ final class RequestTest extends RequestTestTemplate {
         final Class<? extends Request> type
     ) throws Exception {
         final MkContainer container = new MkGrizzlyContainer().next(
-            new MkAnswer.Simple("\u0443\u0440\u0430!").withHeader(
+            new MkAnswer.Simple("ура!").withHeader(
                 HttpHeaders.CONTENT_TYPE, "text/plain;charset=utf-8"
             )
         ).start();
         RequestTestTemplate.request(container.home(), type)
             .method(Request.GET)
             .uri().path("/abcdefff").back()
-            .fetch().as(RestResponse.class)
-            .assertBody(Matchers.containsString("\u0443\u0440\u0430"))
-            .assertBody(Matchers.containsString("!"));
+            .fetch().as(RestResponse.class).assertBody(
+                Matchers.allOf(
+                    Matchers.containsString("ура"),
+                    Matchers.containsString("!")
+                )
+            );
         container.stop();
     }
 
     /**
      * BaseRequest can handle unicode in XML response.
-     * @throws Exception If something goes wrong inside
+     *
      * @param type Request type
+     * @throws Exception If something goes wrong inside
      */
     @Values
     @ParameterizedTest
@@ -564,7 +579,7 @@ final class RequestTest extends RequestTestTemplate {
         final Class<? extends Request> type
     ) throws Exception {
         final MkContainer container = new MkGrizzlyContainer().next(
-            new MkAnswer.Simple("<text>\u0443\u0440\u0430!</text>").withHeader(
+            new MkAnswer.Simple("<text>ура!</text>").withHeader(
                 HttpHeaders.CONTENT_TYPE, "text/xml;charset=utf-8"
             )
         ).start();
@@ -572,14 +587,15 @@ final class RequestTest extends RequestTestTemplate {
             .method(Request.GET)
             .uri().path("/barbar").back()
             .fetch().as(XmlResponse.class)
-            .assertXPath("/text[contains(.,'\u0443\u0440\u0430')]");
+            .assertXPath("/text[contains(.,'ура')]");
         container.stop();
     }
 
     /**
      * BaseRequest can use basic authentication scheme.
-     * @throws Exception If something goes wrong inside
+     *
      * @param type Request type
+     * @throws Exception If something goes wrong inside
      */
     @ParameterizedTest
     @Values
@@ -589,29 +605,33 @@ final class RequestTest extends RequestTestTemplate {
         final MkContainer container = new MkGrizzlyContainer().next(
             new MkAnswer.Simple("")
         ).start();
-        final URI uri = UriBuilder.fromUri(container.home())
-            .userInfo("user:\u20ac\u20ac").build();
-        RequestTestTemplate.request(uri, type)
-            .through(BasicAuthWire.class)
+        final RestResponse response = RequestTestTemplate.request(
+            UriBuilder.fromUri(container.home())
+                .userInfo("user:€€").build(),
+            type
+        ).through(BasicAuthWire.class)
             .method(Request.GET)
             .uri().path("/abcde").back()
-            .fetch().as(RestResponse.class)
-            .assertStatus(HttpURLConnection.HTTP_OK);
+            .fetch().as(RestResponse.class);
         container.stop();
-        final MkQuery query = container.take();
-        MatcherAssert.assertThat(
-            query.headers(),
-            Matchers.hasEntry(
-                Matchers.equalTo(HttpHeaders.AUTHORIZATION),
-                Matchers.hasItem("Basic dXNlcjrigqzigqw=")
+        Assertions.assertAll(
+            () -> response.assertStatus(HttpURLConnection.HTTP_OK),
+            () -> MatcherAssert.assertThat(
+                "should be basic authorization",
+                container.take().headers(),
+                Matchers.hasEntry(
+                    Matchers.equalTo(HttpHeaders.AUTHORIZATION),
+                    Matchers.hasItem("Basic dXNlcjrigqzigqw=")
+                )
             )
         );
     }
 
     /**
      * BaseRequest can fetch GET request twice.
-     * @throws Exception If something goes wrong inside
+     *
      * @param type Request type
+     * @throws Exception If something goes wrong inside
      */
     @Values
     @ParameterizedTest
@@ -626,24 +646,28 @@ final class RequestTest extends RequestTestTemplate {
         final Request req = RequestTestTemplate.request(container.home(), type)
             .uri().path("/foo-X").back()
             .header(HttpHeaders.CONTENT_TYPE, MediaType.TEXT_XML);
-        req.method(Request.GET).fetch().as(RestResponse.class)
-            .assertStatus(HttpURLConnection.HTTP_OK);
-        req.method(Request.POST).fetch().as(RestResponse.class)
-            .assertStatus(HttpURLConnection.HTTP_OK);
-        req.method(Request.GET).fetch().as(RestResponse.class)
-            .assertStatus(HttpURLConnection.HTTP_OK);
-        container.stop();
-        MatcherAssert.assertThat(
-            container.take(),
-            MkQueryMatchers.hasPath(Matchers.endsWith("foo-X"))
+        Assertions.assertAll(
+            () -> req.method(Request.GET).fetch().as(RestResponse.class)
+                .assertStatus(HttpURLConnection.HTTP_OK),
+            () -> req.method(Request.POST).fetch().as(RestResponse.class)
+                .assertStatus(HttpURLConnection.HTTP_OK),
+            () -> req.method(Request.GET).fetch().as(RestResponse.class)
+                .assertStatus(HttpURLConnection.HTTP_OK),
+            () -> MatcherAssert.assertThat(
+                "should be ends with 'foo-X'",
+                container.take(),
+                MkQueryMatchers.hasPath(Matchers.endsWith("foo-X"))
+            )
         );
+        container.stop();
     }
 
     /**
      * BaseRequest can return redirect status (without redirecting).
+     *
+     * @param type Request type
      * @throws Exception If something goes wrong inside
      * @since 0.10
-     * @param type Request type
      */
     @Values
     @ParameterizedTest
@@ -663,8 +687,9 @@ final class RequestTest extends RequestTestTemplate {
 
     /**
      * BaseRequest can fetch body with HTTP POST request.
-     * @throws Exception If something goes wrong inside
+     *
      * @param type Request type
+     * @throws Exception If something goes wrong inside
      */
     @Values
     @ParameterizedTest
@@ -674,20 +699,19 @@ final class RequestTest extends RequestTestTemplate {
         final MkContainer container = new MkGrizzlyContainer().next(
             new MkAnswer.Simple("")
         ).start();
-        final String value = "\u20ac body as stream \"&^%*;'\"";
-        final ByteArrayInputStream stream =
-            new ByteArrayInputStream(value.getBytes(StandardCharsets.UTF_8));
+        final String value = "€ body as stream \"&^%*;'\"";
         RequestTestTemplate.request(container.home(), type)
-            .method(Request.POST)
-            .header(
+            .method(Request.POST).header(
                 HttpHeaders.CONTENT_TYPE,
                 MediaType.APPLICATION_FORM_URLENCODED
-            )
-            .fetch(stream).as(RestResponse.class)
-            .assertStatus(HttpURLConnection.HTTP_OK);
-        final MkQuery query = container.take();
+            ).fetch(
+                new ByteArrayInputStream(
+                    value.getBytes(StandardCharsets.UTF_8)
+                )
+            );
         MatcherAssert.assertThat(
-            query.body(),
+            "should contains body as input stream",
+            container.take().body(),
             Matchers.containsString(value)
         );
         container.stop();
@@ -696,6 +720,7 @@ final class RequestTest extends RequestTestTemplate {
     /**
      * BaseRequest.fetch(InputStream) throws an exception if the body has been
      * previously set.
+     *
      * @param type Request type
      */
     @Values
@@ -709,20 +734,42 @@ final class RequestTest extends RequestTestTemplate {
                 new URI("http://localhost:78787"),
                 type
             )
-                .method(Request.GET)
-                .body().set("already set").back()
-                .fetch(
-                    new ByteArrayInputStream(
-                        "ba".getBytes(StandardCharsets.UTF_8)
-                    )
+            .method(Request.GET)
+            .body().set("already set").back().fetch(
+                new ByteArrayInputStream(
+                    "hello".getBytes(StandardCharsets.UTF_8)
                 )
+            )
         );
     }
 
     /**
-     * Content type stream.
-     * @return Content type header.
+     * RestResponse.assertBody matches only the response body, not HTTP headers.
+     * Reproduces https://github.com/jcabi/jcabi-http/issues/177
+     *
+     * @param type Request type
+     * @throws Exception If something goes wrong inside
      */
+    @Values
+    @ParameterizedTest
+    void assertBodyMatchesOnlyBodyNotHttpHeaders(
+        final Class<? extends Request> type
+    ) throws Exception {
+        final String expected = "hello";
+        final MkContainer container = new MkGrizzlyContainer().next(
+            new MkAnswer.Simple(expected)
+        ).start();
+        try {
+            RequestTestTemplate.request(container.home(), type)
+                .method(Request.POST)
+                .body().set("request").back()
+                .fetch().as(RestResponse.class)
+                .assertBody(Matchers.equalTo(expected));
+        } finally {
+            container.stop();
+        }
+    }
+
     private static String steamContentType() {
         return "Content-Type: application/octet-stream";
     }

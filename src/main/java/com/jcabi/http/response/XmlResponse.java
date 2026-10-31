@@ -1,31 +1,6 @@
 /*
- * Copyright (c) 2011-2025, jcabi.com
- * All rights reserved.
- *
- * Redistribution and use in source and binary forms, with or without
- * modification, are permitted provided that the following conditions
- * are met: 1) Redistributions of source code must retain the above
- * copyright notice, this list of conditions and the following
- * disclaimer. 2) Redistributions in binary form must reproduce the above
- * copyright notice, this list of conditions and the following
- * disclaimer in the documentation and/or other materials provided
- * with the distribution. 3) Neither the name of the jcabi.com nor
- * the names of its contributors may be used to endorse or promote
- * products derived from this software without specific prior written
- * permission.
- *
- * THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS
- * "AS IS" AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT
- * NOT LIMITED TO, THE IMPLIED WARRANTIES OF MERCHANTABILITY AND
- * FITNESS FOR A PARTICULAR PURPOSE ARE DISCLAIMED. IN NO EVENT SHALL
- * THE COPYRIGHT HOLDER OR CONTRIBUTORS BE LIABLE FOR ANY DIRECT,
- * INDIRECT, INCIDENTAL, SPECIAL, EXEMPLARY, OR CONSEQUENTIAL DAMAGES
- * (INCLUDING, BUT NOT LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR
- * SERVICES; LOSS OF USE, DATA, OR PROFITS; OR BUSINESS INTERRUPTION)
- * HOWEVER CAUSED AND ON ANY THEORY OF LIABILITY, WHETHER IN CONTRACT,
- * STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE)
- * ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED
- * OF THE POSSIBILITY OF SUCH DAMAGE.
+ * SPDX-FileCopyrightText: Copyright (c) 2011-2026 Yegor Bugayenko
+ * SPDX-License-Identifier: MIT
  */
 package com.jcabi.http.response;
 
@@ -46,7 +21,7 @@ import lombok.EqualsAndHashCode;
  * XML response.
  *
  * <p>This response decorator is able to parse HTTP response body as
- * an XML document and manipulate with it afterwords, for example:
+ * an XML document and manipulate with it afterwards, for example:</p>
  *
  * <pre> String name = new JdkRequest("http://my.example.com")
  *   .header(HttpHeaders.ACCEPT, MediaType.TEXT_XML)
@@ -60,8 +35,8 @@ import lombok.EqualsAndHashCode;
  * <p>In <a href="http://en.wikipedia.org/wiki/HATEOAS">HATEOAS</a>
  * responses it is convenient to use this decorator's
  * method {@link #rel(String)}
- * in order to follow the link provided in {@code &lt;link&gt;} XML element,
- * for example:
+ * in order to follow the link provided in the {@code link} XML element,
+ * for example:</p>
  *
  * <pre> String data = new JdkRequest("http://my.example.com")
  *   .header(HttpHeaders.ACCEPT, MediaType.TEXT_XML)
@@ -71,7 +46,7 @@ import lombok.EqualsAndHashCode;
  *   .fetch()
  *   .body();</pre>
  *
- * <p>The class is immutable and thread-safe.
+ * <p>The class is immutable and thread-safe.</p>
  *
  * @since 0.8
  */
@@ -86,6 +61,7 @@ public final class XmlResponse extends AbstractResponse {
 
     /**
      * Public ctor.
+     *
      * @param resp Response
      */
     public XmlResponse(final Response resp) {
@@ -94,6 +70,7 @@ public final class XmlResponse extends AbstractResponse {
 
     /**
      * Public ctor.
+     *
      * @param resp Response
      * @param map Map of namespaces
      */
@@ -105,6 +82,7 @@ public final class XmlResponse extends AbstractResponse {
 
     /**
      * Get XML body.
+     *
      * @return XML body
      */
     public XML xml() {
@@ -113,6 +91,7 @@ public final class XmlResponse extends AbstractResponse {
 
     /**
      * Register this new namespace.
+     *
      * @param prefix Prefix to use
      * @param uri Namespace URI
      * @return This object
@@ -124,6 +103,7 @@ public final class XmlResponse extends AbstractResponse {
     /**
      * Verifies HTTP response body XHTML/XML content against XPath query,
      * and throws {@link AssertionError} in case of mismatch.
+     *
      * @param xpath Query to use
      * @return This object
      */
@@ -142,6 +122,7 @@ public final class XmlResponse extends AbstractResponse {
 
     /**
      * Follow XML link.
+     *
      * @param query XPath query to fetch new URI
      * @return New request
      */
@@ -152,10 +133,6 @@ public final class XmlResponse extends AbstractResponse {
         );
     }
 
-    /**
-     * Create XPath context.
-     * @return Context
-     */
     private NamespaceContext context() {
         XPathContext context = new XPathContext();
         for (final Map.Entry<String, String> entry
@@ -164,5 +141,4 @@ public final class XmlResponse extends AbstractResponse {
         }
         return context;
     }
-
 }

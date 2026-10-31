@@ -20,4 +20,3 @@ URI destination = new JdkRequest("http://my.example.com")
   .link("next") // IOException here if such a link doesn't exist
   .uri();
 +--
-

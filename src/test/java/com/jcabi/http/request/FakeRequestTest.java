@@ -1,31 +1,6 @@
 /*
- * Copyright (c) 2011-2025, jcabi.com
- * All rights reserved.
- *
- * Redistribution and use in source and binary forms, with or without
- * modification, are permitted provided that the following conditions
- * are met: 1) Redistributions of source code must retain the above
- * copyright notice, this list of conditions and the following
- * disclaimer. 2) Redistributions in binary form must reproduce the above
- * copyright notice, this list of conditions and the following
- * disclaimer in the documentation and/or other materials provided
- * with the distribution. 3) Neither the name of the jcabi.com nor
- * the names of its contributors may be used to endorse or promote
- * products derived from this software without specific prior written
- * permission.
- *
- * THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS
- * "AS IS" AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT
- * NOT LIMITED TO, THE IMPLIED WARRANTIES OF MERCHANTABILITY AND
- * FITNESS FOR A PARTICULAR PURPOSE ARE DISCLAIMED. IN NO EVENT SHALL
- * THE COPYRIGHT HOLDER OR CONTRIBUTORS BE LIABLE FOR ANY DIRECT,
- * INDIRECT, INCIDENTAL, SPECIAL, EXEMPLARY, OR CONSEQUENTIAL DAMAGES
- * (INCLUDING, BUT NOT LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR
- * SERVICES; LOSS OF USE, DATA, OR PROFITS; OR BUSINESS INTERRUPTION)
- * HOWEVER CAUSED AND ON ANY THEORY OF LIABILITY, WHETHER IN CONTRACT,
- * STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE)
- * ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED
- * OF THE POSSIBILITY OF SUCH DAMAGE.
+ * SPDX-FileCopyrightText: Copyright (c) 2011-2026 Yegor Bugayenko
+ * SPDX-License-Identifier: MIT
  */
 package com.jcabi.http.request;
 
@@ -44,51 +19,62 @@ import org.junit.jupiter.api.Test;
 
 /**
  * Test case for {@link FakeRequest}.
+ *
  * @since 1.0
  */
 final class FakeRequestTest {
 
     /**
      * FakeRequest can fetch a fake response.
+     *
      * @throws Exception If something goes wrong inside
      */
     @Test
     void sendsHttpRequestAndProcessesHttpResponse() throws Exception {
-        this.generateMainRequest()
+        final RestResponse response = this.generateMainRequest()
             .withBody("how are you?")
             .uri().path("/helloall").back()
             .method(Request.POST)
-            .fetch().as(RestResponse.class)
-            .assertStatus(HttpURLConnection.HTTP_OK)
-            .assertHeader(HttpHeaders.CONTENT_TYPE, MediaType.TEXT_PLAIN)
-            .assertBody(Matchers.containsString("are you?"));
+            .fetch().as(RestResponse.class);
+        Assertions.assertAll(
+            () -> response.assertStatus(HttpURLConnection.HTTP_OK),
+            () -> response.assertHeader(
+                HttpHeaders.CONTENT_TYPE, MediaType.TEXT_PLAIN
+            ),
+            () -> response.assertBody(Matchers.containsString("are you?"))
+        );
     }
 
     /**
      * FakeRequest can fetch a fake response with binary response.
+     *
      * @throws Exception If something goes wrong inside.
      */
     @Test
-    void sendsHttpRequestAndProcessesHttpBinaryResponse()
-        throws Exception {
-        final byte[] content = "Binary body content".getBytes();
-        this.generateMainRequest()
-            .withBody(content)
-            .uri().path("/binContent").back()
-            .method(Request.POST)
-            .fetch().as(RestResponse.class)
-            .assertStatus(HttpURLConnection.HTTP_OK)
-            .assertHeader(HttpHeaders.CONTENT_TYPE, MediaType.TEXT_PLAIN)
-            .assertBinary(Matchers.equalTo(content));
+    void sendsHttpRequestAndProcessesHttpBinaryResponse() throws Exception {
+        final byte[] content = "Binary body content"
+            .getBytes(StandardCharsets.UTF_8);
+        MatcherAssert.assertThat(
+            "should return the binary body back",
+            this.generateMainRequest()
+                .withBody(content)
+                .uri().path("/binContent").back()
+                .method(Request.POST)
+                .fetch()
+                .binary(),
+            Matchers.equalTo(content)
+        );
     }
 
     /**
      * FakeRequest can change URI.
+     *
      * @throws Exception If something goes wrong inside
      */
     @Test
     void changesUri() throws Exception {
         MatcherAssert.assertThat(
+            "should ends with 'facebook.com/'",
             new FakeRequest()
                 .uri().set(new URI("http://facebook.com")).back()
                 .uri().get().toString(),
@@ -98,11 +84,13 @@ final class FakeRequestTest {
 
     /**
      * FakeRequest can change URI in response.
+     *
      * @throws Exception If something goes wrong inside
      */
     @Test
     void changesUriInResponse() throws Exception {
         MatcherAssert.assertThat(
+            "should contains 'google.com'",
             new FakeRequest()
                 .uri().set(new URI("http://google.com")).back()
                 .fetch().back()
@@ -121,8 +109,7 @@ final class FakeRequestTest {
             IllegalStateException.class,
             () -> new FakeRequest()
                 .withStatus(HttpURLConnection.HTTP_OK)
-                .withBody("blah")
-                .fetch(
+                .withBody("blah").fetch(
                     new ByteArrayInputStream(
                         "foo".getBytes(StandardCharsets.UTF_8)
                     )
@@ -132,6 +119,7 @@ final class FakeRequestTest {
 
     /**
      * FakeRequest returns the Response Body if the Request Body is set.
+     *
      * @throws Exception If something goes wrong inside.
      * @link https://github.com/jcabi/jcabi-http/issues/47
      */
@@ -142,8 +130,7 @@ final class FakeRequestTest {
         new FakeRequest().withBody(response)
             .body().set(request).back()
             .fetch()
-            .as(RestResponse.class)
-            .assertBody(
+            .as(RestResponse.class).assertBody(
                 Matchers.allOf(
                     Matchers.is(response),
                     Matchers.not(Matchers.is(request))
@@ -152,14 +139,32 @@ final class FakeRequestTest {
     }
 
     /**
-     * Helper method that generates a FakeRequest.
-     * @return An instance of FakeRequest.
+     * FakeRequest can identify itself uniquely.
      */
+    @Test
+    void identifiesUniquely() {
+        Assertions.assertAll(
+            () -> MatcherAssert.assertThat(
+                "should not equals",
+                new FakeRequest().header("header-1", "value-1"),
+                Matchers.not(
+                    Matchers.equalTo(
+                        new FakeRequest().header("header-2", "value-2")
+                    )
+                )
+            ),
+            () -> MatcherAssert.assertThat(
+                "should equals",
+                new FakeRequest(),
+                Matchers.equalTo(new FakeRequest())
+            )
+        );
+    }
+
     private FakeRequest generateMainRequest() {
         return new FakeRequest()
             .withStatus(HttpURLConnection.HTTP_OK)
             .withReason("OK")
             .withHeader(HttpHeaders.CONTENT_TYPE, MediaType.TEXT_PLAIN);
     }
-
 }
