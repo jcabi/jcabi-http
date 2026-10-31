@@ -79,6 +79,17 @@ final class MultipartFormBody implements RequestBody {
 
     @Override
     public RequestBody formParam(final String name, final Object value) {
+        return this.formParam(name, value, "binary");
+    }
+
+    @Override
+    public RequestBody formParam(final String name, final Object value,
+        final String filename) {
+        if (filename.indexOf('\r') >= 0 || filename.indexOf('\n') >= 0) {
+            throw new IllegalArgumentException(
+                "A multipart filename must not contain CR or LF"
+            );
+        }
         final String boundary = this.boundary();
         final String dashes = "--";
         final byte[] old;
@@ -108,7 +119,11 @@ final class MultipartFormBody implements RequestBody {
                     Joiner.on("; ").join(
                         "Content-Disposition: form-data",
                         String.format("name=\"%s\"", name),
-                        "filename=\"binary\""
+                        String.format(
+                            "filename=\"%s\"",
+                            filename.replace("\\", "\\\\")
+                                .replace("\"", "\\\"")
+                        )
                     ).getBytes(StandardCharsets.UTF_8)
                 ).appendLine(
                     "Content-Type: application/octet-stream"
