@@ -36,6 +36,9 @@ import lombok.ToString;
  * <p>In this example, an additional HTTP header {@code Authorization}
  * will be added with a value {@code Basic amVmZjoxMjM0NQ==}.</p>
  *
+ * <p>User info without a colon is treated as a username with an empty
+ * password.</p>
+ *
  * <p>The class is immutable and thread-safe.</p>
  *
  * @see <a href="http://tools.ietf.org/html/rfc2617">RFC 2617 "HTTP Authentication: Basic and Digest Access Authentication"</a>
@@ -93,7 +96,7 @@ public final class BasicAuthWire implements Wire {
                             Logger.format(
                                 "%s:%s",
                                 parts[0],
-                                parts[1]
+                                parts.length > 1 ? parts[1] : ""
                             ).getBytes(StandardCharsets.UTF_8)
                         )
                     )
