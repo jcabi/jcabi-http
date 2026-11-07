@@ -36,6 +36,9 @@ import lombok.ToString;
  * <p>In this example, an additional HTTP header {@code Authorization}
  * will be added with a value {@code Basic amVmZjoxMjM0NQ==}.</p>
  *
+ * <p>User info without a colon is treated as a username with an empty
+ * password.</p>
+ *
  * <p>The class is immutable and thread-safe.</p>
  *
  * @see <a href="http://tools.ietf.org/html/rfc2617">RFC 2617 "HTTP Authentication: Basic and Digest Access Authentication"</a>
@@ -84,6 +87,12 @@ public final class BasicAuthWire implements Wire {
         final String info = URI.create(home).getUserInfo();
         if (absent && info != null) {
             final String[] parts = info.split(":", 2);
+            final String password;
+            if (parts.length > 1) {
+                password = parts[1];
+            } else {
+                password = "";
+            }
             hdrs.add(
                 new ImmutableHeader(
                     HttpHeaders.AUTHORIZATION,
@@ -93,7 +102,7 @@ public final class BasicAuthWire implements Wire {
                             Logger.format(
                                 "%s:%s",
                                 parts[0],
-                                parts[1]
+                                password
                             ).getBytes(StandardCharsets.UTF_8)
                         )
                     )
