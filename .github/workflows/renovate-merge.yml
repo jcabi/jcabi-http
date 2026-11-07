@@ -47,6 +47,7 @@ jobs:
                 const files = await github.paginate(github.rest.pulls.listFiles, {
                   ...repo, pull_number: number, per_page: 100,
                 });
+                // Keep security fail-closed until #641 approves its replacement.
                 const expected = ['copyrights', 'owasp', 'pdd', 'reuse', 'typos'];
                 for (const os of ['ubuntu-24.04', 'windows-2022', 'macos-15']) {
                   for (const java of [21, 25]) {

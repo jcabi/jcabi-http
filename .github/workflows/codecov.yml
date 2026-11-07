@@ -36,4 +36,5 @@ jobs:
         with:
           token: ${{ secrets.CODECOV_TOKEN }}
           files: ./target/site/jacoco/jacoco.xml
+          override_commit: ${{ inputs.revision || github.sha }}
           fail_ci_if_error: true
