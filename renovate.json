@@ -4,5 +4,8 @@
     "config:base"
   ],
   "automerge": true,
-  "platformAutomerge": false
+  "platformAutomerge": false,
+  "automergeType": "pr",
+  "ignoreTests": false,
+  "rebaseWhen": "behind-base-branch"
 }
