@@ -87,6 +87,12 @@ public final class BasicAuthWire implements Wire {
         final String info = URI.create(home).getUserInfo();
         if (absent && info != null) {
             final String[] parts = info.split(":", 2);
+            final String password;
+            if (parts.length > 1) {
+                password = parts[1];
+            } else {
+                password = "";
+            }
             hdrs.add(
                 new ImmutableHeader(
                     HttpHeaders.AUTHORIZATION,
@@ -96,7 +102,7 @@ public final class BasicAuthWire implements Wire {
                             Logger.format(
                                 "%s:%s",
                                 parts[0],
-                                parts.length > 1 ? parts[1] : ""
+                                password
                             ).getBytes(StandardCharsets.UTF_8)
                         )
                     )
