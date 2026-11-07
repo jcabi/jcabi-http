@@ -93,12 +93,12 @@ public final class BaseRequest implements Request {
     /**
      * Public ctor.
      *
-     * @param wre Wire
+     * @param transport Wire
      * @param uri The resource to work with
      */
-    public BaseRequest(final Wire wre, final String uri) {
+    public BaseRequest(final Wire transport, final String uri) {
         this(
-            wre, uri,
+            transport, uri,
             new Array<Map.Entry<String, String>>(),
             Request.GET, BaseRequest.EMPTY_BYTE_ARRAY
         );
@@ -107,24 +107,24 @@ public final class BaseRequest implements Request {
     /**
      * Public ctor.
      *
-     * @param wre Wire
+     * @param transport Wire
      * @param uri The resource to work with
      * @param headers Headers
      * @param method HTTP method
      * @param body HTTP request body
      */
     public BaseRequest(
-        final Wire wre, final String uri,
+        final Wire transport, final String uri,
         final Iterable<Map.Entry<String, String>> headers,
         final String method, final byte[] body
     ) {
-        this(wre, uri, headers, method, body, 0, 0);
+        this(transport, uri, headers, method, body, 0, 0);
     }
 
     /**
      * Public ctor.
      *
-     * @param wre Wire
+     * @param transport Wire
      * @param uri The resource to work with
      * @param headers Headers
      * @param method HTTP method
@@ -133,13 +133,13 @@ public final class BaseRequest implements Request {
      * @param rdd Read timeout for http connection
      */
     public BaseRequest(
-        final Wire wre, final String uri,
+        final Wire transport, final String uri,
         final Iterable<Map.Entry<String, String>> headers,
         final String method, final byte[] body,
         final int cnct, final int rdd
     ) {
         this(
-            wre, headers, BaseRequest.createUri(uri).toString(),
+            transport, headers, BaseRequest.createUri(uri).toString(),
             method, body, cnct, rdd
         );
     }
@@ -147,7 +147,7 @@ public final class BaseRequest implements Request {
     /**
      * Private ctor.
      *
-     * @param wre Wire
+     * @param transport Wire
      * @param headers Headers
      * @param uri The resource to work with
      * @param method HTTP method
@@ -156,12 +156,12 @@ public final class BaseRequest implements Request {
      * @param rdd Read timeout for http connection
      */
     private BaseRequest(
-        final Wire wre,
+        final Wire transport,
         final Iterable<Map.Entry<String, String>> headers, final String uri,
         final String method, final byte[] body,
         final int cnct, final int rdd
     ) {
-        this.wire = wre;
+        this.wire = transport;
         this.home = uri;
         this.hdrs = new Array<>(headers);
         this.mtd = method;
@@ -268,9 +268,9 @@ public final class BaseRequest implements Request {
     }
 
     @Override
-    public Request through(final Wire wre) {
+    public Request through(final Wire transport) {
         return new BaseRequest(
-            wre,
+            transport,
             this.home,
             this.hdrs,
             this.mtd,
