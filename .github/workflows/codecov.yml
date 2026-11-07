@@ -4,6 +4,12 @@
 # yamllint disable rule:line-length
 name: codecov
 'on':
+  workflow_dispatch:
+    inputs:
+      revision:
+        description: 'Commit to validate after an automated merge'
+        required: false
+        type: string
   push:
     branches:
       - master
@@ -13,6 +19,8 @@ jobs:
     runs-on: ubuntu-24.04
     steps:
       - uses: actions/checkout@v5
+        with:
+          ref: ${{ inputs.revision || github.sha }}
       - uses: actions/setup-java@v4
         with:
           distribution: 'temurin'
