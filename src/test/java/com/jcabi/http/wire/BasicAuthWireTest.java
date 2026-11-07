@@ -25,6 +25,7 @@ import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.function.Executable;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.CsvSource;
+import org.junit.jupiter.params.provider.ValueSource;
 
 /**
  * Test case for {@link BasicAuthWire}.
@@ -49,7 +50,8 @@ final class BasicAuthWireTest {
     @CsvSource({
         "Alice,  secret",
         "Bob,    s&e+c`ret",
-        "user,  €€"
+        "user,  €€",
+        "user,  secret:more"
     })
     void testHeader(
         final String username, final String password
@@ -74,6 +76,32 @@ final class BasicAuthWireTest {
                 BasicAuthWireTest.expectHeader(username, password)
             )
         );
+    }
+
+    /**
+     * Tests if absent and empty passwords produce the same authorization.
+     *
+     * @param userinfo The URI user info
+     * @throws Exception If something goes wrong
+     */
+    @ParameterizedTest
+    @ValueSource(strings = {"token", "token:"})
+    void sendsEmptyPassword(final String userinfo) throws Exception {
+        final MkContainer container = new MkGrizzlyContainer().next(
+            new MkAnswer.Simple("")
+        ).start();
+        try {
+            new JdkRequest(
+                UriBuilder.fromUri(container.home()).userInfo(userinfo).build()
+            ).through(BasicAuthWire.class).fetch();
+            MatcherAssert.assertThat(
+                "should encode a colon after the username",
+                container.take().headers().get(HttpHeaders.AUTHORIZATION).get(0),
+                Matchers.equalTo(BasicAuthWireTest.expectHeader("token", ""))
+            );
+        } finally {
+            container.stop();
+        }
     }
 
     /**
