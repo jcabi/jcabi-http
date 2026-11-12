@@ -5,11 +5,8 @@
 package com.jcabi.http.request;
 
 import com.jcabi.aspects.Immutable;
-import com.jcabi.aspects.Loggable;
 import com.jcabi.http.ImmutableHeader;
 import com.jcabi.http.Request;
-import com.jcabi.http.RequestBody;
-import com.jcabi.http.RequestURI;
 import com.jcabi.http.Response;
 import com.jcabi.http.Wire;
 import com.jcabi.immutable.Array;
@@ -21,7 +18,6 @@ import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Map;
 import lombok.EqualsAndHashCode;
-import lombok.ToString;
 import org.apache.http.Header;
 import org.apache.http.HttpEntity;
 import org.apache.http.client.config.RequestConfig;
@@ -41,10 +37,8 @@ import org.apache.http.util.EntityUtils;
  * @since 0.8
  */
 @Immutable
-@EqualsAndHashCode(of = "base")
-@ToString(of = "base")
-@Loggable(Loggable.DEBUG)
-public final class ApacheRequest implements Request {
+@EqualsAndHashCode(callSuper = true)
+public final class ApacheRequest extends AbstractRequest {
 
     /**
      * The wire to use.
@@ -157,11 +151,6 @@ public final class ApacheRequest implements Request {
     };
 
     /**
-     * Base request.
-     */
-    private final transient Request base;
-
-    /**
      * Public ctor.
      *
      * @param url The resource to work with
@@ -185,62 +174,6 @@ public final class ApacheRequest implements Request {
      * @param uri The resource to work with
      */
     public ApacheRequest(final String uri) {
-        this.base = new BaseRequest(ApacheRequest.WIRE, uri);
-    }
-
-    @Override
-    public RequestURI uri() {
-        return this.base.uri();
-    }
-
-    @Override
-    public Request header(final String name, final Object value) {
-        return this.base.header(name, value);
-    }
-
-    @Override
-    public Request reset(final String name) {
-        return this.base.reset(name);
-    }
-
-    @Override
-    public RequestBody body() {
-        return this.base.body();
-    }
-
-    @Override
-    public RequestBody multipartBody() {
-        return this.base.multipartBody();
-    }
-
-    @Override
-    public Request method(final String method) {
-        return this.base.method(method);
-    }
-
-    @Override
-    public Request timeout(final int connect, final int read) {
-        return this.base.timeout(connect, read);
-    }
-
-    @Override
-    public Response fetch() throws IOException {
-        return this.base.fetch();
-    }
-
-    @Override
-    public Response fetch(final InputStream stream) throws IOException {
-        return this.base.fetch(stream);
-    }
-
-    @Override
-    public <T extends Wire> Request through(final Class<T> type,
-        final Object... args) {
-        return this.base.through(type, args);
-    }
-
-    @Override
-    public Request through(final Wire wire) {
-        return this.base.through(wire);
+        super(new BaseRequest(ApacheRequest.WIRE, uri));
     }
 }
