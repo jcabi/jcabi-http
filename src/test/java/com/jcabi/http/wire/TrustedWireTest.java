@@ -17,12 +17,22 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.net.HttpURLConnection;
 import java.security.NoSuchAlgorithmException;
+import java.util.Arrays;
 import java.util.Collection;
 import java.util.Collections;
+import java.util.List;
 import java.util.Map;
+import java.util.concurrent.CountDownLatch;
+import java.util.concurrent.ExecutorService;
+import java.util.concurrent.Executors;
+import java.util.concurrent.Future;
+import java.util.concurrent.TimeUnit;
+import javax.net.ssl.HttpsURLConnection;
 import javax.net.ssl.SSLContext;
+import javax.net.ssl.SSLSocketFactory;
 import org.hamcrest.MatcherAssert;
 import org.hamcrest.Matchers;
+import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 
 /**
@@ -54,15 +64,14 @@ final class TrustedWireTest {
     }
 
     /**
-     * TrustedWire must replace SSLContext.getDefault() during send so
-     * that Apache HTTP client (HttpClients.createSystem()) also trusts
-     * all certificates when ApacheRequest is the underlying wire.
+     * TrustedWire must leave JVM-wide SSL defaults unchanged during send.
      *
      * @throws Exception If something goes wrong inside
      */
     @Test
-    void replacesDefaultSslContextDuringSend() throws Exception {
+    void preservesDefaultSslContextDuringSend() throws Exception {
         final SSLContext before = SSLContext.getDefault();
+        final SSLSocketFactory factory = HttpsURLConnection.getDefaultSSLSocketFactory();
         final TrustedWireTest.SslContextCapture capture =
             new TrustedWireTest.SslContextCapture();
         new TrustedWire(capture).send(
@@ -74,13 +83,17 @@ final class TrustedWireTest {
             0,
             0
         );
-        MatcherAssert.assertThat(
-            String.format(
-                "TrustedWire must replace the default context %s during send",
-                before
+        Assertions.assertAll(
+            () -> MatcherAssert.assertThat(
+                "TrustedWire must preserve the default context during send",
+                capture.captured(),
+                Matchers.sameInstance(before)
             ),
-            capture.captured(),
-            Matchers.not(Matchers.sameInstance(before))
+            () -> MatcherAssert.assertThat(
+                "TrustedWire must preserve the default socket factory during send",
+                capture.factory(),
+                Matchers.sameInstance(factory)
+            )
         );
     }
 
@@ -112,6 +125,44 @@ final class TrustedWireTest {
     }
 
     /**
+     * Trusted requests must be able to reach their origin concurrently.
+     *
+     * @throws Exception If something goes wrong inside
+     */
+    @Test
+    void sendsConcurrently() throws Exception {
+        final CountDownLatch entered = new CountDownLatch(2);
+        final Wire wire = new TrustedWire(
+            (req, home, method, headers, content, connect, read) -> {
+                entered.countDown();
+                try {
+                    if (!entered.await(2, TimeUnit.SECONDS)) {
+                        throw new IOException("Trusted requests were serialized");
+                    }
+                } catch (final InterruptedException ex) {
+                    Thread.currentThread().interrupt();
+                    throw new IOException(ex);
+                }
+                return new FakeRequest().fetch();
+            }
+        );
+        try (ExecutorService executor = Executors.newFixedThreadPool(2)) {
+            final List<Future<Response>> responses = Arrays.asList(
+                executor.submit(() -> new FakeRequest().through(wire).fetch()),
+                executor.submit(() -> new FakeRequest().through(wire).fetch())
+            );
+            MatcherAssert.assertThat(
+                "Both requests must complete concurrently",
+                Arrays.asList(
+                    responses.get(0).get(5, TimeUnit.SECONDS).status(),
+                    responses.get(1).get(5, TimeUnit.SECONDS).status()
+                ),
+                Matchers.contains(HttpURLConnection.HTTP_OK, HttpURLConnection.HTTP_OK)
+            );
+        }
+    }
+
+    /**
      * Wire that captures SSLContext.getDefault() at the moment send() runs.
      *
      * @since 1.10
@@ -123,6 +174,11 @@ final class TrustedWireTest {
          */
         private volatile SSLContext context;
 
+        /**
+         * The socket factory seen during send.
+         */
+        private volatile SSLSocketFactory sockets;
+
         @Override
         public Response send(final Request req, final String home,
             final String method,
@@ -131,10 +187,20 @@ final class TrustedWireTest {
             final int connect, final int read) throws IOException {
             try {
                 this.context = SSLContext.getDefault();
+                this.sockets = HttpsURLConnection.getDefaultSSLSocketFactory();
             } catch (final NoSuchAlgorithmException ex) {
                 throw new IOException(ex);
             }
             return new FakeRequest().fetch();
+        }
+
+        /**
+         * The socket factory that was active when send() ran.
+         *
+         * @return Captured socket factory
+         */
+        SSLSocketFactory factory() {
+            return this.sockets;
         }
 
         /**

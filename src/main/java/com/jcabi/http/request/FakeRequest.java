@@ -20,6 +20,8 @@ import java.nio.charset.StandardCharsets;
 import java.util.Collection;
 import java.util.Collections;
 import java.util.Map;
+import java.util.Optional;
+import javax.net.ssl.SSLContext;
 import lombok.EqualsAndHashCode;
 
 /**
@@ -108,6 +110,16 @@ public final class FakeRequest implements Request {
     @Override
     public String toString() {
         return this.base.toString();
+    }
+
+    @Override
+    public Optional<SSLContext> sslContext() {
+        return this.base.sslContext();
+    }
+
+    @Override
+    public Request sslContext(final SSLContext context) {
+        return this.base.sslContext(context);
     }
 
     @Override

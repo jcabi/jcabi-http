@@ -7,6 +7,8 @@ package com.jcabi.http;
 import com.jcabi.aspects.Immutable;
 import java.io.IOException;
 import java.io.InputStream;
+import java.util.Optional;
+import javax.net.ssl.SSLContext;
 
 /**
  * RESTful request.
@@ -102,6 +104,31 @@ public interface Request {
      * @since 2.0
      */
     String CONNECT = "CONNECT";
+
+    /**
+     * SSL context for this request, if explicitly configured.
+     *
+     * @return Request-local context, or empty to use the transport defaults
+     * @since 2.0
+     */
+    default Optional<SSLContext> sslContext() {
+        return Optional.empty();
+    }
+
+    /**
+     * Use a request-local SSL context.
+     *
+     * <p>The default implementation throws
+     * {@link UnsupportedOperationException}. Implementations supporting
+     * SSL configuration override this method.</p>
+     *
+     * @param context Context to use
+     * @return New request with the context configured
+     * @since 2.0
+     */
+    default Request sslContext(final SSLContext context) {
+        throw new UnsupportedOperationException("Request-local SSL is unsupported");
+    }
 
     /**
      * Get destination URI.

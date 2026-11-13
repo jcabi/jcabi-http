@@ -16,9 +16,6 @@ import java.security.SecureRandom;
 import java.security.cert.X509Certificate;
 import java.util.Collection;
 import java.util.Map;
-import java.util.concurrent.locks.Lock;
-import java.util.concurrent.locks.ReentrantLock;
-import javax.net.ssl.HttpsURLConnection;
 import javax.net.ssl.SSLContext;
 import javax.net.ssl.TrustManager;
 import javax.net.ssl.X509TrustManager;
@@ -34,6 +31,10 @@ import lombok.ToString;
  *   .through(TrustedWire.class)
  *   .fetch()
  *   .body();</pre>
+ *
+ * <p>The SSL context is passed through {@link Request#sslContext(SSLContext)}
+ * to the transport. The JDK and Apache requests support this without changing
+ * JVM-wide defaults.</p>
  *
  * <p>The class is immutable and thread-safe.</p>
  *
@@ -67,11 +68,6 @@ public final class TrustedWire implements Wire {
     };
 
     /**
-     * Guard of the JVM-wide SSL defaults.
-     */
-    private static final Lock LOCK = new ReentrantLock();
-
-    /**
      * Original wire.
      */
     private final transient Wire origin;
@@ -91,36 +87,10 @@ public final class TrustedWire implements Wire {
         final Collection<Map.Entry<String, String>> headers,
         final InputStream content,
         final int connect, final int read) throws IOException {
-        TrustedWire.LOCK.lock();
-        try {
-            final Defaults defaults = new Defaults(
-                HttpsURLConnection.getDefaultSSLSocketFactory(),
-                TrustedWire.defaultContext()
-            );
-            final SSLContext ctx = TrustedWire.context();
-            try {
-                HttpsURLConnection.setDefaultSSLSocketFactory(
-                    ctx.getSocketFactory()
-                );
-                SSLContext.setDefault(ctx);
-                return this.origin.send(
-                    req, home, method, headers, content,
-                    connect, read
-                );
-            } finally {
-                defaults.restore();
-            }
-        } finally {
-            TrustedWire.LOCK.unlock();
-        }
-    }
-
-    private static SSLContext defaultContext() {
-        try {
-            return SSLContext.getDefault();
-        } catch (final NoSuchAlgorithmException ex) {
-            throw new IllegalStateException(ex);
-        }
+        return this.origin.send(
+            req.sslContext(TrustedWire.context()), home, method, headers,
+            content, connect, read
+        );
     }
 
     private static SSLContext context() {
