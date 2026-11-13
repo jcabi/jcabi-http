@@ -81,12 +81,14 @@ public final class CookieOptimizingWire implements Wire {
                 if (header.getKey().equals(HttpHeaders.COOKIE)) {
                     final String cookie = header.getValue();
                     final int split = cookie.indexOf('=');
-                    final String name = cookie.substring(0, split);
-                    final String value = cookie.substring(split + 1);
-                    if (value.isEmpty()) {
-                        cookies.remove(name);
-                    } else {
-                        cookies.put(name, value);
+                    if (split >= 0) {
+                        final String name = cookie.substring(0, split);
+                        final String value = cookie.substring(split + 1);
+                        if (value.isEmpty()) {
+                            cookies.remove(name);
+                        } else {
+                            cookies.put(name, value);
+                        }
                     }
                 } else {
                     hdrs.add(header);
