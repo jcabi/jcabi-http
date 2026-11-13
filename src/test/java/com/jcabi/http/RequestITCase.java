@@ -70,9 +70,15 @@ final class RequestITCase extends RequestTestTemplate {
     void processesNotOkHttpResponse(
         final Class<? extends Request> type
     ) throws Exception {
-        RequestTestTemplate.request(new URI("https://badssl.com/404"), type)
-            .fetch().as(RestResponse.class)
-            .assertStatus(HttpURLConnection.HTTP_NOT_FOUND);
+        try (
+            MkContainer container = new MkGrizzlyContainer().next(
+                new MkAnswer.Simple(HttpURLConnection.HTTP_NOT_FOUND)
+            ).start()
+        ) {
+            RequestTestTemplate.request(container.home(), type)
+                .fetch().as(RestResponse.class)
+                .assertStatus(HttpURLConnection.HTTP_NOT_FOUND);
+        }
     }
 
     /**
