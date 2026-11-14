@@ -14,6 +14,7 @@ import jakarta.json.Json;
 import jakarta.ws.rs.core.HttpHeaders;
 import jakarta.ws.rs.core.MediaType;
 import java.io.IOException;
+import javax.net.ssl.SSLContext;
 import org.hamcrest.MatcherAssert;
 import org.hamcrest.Matchers;
 import org.junit.jupiter.api.Assertions;
@@ -32,6 +33,40 @@ final class BaseRequestTest {
      * Property name of Exception.
      */
     private static final String MESSAGE = "message";
+
+    /**
+     * Derived requests retain their SSL context.
+     *
+     * @throws Exception If something goes wrong
+     */
+    @Test
+    void preservesSslContext() throws Exception {
+        final SSLContext context = SSLContext.getDefault();
+        final Wire wire = Mockito.mock(Wire.class);
+        final Request request = new BaseRequest(wire, "https://localhost/");
+        Assertions.assertAll(
+            () -> MatcherAssert.assertThat(
+                "No SSL context is configured by default",
+                request.sslContext().isPresent(),
+                Matchers.is(false)
+            ),
+            () -> MatcherAssert.assertThat(
+                "All request transformations must retain the SSL context",
+                request.sslContext(context)
+                    .header("X-Test", "value").reset("X-Test")
+                    .method(Request.POST).timeout(100, 200)
+                    .uri().path("test").back()
+                    .body().set("body").back()
+                    .through(wire).sslContext().orElseThrow(),
+                Matchers.sameInstance(context)
+            ),
+            () -> MatcherAssert.assertThat(
+                "Configuring SSL must leave the original request unchanged",
+                request.sslContext().isPresent(),
+                Matchers.is(false)
+            )
+        );
+    }
 
     /**
      * BaseRequest can build the right destination URI.
