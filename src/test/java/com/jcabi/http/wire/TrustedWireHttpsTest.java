@@ -47,7 +47,9 @@ final class TrustedWireHttpsTest {
         final HttpsServer server = HttpsServer.create(
             new InetSocketAddress("localhost", 0), 0
         );
-        server.setHttpsConfigurator(new HttpsConfigurator(TrustedWireHttpsTest.context()));
+        server.setHttpsConfigurator(
+            new HttpsConfigurator(TrustedWireHttpsTest.context("localhost.txt"))
+        );
         server.createContext(
             "/", exchange -> {
                 exchange.sendResponseHeaders(HttpURLConnection.HTTP_OK, -1);
@@ -78,15 +80,17 @@ final class TrustedWireHttpsTest {
         }
     }
 
-    private static Stream<Function<URI, Request>> requests() {
-        return Stream.of(JdkRequest::new, ApacheRequest::new);
-    }
-
-    // Hex-encoded PKCS12 fixture, password "password", valid 2020-2119.
-    private static SSLContext context() throws Exception {
+    /**
+     * Load a server context from a hex-encoded PKCS12 fixture.
+     *
+     * @param resource Fixture name, with password "password"
+     * @return Server context
+     * @throws Exception If the fixture cannot be loaded
+     */
+    static SSLContext context(final String resource) throws Exception {
         final char[] password = "password".toCharArray();
         final KeyStore keys = KeyStore.getInstance("PKCS12");
-        try (InputStream input = TrustedWireHttpsTest.class.getResourceAsStream("localhost.txt")) {
+        try (InputStream input = TrustedWireHttpsTest.class.getResourceAsStream(resource)) {
             keys.load(
                 new ByteArrayInputStream(
                     DatatypeConverter.parseHexBinary(
@@ -102,5 +106,9 @@ final class TrustedWireHttpsTest {
         final SSLContext context = SSLContext.getInstance("TLS");
         context.init(managers.getKeyManagers(), null, null);
         return context;
+    }
+
+    private static Stream<Function<URI, Request>> requests() {
+        return Stream.of(JdkRequest::new, ApacheRequest::new);
     }
 }
