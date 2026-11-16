@@ -27,7 +27,9 @@ import org.junit.jupiter.params.provider.ValueSource;
 final class TrustedWireITCase {
 
     /**
-     * TrustedWire can ignore SSL verifications.
+     * TrustedWire can ignore SSL verifications against local certificates.
+     * The PKCS12 fixtures use the test-only password "changeit" and contain
+     * expired, self-signed, and untrusted-root certificates for localhost.
      *
      * @param fixture Keystore with an invalid certificate chain
      * @throws Exception If something goes wrong inside
