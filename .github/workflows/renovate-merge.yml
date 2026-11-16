@@ -1,0 +1,119 @@
+# SPDX-FileCopyrightText: Copyright (c) 2011-2026 Yegor Bugayenko
+# SPDX-License-Identifier: MIT
+---
+# yamllint disable rule:line-length
+name: Renovate merge
+'on':
+  workflow_run:
+    workflows: ['*']
+    types: [completed]
+permissions:
+  actions: write
+  checks: read
+  contents: write
+  pull-requests: write
+  statuses: read
+concurrency:
+  group: renovate-merge
+  cancel-in-progress: false
+jobs:
+  merge:
+    if: github.event.workflow_run.event == 'pull_request' && github.event.workflow_run.conclusion == 'success'
+    runs-on: ubuntu-24.04
+    timeout-minutes: 5
+    steps:
+      # Never check out or execute pull request code in this privileged workflow.
+      - uses: actions/github-script@v8
+        with:
+          script: |
+            const repo = context.repo;
+            const prs = await github.paginate(github.rest.pulls.list, {
+              ...repo, state: 'open', base: 'master', per_page: 100,
+            });
+            for (const candidate of prs) {
+              if (candidate.user.login !== 'renovate[bot]' || candidate.draft
+                  || candidate.head.repo?.full_name !== `${repo.owner}/${repo.repo}`
+                  || candidate.head.sha !== context.payload.workflow_run.head_sha) {
+                continue;
+              }
+              const number = candidate.number;
+              const sha = candidate.head.sha;
+              const green = async () => {
+                const {data: pr} = await github.rest.pulls.get({...repo, pull_number: number});
+                if (pr.state !== 'open' || pr.draft || pr.head.sha !== sha
+                    || pr.mergeable !== true || pr.mergeable_state !== 'clean') {
+                  return false;
+                }
+                const files = await github.paginate(github.rest.pulls.listFiles, {
+                  ...repo, pull_number: number, per_page: 100,
+                });
+                // Keep security fail-closed until #641 approves its replacement.
+                const expected = ['copyrights', 'owasp', 'pdd', 'reuse', 'typos'];
+                for (const os of ['ubuntu-24.04', 'windows-2022', 'macos-15']) {
+                  for (const java of [21, 25]) {
+                    expected.push(`mvn (${os}, ${java})`);
+                  }
+                }
+                const paths = files.flatMap(file => [file.filename, file.previous_filename || '']);
+                if (paths.some(path => path.startsWith('.github/'))) expected.push('actionlint');
+                if (paths.some(path => /\.ya?ml$/.test(path))) expected.push('yamllint');
+                if (paths.some(path => /\.md$/.test(path) || path === '.github/workflows/markdown-lint.yml')) expected.push('markdown-lint');
+                if (paths.some(path => /\.(xml|xsl|xhtml|html|xsd)$/.test(path) || path === '.github/workflows/xcop.yml')) expected.push('xcop');
+                const checks = await github.paginate(github.rest.checks.listForRef, {
+                  ...repo, ref: sha, filter: 'latest', per_page: 100,
+                });
+                if (!expected.every(name => checks.some(check => check.name === name
+                    && check.app?.slug === 'github-actions'))
+                    || !checks.length || checks.some(check => check.status !== 'completed'
+                      || check.conclusion !== 'success')) {
+                  return false;
+                }
+                const {data: statuses} = await github.rest.repos.getCombinedStatusForRef({
+                  ...repo, ref: sha, per_page: 100,
+                });
+                if (statuses.total_count > statuses.statuses.length
+                    || statuses.statuses.some(status => status.state !== 'success')) {
+                  return false;
+                }
+                // Also inspect workflow conclusions: a job's continue-on-error
+                // must never make a failed matrix job eligible for merging.
+                const runs = await github.paginate(github.rest.actions.listWorkflowRunsForRepo, {
+                  ...repo, head_sha: sha, event: 'pull_request', per_page: 100,
+                });
+                const latest = new Map();
+                for (const run of runs) {
+                  if (!latest.has(run.workflow_id)) latest.set(run.workflow_id, run);
+                }
+                return latest.size > 0 && [...latest.values()].every(run =>
+                  run.status === 'completed' && run.conclusion === 'success');
+              };
+              if (!await green()) {
+                core.info(`PR #${number}: waiting for a green, conflict-free head`);
+                continue;
+              }
+              const reviews = await github.paginate(github.rest.pulls.listReviews, {
+                ...repo, pull_number: number, per_page: 100,
+              });
+              if (!reviews.some(review => review.user.login === 'github-actions[bot]'
+                  && review.commit_id === sha && review.state === 'APPROVED')) {
+                await github.rest.pulls.createReview({
+                  ...repo, pull_number: number, commit_id: sha, event: 'APPROVE',
+                  body: 'Every check on this head succeeded and the branch has no conflicts.',
+                });
+              }
+              // Revalidate after approval and bind the merge to this exact head.
+              if (await green()) {
+                const {data: result} = await github.rest.pulls.merge({
+                  ...repo, pull_number: number, sha, merge_method: 'merge',
+                });
+                if (!result.merged) core.setFailed(result.message);
+                else {
+                  core.info(`Merged PR #${number}: ${result.sha}`);
+                  // GITHUB_TOKEN merges do not trigger push workflows.
+                  await github.rest.actions.createWorkflowDispatch({
+                    ...repo, workflow_id: 'codecov.yml', ref: 'master',
+                    inputs: {revision: result.sha},
+                  });
+                }
+              }
+            }
