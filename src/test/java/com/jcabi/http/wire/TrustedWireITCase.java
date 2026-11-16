@@ -70,7 +70,7 @@ final class TrustedWireITCase {
         final KeyStore store = KeyStore.getInstance("PKCS12");
         try (
             InputStream input = TrustedWireITCase.class.getResourceAsStream(
-                String.format("/tls/%s.p12", certificate)
+                String.format("/ssl/%s.p12", certificate)
             )
         ) {
             store.load(input, password);

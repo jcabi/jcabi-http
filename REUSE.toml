@@ -32,8 +32,3 @@ path = [
 precedence = "override"
 SPDX-FileCopyrightText = "Copyright (c) 2025 Yegor Bugayenko"
 SPDX-License-Identifier = "MIT"
-
-[[annotations]]
-path = ["src/test/resources/tls/*.p12"]
-SPDX-FileCopyrightText = "Copyright (c) 2026 Yegor Bugayenko"
-SPDX-License-Identifier = "MIT"
