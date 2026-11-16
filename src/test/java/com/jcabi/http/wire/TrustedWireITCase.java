@@ -31,27 +31,27 @@ final class TrustedWireITCase {
      * The PKCS12 fixtures use the test-only password "changeit" and contain
      * expired, self-signed, and untrusted-root certificates for localhost.
      *
-     * @param fixture Keystore with SSL problems
+     * @param fixture Keystore with an invalid certificate chain
      * @throws Exception If something goes wrong inside
      */
     @ParameterizedTest
     @ValueSource(strings = {"expired", "self-signed", "untrusted-root"})
     void ignoresSslCertProblems(final String fixture) throws Exception {
         final char[] password = "changeit".toCharArray();
-        final KeyStore keys = KeyStore.getInstance("PKCS12");
+        final KeyStore store = KeyStore.getInstance("PKCS12");
         try (
             InputStream input = TrustedWireITCase.class.getResourceAsStream(
-                String.format("/ssl/%s.p12", fixture)
+                String.format("%s.p12", fixture)
             )
         ) {
-            keys.load(input, password);
+            store.load(input, password);
         }
-        final KeyManagerFactory factory = KeyManagerFactory.getInstance(
+        final KeyManagerFactory keys = KeyManagerFactory.getInstance(
             KeyManagerFactory.getDefaultAlgorithm()
         );
-        factory.init(keys, password);
+        keys.init(store, password);
         final SSLContext context = SSLContext.getInstance("TLS");
-        context.init(factory.getKeyManagers(), null, null);
+        context.init(keys.getKeyManagers(), null, null);
         final HttpsServer server = HttpsServer.create(
             new InetSocketAddress("localhost", 0), 0
         );
@@ -68,7 +68,8 @@ final class TrustedWireITCase {
                 "https://localhost:%d/", server.getAddress().getPort()
             );
             Assertions.assertThrows(
-                IOException.class, () -> new JdkRequest(url).fetch()
+                IOException.class, () -> new JdkRequest(url).fetch(),
+                "The default client must reject the invalid certificate"
             );
             new JdkRequest(url)
                 .through(TrustedWire.class)
