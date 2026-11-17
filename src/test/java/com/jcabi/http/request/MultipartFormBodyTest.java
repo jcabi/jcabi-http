@@ -108,6 +108,38 @@ final class MultipartFormBodyTest {
         );
     }
 
+    @Test
+    void sendsEveryPartWithoutModification() throws IOException {
+        final ByteArrayOutputStream sent = new ByteArrayOutputStream();
+        final byte[] first = {0, -1, 66};
+        final byte[] second = {-2, 67, -128};
+        new BaseRequest(
+            (request, home, method, headers, content, connect, read) -> {
+                IOUtils.copy(content, sent);
+                return Mockito.mock(Response.class);
+            }, "https://example.com"
+        ).header(
+            HttpHeaders.CONTENT_TYPE, "multipart/form-data; boundary=test"
+        ).multipartBody()
+            .formParam("first", first, "one.bin")
+            .formParam("second", second, "two.bin")
+            .back().fetch();
+        final String type = "Content-Type: application/octet-stream";
+        Assertions.assertEquals(
+            String.join(
+                new String(new char[] {'\r', '\n'}), "--test",
+                "Content-Disposition: form-data; name=\"first\"; filename=\"one.bin\"",
+                type, "", new String(first, StandardCharsets.ISO_8859_1),
+                "--test",
+                "Content-Disposition: form-data; name=\"second\"; filename=\"two.bin\"",
+                type, "", new String(second, StandardCharsets.ISO_8859_1),
+                "--test--"
+            ),
+            new String(sent.toByteArray(), StandardCharsets.ISO_8859_1),
+            "the wire must receive every part with its own bytes and filename"
+        );
+    }
+
     @ParameterizedTest
     @ValueSource(chars = {'\r', '\n'})
     void rejectsLineBreaksInFilename(final char newline) {
