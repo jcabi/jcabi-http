@@ -20,6 +20,7 @@ import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Locale;
 import java.util.Map;
+import java.util.stream.Collectors;
 
 /**
  * Cookies received while following a chain of HTTP redirects.
@@ -94,15 +95,16 @@ final class CookieJar {
     Collection<Map.Entry<String, String>> attach(final URI uri,
         final Collection<Map.Entry<String, String>> headers) {
         final Map<String, String> received = new LinkedHashMap<>(0);
-        this.cookies.stream()
+        final List<HttpCookie> applicable = this.cookies.stream()
             .filter(cookie -> CookieJar.matches(cookie, uri))
             .sorted(Comparator.comparingInt(cookie -> cookie.getPath().length()))
-            .forEach(
-                cookie -> received.put(
-                    cookie.getName(),
-                    String.format("%s=%s", cookie.getName(), cookie.getValue())
-                )
+            .collect(Collectors.toList());
+        for (final HttpCookie cookie : applicable) {
+            received.put(
+                cookie.getName(),
+                String.format("%s=%s", cookie.getName(), cookie.getValue())
             );
+        }
         final Collection<Map.Entry<String, String>> result;
         if (received.isEmpty()) {
             result = headers;
