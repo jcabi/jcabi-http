@@ -82,6 +82,26 @@ public interface RequestBody {
     RequestBody formParam(String name, Object value);
 
     /**
+     * Add a multipart form param with a filename.
+     *
+     * <p>The default implementation throws
+     * {@link UnsupportedOperationException}. Multipart bodies reject filenames
+     * containing CR or LF with {@link IllegalArgumentException}.</p>
+     *
+     * @param name Form field name
+     * @param value Field content
+     * @param filename Filename in the content disposition
+     * @return New alternated body
+     * @since 2.0
+     */
+    default RequestBody formParam(final String name, final Object value,
+        final String filename) {
+        throw new UnsupportedOperationException(
+            "Filenames are only supported for multipart form bodies"
+        );
+    }
+
+    /**
      * Add form params.
      *
      * @param params Map of params
