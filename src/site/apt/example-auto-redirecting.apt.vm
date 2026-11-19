@@ -31,3 +31,10 @@ String body = new JdkRequest("http://www.google.com")
   .fetch()
   .body();
 +--
+
+  Cookies set by <<<Set-Cookie>>> headers of the redirecting responses are
+  sent to the next locations in a <<<Cookie>>> header, the way a browser does
+  it. A cookie is only sent to the hosts and paths it belongs to, according to
+  its <<<Domain>>>, <<<Path>>>, <<<Secure>>>, <<<Expires>>> and <<<Max-Age>>>
+  attributes, so a login page that sets a session cookie and redirects to the
+  page you asked for works as expected.
