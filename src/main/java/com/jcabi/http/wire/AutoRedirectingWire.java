@@ -31,6 +31,12 @@ import lombok.ToString;
  * <p>If the maximum number of retries are reached, the last response
  * received is returned to the caller, regardless of its status code.</p>
  *
+ * <p>Cookies set by {@code Set-Cookie} headers of redirecting responses
+ * are sent in a {@code Cookie} header to the next locations they are
+ * applicable to, according to their domain, path, secure and expiration
+ * attributes (RFC 6265). Cookies of the request with the same names are
+ * replaced by them.</p>
+ *
  * <pre> String html = new JdkRequest("http://goggle.com")
  *   .through(AutoRedirectingWire.class)
  *   .header(HttpHeaders.ACCEPT, MediaType.TEXT_PLAIN)
@@ -88,6 +94,8 @@ public final class AutoRedirectingWire implements Wire {
         );
         int attempt = 1;
         final URI uri = URI.create(home);
+        final CookieJar cookies = new CookieJar();
+        URI current = uri;
         while (attempt < this.max) {
             if (response.status() < HttpURLConnection.HTTP_MULT_CHOICE
                 || response.status() >= HttpURLConnection.HTTP_BAD_REQUEST) {
@@ -103,10 +111,13 @@ public final class AutoRedirectingWire implements Wire {
             if (!location.isAbsolute()) {
                 location = uri.resolve(location);
             }
+            cookies.store(current, response.headers());
             response = this.origin.send(
                 req, location.toString(),
-                method, headers, content, connect, read
+                method, cookies.attach(location, headers),
+                content, connect, read
             );
+            current = location;
             try {
                 TimeUnit.SECONDS.sleep((long) attempt);
             } catch (final InterruptedException ex) {
