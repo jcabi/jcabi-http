@@ -20,6 +20,8 @@ import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Locale;
 import java.util.Map;
+import java.util.Set;
+import java.util.regex.Pattern;
 import java.util.stream.Collectors;
 
 /**
@@ -43,6 +45,11 @@ final class CookieJar {
      */
     private static final Splitter SEMICOLON =
         Splitter.on(';').trimResults().omitEmptyStrings();
+
+    /**
+     * Valid value of the Max-Age attribute.
+     */
+    private static final Pattern MAX_AGE = Pattern.compile("-?\\d+");
 
     /**
      * Cookies received so far.
@@ -85,8 +92,8 @@ final class CookieJar {
      * <p>If there are no cookies for the URI, the headers are returned
      * as is. Otherwise all {@code Cookie} headers are merged into one,
      * where the received cookies replace the ones with the same
-     * names. Of the received cookies with the same name, the one with
-     * the longest path is sent.</p>
+     * names. All applicable received cookies are sent, the ones with
+     * longer paths first.</p>
      *
      * @param uri URI the request is going to be sent to
      * @param headers Headers of the request
@@ -94,21 +101,21 @@ final class CookieJar {
      */
     Collection<Map.Entry<String, String>> attach(final URI uri,
         final Collection<Map.Entry<String, String>> headers) {
-        final Map<String, String> received = new LinkedHashMap<>(0);
         final List<HttpCookie> applicable = this.cookies.stream()
             .filter(cookie -> CookieJar.matches(cookie, uri))
-            .sorted(Comparator.comparingInt(cookie -> cookie.getPath().length()))
+            .sorted(
+                Comparator.comparingInt(
+                    (HttpCookie cookie) -> cookie.getPath().length()
+                ).reversed()
+            )
             .collect(Collectors.toList());
-        for (final HttpCookie cookie : applicable) {
-            received.put(
-                cookie.getName(),
-                String.format("%s=%s", cookie.getName(), cookie.getValue())
-            );
-        }
         final Collection<Map.Entry<String, String>> result;
-        if (received.isEmpty()) {
+        if (applicable.isEmpty()) {
             result = headers;
         } else {
+            final Set<String> names = applicable.stream()
+                .map(HttpCookie::getName)
+                .collect(Collectors.toSet());
             result = new ArrayList<>(headers.size() + 1);
             final Map<String, String> merged = new LinkedHashMap<>(0);
             for (final Map.Entry<String, String> header : headers) {
@@ -118,10 +125,20 @@ final class CookieJar {
                     result.add(header);
                 }
             }
-            merged.putAll(received);
+            final List<String> values = new ArrayList<>(merged.size());
+            for (final Map.Entry<String, String> cookie : merged.entrySet()) {
+                if (!names.contains(cookie.getKey())) {
+                    values.add(cookie.getValue());
+                }
+            }
+            for (final HttpCookie cookie : applicable) {
+                values.add(
+                    String.format("%s=%s", cookie.getName(), cookie.getValue())
+                );
+            }
             result.add(
                 new ImmutableHeader(
-                    HttpHeaders.COOKIE, String.join("; ", merged.values())
+                    HttpHeaders.COOKIE, String.join("; ", values)
                 )
             );
         }
@@ -135,12 +152,37 @@ final class CookieJar {
             if (!domain.isEmpty()) {
                 cookie.setDomain(domain);
                 cookie.setPath(CookieJar.path(cookie, uri));
-                this.cookies.remove(cookie);
-                if (!cookie.hasExpired()) {
+                this.cookies.removeIf(
+                    stored -> CookieJar.same(stored, cookie)
+                );
+                if (!cookie.hasExpired() && !CookieJar.expires(header)) {
                     this.cookies.add(cookie);
                 }
             }
         }
+    }
+
+    private static boolean same(final HttpCookie left, final HttpCookie right) {
+        return left.getName().equals(right.getName())
+            && CookieJar.withoutDot(left.getDomain())
+                .equals(CookieJar.withoutDot(right.getDomain()))
+            && left.getPath().equals(right.getPath());
+    }
+
+    private static boolean expires(final String header) {
+        boolean expired = false;
+        for (final String attr : CookieJar.SEMICOLON.split(header)) {
+            final int eq = attr.indexOf('=');
+            if (eq > 0
+                && "max-age".equalsIgnoreCase(attr.substring(0, eq).trim())) {
+                final String age = attr.substring(eq + 1).trim();
+                if (CookieJar.MAX_AGE.matcher(age).matches()) {
+                    expired = age.charAt(0) == '-'
+                        || age.chars().allMatch(chr -> chr == '0');
+                }
+            }
+        }
+        return expired;
     }
 
     private static List<HttpCookie> parse(final String header) {

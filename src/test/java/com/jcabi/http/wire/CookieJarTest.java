@@ -191,21 +191,21 @@ final class CookieJarTest {
     }
 
     /**
-     * CookieJar prefers the cookie with the most specific path.
+     * CookieJar sends all matching cookies, the longest path first.
      */
     @Test
-    void prefersCookieWithLongestPath() {
+    void sendsAllMatchingCookiesLongestPathFirst() {
         final CookieJar jar = CookieJarTest.jar(
             CookieJarTest.HOME, "sid=admin; Path=/admin", "sid=root; Path=/"
         );
         MatcherAssert.assertThat(
-            "should send the cookie with the longest path",
+            "should send both cookies, the longest path first",
             Arrays.asList(
                 CookieJarTest.cookies(jar, "http://example.com/admin/users"),
                 CookieJarTest.cookies(jar, CookieJarTest.HOME)
             ),
             Matchers.contains(
-                Collections.singletonList("sid=admin"),
+                Collections.singletonList("sid=admin; sid=root"),
                 Collections.singletonList("sid=root")
             )
         );
@@ -313,6 +313,115 @@ final class CookieJarTest {
     }
 
     /**
+     * CookieJar treats cookie names as case-sensitive.
+     */
+    @Test
+    void keepsCookiesWithNamesDifferingInCase() {
+        final CookieJar jar = CookieJarTest.jar(
+            CookieJarTest.HOME, "SID=one", "sid=two"
+        );
+        jar.store(
+            URI.create(CookieJarTest.HOME),
+            Collections.singletonMap(
+                HttpHeaders.SET_COOKIE,
+                Collections.singletonList("sid=; Max-Age=0")
+            )
+        );
+        MatcherAssert.assertThat(
+            "should delete only the cookie with the same name",
+            CookieJarTest.cookies(jar, CookieJarTest.HOME),
+            Matchers.contains("SID=one")
+        );
+    }
+
+    /**
+     * CookieJar sends cookies with the same name set for different domains.
+     */
+    @Test
+    void keepsCookiesWithSameNameForDifferentDomains() {
+        final CookieJar jar = CookieJarTest.jar(
+            "http://api.example.com/", "sid=api", "sid=all; Domain=example.com"
+        );
+        MatcherAssert.assertThat(
+            "should send both cookies",
+            CookieJarTest.cookies(jar, "http://api.example.com/"),
+            Matchers.contains("sid=api; sid=all")
+        );
+    }
+
+    /**
+     * CookieJar replaces a cookie when it changes from domain to host only.
+     */
+    @Test
+    void replacesDomainCookieWithHostOnlyOne() {
+        MatcherAssert.assertThat(
+            "should replace the domain cookie",
+            CookieJarTest.cookies(
+                CookieJarTest.jar(
+                    CookieJarTest.HOME, "sid=old; Domain=example.com", "sid=new"
+                ),
+                CookieJarTest.HOME
+            ),
+            Matchers.contains("sid=new")
+        );
+    }
+
+    /**
+     * CookieJar deletes a domain cookie by a host only one.
+     */
+    @Test
+    void deletesDomainCookieByHostOnlyOne() {
+        MatcherAssert.assertThat(
+            "should delete the domain cookie",
+            CookieJarTest.cookies(
+                CookieJarTest.jar(
+                    CookieJarTest.HOME,
+                    "sid=old; Domain=example.com; Path=/",
+                    "sid=; Max-Age=0; Path=/"
+                ),
+                CookieJarTest.HOME
+            ),
+            Matchers.empty()
+        );
+    }
+
+    /**
+     * CookieJar deletes a host only cookie by a domain one.
+     */
+    @Test
+    void deletesHostOnlyCookieByDomainOne() {
+        MatcherAssert.assertThat(
+            "should delete the host only cookie",
+            CookieJarTest.cookies(
+                CookieJarTest.jar(
+                    CookieJarTest.HOME,
+                    "sid=old; Path=/",
+                    "sid=; Max-Age=0; Domain=example.com; Path=/"
+                ),
+                CookieJarTest.HOME
+            ),
+            Matchers.empty()
+        );
+    }
+
+    /**
+     * CookieJar forgets a cookie with a negative Max-Age.
+     */
+    @Test
+    void forgetsCookieWithNegativeMaxAge() {
+        MatcherAssert.assertThat(
+            "should not store the cookie with negative Max-Age",
+            CookieJarTest.cookies(
+                CookieJarTest.jar(
+                    CookieJarTest.HOME, "sid=abc", "sid=abc; Max-Age=-1"
+                ),
+                CookieJarTest.HOME
+            ),
+            Matchers.empty()
+        );
+    }
+
+    /**
      * CookieJar ignores malformed cookies.
      */
     @Test
@@ -364,7 +473,7 @@ final class CookieJarTest {
             Matchers.containsInAnyOrder(
                 new ImmutableHeader(HttpHeaders.ACCEPT, "text/plain"),
                 new ImmutableHeader(
-                    HttpHeaders.COOKIE, "sid=new; theme=dark; flag; lang=en"
+                    HttpHeaders.COOKIE, "theme=dark; flag; sid=new; lang=en"
                 )
             )
         );
