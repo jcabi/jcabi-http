@@ -74,6 +74,41 @@ final class CookieOptimizingWireTest {
     }
 
     /**
+     * CookieOptimizingWire can ignore a Cookie header without an equals sign.
+     *
+     * @throws Exception If something goes wrong inside
+     */
+    @Test
+    void ignoresCookieHeaderWithoutEqualsSign() throws Exception {
+        final MkContainer container = new MkGrizzlyContainer()
+            .next(new MkAnswer.Simple(""))
+            .start();
+        final MkQuery query;
+        try {
+            new JdkRequest(container.home())
+                .through(CookieOptimizingWire.class)
+                .header(HttpHeaders.COOKIE, "secure")
+                .header(HttpHeaders.COOKIE, "alpha=boom")
+                .fetch()
+                .as(RestResponse.class)
+                .assertStatus(HttpURLConnection.HTTP_OK);
+            query = container.take();
+        } finally {
+            container.stop();
+        }
+        MatcherAssert.assertThat(
+            "malformed cookie must be dropped, valid one must remain",
+            query.headers().get(HttpHeaders.COOKIE),
+            Matchers.hasItem(
+                Matchers.allOf(
+                    Matchers.containsString("alpha=boom"),
+                    Matchers.not(Matchers.containsString("secure"))
+                )
+            )
+        );
+    }
+
+    /**
      * CookieOptimizingWire can avoid transferring of empty cookies.
      *
      * @throws Exception If something goes wrong inside
