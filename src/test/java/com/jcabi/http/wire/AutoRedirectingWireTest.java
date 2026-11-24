@@ -111,7 +111,7 @@ final class AutoRedirectingWireTest {
                 () -> MatcherAssert.assertThat(
                     "should send the cookie set by the redirect",
                     query.headers().get(HttpHeaders.COOKIE),
-                    Matchers.contains("session=abc; theme=dark")
+                    Matchers.contains("theme=dark; session=abc")
                 )
             );
         } finally {
