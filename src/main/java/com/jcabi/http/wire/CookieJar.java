@@ -5,9 +5,6 @@
 package com.jcabi.http.wire;
 
 import com.google.common.base.Splitter;
-import com.google.common.base.Strings;
-import com.google.common.net.InetAddresses;
-import com.google.common.net.InternetDomainName;
 import com.jcabi.http.ImmutableHeader;
 import jakarta.ws.rs.core.HttpHeaders;
 import java.net.HttpCookie;
@@ -18,9 +15,7 @@ import java.util.Collections;
 import java.util.Comparator;
 import java.util.LinkedHashMap;
 import java.util.List;
-import java.util.Locale;
 import java.util.Map;
-import java.util.Set;
 import java.util.regex.Pattern;
 import java.util.stream.Collectors;
 
@@ -102,56 +97,25 @@ final class CookieJar {
     Collection<Map.Entry<String, String>> attach(final URI uri,
         final Collection<Map.Entry<String, String>> headers) {
         final List<HttpCookie> applicable = this.cookies.stream()
-            .filter(cookie -> CookieJar.matches(cookie, uri))
-            .sorted(
-                Comparator.comparingInt(
-                    (HttpCookie cookie) -> cookie.getPath().length()
-                ).reversed()
-            )
+            .filter(new CookieScope(uri)::accepts)
+            .sorted(Comparator.comparingInt(cookie -> -cookie.getPath().length()))
             .collect(Collectors.toList());
         final Collection<Map.Entry<String, String>> result;
         if (applicable.isEmpty()) {
             result = headers;
         } else {
-            final Set<String> names = applicable.stream()
-                .map(HttpCookie::getName)
-                .collect(Collectors.toSet());
-            result = new ArrayList<>(headers.size() + 1);
-            final Map<String, String> merged = new LinkedHashMap<>(0);
-            for (final Map.Entry<String, String> header : headers) {
-                if (HttpHeaders.COOKIE.equalsIgnoreCase(header.getKey())) {
-                    CookieJar.split(header.getValue(), merged);
-                } else {
-                    result.add(header);
-                }
-            }
-            final List<String> values = new ArrayList<>(merged.size());
-            for (final Map.Entry<String, String> cookie : merged.entrySet()) {
-                if (!names.contains(cookie.getKey())) {
-                    values.add(cookie.getValue());
-                }
-            }
-            for (final HttpCookie cookie : applicable) {
-                values.add(
-                    String.format("%s=%s", cookie.getName(), cookie.getValue())
-                );
-            }
-            result.add(
-                new ImmutableHeader(
-                    HttpHeaders.COOKIE, String.join("; ", values)
-                )
-            );
+            result = CookieJar.merge(headers, applicable);
         }
         return result;
     }
 
     private void store(final URI uri, final String header) {
-        final String host = CookieJar.host(uri);
+        final CookieScope scope = new CookieScope(uri);
         for (final HttpCookie cookie : CookieJar.parse(header)) {
-            final String domain = CookieJar.domain(cookie, host);
+            final String domain = scope.domain(cookie);
             if (!domain.isEmpty()) {
                 cookie.setDomain(domain);
-                cookie.setPath(CookieJar.path(cookie, uri));
+                cookie.setPath(scope.path(cookie));
                 this.cookies.removeIf(
                     stored -> CookieJar.same(stored, cookie)
                 );
@@ -162,20 +126,48 @@ final class CookieJar {
         }
     }
 
+    private static Collection<Map.Entry<String, String>> merge(
+        final Collection<Map.Entry<String, String>> headers,
+        final List<HttpCookie> received) {
+        final Collection<Map.Entry<String, String>> result =
+            new ArrayList<>(headers.size() + 1);
+        final Map<String, String> own = new LinkedHashMap<>(0);
+        for (final Map.Entry<String, String> header : headers) {
+            if (HttpHeaders.COOKIE.equalsIgnoreCase(header.getKey())) {
+                CookieJar.split(header.getValue(), own);
+            } else {
+                result.add(header);
+            }
+        }
+        for (final HttpCookie cookie : received) {
+            own.remove(cookie.getName());
+        }
+        final List<String> values = new ArrayList<>(own.values());
+        for (final HttpCookie cookie : received) {
+            values.add(
+                String.format("%s=%s", cookie.getName(), cookie.getValue())
+            );
+        }
+        result.add(
+            new ImmutableHeader(HttpHeaders.COOKIE, String.join("; ", values))
+        );
+        return result;
+    }
+
     private static boolean same(final HttpCookie left, final HttpCookie right) {
         return left.getName().equals(right.getName())
-            && CookieJar.withoutDot(left.getDomain())
-                .equals(CookieJar.withoutDot(right.getDomain()))
+            && CookieScope.withoutDot(left.getDomain())
+                .equals(CookieScope.withoutDot(right.getDomain()))
             && left.getPath().equals(right.getPath());
     }
 
     private static boolean expires(final String header) {
         boolean expired = false;
         for (final String attr : CookieJar.SEMICOLON.split(header)) {
-            final int eq = attr.indexOf('=');
-            if (eq > 0
-                && "max-age".equalsIgnoreCase(attr.substring(0, eq).trim())) {
-                final String age = attr.substring(eq + 1).trim();
+            final int pos = attr.indexOf('=');
+            if (pos > 0
+                && "max-age".equalsIgnoreCase(attr.substring(0, pos).trim())) {
+                final String age = attr.substring(pos + 1).trim();
                 if (CookieJar.MAX_AGE.matcher(age).matches()) {
                     expired = age.charAt(0) == '-'
                         || age.chars().allMatch(chr -> chr == '0');
@@ -193,113 +185,6 @@ final class CookieJar {
             parsed = Collections.emptyList();
         }
         return parsed;
-    }
-
-    private static String domain(final HttpCookie cookie, final String host) {
-        final String suffix = CookieJar.withoutDot(
-            Strings.nullToEmpty(cookie.getDomain()).toLowerCase(Locale.ENGLISH)
-        );
-        final String domain;
-        if (suffix.isEmpty()
-            || suffix.equals(host) && CookieJar.isPublic(suffix)) {
-            domain = host;
-        } else if (CookieJar.domainMatches(host, suffix)
-            && !CookieJar.isPublic(suffix)) {
-            domain = String.format(".%s", suffix);
-        } else {
-            domain = "";
-        }
-        return domain;
-    }
-
-    private static String path(final HttpCookie cookie, final URI uri) {
-        final String attr = cookie.getPath();
-        final String path;
-        if (attr == null || attr.isEmpty() || attr.charAt(0) != '/') {
-            final String dir = CookieJar.requested(uri);
-            final int slash = dir.lastIndexOf('/');
-            if (slash <= 0) {
-                path = "/";
-            } else {
-                path = dir.substring(0, slash);
-            }
-        } else {
-            path = attr;
-        }
-        return path;
-    }
-
-    private static boolean matches(final HttpCookie cookie, final URI uri) {
-        return CookieJar.owns(cookie, CookieJar.host(uri))
-            && !cookie.hasExpired()
-            && CookieJar.transportable(cookie, uri)
-            && CookieJar.pathMatches(CookieJar.requested(uri), cookie.getPath());
-    }
-
-    private static boolean owns(final HttpCookie cookie, final String host) {
-        final String domain = cookie.getDomain();
-        final boolean owns;
-        if (domain.charAt(0) == '.') {
-            owns = CookieJar.domainMatches(host, domain.substring(1));
-        } else {
-            owns = host.equals(domain);
-        }
-        return owns;
-    }
-
-    private static boolean transportable(final HttpCookie cookie,
-        final URI uri) {
-        return !cookie.getSecure() || "https".equalsIgnoreCase(uri.getScheme());
-    }
-
-    private static boolean domainMatches(final String host,
-        final String domain) {
-        return host.equals(domain)
-            || host.endsWith(String.format(".%s", domain))
-            && !InetAddresses.isUriInetAddress(host);
-    }
-
-    private static boolean isPublic(final String domain) {
-        return InternetDomainName.isValid(domain)
-            && InternetDomainName.from(domain).isPublicSuffix();
-    }
-
-    private static boolean pathMatches(final String path, final String dir) {
-        return path.equals(dir)
-            || path.startsWith(dir)
-            && (dir.endsWith("/") || path.charAt(dir.length()) == '/');
-    }
-
-    private static String requested(final URI uri) {
-        final String raw = uri.getRawPath();
-        final String path;
-        if (raw == null || raw.isEmpty() || raw.charAt(0) != '/') {
-            path = "/";
-        } else {
-            path = raw;
-        }
-        return path;
-    }
-
-    private static String host(final URI uri) {
-        final String host = uri.getHost();
-        final String lower;
-        if (host == null) {
-            lower = "";
-        } else {
-            lower = host.toLowerCase(Locale.ENGLISH);
-        }
-        return lower;
-    }
-
-    private static String withoutDot(final String domain) {
-        final String clean;
-        if (!domain.isEmpty() && domain.charAt(0) == '.') {
-            clean = domain.substring(1);
-        } else {
-            clean = domain;
-        }
-        return clean;
     }
 
     private static void split(final String header,

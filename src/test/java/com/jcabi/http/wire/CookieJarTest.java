@@ -339,12 +339,15 @@ final class CookieJarTest {
      */
     @Test
     void keepsCookiesWithSameNameForDifferentDomains() {
-        final CookieJar jar = CookieJarTest.jar(
-            "http://api.example.com/", "sid=api", "sid=all; Domain=example.com"
-        );
         MatcherAssert.assertThat(
             "should send both cookies",
-            CookieJarTest.cookies(jar, "http://api.example.com/"),
+            CookieJarTest.cookies(
+                CookieJarTest.jar(
+                    "http://api.example.com/",
+                    "sid=api", "sid=all; Domain=example.com"
+                ),
+                "http://api.example.com/"
+            ),
             Matchers.contains("sid=api; sid=all")
         );
     }
