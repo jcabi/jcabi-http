@@ -26,6 +26,9 @@ import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
 import java.util.Map;
+import java.util.Optional;
+import javax.net.ssl.HttpsURLConnection;
+import javax.net.ssl.SSLContext;
 import lombok.EqualsAndHashCode;
 import lombok.ToString;
 
@@ -64,6 +67,11 @@ public final class JdkRequest implements Request {
         ) throws IOException {
             final HttpURLConnection conn = JdkRequest.openConnection(home);
             try {
+                if (conn instanceof HttpsURLConnection && req.sslContext().isPresent()) {
+                    HttpsURLConnection.class.cast(conn).setSSLSocketFactory(
+                        req.sslContext().get().getSocketFactory()
+                    );
+                }
                 conn.setConnectTimeout(connect);
                 conn.setReadTimeout(read);
                 conn.setRequestMethod(method);
@@ -197,6 +205,16 @@ public final class JdkRequest implements Request {
      */
     public JdkRequest(final String uri) {
         this.base = new BaseRequest(JdkRequest.WIRE, uri);
+    }
+
+    @Override
+    public Optional<SSLContext> sslContext() {
+        return this.base.sslContext();
+    }
+
+    @Override
+    public Request sslContext(final SSLContext context) {
+        return this.base.sslContext(context);
     }
 
     @Override

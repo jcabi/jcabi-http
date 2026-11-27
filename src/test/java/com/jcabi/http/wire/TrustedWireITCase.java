@@ -71,9 +71,9 @@ final class TrustedWireITCase {
                 "https://localhost:%d/", server.getAddress().getPort()
             );
             Assertions.assertThrows(
-                IOException.class, () -> new JdkRequest(url).fetch()
+                IOException.class, () -> new JdkRequest(url).timeout(2000, 2000).fetch()
             );
-            new JdkRequest(url)
+            new JdkRequest(url).timeout(2000, 2000)
                 .through(TrustedWire.class)
                 .fetch()
                 .as(RestResponse.class)
