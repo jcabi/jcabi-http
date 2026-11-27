@@ -1,0 +1,15 @@
+SPDX-FileCopyrightText: Copyright (c) 2011-2026 Yegor Bugayenko
+SPDX-License-Identifier: MIT
+
+These PKCS12 stores contain test-only RSA keys for localhost, generated
+with the JDK keytool. The store and key passwords are changeit, and the
+server key alias is server. They are deliberately absent from the JVM's
+trust store.
+
+expired.p12: self-signed certificate that expired in January 2000.
+self-signed.p12: self-signed certificate valid from 2020 to 2119.
+untrusted-root.p12: localhost certificate signed by Test Root, with a
+chain of two certificates valid from 2020 to 2119.
+
+Each server certificate has a DNS subject alternative name of localhost.
+The test binds an ephemeral loopback port and needs no external service.
