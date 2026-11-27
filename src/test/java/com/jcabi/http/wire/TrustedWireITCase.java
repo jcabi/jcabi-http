@@ -4,8 +4,11 @@
  */
 package com.jcabi.http.wire;
 
+import com.jcabi.http.Request;
+import com.jcabi.http.request.ApacheRequest;
 import com.jcabi.http.request.JdkRequest;
 import com.jcabi.http.response.RestResponse;
+import com.sun.net.httpserver.HttpExchange;
 import com.sun.net.httpserver.HttpsConfigurator;
 import com.sun.net.httpserver.HttpsServer;
 import java.io.IOException;
@@ -13,10 +16,13 @@ import java.io.InputStream;
 import java.net.HttpURLConnection;
 import java.net.InetAddress;
 import java.net.InetSocketAddress;
+import java.net.URI;
 import java.security.KeyStore;
+import java.util.Arrays;
 import javax.net.ssl.KeyManagerFactory;
 import javax.net.ssl.SSLContext;
 import org.junit.jupiter.api.Assertions;
+import org.junit.jupiter.api.Timeout;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.ValueSource;
 
@@ -28,29 +34,53 @@ import org.junit.jupiter.params.provider.ValueSource;
 final class TrustedWireITCase {
 
     /**
-     * TrustedWire can ignore SSL verifications against local certificates.
-     * The PKCS12 fixtures use the test-only password "changeit" and contain
-     * expired, self-signed, and untrusted-root certificates for localhost.
+     * TrustedWire can ignore SSL verifications with either transport.
      *
-     * @param fixture Keystore with SSL problems
+     * @param certificate Certificate fixture
      * @throws Exception If something goes wrong inside
      */
     @ParameterizedTest
     @ValueSource(strings = {"expired", "self-signed", "untrusted-root"})
-    void ignoresSslCertProblems(final String fixture) throws Exception {
+    @Timeout(10)
+    void ignoresSslCertProblems(final String certificate) throws Exception {
+        final HttpsServer server = TrustedWireITCase.server(certificate);
+        server.start();
+        try {
+            final URI uri = new URI(
+                String.format("https://localhost:%d/", server.getAddress().getPort())
+            );
+            for (final Request request : Arrays.asList(
+                new ApacheRequest(uri).timeout(2000, 2000),
+                new JdkRequest(uri).timeout(2000, 2000)
+            )) {
+                Assertions.assertThrows(
+                    IOException.class, request::fetch,
+                    "An ordinary request must reject the invalid certificate"
+                );
+                request.through(TrustedWire.class)
+                    .fetch()
+                    .as(RestResponse.class)
+                    .assertStatus(HttpURLConnection.HTTP_OK);
+            }
+        } finally {
+            server.stop(0);
+        }
+    }
+
+    private static HttpsServer server(final String certificate) throws Exception {
         final char[] password = "changeit".toCharArray();
-        final KeyStore keys = KeyStore.getInstance("PKCS12");
+        final KeyStore store = KeyStore.getInstance("PKCS12");
         try (
             InputStream input = TrustedWireITCase.class.getResourceAsStream(
-                String.format("/ssl/%s.p12", fixture)
+                String.format("/ssl/%s.p12", certificate)
             )
         ) {
-            keys.load(input, password);
+            store.load(input, password);
         }
         final KeyManagerFactory factory = KeyManagerFactory.getInstance(
             KeyManagerFactory.getDefaultAlgorithm()
         );
-        factory.init(keys, password);
+        factory.init(store, password);
         final SSLContext context = SSLContext.getInstance("TLS");
         context.init(factory.getKeyManagers(), null, null);
         final HttpsServer server = HttpsServer.create(
@@ -61,25 +91,11 @@ final class TrustedWireITCase {
         server.setHttpsConfigurator(new HttpsConfigurator(context));
         server.createContext(
             "/", exchange -> {
-                exchange.sendResponseHeaders(HttpURLConnection.HTTP_OK, -1);
-                exchange.close();
+                try (HttpExchange response = exchange) {
+                    response.sendResponseHeaders(HttpURLConnection.HTTP_OK, -1);
+                }
             }
         );
-        server.start();
-        try {
-            final String url = String.format(
-                "https://localhost:%d/", server.getAddress().getPort()
-            );
-            Assertions.assertThrows(
-                IOException.class, () -> new JdkRequest(url).timeout(2000, 2000).fetch()
-            );
-            new JdkRequest(url).timeout(2000, 2000)
-                .through(TrustedWire.class)
-                .fetch()
-                .as(RestResponse.class)
-                .assertStatus(HttpURLConnection.HTTP_OK);
-        } finally {
-            server.stop(0);
-        }
+        return server;
     }
 }

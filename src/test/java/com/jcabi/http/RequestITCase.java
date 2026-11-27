@@ -72,7 +72,7 @@ final class RequestITCase extends RequestTestTemplate {
     ) throws Exception {
         try (
             MkContainer container = new MkGrizzlyContainer().next(
-                new MkAnswer.Simple(HttpURLConnection.HTTP_NOT_FOUND)
+                new MkAnswer.Simple(HttpURLConnection.HTTP_NOT_FOUND, "missing")
             ).start()
         ) {
             RequestTestTemplate.request(container.home(), type)
