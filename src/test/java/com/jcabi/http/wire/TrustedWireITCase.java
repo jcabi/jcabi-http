@@ -14,6 +14,7 @@ import com.sun.net.httpserver.HttpsServer;
 import java.io.IOException;
 import java.io.InputStream;
 import java.net.HttpURLConnection;
+import java.net.InetAddress;
 import java.net.InetSocketAddress;
 import java.net.URI;
 import java.security.KeyStore;
@@ -49,7 +50,8 @@ final class TrustedWireITCase {
                 String.format("https://localhost:%d/", server.getAddress().getPort())
             );
             for (final Request request : Arrays.asList(
-                new ApacheRequest(uri), new JdkRequest(uri)
+                new ApacheRequest(uri).timeout(2000, 2000),
+                new JdkRequest(uri).timeout(2000, 2000)
             )) {
                 Assertions.assertThrows(
                     IOException.class, request::fetch,
@@ -82,7 +84,9 @@ final class TrustedWireITCase {
         final SSLContext context = SSLContext.getInstance("TLS");
         context.init(factory.getKeyManagers(), null, null);
         final HttpsServer server = HttpsServer.create(
-            new InetSocketAddress("localhost", 0), 0
+            new InetSocketAddress(
+                InetAddress.getAllByName("localhost")[0], 0
+            ), 0
         );
         server.setHttpsConfigurator(new HttpsConfigurator(context));
         server.createContext(

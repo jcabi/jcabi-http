@@ -16,6 +16,8 @@ import org.hamcrest.MatcherAssert;
 import org.hamcrest.Matchers;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
+import org.junit.jupiter.params.ParameterizedTest;
+import org.junit.jupiter.params.provider.ValueSource;
 
 /**
  * Test case for {@link CookieOptimizingWire}.
@@ -23,6 +25,44 @@ import org.junit.jupiter.api.Test;
  * @since 1.0
  */
 final class CookieOptimizingWireTest {
+
+    /**
+     * CookieOptimizingWire ignores cookies without an equals sign.
+     *
+     * @param cookie Malformed cookie
+     * @throws Exception If something goes wrong inside
+     */
+    @ParameterizedTest
+    @ValueSource(strings = {"", "secure"})
+    void ignoresMalformedCookies(final String cookie) throws Exception {
+        final MkContainer container = new MkGrizzlyContainer().next(
+            new MkAnswer.Simple("")
+        ).start();
+        try {
+            new JdkRequest(container.home())
+                .through(CookieOptimizingWire.class)
+                .header(HttpHeaders.COOKIE, "alpha=one")
+                .header(HttpHeaders.COOKIE, cookie)
+                .header(HttpHeaders.COOKIE, "beta=two")
+                .header(HttpHeaders.COOKIE, "gamma=old")
+                .header(HttpHeaders.COOKIE, "gamma=")
+                .fetch();
+            MatcherAssert.assertThat(
+                "should merge valid cookies and remove empty values",
+                container.take().headers().get(HttpHeaders.COOKIE),
+                Matchers.contains(
+                    Matchers.allOf(
+                        Matchers.containsString("alpha=one"),
+                        Matchers.containsString("beta=two"),
+                        Matchers.not(Matchers.containsString("gamma")),
+                        Matchers.not(Matchers.containsString("secure"))
+                    )
+                )
+            );
+        } finally {
+            container.stop();
+        }
+    }
 
     /**
      * CookieOptimizingWire can transfer cookies.

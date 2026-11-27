@@ -26,7 +26,9 @@ import java.net.URI;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Map;
+import java.util.Optional;
 import java.util.concurrent.TimeUnit;
+import javax.net.ssl.SSLContext;
 import lombok.EqualsAndHashCode;
 
 /**
@@ -37,7 +39,7 @@ import lombok.EqualsAndHashCode;
  * @since 0.8
  */
 @Immutable
-@EqualsAndHashCode(of = {"home", "mtd", "hdrs", "content"})
+@EqualsAndHashCode(of = {"home", "mtd", "hdrs", "content", "context"})
 @Loggable(Loggable.DEBUG)
 // @todo #87:30min Refactor this class to get rid of PMD.GodClass.
 //  This can be done if MultiPartFormBody and
@@ -58,6 +60,11 @@ public final class BaseRequest implements Request {
      * Wire to use.
      */
     private final transient Wire wire;
+
+    /**
+     * Request-local SSL context.
+     */
+    private final transient Optional<SSLContext> context;
 
     /**
      * Request URI.
@@ -139,8 +146,8 @@ public final class BaseRequest implements Request {
         final int cnct, final int rdd
     ) {
         this(
-            transport, headers, BaseRequest.createUri(uri).toString(),
-            method, body, cnct, rdd
+            transport, BaseRequest.createUri(uri).toString(), headers,
+            method, body, cnct, rdd, Optional.empty()
         );
     }
 
@@ -148,18 +155,19 @@ public final class BaseRequest implements Request {
      * Private ctor.
      *
      * @param transport Wire
-     * @param headers Headers
      * @param uri The resource to work with
+     * @param headers Headers
      * @param method HTTP method
      * @param body HTTP request body
      * @param cnct Connect timeout for http connection
      * @param rdd Read timeout for http connection
+     * @param ctx Request-local SSL context
      */
     private BaseRequest(
-        final Wire transport,
-        final Iterable<Map.Entry<String, String>> headers, final String uri,
+        final Wire transport, final String uri,
+        final Iterable<Map.Entry<String, String>> headers,
         final String method, final byte[] body,
-        final int cnct, final int rdd
+        final int cnct, final int rdd, final Optional<SSLContext> ctx
     ) {
         this.wire = transport;
         this.home = uri;
@@ -168,6 +176,20 @@ public final class BaseRequest implements Request {
         this.content = body.clone();
         this.connect = cnct;
         this.read = rdd;
+        this.context = ctx;
+    }
+
+    @Override
+    public Optional<SSLContext> sslContext() {
+        return this.context;
+    }
+
+    @Override
+    public Request sslContext(final SSLContext ctx) {
+        return new BaseRequest(
+            this.wire, this.home, this.hdrs, this.mtd, this.content,
+            this.connect, this.read, Optional.of(ctx)
+        );
     }
 
     @Override
@@ -184,7 +206,8 @@ public final class BaseRequest implements Request {
             this.mtd,
             this.content,
             this.connect,
-            this.read
+            this.read,
+            this.context
         );
     }
 
@@ -204,7 +227,8 @@ public final class BaseRequest implements Request {
             this.mtd,
             this.content,
             this.connect,
-            this.read
+            this.read,
+            this.context
         );
     }
 
@@ -227,7 +251,8 @@ public final class BaseRequest implements Request {
             method,
             this.content,
             this.connect,
-            this.read
+            this.read,
+            this.context
         );
     }
 
@@ -240,7 +265,8 @@ public final class BaseRequest implements Request {
             this.mtd,
             this.content,
             cnct,
-            rdd
+            rdd,
+            this.context
         );
     }
 
@@ -276,7 +302,8 @@ public final class BaseRequest implements Request {
             this.mtd,
             this.content,
             this.connect,
-            this.read
+            this.read,
+            this.context
         );
     }
 
@@ -314,12 +341,13 @@ public final class BaseRequest implements Request {
     Request uri(final String address) {
         return new BaseRequest(
             this.wire,
-            address,
+            BaseRequest.createUri(address).toString(),
             this.hdrs,
             this.mtd,
             this.content,
             this.connect,
-            this.read
+            this.read,
+            this.context
         );
     }
 
@@ -331,7 +359,8 @@ public final class BaseRequest implements Request {
             this.mtd,
             text,
             this.connect,
-            this.read
+            this.read,
+            this.context
         );
     }
 

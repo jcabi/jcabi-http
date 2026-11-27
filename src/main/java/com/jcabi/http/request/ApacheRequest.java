@@ -20,6 +20,8 @@ import java.net.URL;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Map;
+import java.util.Optional;
+import javax.net.ssl.SSLContext;
 import lombok.EqualsAndHashCode;
 import lombok.ToString;
 import org.apache.http.Header;
@@ -29,6 +31,8 @@ import org.apache.http.client.methods.CloseableHttpResponse;
 import org.apache.http.client.methods.HttpEntityEnclosingRequestBase;
 import org.apache.http.entity.BufferedHttpEntity;
 import org.apache.http.entity.InputStreamEntity;
+import org.apache.http.impl.client.CloseableHttpClient;
+import org.apache.http.impl.client.HttpClientBuilder;
 import org.apache.http.impl.client.HttpClients;
 import org.apache.http.util.EntityUtils;
 
@@ -59,8 +63,11 @@ public final class ApacheRequest implements Request {
             final InputStream content,
             final int connect,
             final int read) throws IOException {
+            final HttpClientBuilder builder = HttpClients.custom().useSystemProperties();
+            req.sslContext().ifPresent(builder::setSSLContext);
             try (
-                CloseableHttpResponse response = HttpClients.createSystem().execute(
+                CloseableHttpClient client = builder.build();
+                CloseableHttpResponse response = client.execute(
                     this.httpRequest(
                         home, method, headers, content,
                         connect, read
@@ -186,6 +193,16 @@ public final class ApacheRequest implements Request {
      */
     public ApacheRequest(final String uri) {
         this.base = new BaseRequest(ApacheRequest.WIRE, uri);
+    }
+
+    @Override
+    public Optional<SSLContext> sslContext() {
+        return this.base.sslContext();
+    }
+
+    @Override
+    public Request sslContext(final SSLContext context) {
+        return this.base.sslContext(context);
     }
 
     @Override

@@ -79,15 +79,7 @@ public final class CookieOptimizingWire implements Wire {
         headers.forEach(
             header -> {
                 if (header.getKey().equals(HttpHeaders.COOKIE)) {
-                    final String cookie = header.getValue();
-                    final int split = cookie.indexOf('=');
-                    final String name = cookie.substring(0, split);
-                    final String value = cookie.substring(split + 1);
-                    if (value.isEmpty()) {
-                        cookies.remove(name);
-                    } else {
-                        cookies.put(name, value);
-                    }
+                    CookieOptimizingWire.merge(cookies, header.getValue());
                 } else {
                     hdrs.add(header);
                 }
@@ -110,5 +102,19 @@ public final class CookieOptimizingWire implements Wire {
         return this.origin.send(
             req, home, method, hdrs, content, connect, read
         );
+    }
+
+    private static void merge(final Map<String, String> cookies,
+        final String cookie) {
+        final int split = cookie.indexOf('=');
+        if (split >= 0) {
+            final String name = cookie.substring(0, split);
+            final String value = cookie.substring(split + 1);
+            if (value.isEmpty()) {
+                cookies.remove(name);
+            } else {
+                cookies.put(name, value);
+            }
+        }
     }
 }
